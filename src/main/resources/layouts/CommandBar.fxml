@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.TextField?>
+
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <TextField fx:id="commandBar" onKeyPressed="#onKeyPress" promptText="Enter Command">
+         <effect>
+            <DropShadow color="#0db255" height="33.91" radius="15.649999999999999" width="30.69" />
+         </effect></TextField>
+   </center>
+   <top>
+      <Label fx:id="feedback" focusTraversable="false" BorderPane.alignment="CENTER" />
+   </top>
+</fx:root>

@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.shape.*?>
+<?import java.lang.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.layout.HBox?>
+
+<fx:root styleClass="fileStatsItem" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+	<center>
+		<StackPane styleClass="cardBg">
+			<children>
+				<HBox fx:id="card" prefHeight="1.0" prefWidth="130.0" styleClass="card">
+   <children>
+                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="178.0">
+                     <children>
+      							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="Filename" wrappingWidth="275.7958984375">
+                           <font>
+                              <Font size="7.0" />
+                           </font>
+                        </Text>
+                     </children>
+                  </StackPane>
+                  <StackPane prefHeight="55.0" prefWidth="88.0" />
+                  <StackPane prefHeight="150.0" prefWidth="200.0" />
+                  <StackPane prefHeight="27.0" prefWidth="0.0">
+                     <children>
+                        <Rectangle arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" width="39.0" />
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Mon" />
+                     </children>
+                  </StackPane>
+   </children>
+				</HBox>
+			</children>
+		</StackPane>
+	</center>
+   <effect>
+      <DropShadow color="#43a0e0" />
+   </effect>
+   <left>
+      <Rectangle fx:id="circle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="55.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER" />
+   </left>
+</fx:root>

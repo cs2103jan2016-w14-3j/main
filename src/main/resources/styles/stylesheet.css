@@ -1,0 +1,66 @@
+#root {
+	-fx-padding: 10px;
+}
+
+#title {
+	-fx-padding: 10px;
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+}
+
+#fileStats {
+	-fx-background-color: transparent;
+}
+
+#fileStats .list-cell {
+	-fx-background-color: transparent;
+}
+
+/* Hide horizontal scrollbars */
+#fileStats .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-padding: -7;
+}
+
+/* Hide vertical scrollbars */
+#fileStats .scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-padding: -7;
+}
+
+.fileStatsItem {
+	-fx-padding: 2px;
+}
+
+.cardBg {
+	/* https://docs.oracle.com/javase/8/javafx/api/javafx/scene/doc-files/cssref.html#typeeffect */
+	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2);
+}
+
+.card {
+	-fx-padding: 14px;
+	-fx-background-color: white;
+}
+
+.card .text {
+	-fx-padding: 0 0 0 16px;  /* top, right, bottom, and left  */
+}
+
+.card .filename {
+	-fx-font-size: 16px;
+	-fx-font-weight: bold;
+}
+
+.card .linesOfCode {
+	-fx-font-size: 15px;
+}
+
+.card .circle {
+	-fx-fill: white;
+}
+
+.card .percentage {
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;
+	-fx-stroke-width: 0;
+}
