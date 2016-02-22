@@ -31,7 +31,7 @@ public class CommandBarController extends BorderPane {
 	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/CommandBar.fxml";
 
 	private Main mainApp;
-	private taskTableController tableControl;
+	private TasksTableController tableControl;
 
 	public CommandBarController(Main mainApp) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(COMMAND_BAR_LAYOUT_FXML));

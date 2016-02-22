@@ -2,6 +2,7 @@ package main.java.flash;
 
 import java.io.IOException;
 
+
 import javafx.application.Application;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -9,8 +10,8 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import main.java.gui.CommandBarController;
 import main.java.gui.RootLayoutController;
-import main.java.gui.historyLogController;
-import main.java.gui.taskTableController;
+import main.java.gui.TasksTableController;
+import main.java.gui.HistoryLogsController;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -18,14 +19,12 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 
-
-
 public class Main extends Application {
 	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-	public taskTableController tableControl = new taskTableController();
-	public historyLogController logControl = new historyLogController(this);
+	public TasksTableController tableControl = new TasksTableController();
+	public HistoryLogsController logControl = new HistoryLogsController(this);
 	private Boolean isTray = true;
 	
 	public static void main(String[] args) {
@@ -35,7 +34,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-		this.primaryStage.initStyle(StageStyle.TRANSPARENT);;
+		//this.primaryStage.initStyle(StageStyle.TRANSPARENT);;
 		this.primaryStage.setTitle("Flashpoint");
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/lightning.fw.png"));
 
@@ -105,32 +104,6 @@ public class Main extends Application {
                                   String userInput) {
     	commandBarController.setFeedback("success");
         tableControl.addTask(userInput);
-//        logControl.addTask(userInput);
-        
-//        switch (logic.executeCommand(userInput)) {
-//            
-//            case COLLATE :
-//                commandBarController.setFeedback(FEEDBACK_COLLATE_SUCCESSFUL);
-//            case SUMMARY :
-//                addSummary(this);
-//                break;
-//                
-//            case EXIT :
-//                primaryStage.hide();
-//                break;
-//                
-//            case VIEW :
-//                String authorName = logic.getTargetAuthorName();
-//                if (authorName != null) {
-//                    commandBarController.setFeedback(FEEDBACK_EMPTY);
-//                    addFileStats(authorName);
-//                    break;
-//                }
-//            case INVALID :
-//            default :
-//                commandBarController.setFeedback(FEEDBACK_INVALID_COMMAND);
-//                break;
-//        }
         commandBarController.clear();
     }
 	

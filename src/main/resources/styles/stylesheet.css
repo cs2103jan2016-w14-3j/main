@@ -8,27 +8,27 @@
 	-fx-font-weight: bold;
 }
 
-#fileStats {
+#tasksDisplay {
 	-fx-background-color: transparent;
 }
 
-#fileStats .list-cell {
+#tasksDisplay.list-cell {
 	-fx-background-color: transparent;
 }
 
 /* Hide horizontal scrollbars */
-#fileStats .scroll-bar:horizontal {
+#tasksDisplay .scroll-bar:horizontal {
     -fx-opacity: 0;
     -fx-padding: -7;
 }
 
 /* Hide vertical scrollbars */
-#fileStats .scroll-bar:vertical {
+#tasksDisplay  .scroll-bar:vertical {
     -fx-opacity: 0;
     -fx-padding: -7;
 }
 
-.fileStatsItem {
+.tasksItem {
 	-fx-padding: 2px;
 }
 

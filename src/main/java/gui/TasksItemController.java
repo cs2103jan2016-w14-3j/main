@@ -8,8 +8,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 
-public class TasksItem extends BorderPane implements
-Comparable<TasksItem> {
+public class TasksItemController extends BorderPane implements
+Comparable<TasksItemController> {
 
 	@FXML
 	private HBox card;
@@ -26,7 +26,7 @@ Comparable<TasksItem> {
 	@FXML
 	private Shape circle;
 
-	private static final String FILE_STATS_ITEM_FXML = "/main/resources/layouts/FileStatsItem.fxml";
+	private static final String FILE_STATS_ITEM_FXML = "/main/resources/layouts/TasksItem.fxml";
 
 	private static final String STRING_CIRCLE_FILL_STYLE_FORMAT = "-fx-fill: %s";
 
@@ -38,7 +38,7 @@ Comparable<TasksItem> {
 
 	private double percentageValue;
 
-	public TasksItem(String taskName) {
+	public TasksItemController(String taskName) {
 		double percentage = 0;
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_ITEM_FXML));
@@ -88,7 +88,7 @@ Comparable<TasksItem> {
 
 
 	@Override
-	public int compareTo(TasksItem otherItem) {
+	public int compareTo(TasksItemController otherItem) {
 		return (int) Math.round(otherItem.getPercentageValue() -
 				percentageValue);
 	}

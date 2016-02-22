@@ -12,24 +12,21 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import main.java.flash.Main;
 
-public class taskTableController extends BorderPane {
+public class TasksTableController extends BorderPane {
 
 	private Main mainApp;
 
 	@FXML
-	private ListView<TasksItem> tasksItem;
-	
-//	@FXML
-//	private ListView<String> listView;
+	private ListView<TasksItemController> tasksDisplay;
 
 //	@FXML
 //	private Label title;
 
-	private static final String FILE_STATS_FXML = "/main/resources/layouts/FileStats.fxml";
+	private static final String FILE_STATS_FXML = "/main/resources/layouts/TasksTable.fxml";
 
-	private ArrayList<TasksItem> items;
+	private ArrayList<TasksItemController> items;
 	
-	public taskTableController() {
+	public TasksTableController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_FXML));
 		loader.setController(this);
 		loader.setRoot(this);
@@ -45,8 +42,8 @@ public class taskTableController extends BorderPane {
 	}
 	
 	private void initialise() {
-		items = new ArrayList<TasksItem>();
-		tasksItem.setItems(FXCollections.observableList(items));
+		items = new ArrayList<TasksItemController>();
+		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
 	public void addTask(String taskName) {	
@@ -55,18 +52,18 @@ public class taskTableController extends BorderPane {
 		
 		Collections.sort(items);
 
-		tasksItem.setItems(FXCollections.observableList(items));
+		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
 	/**
-	 * Each FileStatsItem corresponds to a source file and is displayed as a row
+	 * Each TaskItems displayed as a row
 	 * in this custom view.
 	 * 
 	 * @param currentFile
 	 * @param currentNumLines
 	 */
 	private void addFileStatsItem(String taskName) {
-		items.add(new TasksItem(taskName));
+		items.add(new TasksItemController(taskName));
 	}
 
 }

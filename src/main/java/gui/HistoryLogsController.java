@@ -18,7 +18,7 @@ import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
 import main.java.flash.Main;
 
-public class historyLogController extends BorderPane {
+public class HistoryLogsController extends BorderPane {
 
 	private Main mainApp;
 
@@ -35,7 +35,7 @@ public class historyLogController extends BorderPane {
 
 	private ArrayList<String> logs;
 	
-	public historyLogController(Main mainApp) {
+	public HistoryLogsController(Main mainApp) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(HISTORY_LOG_FXML));
 		loader.setController(this);
 		loader.setRoot(this);
