@@ -11,16 +11,6 @@ import javafx.beans.property.StringProperty;
 import main.java.data.Tasks;
 
 
-/**
- * This class is a wrapper class for Author.
- * It utilises Properties so that JavaFX can display the information easily.
- * 
- * https://docs.oracle.com/javase/8/javafx/properties-binding-tutorial/binding.
- * htm
- * 
- * @author Sebastian Quek
- * 
- */
 public class DisplayWrapper {
     private Tasks taskToDo;
     private StringProperty taskName;

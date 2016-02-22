@@ -13,8 +13,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
+import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.paint.Color;
 import main.java.flash.Main;
 
 public class CommandBarController extends BorderPane {
@@ -50,11 +52,12 @@ public class CommandBarController extends BorderPane {
 	}
 
 	public void clear() {
-		commandBar.clear();
+		commandBar.clear();	
 	}
 
 	public void setFeedback(String feedbackText) {
 		feedback.setText(feedbackText);
+		commandBar.setEffect(new DropShadow(15.65,Color.GREEN));
 	}
 
 

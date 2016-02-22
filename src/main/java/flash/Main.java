@@ -65,7 +65,7 @@ public class Main extends Application {
 			
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 			      if(key.getCode()==KeyCode.ESCAPE ) {
-			    	  primaryStage.toBack();
+			    	  primaryStage.hide();
 			      }
 			});
 			

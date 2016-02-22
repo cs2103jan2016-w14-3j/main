@@ -11,7 +11,7 @@
    <center>
       <TextField fx:id="commandBar" onKeyPressed="#onKeyPress" promptText="Enter Command">
          <effect>
-            <DropShadow color="#0db255" height="33.91" radius="15.649999999999999" width="30.69" />
+            <DropShadow color="blue" height="33.91" radius="15.649999999999999" width="30.69" />
          </effect></TextField>
    </center>
    <top>
