@@ -26,8 +26,7 @@
                         </Text>
                      </children>
                   </StackPane>
-                  <StackPane prefHeight="55.0" prefWidth="88.0" />
-                  <StackPane prefHeight="150.0" prefWidth="200.0" />
+                  <Region HBox.hgrow="ALWAYS" />
                   <StackPane prefHeight="27.0" prefWidth="0.0">
                      <children>
                         <Rectangle fx:id="tagDateColor" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" width="52.0" />
