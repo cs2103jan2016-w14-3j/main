@@ -30,8 +30,8 @@ public class Logic {
 		}
 	}
 	
-	private Task executeCommand(Command command) {
-		return command.executeCommand();
+	private void executeCommand(Command command) {
+		command.executeCommand();
 	}
 	
 	private void parseCommand(CommandParser parser, Command command) {
