@@ -3,10 +3,12 @@ package main.java.gui;
 import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import javafx.scene.text.TextBoundsType;
 import main.java.data.Task;
 
 public class TasksItemController extends BorderPane implements
@@ -18,14 +20,21 @@ Comparable<TasksItemController> {
 	@FXML
 	private Text filename;
 
-//	@FXML
-//	private Text linesOfCode;
+	@FXML
+	private Text date;
 
 	@FXML
 	private Text percentage;
+	
+	@FXML
+	private Label labelDate;
+
 
 	@FXML
 	private Shape circle;
+	
+	@FXML
+	private Shape tagDateColor;
 
 	private static final String FILE_STATS_ITEM_FXML = "/main/resources/layouts/TasksItem.fxml";
 
@@ -55,7 +64,9 @@ Comparable<TasksItemController> {
 		//this.percentageValue = percentage;
 
 		this.filename.setText(task.getTask());
-
+	//	this.date.setText(task.getTime());
+		this.labelDate.setText(task.getTime());
+		labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
 		this.circle.setStyle(String.format(STRING_CIRCLE_FILL_STYLE_FORMAT,
 				generateColour(percentage)));
 	}

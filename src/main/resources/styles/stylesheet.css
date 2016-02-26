@@ -51,12 +51,20 @@
 	-fx-font-weight: bold;
 }
 
-.card .linesOfCode {
-	-fx-font-size: 15px;
+.card .date {
+	-fx-background-color:
+        -fx-focus-color,
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
 }
 
 .card .circle {
 	-fx-fill: white;
+}
+
+.card .stackpane {
+	-fx-background-color: black;
 }
 
 .card .percentage {
