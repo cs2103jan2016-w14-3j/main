@@ -41,10 +41,9 @@ public class Command {
 	}
 	
 	
-	public Task executeCommand() {
+	public void executeCommand() {
 		Task task = new Task(commandParameters[TASK], 
 				commandParameters[TIME], commandParameters[PRIORITY]);
-		return task;
 				
 	}
 	

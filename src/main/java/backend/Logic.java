@@ -24,7 +24,7 @@ public class Logic {
 			String userInput = scanner.nextLine();
 			Command command = new Command(userInput);
 			parseCommand(parser, command);
-			Task task = executeCommand(command);
+			executeCommand(command);
 			//System.out.println(task.getPriority() + " " + task.getTime() + " " + task.getTask());
 			quitOnExitCommand(command);
 		}
