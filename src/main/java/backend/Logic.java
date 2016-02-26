@@ -1,6 +1,7 @@
 package main.java.backend;
 
 import java.util.Scanner;
+import main.java.data.*;
 
 public class Logic {
 	

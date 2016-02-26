@@ -1,5 +1,7 @@
 package main.java.backend;
 
+import main.java.data.*;
+
 public class CommandParser {
 
 	private final String EMPTY_COMMAND = "empty";
