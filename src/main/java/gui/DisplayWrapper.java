@@ -2,39 +2,41 @@ package main.java.gui;
 
 import java.util.ArrayList;
 
+
 import javafx.beans.property.DoubleProperty;
 import javafx.beans.property.IntegerProperty;
 import javafx.beans.property.SimpleDoubleProperty;
 import javafx.beans.property.SimpleIntegerProperty;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.beans.property.StringProperty;
-import main.java.data.Tasks;
+import main.java.data.Task;
 
 
 public class DisplayWrapper {
-    private Tasks taskToDo;
+    private Task taskToDo;
     private StringProperty taskName;
-//    private IntegerProperty linesOfCode;
-//    private DoubleProperty proportion;
+    private StringProperty taskTime;
+    private StringProperty taskPriority;
 
-    public DisplayWrapper(Tasks taskToDo) {
+
+    public DisplayWrapper(Task taskToDo) {
         this.taskToDo = taskToDo;
-        this.taskName = new SimpleStringProperty(taskToDo.getName());
-//        this.linesOfCode = new SimpleIntegerProperty(author.getLinesOfCode());
-//        this.proportion = new SimpleDoubleProperty(author.getProportion());
+        this.taskName = new SimpleStringProperty(taskToDo.getTask());
+        this.taskTime = new SimpleStringProperty(taskToDo.getTime());
+        this.taskPriority = new SimpleStringProperty(taskToDo.getPriority());
     }
 
-//    public StringProperty taskProperty() {
-//        return name;
-//    }
+    public StringProperty taskName() {
+        return taskName;
+    }
 
-//    public IntegerProperty linesOfCodeProperty() {
-//        return linesOfCode;
-//    }
-//
-//    public DoubleProperty proportionProperty() {
-//        return proportion;
-//    }
+    public StringProperty taskTime() {
+        return taskTime;
+    }
+
+    public StringProperty taskPriority() {
+        return taskPriority;
+    }
 //
 //    public ArrayList<CodeSnippet> getCodeSnippets() {
 //        return author.getCodeSnippets();

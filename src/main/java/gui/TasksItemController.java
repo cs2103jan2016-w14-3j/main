@@ -7,6 +7,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import main.java.data.Task;
 
 public class TasksItemController extends BorderPane implements
 Comparable<TasksItemController> {
@@ -38,7 +39,7 @@ Comparable<TasksItemController> {
 
 	private double percentageValue;
 
-	public TasksItemController(String taskName) {
+	public TasksItemController(Task task) {
 		double percentage = 0;
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_ITEM_FXML));
@@ -53,8 +54,8 @@ Comparable<TasksItemController> {
 
 		//this.percentageValue = percentage;
 
-		this.filename.setText(taskName);
-//		this.linesOfCode.setText(taskName);
+		this.filename.setText(task.getTask());
+
 		this.circle.setStyle(String.format(STRING_CIRCLE_FILL_STYLE_FORMAT,
 				generateColour(percentage)));
 	}

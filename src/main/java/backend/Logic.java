@@ -6,7 +6,7 @@ import main.java.data.*;
 public class Logic {
 	
 	private final String WELCOME_MESSAGE = "Welcome to Flashpoint!";
-	
+	private Task task;
 	
 	public Logic() {
 		
@@ -16,22 +16,22 @@ public class Logic {
 		System.out.println(WELCOME_MESSAGE);
 	}
 	
-	public void handleUserCommand() {
-		Scanner scanner = new Scanner(System.in);
+	public Task handleUserCommand(String userInput) {
+
 		CommandParser parser = new CommandParser();
+		Command command = new Command(userInput);
+		parseCommand(parser, command);
+		task = executeCommand(command);
+		//System.out.println(task.getPriority() + " " + task.getTime() + " " + task.getTask());
+		quitOnExitCommand(command);
 		
-		while (true) {
-			String userInput = scanner.nextLine();
-			Command command = new Command(userInput);
-			parseCommand(parser, command);
-			executeCommand(command);
-			//System.out.println(task.getPriority() + " " + task.getTime() + " " + task.getTask());
-			quitOnExitCommand(command);
-		}
+		return task;
+		
 	}
 	
-	private void executeCommand(Command command) {
-		command.executeCommand();
+	
+	private Task executeCommand(Command command) {
+		return command.executeCommand();
 	}
 	
 	private void parseCommand(CommandParser parser, Command command) {
@@ -43,20 +43,6 @@ public class Logic {
 			System.exit(0);
 		}
 	}
-	
-	public static void main(String[] args) {
-		
-		Logic logic = new Logic();
-		logic.showWelcomeMessage();
-		logic.handleUserCommand();
-		//Command command = new Command("ad a lot of things");
-		//CommandParser parser = new CommandParser();
-		//parser.parseCommand(command);
-		//System.out.println(command.getContent());
-		//System.out.println(command.getType());
-		//System.out.println("String hello".split("S")[1]);
-	}
-	
 	
 	
 }

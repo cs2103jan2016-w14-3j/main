@@ -8,6 +8,8 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import main.java.backend.Logic;
+import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.RootLayoutController;
 import main.java.gui.TasksTableController;
@@ -23,9 +25,12 @@ public class Main extends Application {
 	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-	public TasksTableController tableControl = new TasksTableController();
-	public HistoryLogsController logControl = new HistoryLogsController(this);
+	private TasksTableController tableControl = new TasksTableController();
+	private HistoryLogsController logControl = new HistoryLogsController(this);
+	private Logic logic = new Logic(); 
+	private Task task;
 	private Boolean isTray = true;
+	
 	
 	public static void main(String[] args) {
 		launch(args);
@@ -103,7 +108,8 @@ public class Main extends Application {
     private void handleEnterPress(CommandBarController commandBarController,
                                   String userInput) {
     	commandBarController.setFeedback("success");
-        tableControl.addTask(userInput);
+    	task = logic.handleUserCommand(userInput);
+        tableControl.addTask(task);
         commandBarController.clear();
     }
 	

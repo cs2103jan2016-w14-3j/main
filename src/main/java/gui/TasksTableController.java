@@ -10,6 +10,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.layout.BorderPane;
+import main.java.data.Task;
 import main.java.flash.Main;
 
 public class TasksTableController extends BorderPane {
@@ -46,9 +47,9 @@ public class TasksTableController extends BorderPane {
 		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
-	public void addTask(String taskName) {	
+	public void addTask(Task task) {	
 	
-		addFileStatsItem(taskName);
+		addFileStatsItem(task);
 		
 		Collections.sort(items);
 
@@ -62,8 +63,8 @@ public class TasksTableController extends BorderPane {
 	 * @param currentFile
 	 * @param currentNumLines
 	 */
-	private void addFileStatsItem(String taskName) {
-		items.add(new TasksItemController(taskName));
+	private void addFileStatsItem(Task task) {
+		items.add(new TasksItemController(task));
 	}
 
 }
