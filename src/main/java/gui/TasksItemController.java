@@ -65,8 +65,10 @@ Comparable<TasksItemController> {
 
 		this.filename.setText(task.getTask());
 	//	this.date.setText(task.getTime());
-		this.labelDate.setText(task.getTime());
-		labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
+		if(task.getTime()!= null){
+		   this.labelDate.setText(task.getTime());
+	    	labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
+		}
 		this.circle.setStyle(String.format(STRING_CIRCLE_FILL_STYLE_FORMAT,
 				generateColour(percentage)));
 	}
