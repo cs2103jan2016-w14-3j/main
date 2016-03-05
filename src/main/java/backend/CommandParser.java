@@ -14,7 +14,7 @@ public class CommandParser {
 	private final String ADD_COMMAND = "add";
 	private final String DELETE_COMMAND = "delete";
 	private final String SEARCH_COMMAND = "search";
-	//private final String DISPLAY_COMMAND = "display";
+	private final String STORE_COMMAND = "display";
 	private final String SORT_COMMAND = "sort";
 	private final String CLEAR_COMMAND = "clear";
 	private final String EDIT_COMMAND = "edit";
@@ -32,6 +32,7 @@ public class CommandParser {
 	public void parseCommand(Command command) {
 		String originalCommand = command.getOriginal();
 		command.setType(determineCommandType(originalCommand));
+		
 		String commandContent = retrieveCommandContent(originalCommand);
 		command.setContent(commandContent);
 		command.setParameters(determineParameters(commandContent));
@@ -61,9 +62,9 @@ public class CommandParser {
 				return SEARCH_COMMAND;
 			}
 
-			//else if (isCommand(DISPLAY_COMMAND, firstWord)) {
-			//	return DISPLAY_COMMAND;
-			//}
+			if (isCommand(STORE_COMMAND, firstWord)) {
+				return STORE_COMMAND;
+			}
 
 			else if (isCommand(SORT_COMMAND, firstWord)) {
 				return SORT_COMMAND;
@@ -130,17 +131,8 @@ public class CommandParser {
 	}
 	
 	private String determineTime(String content) {
-		if (hasField(content, "-")) {
-			if (hasField(content, "#")) {
-				return content.substring(content.indexOf("-") + 1, content.indexOf("#") - 1).trim();
-			}
-			else {
-				return content.substring(content.indexOf("-") + 1).trim();
-			}
-		}
-		else {
-			return null;
-		}
+		 List<Date> dates = new PrettyTimeParser().parse("");
+		 return dates.toString();
 	}
 	
 	private String determinePriority(String content) {
@@ -155,11 +147,14 @@ public class CommandParser {
 	private boolean hasField(String content, String flag) {
 		return content.contains(flag);
 	}
+	
+	
 	public static void main(String[] args)
 	   {
-	      List<Date> dates = new PrettyTimeParser().parse("I'm going to the beach in three days!");
+	      List<Date> dates = new PrettyTimeParser().parse("tuesday and thursday");
 	      System.out.println(dates);
 	      // Prints: "[Sun Dec 12 13:45:12 CET 2013]"
 	   }
+	   
 
 }
