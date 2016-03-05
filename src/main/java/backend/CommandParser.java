@@ -1,5 +1,11 @@
 package main.java.backend;
-import com.joestelmach.natty.*;
+
+
+import java.util.Date;
+import java.util.List;
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+
+
 import main.java.data.*;
 
 public class CommandParser {
@@ -149,5 +155,11 @@ public class CommandParser {
 	private boolean hasField(String content, String flag) {
 		return content.contains(flag);
 	}
+	public static void main(String[] args)
+	   {
+	      List<Date> dates = new PrettyTimeParser().parse("I'm going to the beach in three days!");
+	      System.out.println(dates);
+	      // Prints: "[Sun Dec 12 13:45:12 CET 2013]"
+	   }
 
 }
