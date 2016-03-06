@@ -13,7 +13,8 @@ public class CommandParser {
 	private final String ADD_COMMAND = "add";
 	private final String DELETE_COMMAND = "delete";
 	private final String SEARCH_COMMAND = "search";
-	private final String STORE_COMMAND = "display";
+	private final String STORE_COMMAND = "store";
+	private final String DISPLAY_COMMAND = "display";
 	private final String SORT_COMMAND = "sort";
 	private final String CLEAR_COMMAND = "clear";
 	private final String EDIT_COMMAND = "edit";
@@ -31,10 +32,10 @@ public class CommandParser {
 	public void parseCommand(Command command) {
 		String originalCommand = command.getOriginal();
 		command.setType(determineCommandType(originalCommand));
-		
+
 		String commandContent = retrieveCommandContent(originalCommand);
 		command.setContent(commandContent);
-		command.setParameters(determineParameters(commandContent));
+		command.setParameters(determineParameters(command.getType(),commandContent));
 	}
 
 	private String determineCommandType(String originalCommand) {
@@ -101,39 +102,40 @@ public class CommandParser {
 		return originalCommand.substring(originalCommand.indexOf(" ") + 1).trim();
 	}
 
-	private String[] determineParameters(String commandContent) {
-		
+	private String[] determineParameters(String commandType, String commandContent) {
+
 		String[] parameters = new String[3];
-		
-		
-		parameters[TASK] = determineTask(commandContent);
-		parameters[TIME] = determineTime(commandContent);
-		parameters[PRIORITY] = determinePriority(commandContent);
-		
+
+		if (!commandType.equals(DISPLAY_COMMAND)) {
+			parameters[TASK] = determineTask(commandContent);
+			parameters[TIME] = determineTime(commandContent);
+			parameters[PRIORITY] = determinePriority(commandContent);
+		}
+
 		return parameters;
-		
-		
+
+
 	}
-	
+
 	private String determineTask(String content) {
 		if (hasField(content, "-")) {
 			return content.substring(0, content.indexOf("-") - 1).trim();
 		}
-		
+
 		else if (hasField(content, "#")) {
 			return content.substring(0, content.indexOf("#") - 1).trim();
 		}
-		
+
 		else {
 			return content;
 		}
 	}
-	
+
 	private String determineTime(String content) {
-		 List<Date> dates = new PrettyTimeParser().parse("");
-		 return dates.toString();
+		List<Date> dates = new PrettyTimeParser().parse(content);
+		return dates.toString();
 	}
-	
+
 	private String determinePriority(String content) {
 		if (hasField(content, "#")) {
 			return content.substring(content.indexOf("#") + 1).trim();
@@ -142,18 +144,18 @@ public class CommandParser {
 			return null;
 		}
 	}
-	
+
 	private boolean hasField(String content, String flag) {
 		return content.contains(flag);
 	}
-	
-	
+
+
 	public static void main(String[] args)
-	   {
-	      List<Date> dates = new PrettyTimeParser().parse("tuesday do thursday");
-	      System.out.println(dates);
-	      // Prints: "[Sun Dec 12 13:45:12 CET 2013]"
-	   }
-	   
+	{
+		List<Date> dates = new PrettyTimeParser().parse("tuesday 5pm do thursday");
+		System.out.println(dates);
+		// Prints: "[Sun Dec 12 13:45:12 CET 2013]"
+	}
+
 
 }
