@@ -76,4 +76,17 @@ public class Storage {
 	public void sortFile() {
 		
 	}
+	
+	/**
+	 * Add: 
+	 * add sth -on sunday 5pm #high
+       add sth -by monday #low
+       add sth -from monday to friday #medium
+       Delete:
+       delete                                                -> delete previous (u can keep track of the previous task for this)
+       delete time                                           -> just get from the time field from the String[]
+       edit                                                  -> edit the previous task with the new info from
+       
+
+	 */
 }

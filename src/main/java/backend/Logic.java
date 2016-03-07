@@ -35,9 +35,19 @@ public class Logic {
 	public void showWelcomeMessage() {
 		System.out.println(WELCOME_MESSAGE);
 	}
+	
+	private static void setupStorageEnvironment() {
+		try {
+			TempStorage temp = new TempStorage();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
 
 	public static void main(String[] args)
 	{
+		setupStorageEnvironment();
 		Logic logic = new Logic();
 		String userInput = logic.receiveUserCommand();
 		logic.handleUserCommand(userInput);
@@ -52,7 +62,9 @@ public class Logic {
 		CommandParser parser = new CommandParser();
 		Command command = new Command(userInput);
 		parseCommand(parser, command);
-		task = createTask(command);
+		//task = createTask(command);
+		addNewCommand(command);
+		
 
 		if (task == null) {//display command
 

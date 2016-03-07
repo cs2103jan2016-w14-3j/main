@@ -152,7 +152,7 @@ public class CommandParser {
 
 	public static void main(String[] args)
 	{
-		List<Date> dates = new PrettyTimeParser().parse("tuesday 5pm do thursday");
+		List<Date> dates = new PrettyTimeParser().parse("fri");
 		System.out.println(dates);
 		// Prints: "[Sun Dec 12 13:45:12 CET 2013]"
 	}
