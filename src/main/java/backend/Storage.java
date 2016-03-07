@@ -45,13 +45,18 @@ public class Storage {
     	 bufferedWriter.flush();
 	}
 	
-	public void deleteFromFile(int lineNumber) throws Exception {
+	public void editToFile(Task task) throws Exception {
+		
+		
+	}
+	
+	public void deleteFromFile(String phraseToSearch) throws Exception {
 		taskList = new ArrayList<Task>();
-		int currentLineNumber = 1;
+		String phrase = phraseToSearch;
 		String lineRead;
 		
 		while((lineRead = bufferedReader.readLine()) != null) {
-			if(currentLineNumber == lineNumber) {
+			if(lineRead.contains(phrase)) {
 				//Don't write the line that you want to delete
 			}
 			else {
@@ -59,7 +64,6 @@ public class Storage {
 				Task taskRead = gson.fromJson(taskString, Task.class);
 				taskList.add(taskRead);
 			}
-			currentLineNumber++;
 		}
 		clearFile();
 		
@@ -76,17 +80,4 @@ public class Storage {
 	public void sortFile() {
 		
 	}
-	
-	/**
-	 * Add: 
-	 * add sth -on sunday 5pm #high
-       add sth -by monday #low
-       add sth -from monday to friday #medium
-       Delete:
-       delete                                                -> delete previous (u can keep track of the previous task for this)
-       delete time                                           -> just get from the time field from the String[]
-       edit                                                  -> edit the previous task with the new info from
-       
-
-	 */
 }

@@ -14,12 +14,13 @@ import main.java.data.Task;
 public class TempStorage {
 
 	enum COMMAND_TYPE {
-		ADD_TEXT, DISPLAY_ALL, DELETE_TEXT, CLEAR_ALL, SEARCH_WORD,
+		ADD_TASK, DISPLAY_ALL, EDIT_TASK, DELETE_TASK, CLEAR_ALL, SEARCH_WORD,
 		SORT
 	};
 	
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_DISPLAY = "display";
+	private static final String COMMAND_UPDATE = "update";
 	private static final String COMMAND_DELETE = "delete";
 	private static final String COMMAND_CLEAR = "clear";
 	private static final String COMMAND_SEARCH = "search";
@@ -36,32 +37,37 @@ public class TempStorage {
 	}
 	
 	// for logic to call to process the command
-	public void addNewCommand(Command command) {
+	public void addNewCommand(Command command) throws Exception{
 		processCommand(command);
 	}
 	
 	//obtain the command type and the task to be stored (if any)
-	private void processCommand(Command command) {
+	private void processCommand(Command command) throws Exception{
 		currentCommand = command.getType();
-		currentTask = command.executeCommand();
+		currentTask = command.createTask();
+		performTempOperation(currentCommand, currentTask);
 	}
 	
 	//performs the command on the temp list
-	private void performTempOperation(String command, Task task) {
+	private void performTempOperation(String command, Task task) throws Exception{
 
 		COMMAND_TYPE commandType = determineCommandType(command);
 
 		switch (commandType) {
-			case ADD_TEXT:
-				writeToTemp(currentTask);
+			case ADD_TASK:
+				writeToTemp(task);
 				break;
 				
 			case DISPLAY_ALL:
 				displayTemp();
 				break;
 				
-			case DELETE_TEXT:
-				deleteFromTemp();
+			case EDIT_TASK:
+				editToTemp(task);
+				break;
+				
+			case DELETE_TASK:
+				deleteFromTemp(task);
 				break;
 				
 			case CLEAR_ALL:
@@ -84,13 +90,16 @@ public class TempStorage {
 	public static COMMAND_TYPE determineCommandType(String commandTypeString) {
 
 		if(commandTypeString.equalsIgnoreCase(COMMAND_ADD)) {
-			return COMMAND_TYPE.ADD_TEXT;
+			return COMMAND_TYPE.ADD_TASK;
 		}
 		else if(commandTypeString.equalsIgnoreCase(COMMAND_DISPLAY)) {
 			return COMMAND_TYPE.DISPLAY_ALL;
 		}
+		else if(commandTypeString.equalsIgnoreCase(COMMAND_UPDATE)) {
+			return COMMAND_TYPE.EDIT_TASK;
+		}
 		else if(commandTypeString.equalsIgnoreCase(COMMAND_DELETE)) {
-			return COMMAND_TYPE.DELETE_TEXT;
+			return COMMAND_TYPE.DELETE_TASK;
 		}
 		else if(commandTypeString.equalsIgnoreCase(COMMAND_CLEAR)) {
 			return COMMAND_TYPE.CLEAR_ALL;
@@ -115,9 +124,19 @@ public class TempStorage {
 		return taskList;
 	}
 	
-	private void deleteFromTemp(int taskNumber) throws Exception {
-		taskList.remove(taskNumber-1);
-		storage.deleteFromFile(taskNumber-1);
+	private void editToTemp(Task task) throws Exception {
+		
+		storage.editToFile(task);
+	}
+	
+	private void deleteFromTemp(Task task) throws Exception {
+		
+		for(int i=0; i<taskList.size(); i++) {
+			if(taskList.get(i).getTime().equals(task.getTime())) {
+				taskList.remove(i);
+			}
+		}
+		storage.deleteFromFile(task.getTime());
 	}
 	
 	private void clearTemp() throws Exception {
@@ -132,8 +151,4 @@ public class TempStorage {
 	private void sortTemp() {
 		
 	}
-	
-	public static void main(String[] args) throws Exception {
-		TempStorage tempStorage = new TempStorage();
-	}	
 }
