@@ -4,6 +4,7 @@ package main.java.backend;
 
 
 import java.util.Date;
+import main.java.backend.*;
 import java.util.List;
 import java.util.Scanner;
 
@@ -27,6 +28,7 @@ public class Logic {
 	private final String WELCOME_MESSAGE = "Welcome to Flashpoint!";
 	private Task task;
 	private Scanner scanner = new Scanner(System.in);
+	private static TempStorage temp;
 
 	public Logic() {
 
@@ -35,10 +37,10 @@ public class Logic {
 	public void showWelcomeMessage() {
 		System.out.println(WELCOME_MESSAGE);
 	}
-	
+
 	private static void setupStorageEnvironment() {
 		try {
-			TempStorage temp = new TempStorage();
+			 temp = new TempStorage();
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,10 +65,10 @@ public class Logic {
 		Command command = new Command(userInput);
 		parseCommand(parser, command);
 		//task = createTask(command);
-		addNewCommand(command);
+		temp.addNewCommand(command);
 		
 
-		if (task == null) {//display command
+		/*if (task == null) {//display command
 
 		}
 
@@ -90,7 +92,7 @@ public class Logic {
 			
 			else if (command.getType().equals(EDIT_COMMAND)) {
 				
-			}
+			}*/
 
 
 		}
