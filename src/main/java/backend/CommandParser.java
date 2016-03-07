@@ -96,7 +96,7 @@ public class CommandParser {
 	}
 
 	private boolean isCommand(String operation, String keyword) {
-		return operation == keyword;
+		return operation.equals(keyword);
 	}
 
 	private String retrieveCommandContent(String originalCommand) {
