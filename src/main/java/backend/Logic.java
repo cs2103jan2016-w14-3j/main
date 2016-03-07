@@ -28,9 +28,15 @@ public class Logic {
 	private final String WELCOME_MESSAGE = "Welcome to Flashpoint!";
 	private Task task;
 	private Scanner scanner = new Scanner(System.in);
-	private static TempStorage temp;
+	private TempStorage temp;
 
 	public Logic() {
+		try {
+			temp = new TempStorage();
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 
 	}
 
@@ -38,35 +44,27 @@ public class Logic {
 		System.out.println(WELCOME_MESSAGE);
 	}
 
-	private static void setupStorageEnvironment() {
-		try {
-			 temp = new TempStorage();
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-	}
 
-	public static void main(String[] args)
+
+	public static void main(String[] args) throws Exception
 	{
-		setupStorageEnvironment();
+		
+	}
+	
+	public void initLogic() throws Exception{
 		Logic logic = new Logic();
-		String userInput = logic.receiveUserCommand();
-		logic.handleUserCommand(userInput);
+		
+		
 	}
 
-	private String receiveUserCommand() {
-		return "delete something";
-	}
-
-	public Task handleUserCommand(String userInput) {
+	public Task handleUserCommand(String userInput) throws Exception {
 
 		CommandParser parser = new CommandParser();
 		Command command = new Command(userInput);
-		parseCommand(parser, command);
-		//task = createTask(command);
+		command = parseCommand(parser, command);
+		task = createTask(command);
 		temp.addNewCommand(command);
-		
+		System.out.println(command.getType());
 
 		/*if (task == null) {//display command
 
@@ -88,17 +86,17 @@ public class Logic {
 				removeTask(options.get(option));
 				 * 
 				 */
-			}
+			//}
 			
-			else if (command.getType().equals(EDIT_COMMAND)) {
+			//else if (command.getType().equals(EDIT_COMMAND)) {
 				
-			}*/
+			//}*/
 
 
-		}
+		//}
 
 		//System.out.println(task.getPriority() + " " + task.getTime() + " " + task.getTask());
-		quitOnExitCommand(command);
+		//quitOnExitCommand(command);
 
 		return task;
 
@@ -109,8 +107,8 @@ public class Logic {
 		return command.createTask();
 	}
 
-	private void parseCommand(CommandParser parser, Command command) {
-		parser.parseCommand(command);
+	private Command parseCommand(CommandParser parser, Command command) {
+		return parser.parseCommand(command);
 	}
 
 	private void quitOnExitCommand(Command command) {
@@ -118,9 +116,5 @@ public class Logic {
 			System.exit(0);
 		}
 	}
-
-
-
-
 
 }

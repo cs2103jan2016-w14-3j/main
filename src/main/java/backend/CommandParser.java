@@ -29,13 +29,14 @@ public class CommandParser {
 
 	}
 
-	public void parseCommand(Command command) {
+	public Command parseCommand(Command command) {
 		String originalCommand = command.getOriginal();
 		command.setType(determineCommandType(originalCommand));
 
 		String commandContent = retrieveCommandContent(originalCommand);
 		command.setContent(commandContent);
 		command.setParameters(determineParameters(command.getType(),commandContent));
+		return command;
 	}
 
 	private String determineCommandType(String originalCommand) {
