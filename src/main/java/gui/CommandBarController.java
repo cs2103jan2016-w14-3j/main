@@ -47,7 +47,7 @@ public class CommandBarController extends BorderPane {
 	}
 
 	@FXML
-	public void onKeyPress(KeyEvent event) {
+	public void onKeyPress(KeyEvent event) throws Exception {
 		mainApp.handleKeyPress(this, event.getCode(), commandBar.getText());
 	}
 

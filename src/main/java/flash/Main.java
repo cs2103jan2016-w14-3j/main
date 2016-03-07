@@ -26,7 +26,7 @@ public class Main extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	private TasksTableController tableControl = new TasksTableController();
-	private HistoryLogsController logControl = new HistoryLogsController(this);
+	private HistoryLogsController logControl = new HistoryLogsController();
 	private Logic logic = new Logic(); 
 	private Task task;
 	private Boolean isTray = true;
@@ -37,7 +37,7 @@ public class Main extends Application {
 	}
 	
 	@Override
-	public void start(Stage primaryStage) {
+	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		//this.primaryStage.initStyle(StageStyle.TRANSPARENT);;
 		this.primaryStage.setTitle("Flashpoint");
@@ -46,11 +46,15 @@ public class Main extends Application {
 		initRootLayout();
 		
 
-		//initLogic();
+		initLogic();
 
 		// Add components to RootLayout
 		//showCommandBar();
 		
+	}
+	
+	private void initLogic() throws Exception{
+		logic.initLogic();
 	}
 	
 	 /**
@@ -77,7 +81,7 @@ public class Main extends Application {
 			
 			showCommandBar(this);
 			showTasks(this);
-			//showLog(this);
+			showLog(this);
 			
 			primaryStage.show();
 			
@@ -94,11 +98,11 @@ public class Main extends Application {
 		rootLayout.setBottom(new CommandBarController(mainApp));
 	}
 	
-//	private void showLog(){
-//		rootLayout.setCenter(logControl);
-//	}
+	private void showLog(Main mainApp){
+		rootLayout.setCenter(logControl);
+	}
 
-	public void handleKeyPress(CommandBarController commandBarController, KeyCode code, String text) {
+	public void handleKeyPress(CommandBarController commandBarController, KeyCode code, String text) throws Exception {
 		// TODO Auto-generated method stub
 		if (code == KeyCode.ENTER) {
             handleEnterPress(commandBarController, text);
@@ -106,10 +110,11 @@ public class Main extends Application {
     }
 
     private void handleEnterPress(CommandBarController commandBarController,
-                                  String userInput) {
+                                  String userInput) throws Exception {
     	commandBarController.setFeedback("success");
     	task = logic.handleUserCommand(userInput);
         tableControl.addTask(task);
+        logControl.addLog(userInput);
         commandBarController.clear();
     }
 	

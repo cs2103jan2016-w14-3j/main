@@ -28,6 +28,11 @@
     -fx-padding: -7;
 }
 
+.list-cell 
+{
+  -fx-font: 7pt "Arial";
+}
+
 .tasksItem {
 	-fx-padding: 2px;
 }

@@ -16,6 +16,7 @@ import main.java.flash.Main;
 public class TasksTableController extends BorderPane {
 
 	private Main mainApp;
+	private HistoryLogsController historyLogs;
 
 	@FXML
 	private ListView<TasksItemController> tasksDisplay;
@@ -54,6 +55,12 @@ public class TasksTableController extends BorderPane {
 		Collections.sort(items);
 
 		tasksDisplay.setItems(FXCollections.observableList(items));
+		
+		//showLog();
+	}
+	
+	public void showLog(){
+		historyLogs.showLog();
 	}
 
 	/**

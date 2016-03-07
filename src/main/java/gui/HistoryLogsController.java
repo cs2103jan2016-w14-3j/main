@@ -25,8 +25,8 @@ public class HistoryLogsController extends BorderPane {
 	@FXML
 	private ListView<String> msgLog;
 	
-//	@FXML
-//	private ListView<String> listView;
+	@FXML
+	private ListView<String> listView;
 
 //	@FXML
 //	private Label title;
@@ -35,7 +35,7 @@ public class HistoryLogsController extends BorderPane {
 
 	private ArrayList<String> logs;
 	
-	public HistoryLogsController(Main mainApp) {
+	public HistoryLogsController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(HISTORY_LOG_FXML));
 		loader.setController(this);
 		loader.setRoot(this);
@@ -47,21 +47,21 @@ public class HistoryLogsController extends BorderPane {
 		}
 
 		//title.setText(taskName);
-	//	initialise();
+		initialise();
 	}
 	
 	private void initialise() {
 		logs = new ArrayList<String>();
-		msgLog.setItems(FXCollections.observableList(logs));
+		msgLog.setItems(FXCollections.observableArrayList(logs));
+	}
+	public void showLog(){
+		
 	}
 
-	public void addTask(String taskName) {	
+	public void addLog(String taskName) {	
 	
 		addFileStatsItem(taskName);
-		
-		Collections.sort(logs);
-
-		msgLog.setItems(FXCollections.observableList(logs));
+		msgLog.setItems(FXCollections.observableArrayList(logs));
 	}
 
 	/**
