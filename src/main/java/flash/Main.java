@@ -1,7 +1,7 @@
 package main.java.flash;
 
 import java.io.IOException;
-
+import java.util.ArrayList;
 
 import javafx.application.Application;
 import javafx.event.EventHandler;
@@ -30,6 +30,7 @@ public class Main extends Application {
 	private Logic logic = new Logic(); 
 	private Task task;
 	private Boolean isTray = true;
+	private ArrayList<Task> result;
 	
 	
 	public static void main(String[] args) {
@@ -112,8 +113,10 @@ public class Main extends Application {
     private void handleEnterPress(CommandBarController commandBarController,
                                   String userInput) throws Exception {
     	commandBarController.setFeedback("success");
-    	task = logic.handleUserCommand(userInput);
-        tableControl.addTask(task);
+    	
+    	result = new ArrayList<Task> (logic.handleUserCommand(userInput));	
+        tableControl.addTask(result.get(0));
+        
         logControl.addLog(userInput);
         commandBarController.clear();
     }
