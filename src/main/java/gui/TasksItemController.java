@@ -49,7 +49,7 @@ Comparable<TasksItemController> {
 	
 	private double percentageValue;
 
-	public TasksItemController(Task task) {
+	public TasksItemController(Task task, int count) {
 		double percentage = 0;
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_ITEM_FXML));
@@ -63,9 +63,15 @@ Comparable<TasksItemController> {
 		}
 
 		//this.percentageValue = percentage;
+		if(task.getShowToUserDelete()== true){
+			  this.filename.setText(count + ". " + task.getTask());
+		}else{
+			 this.filename.setText(task.getTask());
+		}
 
-		this.filename.setText(task.getTask());
+		
 	//	this.date.setText(task.getTime());
+		
 		if(!task.getTime().isEmpty()){
 		   this.labelDate.setText(task.getTime());
 	    	labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");

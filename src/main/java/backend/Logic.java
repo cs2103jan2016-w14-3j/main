@@ -25,6 +25,7 @@ public class Logic {
 	private final String CLEAR_COMMAND = "clear";
 	private final String EDIT_COMMAND = "edit";
 	private final String EXIT_COMMAND = "exit";
+	private final String CONFIRM_COMMAND = "confirm";
 
 	private final String WELCOME_MESSAGE = "Welcome to Flashpoint!";
 	private Task task;
@@ -50,16 +51,16 @@ public class Logic {
 	public static void main(String[] args) throws Exception
 	{
 		Logic logic = new Logic();
-		ArrayList<Task> list = logic.handleUserCommand("edit okay, no -9pm #h");
+		ArrayList<Task> list = logic.handleUserCommand("edit okay, no -9pm #h",null);
 	}
 
-	public void initLogic() throws Exception{
+	public ArrayList<Task> initLogic() throws Exception{
 		Logic logic = new Logic();
-
+		return temp.displayTemp();
 
 	}
 
-	public ArrayList<Task> handleUserCommand(String userInput) throws Exception {
+	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskFinal) throws Exception {
 		assert userInput != null;
 
 		CommandParser parser = new CommandParser();
@@ -79,10 +80,20 @@ public class Logic {
 		else if (command.isCommand(DELETE_COMMAND)) {
 			result = handleDeleteCommand(task);
 			// return the list to UI
+			
+			for (Task temp : result) {
+				temp.setShowToUserDelete(true);
+			}
 
 			temp.deleteFromTemp(result.get(0));
 
 
+		}
+		
+		else if (command.isCommand(CONFIRM_COMMAND)) {
+        
+			temp.deleteFromTemp( taskFinal.get(Integer.parseInt( task.getTask() )) );
+			result = temp.displayTemp();
 		}
 
 

@@ -5,7 +5,7 @@ public class Task {
 	private String time;
 	private String priority;
 	private transient int taskID;
-	
+	private boolean display;
 	
 	public Task(String task, String time, String priority) {
 		this.task = task;
@@ -44,6 +44,14 @@ public class Task {
 	
 	public void setTaskID(int taskID) {
 		this.taskID = taskID;
+	}
+	
+	public boolean getShowToUserDelete() {
+		return display;
+	}
+	
+	public void setShowToUserDelete(boolean display) {
+		this.display = display;
 	}
 	
 }

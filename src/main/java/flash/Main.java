@@ -45,17 +45,17 @@ public class Main extends Application {
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/lightning.fw.png"));
 
 		initRootLayout();
-		
-
-		initLogic();
-
+	
+		result = initLogic();
+		populateList(tableControl,result);
+        
 		// Add components to RootLayout
 		//showCommandBar();
 		
 	}
 	
-	private void initLogic() throws Exception{
-		logic.initLogic();
+	private ArrayList<Task> initLogic() throws Exception{
+		return logic.initLogic();
 	}
 	
 	 /**
@@ -114,15 +114,21 @@ public class Main extends Application {
                                   String userInput) throws Exception {
     	commandBarController.setFeedback("success");
         logControl.addLog(userInput);
-    	result = new ArrayList<Task> (logic.handleUserCommand(userInput));
-    	
+    	result = new ArrayList<Task> (logic.handleUserCommand(userInput,tableControl.getTask()));
+	
     	tableControl.clearTask();
-    	for (Task temp : result) {
-    		tableControl.addTask(temp);
-		}
+    	
+    	populateList(tableControl,result);
+    	
         //abc
 
         commandBarController.clear();
+    }
+    private void populateList(TasksTableController tableControl,ArrayList<Task> result){
+    	int count = 1;
+    	for (Task temp : result) {
+    		tableControl.addTask(temp,count++);
+		}
     }
 	
 }

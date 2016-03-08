@@ -48,11 +48,11 @@ public class TasksTableController extends BorderPane {
 		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
-	public void addTask(Task task) {	
+	public void addTask(Task task, int count) {	
 	
-		addFileStatsItem(task);
+		addFileStatsItem(task,count);
 		
-		Collections.sort(items);
+		//Collections.sort(items);
 
 		tasksDisplay.setItems(FXCollections.observableList(items));
 		
@@ -64,6 +64,10 @@ public class TasksTableController extends BorderPane {
 	   items.clear();    	
 	}
 	
+	public ArrayList getTask(){
+		return items;    	
+	}
+	
 	public void showLog(){
 		historyLogs.showLog();
 	}
@@ -71,12 +75,13 @@ public class TasksTableController extends BorderPane {
 	/**
 	 * Each TaskItems displayed as a row
 	 * in this custom view.
+	 * @param count 
 	 * 
 	 * @param currentFile
 	 * @param currentNumLines
 	 */
-	private void addFileStatsItem(Task task) {
-		items.add(new TasksItemController(task));
+	private void addFileStatsItem(Task task, int count) {
+		items.add(new TasksItemController(task,count));
 	}
 
 }
