@@ -4,7 +4,7 @@ public class Task {
 	private String task;
 	private String time;
 	private String priority;
-	private int taskID;
+	private transient int taskID;
 	
 	
 	public Task(String task, String time, String priority) {
