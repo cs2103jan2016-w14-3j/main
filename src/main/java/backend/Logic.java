@@ -59,6 +59,7 @@ public class Logic {
 	}
 
 	public ArrayList<Task> handleUserCommand(String userInput) throws Exception {
+		assert userInput != null;
 
 		CommandParser parser = new CommandParser();
 		Command command = new Command(userInput);
@@ -75,81 +76,84 @@ public class Logic {
 
 		else if (command.isCommand(DELETE_COMMAND)) {
 			result = handleDeleteCommand(task);
-			if (result.size() == 1) {
-				temp.deleteFromTemp(task);
-			}
-			else {//pass to UI
-				
-			}
+			// return the list to UI
+
+			temp.deleteFromTemp(result.get(0));
+
 		}
+
 
 		else if (command.isCommand("DISPLAY_COMMAND")) {
 			result = handleDisplayCommand();
 		}
 
-//		else if (command.isCommand("EDIT_COMMAND")) {
-		
-//			result = handleEditCommand(task);
-//		    //return the list to UI to select
-		
-//		    temp.editToTemp(result.get(0), task);
-		
-//		    result = temp.displayTemp();
-//		    //return the list to UI to display
-//		    
-//		    
-//			
-//			
-//				
-//			
-//		}
-		
+		//		else if (command.isCommand("EDIT_COMMAND")) {
+
+		//			result = handleEditCommand(task);
+		//		    //return the list to UI to select
+
+		//		    temp.editToTemp(result.get(0), task);
+
+		//		    result = temp.displayTemp();
+		//		    //return the list to UI to display
+		//		    
+		//		    
+		//			
+		//			
+		//				
+		//			
+		//		}
+
 		//quitOnExitCommand(command);
 
 		return result;
 
 	}
-	
+
 	private void handleAddCommand(Task task) throws Exception {
+		assert task != null;
 		temp.writeToTemp(task);
 	}
-	
+
 	private ArrayList<Task> handleDeleteCommand(Task task) {
+		assert task != null;
 		return temp.searchTemp(task);
 	}
-	
+
 	private ArrayList<Task> handleDisplayCommand() {
 		return temp.displayTemp();
 	}
-	
-//	private ArrayList<Task> handleEditCommand(Task task) {
-//		Task task_A;
-//		Task task_B;
-//		String toDo_A, toDo_B;
-//		String time_A, time_B;
-//		String priority_A, priority_B;
-//		
-//		toDo_A = task.getTask().split(",")[0].trim();
-//		toDo_B = task.getTask().split(",")[1].trim();
-//		time_A = task.getTime().split(",")[0].trim();
-//		time_B = task.getTime().split(",")[1].trim();
-//		priority_A = task.getPriority().split(",")[0].trim();
-//		priority_B = task.getPriority().split(",")[1].trim();
-//		
-//		
-//		task_A = new Task(toDo_A, time_A, priority_A);
-//		task_B = new Task(toDo_B, time_B, priority_B);
-//		
-//		return temp.editToTemp(task_A, task_B);
-//	}
-	
+
+	//	private ArrayList<Task> handleEditCommand(Task task) {
+	//		Task task_A;
+	//		Task task_B;
+	//		String toDo_A, toDo_B;
+	//		String time_A, time_B;
+	//		String priority_A, priority_B;
+	//		
+	//		toDo_A = task.getTask().split(",")[0].trim();
+	//		toDo_B = task.getTask().split(",")[1].trim();
+	//		time_A = task.getTime().split(",")[0].trim();
+	//		time_B = task.getTime().split(",")[1].trim();
+	//		priority_A = task.getPriority().split(",")[0].trim();
+	//		priority_B = task.getPriority().split(",")[1].trim();
+	//		
+	//		
+	//		task_A = new Task(toDo_A, time_A, priority_A);
+	//		task_B = new Task(toDo_B, time_B, priority_B);
+	//		
+	//		return temp.editToTemp(task_A, task_B);
+	//	}
+
 
 
 	private Task createTask(Command command) {
+		assert command != null;
 		return command.createTask();
 	}
 
 	private Command parseCommand(CommandParser parser, Command command) {
+		assert command != null;
 		return parser.parseCommand(command);
 	}
 

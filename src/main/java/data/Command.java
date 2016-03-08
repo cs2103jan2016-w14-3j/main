@@ -60,9 +60,8 @@ public class Command {
 
 			task = new Task(commandParameters[TASK], 
 					commandParameters[TIME], commandParameters[PRIORITY]);
-
 		}
-
+		
 		return task;
 
 

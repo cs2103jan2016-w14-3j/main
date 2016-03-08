@@ -30,6 +30,7 @@ public class CommandParser {
 	}
 
 	public Command parseCommand(Command command) {
+		assert command != null;
 		String originalCommand = command.getOriginal();
 		command.setType(determineCommandType(originalCommand));
 
@@ -40,11 +41,13 @@ public class CommandParser {
 	}
 
 	private String determineCommandType(String originalCommand) {
+		assert originalCommand != null;
 		String keyword = getCommandKeyword(originalCommand);
 		return keyword;
 	}
 
 	private String getCommandKeyword(String command) {
+		assert command != null;
 		String firstWord = getFirstKeyword(command);
 
 		if (command.isEmpty()) {
@@ -92,18 +95,23 @@ public class CommandParser {
 	}
 
 	private String getFirstKeyword(String command) {
+		assert command != null;
 		return command.substring(0,command.indexOf(" ")).trim();
 	}
 
 	private boolean isCommand(String operation, String keyword) {
+		assert operation != null;
+		assert keyword != null;
 		return operation.equals(keyword);
 	}
 
 	private String retrieveCommandContent(String originalCommand) {
+		assert originalCommand != null;
 		return originalCommand.substring(originalCommand.indexOf(" ") + 1).trim();
 	}
 
 	private String[] determineParameters(String commandType, String commandContent) {
+		assert commandType != null;
 
 		String[] parameters = new String[3];
 
@@ -127,11 +135,11 @@ public class CommandParser {
 	}
 
 	private String determineTask(String content) {
-		if (hasField(content, "-")) {
+		if (content.contains("-")) {
 			return content.substring(0, content.indexOf("-") - 1).trim();
 		}
 
-		else if (hasField(content, "#")) {
+		else if (content.contains("#")) {
 			return content.substring(0, content.indexOf("#") - 1).trim();
 		}
 
@@ -149,7 +157,7 @@ public class CommandParser {
 	}
 
 	private String determinePriority(String content) {
-		if (hasField(content, "#")) {
+		if (content.contains("#")) {
 			return content.substring(content.indexOf("#") + 1).trim();
 		}
 		else {
@@ -158,6 +166,7 @@ public class CommandParser {
 	}
 
 	private String determineTaskForEditCommand(String content) {
+		assert content != null;
 		String task;
 
 		String[] segments = content.split(",");
@@ -168,6 +177,7 @@ public class CommandParser {
 	}
 
 	private String determineTimeForEditCommand(String content) {
+		assert content != null;
 		String time;
 		String[] segments = content.split(",");
 		time = determineTime(segments[0].trim()) + "," + determineTime(segments[1].trim());
@@ -176,6 +186,7 @@ public class CommandParser {
 	}
 
 	private String determinePriorityForEditCommand(String content) {
+		assert content != null;
 		String priority;
 		String[] segments = content.split(",");
 		priority = determinePriority(segments[0].trim()) + "," + determinePriority(segments[1].trim());
@@ -183,9 +194,6 @@ public class CommandParser {
 		return priority;
 	}
 
-	private boolean hasField(String content, String flag) {
-		return content.contains(flag);
-	}
 
 
 	public static void main(String[] args)
