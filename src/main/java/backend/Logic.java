@@ -50,7 +50,7 @@ public class Logic {
 	public static void main(String[] args) throws Exception
 	{
 		Logic logic = new Logic();
-		ArrayList<Task> list = logic.handleUserCommand("edit A -10pm #h, B -11am #low");
+		ArrayList<Task> list = logic.handleUserCommand("edit okay, no -9pm #h");
 	}
 
 	public void initLogic() throws Exception{
@@ -91,7 +91,7 @@ public class Logic {
 		}
 
 		else if (command.isCommand(EDIT_COMMAND)) {
-			
+			//System.out.println("text");
 			handleEditCommand(task);
 			
 			//return the list to UI to select
