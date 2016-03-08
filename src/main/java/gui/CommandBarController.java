@@ -25,6 +25,7 @@ public class CommandBarController extends BorderPane {
 	@FXML
 	private Label feedback;
 
+	
 	@FXML
 	private TextField commandBar;
 

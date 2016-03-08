@@ -19,6 +19,7 @@ public class DisplayWrapper {
     private StringProperty taskPriority;
 
 
+    
     public DisplayWrapper(Task taskToDo) {
         this.taskToDo = taskToDo;
         this.taskName = new SimpleStringProperty(taskToDo.getTask());
