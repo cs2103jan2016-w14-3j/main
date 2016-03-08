@@ -12,6 +12,7 @@ public class Task {
 		this.time = time;
 		this.priority = priority;
 		this.taskID = -1;
+		this.display = false;
 	}
 
 	public String getTask() {

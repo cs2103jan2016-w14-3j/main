@@ -84,15 +84,18 @@ public class Logic {
 			for (Task temp : result) {
 				temp.setShowToUserDelete(true);
 			}
-
-			temp.deleteFromTemp(result.get(0));
-
+			
+            if(result.size()==1){
+			  temp.deleteFromTemp(result.get(0));
+			  result = temp.displayTemp();
+            }
+            //else return whatever left
 
 		}
 		
-		else if (command.isCommand(CONFIRM_COMMAND)) {
-        
-			temp.deleteFromTemp( taskFinal.get(Integer.parseInt( task.getTask() )) );
+		else if (command.isCommand(CONFIRM_COMMAND)) {   
+			temp.deleteFromTemp( taskFinal.get(Integer.parseInt( task.getTask() )-1) );
+			temp.deleteFromTemp(task);
 			result = temp.displayTemp();
 		}
 

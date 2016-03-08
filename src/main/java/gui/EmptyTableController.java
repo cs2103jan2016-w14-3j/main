@@ -13,7 +13,7 @@ import javafx.scene.layout.BorderPane;
 import main.java.data.Task;
 import main.java.flash.Main;
 
-public class TasksTableController extends BorderPane {
+public class EmptyTableController extends BorderPane {
 
 	private Main mainApp;
 	private HistoryLogsController historyLogs;
@@ -24,11 +24,11 @@ public class TasksTableController extends BorderPane {
 //	@FXML
 //	private Label title;
 
-	private static final String FILE_STATS_FXML = "/main/resources/layouts/TasksTable.fxml";
+	private static final String FILE_STATS_FXML = "/main/resources/layouts/EmptyTable.fxml";
 
 	private ArrayList<TasksItemController> items;
 	
-	public TasksTableController() {
+	public EmptyTableController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_FXML));
 		loader.setController(this);
 		loader.setRoot(this);

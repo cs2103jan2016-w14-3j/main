@@ -11,6 +11,7 @@ import javafx.stage.StageStyle;
 import main.java.backend.Logic;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
+import main.java.gui.EmptyTableController;
 import main.java.gui.RootLayoutController;
 import main.java.gui.TasksTableController;
 import main.java.gui.HistoryLogsController;
@@ -28,6 +29,7 @@ public class Main extends Application {
 	private TasksTableController tableControl = new TasksTableController();
 	private HistoryLogsController logControl = new HistoryLogsController();
 	private Logic logic = new Logic(); 
+	private EmptyTableController emptyTable;
 	private Task task;
 	private Boolean isTray = true;
 	private ArrayList<Task> result;
@@ -47,8 +49,12 @@ public class Main extends Application {
 		initRootLayout();
 	
 		result = initLogic();
-		populateList(tableControl,result);
-        
+		if(result.isEmpty()){
+	    	rootLayout.setTop(new EmptyTableController());
+	    	System.out.println("lalalal");
+	    }else{
+		  populateList(tableControl,result);
+	    }
 		// Add components to RootLayout
 		//showCommandBar();
 		
@@ -114,8 +120,14 @@ public class Main extends Application {
                                   String userInput) throws Exception {
     	commandBarController.setFeedback("success");
         logControl.addLog(userInput);
-    	result = new ArrayList<Task> (logic.handleUserCommand(userInput,tableControl.getTask()));
-	
+    	result = new ArrayList<Task> (logic.handleUserCommand(userInput,result));
+    	//if no more tasks
+	    if(result.isEmpty()){
+	    	rootLayout.setTop(new EmptyTableController());
+	    	System.out.println("lalalal");
+	    }else{
+	    	showTasks(this);
+	    }
     	tableControl.clearTask();
     	
     	populateList(tableControl,result);
