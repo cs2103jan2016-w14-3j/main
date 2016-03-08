@@ -56,22 +56,23 @@ public class Storage {
 		String lineRead;
 		
 		while((lineRead = bufferedReader.readLine()) != null) {
-			String taskString = bufferedReader.readLine();
-			Task taskRead = gson.fromJson(taskString, Task.class);
+			Task taskRead = gson.fromJson(lineRead, Task.class);
 			taskList.add(taskRead);
 		}
+		reopenStream();
 		return taskList;
 	}
 	
 	public void deleteFromFile(int lineNum) throws Exception {
+		assert lineNum >= 0;
+		
 		ArrayList<Task> tempTaskList = new ArrayList<Task>();
 		int currentLineNum = 0;   //first line is of index 0
 		String lineRead;
 		
 		while((lineRead = bufferedReader.readLine()) != null) {
 			if(currentLineNum != lineNum) {
-				String taskString = bufferedReader.readLine();
-				Task taskRead = gson.fromJson(taskString, Task.class);
+				Task taskRead = gson.fromJson(lineRead, Task.class);
 				tempTaskList.add(taskRead);
 			}
 			currentLineNum++;
@@ -81,6 +82,7 @@ public class Storage {
 		for(int i=0; i<tempTaskList.size(); i++) {
 			writeToFile(tempTaskList.get(i));
 		}	
+		reopenStream();
 	}
 	
 	public void clearFile() throws Exception {
@@ -90,5 +92,10 @@ public class Storage {
 	
 	public void sortFile() {
 		
+	}
+	
+	private void reopenStream() throws Exception{
+		bufferedReader.close();
+		bufferedReader = new BufferedReader(new FileReader(file));	
 	}
 }
