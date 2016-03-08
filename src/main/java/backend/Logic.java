@@ -110,9 +110,9 @@ public class Logic {
 			
 			//return the list to UI to select
 
-			//		    temp.editToTemp(result.get(0), task);
+					    temp.editToTemp(result.get(0), task);
 
-			//		    result = temp.displayTemp();
+					    result = temp.displayTemp();
 			//		    //return the list to UI to display
 			//		    
 			//		    

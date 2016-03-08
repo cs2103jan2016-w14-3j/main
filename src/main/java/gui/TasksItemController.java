@@ -78,17 +78,17 @@ Comparable<TasksItemController> {
 	    	labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
 		}
 		this.circle.setStyle(String.format(STRING_CIRCLE_FILL_STYLE_FORMAT,
-				generateColour(percentage)));
+				generateColour(task.getPriority())));
 	}
 
-	private String generateColour(double percentage) {
-		if (percentage >= 80) {
+	private String generateColour(String priority) {
+		if (priority.equals("green")) {
 			return BASE_COLOUR_80;
-		} else if (percentage >= 60) {
+		} else if (priority.equals("neon")) {
 			return BASE_COLOUR_60;
-		} else if (percentage >= 40) {
+		} else if (priority.equals("yellow")) {
 			return BASE_COLOUR_40;
-		} else if (percentage >= 20) {
+		} else if (priority.equals("orange")) {
 			return BASE_COLOUR_20;
 		} else {
 			return BASE_COLOUR_0;
