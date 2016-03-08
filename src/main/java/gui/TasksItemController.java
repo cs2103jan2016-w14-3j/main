@@ -65,7 +65,7 @@ Comparable<TasksItemController> {
 
 		this.filename.setText(task.getTask());
 	//	this.date.setText(task.getTime());
-		if(task.getTime()!= null){
+		if(!task.getTime().isEmpty()){
 		   this.labelDate.setText(task.getTime());
 	    	labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
 		}
@@ -100,7 +100,7 @@ Comparable<TasksItemController> {
 		return percentageValue;
 	}
 
-
+ 
 	@Override
 	public int compareTo(TasksItemController otherItem) {
 		return (int) Math.round(otherItem.getPercentageValue() -

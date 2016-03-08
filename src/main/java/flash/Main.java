@@ -113,11 +113,16 @@ public class Main extends Application {
     private void handleEnterPress(CommandBarController commandBarController,
                                   String userInput) throws Exception {
     	commandBarController.setFeedback("success");
-    	
-    	result = new ArrayList<Task> (logic.handleUserCommand(userInput));	
-        tableControl.addTask(result.get(0));
-        
         logControl.addLog(userInput);
+    	result = new ArrayList<Task> (logic.handleUserCommand(userInput));
+    	
+    	tableControl.clearTask();
+    	for (Task temp : result) {
+    		tableControl.addTask(temp);
+		}
+        
+        
+
         commandBarController.clear();
     }
 	
