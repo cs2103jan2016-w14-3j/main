@@ -73,6 +73,12 @@ public class Logic {
 
 		else if (command.isCommand(DELETE_COMMAND)) {
 			result = handleDeleteCommand(task);
+			if (result.size() == 1) {
+				temp.deleteFromTemp(task);
+			}
+			else {//pass to Xunda for user
+				
+			}
 		}
 
 		else if (command.isCommand("DISPLAY_COMMAND")) {
@@ -81,8 +87,14 @@ public class Logic {
 
 		else if (command.isCommand("EDIT_COMMAND")) {
 			result = handleEditCommand(task);
+			if (result.size() == 1) {
+				temp.editToTemp(result.get(0), task);
+			}
+			else {//pass to Xunda
+				
+			}
 		}
-		//System.out.println(task.getPriority() + " " + task.getTime() + " " + task.getTask());
+		
 		//quitOnExitCommand(command);
 
 		return task;
@@ -104,6 +116,10 @@ public class Logic {
 	private ArrayList<Task> handleEditCommand(Task task) {
 		Task Task_A;
 		Task Task_B;
+		String toDo_A, toDo_B;
+		String time_A, time_B;
+		String priority_A, priority_B;
+		
 		Task_A = new Task(task.getTask(),task.getTime(),task.getPriority());
 		return temp.editToTemp();
 	}
