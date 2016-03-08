@@ -54,22 +54,25 @@ public class Command {
 
 
 	public Task createTask() {
+		Task task = null;
 
 		if (!this.isCommand(DISPLAY_COMMAND)) {
 
-			Task task = new Task(commandParameters[TASK], 
+
+
+			task = new Task(commandParameters[TASK], 
 					commandParameters[TIME], commandParameters[PRIORITY]);
-			return task;
+
+
 		}
 
-		else {
-			return null;
-		}
+		return task;
+
 
 
 	}
 
-	private boolean isCommand(String type) {
+	public boolean isCommand(String type) {
 		return type.equals(this.getType());
 	}
 

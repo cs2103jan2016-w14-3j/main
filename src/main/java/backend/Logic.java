@@ -3,6 +3,7 @@ package main.java.backend;
 
 
 
+import java.util.ArrayList;
 import java.util.Date;
 import main.java.backend.*;
 import java.util.List;
@@ -48,13 +49,13 @@ public class Logic {
 
 	public static void main(String[] args) throws Exception
 	{
-		
+
 	}
-	
+
 	public void initLogic() throws Exception{
 		Logic logic = new Logic();
-		
-		
+
+
 	}
 
 	public Task handleUserCommand(String userInput) throws Exception {
@@ -63,44 +64,50 @@ public class Logic {
 		Command command = new Command(userInput);
 		command = parseCommand(parser, command);
 		task = createTask(command);
-		temp.addNewCommand(command);
-		System.out.println(command.getType());
+		ArrayList<Task> result;
 
-		/*if (task == null) {//display command
 
+		if (command.isCommand(ADD_COMMAND)) {
+			handleAddCommand(task);
 		}
 
-		else {//add,delete.update
-			if (command.getType().equals(ADD_COMMAND)) {
-				//addToStorage(task);
-			}
+		else if (command.isCommand(DELETE_COMMAND)) {
+			result = handleDeleteCommand(task);
+		}
 
-			else if (command.getType().equals(DELETE_COMMAND)) {
-				/* ArrayList<Task> options = getListOfOptions(task);
-				System.out.println("Possible tasks to delete: ");
-				for (int i = 0; i < options.size(); i++) {
-				Task task = options.get(i);
-				Sysem.out.println(i + ". " + task.getTime() + ", " + task.getTask() + ", " + task.getPriority());
-				}
-				int option = scanner.nextInt();
-				removeTask(options.get(option));
-				 * 
-				 */
-			//}
-			
-			//else if (command.getType().equals(EDIT_COMMAND)) {
-				
-			//}*/
+		else if (command.isCommand("DISPLAY_COMMAND")) {
+			result = handleDisplayCommand();
+		}
 
-
-		//}
-
+		else if (command.isCommand("EDIT_COMMAND")) {
+			result = handleEditCommand(task);
+		}
 		//System.out.println(task.getPriority() + " " + task.getTime() + " " + task.getTask());
 		//quitOnExitCommand(command);
 
 		return task;
 
 	}
+	
+	private void handleAddCommand(Task task) {
+		temp.writeToTemp(task);
+	}
+	
+	private ArrayList<Task> handleDeleteCommand(Task task) {
+		return temp.searchTemp(task);
+	}
+	
+	private ArrayList<Task> handleDisplayCommand() {
+		return temp.displayTemp();
+	}
+	
+	private ArrayList<Task> handleEditCommand(Task task) {
+		Task Task_A;
+		Task Task_B;
+		Task_A = new Task(task.getTask(),task.getTime(),task.getPriority());
+		return temp.editToTemp();
+	}
+	
 
 
 	private Task createTask(Command command) {
@@ -116,5 +123,6 @@ public class Logic {
 			System.exit(0);
 		}
 	}
+
 
 }

@@ -108,9 +108,17 @@ public class CommandParser {
 		String[] parameters = new String[3];
 
 		if (!commandType.equals(DISPLAY_COMMAND)) {
-			parameters[TASK] = determineTask(commandContent);
-			parameters[TIME] = determineTime(commandContent);
-			parameters[PRIORITY] = determinePriority(commandContent);
+			if (commandType.equals(EDIT_COMMAND) && (!commandContent.contains(","))) {
+				parameters[TASK] = determineTaskForEditCommand(commandContent);
+				parameters[TIME] = determineTimeForEditCommand(commandContent);
+				parameters[PRIORITY] = determinePriorityForEditCommand(commandContent);
+
+			}
+			else {
+				parameters[TASK] = determineTask(commandContent);
+				parameters[TIME] = determineTime(commandContent);
+				parameters[PRIORITY] = determinePriority(commandContent);
+			}
 		}
 
 		return parameters;
@@ -128,11 +136,14 @@ public class CommandParser {
 		}
 
 		else {
-			return content;
+			return content.trim();
 		}
 	}
 
 	private String determineTime(String content) {
+		if (!content.contains("-")) {
+			return "";
+		}
 		List<Date> dates = new PrettyTimeParser().parse(content);
 		return dates.toString();
 	}
@@ -144,6 +155,32 @@ public class CommandParser {
 		else {
 			return null;
 		}
+	}
+
+	private String determineTaskForEditCommand(String content) {
+		String task;
+
+		String[] segments = content.split(",");
+		task = determineTask(segments[0].trim()) + "," + determineTask(segments[1].trim());
+
+		return task;
+
+	}
+
+	private String determineTimeForEditCommand(String content) {
+		String time;
+		String[] segments = content.split(",");
+		time = determineTime(segments[0].trim()) + "," + determineTime(segments[1].trim());
+		return time;
+
+	}
+
+	private String determinePriorityForEditCommand(String content) {
+		String priority;
+		String[] segments = content.split(",");
+		priority = determinePriority(segments[0].trim()) + "," + determinePriority(segments[1].trim());
+
+		return priority;
 	}
 
 	private boolean hasField(String content, String flag) {
