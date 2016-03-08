@@ -58,11 +58,8 @@ public class Command {
 
 		if (!this.isCommand(DISPLAY_COMMAND)) {
 
-
-
 			task = new Task(commandParameters[TASK], 
 					commandParameters[TIME], commandParameters[PRIORITY]);
-
 
 		}
 

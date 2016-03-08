@@ -153,7 +153,7 @@ public class CommandParser {
 			return content.substring(content.indexOf("#") + 1).trim();
 		}
 		else {
-			return null;
+			return "";
 		}
 	}
 
