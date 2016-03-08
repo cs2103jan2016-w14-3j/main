@@ -4,13 +4,14 @@ public class Task {
 	private String task;
 	private String time;
 	private String priority;
-	
+	private int taskID;
 	
 	
 	public Task(String task, String time, String priority) {
 		this.task = task;
 		this.time = time;
 		this.priority = priority;
+		this.taskID = -1;
 	}
 
 	public String getTask() {
@@ -35,6 +36,14 @@ public class Task {
 
 	public void setPriority(String priority) {
 		this.priority = priority;
+	}
+	
+	public int getTaskID() {
+		return taskID;
+	}
+	
+	public void setTaskID(int taskID) {
+		this.taskID = taskID;
 	}
 	
 }

@@ -45,25 +45,24 @@ public class Storage {
     	 bufferedWriter.flush();
 	}
 	
-	public void editToFile(Task task) throws Exception {
+	public void editToFile(Task editedTask, int lineNum) throws Exception {
 		
-		
+		deleteFromFile(lineNum);
+		writeToFile(editedTask);
 	}
 	
-	public void deleteFromFile(String phraseToSearch) throws Exception {
+	public void deleteFromFile(int lineNum) throws Exception {
 		taskList = new ArrayList<Task>();
-		String phrase = phraseToSearch;
+		int currentLineNum = 0;   //first line is of index 0
 		String lineRead;
 		
 		while((lineRead = bufferedReader.readLine()) != null) {
-			if(lineRead.contains(phrase)) {
-				//Don't write the line that you want to delete
-			}
-			else {
+			if(currentLineNum != lineNum) {
 				String taskString = bufferedReader.readLine();
 				Task taskRead = gson.fromJson(taskString, Task.class);
 				taskList.add(taskRead);
 			}
+			currentLineNum++;
 		}
 		clearFile();
 		

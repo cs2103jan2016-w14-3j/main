@@ -75,7 +75,7 @@ public class TempStorage {
 				break;
 				
 			case SEARCH_WORD:
-				searchTemp();
+				searchTemp(task);
 				break;
 				
 			case SORT:
@@ -124,19 +124,18 @@ public class TempStorage {
 		return taskList;
 	}
 	
-	private void editToTemp(Task task) throws Exception {
+	private void editToTemp(Task taskToEdit, Task editedTask) throws Exception {
+		assert taskToEdit.getTaskID() >= 0;
 		
-		storage.editToFile(task);
+		taskList.set(taskToEdit.getTaskID(), editedTask);
+		storage.editToFile(editedTask, taskToEdit.getTaskID());
 	}
 	
 	private void deleteFromTemp(Task task) throws Exception {
+		assert task.getTaskID() >= 0;
 		
-		for(int i=0; i<taskList.size(); i++) {
-			if(taskList.get(i).getTime().equals(task.getTime())) {
-				taskList.remove(i);
-			}
-		}
-		storage.deleteFromFile(task.getTime());
+		taskList.remove(task.getTaskID());			
+		storage.deleteFromFile(task.getTaskID());
 	}
 	
 	private void clearTemp() throws Exception {
@@ -144,11 +143,38 @@ public class TempStorage {
 		storage.clearFile();
 	}
 	
-	private void searchTemp() {
+	private ArrayList<Task> searchTemp(Task task) {
+		ArrayList<Task> searchResults = new ArrayList<Task>();
+		Task tempTask;
 		
+		for(int i=0; i<taskList.size(); i++) {
+			tempTask = taskList.get(i);
+			if((searchString(tempTask.getTask(), task.getTask()) >= 1) ||
+					tempTask.getTime().equals(task.getTime()) ||
+					tempTask.getPriority().equals(task.getPriority())) {
+				tempTask.setTaskID(i);
+				searchResults.add(tempTask);
+			}
+		}
+		return searchResults;
 	}
 	
 	private void sortTemp() {
 		
+	}
+	
+	/* compares 2 strings and return the number of word matches
+	 * 
+	 */
+	private int searchString(String taskString, String input) {
+		int numMatches = 0;
+		String keyWordsArray[] = input.split(" ");
+	
+		for(int i=0; i<keyWordsArray.length; i++) {
+			if(taskString.toLowerCase().contains(keyWordsArray[i].toLowerCase())) {
+				numMatches++;
+			}
+		}
+		return numMatches;
 	}
 }
