@@ -155,10 +155,11 @@ public class TempStorage {
 		for(int i=0; i<taskList.size(); i++) {
 			tempTask = taskList.get(i);
 			
-			if(tempTask.getTime() != null) {
+			if(!tempTask.getTime().isEmpty()) {
 				isTimeSpecified = true;
+				System.out.println(tempTask.getTime());
 			}
-			if(tempTask.getPriority() != null) {
+			if(!tempTask.getPriority().isEmpty()) {
 				isPrioritySpecified = true;
 			}
 			if((searchString(tempTask.getTask(), task.getTask()) >= 1) ||
@@ -181,7 +182,7 @@ public class TempStorage {
 	private int searchString(String taskString, String input) {
 		int numMatches = 0;
 		String keyWordsArray[] = input.split(" ");
-	
+
 		for(int i=0; i<keyWordsArray.length; i++) {
 			if(taskString.toLowerCase().contains(keyWordsArray[i].toLowerCase())) {
 				numMatches++;
