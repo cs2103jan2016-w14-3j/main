@@ -49,7 +49,8 @@ public class Logic {
 
 	public static void main(String[] args) throws Exception
 	{
-
+		Logic logic = new Logic();
+		ArrayList<Task> list = logic.handleUserCommand("edit A -10pm #h, B -11am #low");
 	}
 
 	public void initLogic() throws Exception{
@@ -66,11 +67,12 @@ public class Logic {
 		command = parseCommand(parser, command);
 		task = createTask(command);
 		ArrayList<Task> result = null;
-
+		
 
 		if (command.isCommand(ADD_COMMAND)) {
 			handleAddCommand(task);
 			result = temp.displayTemp();
+			
 			//result.add(task); // prepare the list to pass to UI
 		}
 
@@ -80,31 +82,32 @@ public class Logic {
 
 			temp.deleteFromTemp(result.get(0));
 
-			
+
 		}
 
 
-		else if (command.isCommand("DISPLAY_COMMAND")) {
+		else if (command.isCommand(DISPLAY_COMMAND)) {
 			result = handleDisplayCommand();
 		}
 
-		//		else if (command.isCommand("EDIT_COMMAND")) {
+		else if (command.isCommand(EDIT_COMMAND)) {
+			
+			handleEditCommand(task);
+			
+			//return the list to UI to select
 
-		//			result = handleEditCommand(task);
-		//		    //return the list to UI to select
+			//		    temp.editToTemp(result.get(0), task);
 
-		//		    temp.editToTemp(result.get(0), task);
-
-		//		    result = temp.displayTemp();
-		//		    //return the list to UI to display
-		//		    
-		//		    
-		//			
-		//			
-		//				
-		//			
-		//		}
-
+			//		    result = temp.displayTemp();
+			//		    //return the list to UI to display
+			//		    
+			//		    
+			//			
+			//			
+			//				
+			//			
+		}
+		
 		//quitOnExitCommand(command);
 
 		return result;
@@ -125,26 +128,28 @@ public class Logic {
 		return temp.displayTemp();
 	}
 
-	//	private ArrayList<Task> handleEditCommand(Task task) {
-	//		Task task_A;
-	//		Task task_B;
-	//		String toDo_A, toDo_B;
-	//		String time_A, time_B;
-	//		String priority_A, priority_B;
-	//		
-	//		toDo_A = task.getTask().split(",")[0].trim();
-	//		toDo_B = task.getTask().split(",")[1].trim();
-	//		time_A = task.getTime().split(",")[0].trim();
-	//		time_B = task.getTime().split(",")[1].trim();
-	//		priority_A = task.getPriority().split(",")[0].trim();
-	//		priority_B = task.getPriority().split(",")[1].trim();
-	//		
-	//		
-	//		task_A = new Task(toDo_A, time_A, priority_A);
-	//		task_B = new Task(toDo_B, time_B, priority_B);
-	//		
-	//		return temp.editToTemp(task_A, task_B);
-	//	}
+	private void handleEditCommand(Task task) throws Exception {
+		Task task_A;
+		Task task_B;
+		String toDo_A, toDo_B;
+		String time_A, time_B;
+		String priority_A, priority_B;
+
+		toDo_A = task.getTask().split(",")[0].trim();
+		toDo_B = task.getTask().split(",")[1].trim();
+		time_A = task.getTime().split(",")[0].trim();
+		time_B = task.getTime().split(",")[1].trim();
+		priority_A = task.getPriority().split(",")[0].trim();
+		priority_B = task.getPriority().split(",")[1].trim();
+
+
+		task_A = new Task(toDo_A, time_A, priority_A);
+		task_B = new Task(toDo_B, time_B, priority_B);
+
+
+		ArrayList<Task> result = temp.searchTemp(task_A);
+		temp.editToTemp(result.get(0), task_B);
+	}
 
 
 

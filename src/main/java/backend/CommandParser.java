@@ -117,6 +117,7 @@ public class CommandParser {
 
 		if (!commandType.equals(DISPLAY_COMMAND)) {
 			if (commandType.equals(EDIT_COMMAND) && (commandContent.contains(","))) {
+				//System.out.println("test");
 				parameters[TASK] = determineTaskForEditCommand(commandContent);
 				parameters[TIME] = determineTimeForEditCommand(commandContent);
 				parameters[PRIORITY] = determinePriorityForEditCommand(commandContent);
