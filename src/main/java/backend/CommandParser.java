@@ -116,7 +116,7 @@ public class CommandParser {
 		String[] parameters = new String[3];
 
 		if (!commandType.equals(DISPLAY_COMMAND)) {
-			if (commandType.equals(EDIT_COMMAND) && (!commandContent.contains(","))) {
+			if (commandType.equals(EDIT_COMMAND) && (commandContent.contains(","))) {
 				parameters[TASK] = determineTaskForEditCommand(commandContent);
 				parameters[TIME] = determineTimeForEditCommand(commandContent);
 				parameters[PRIORITY] = determinePriorityForEditCommand(commandContent);
@@ -170,7 +170,8 @@ public class CommandParser {
 		String task;
 
 		String[] segments = content.split(",");
-		task = determineTask(segments[0].trim()) + "," + determineTask(segments[1].trim());
+		task = determineTask(segments[0].trim()) + "," + 
+		determineTask(segments[1].trim());
 
 		return task;
 
@@ -180,7 +181,8 @@ public class CommandParser {
 		assert content != null;
 		String time;
 		String[] segments = content.split(",");
-		time = determineTime(segments[0].trim()) + "," + determineTime(segments[1].trim());
+		time = determineTime(segments[0].trim()) + "," + 
+		determineTime(segments[1].trim());
 		return time;
 
 	}
@@ -189,7 +191,8 @@ public class CommandParser {
 		assert content != null;
 		String priority;
 		String[] segments = content.split(",");
-		priority = determinePriority(segments[0].trim()) + "," + determinePriority(segments[1].trim());
+		priority = determinePriority(segments[0].trim()) + "," + 
+		determinePriority(segments[1].trim());
 
 		return priority;
 	}
