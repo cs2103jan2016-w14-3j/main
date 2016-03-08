@@ -46,6 +46,7 @@ Comparable<TasksItemController> {
 	private static final String BASE_COLOUR_60 = "#D7E84A";
 	private static final String BASE_COLOUR_80 = "#51FF61";
 
+	
 	private double percentageValue;
 
 	public TasksItemController(Task task) {

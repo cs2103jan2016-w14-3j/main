@@ -120,8 +120,7 @@ public class Main extends Application {
     	for (Task temp : result) {
     		tableControl.addTask(temp);
 		}
-        
-        
+        //abc
 
         commandBarController.clear();
     }

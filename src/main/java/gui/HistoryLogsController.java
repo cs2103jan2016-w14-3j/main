@@ -25,6 +25,7 @@ public class HistoryLogsController extends BorderPane {
 	@FXML
 	private ListView<String> msgLog;
 	
+	
 	@FXML
 	private ListView<String> listView;
 

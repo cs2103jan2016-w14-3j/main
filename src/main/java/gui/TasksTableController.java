@@ -59,6 +59,7 @@ public class TasksTableController extends BorderPane {
 		//showLog();
 	}
 	
+	
 	public void clearTask(){
 	   items.clear();    	
 	}
