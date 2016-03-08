@@ -69,8 +69,8 @@ public class Logic {
 
 		if (command.isCommand(ADD_COMMAND)) {
 			handleAddCommand(task);
-			result = new ArrayList<Task>();
-			result.add(task); // prepare the list to pass to UI
+			result = temp.displayTemp();
+			//result.add(task); // prepare the list to pass to UI
 		}
 
 		else if (command.isCommand(DELETE_COMMAND)) {
@@ -88,13 +88,20 @@ public class Logic {
 		}
 
 //		else if (command.isCommand("EDIT_COMMAND")) {
+		
 //			result = handleEditCommand(task);
-//			if (result.size() == 1) {
-//				temp.editToTemp(result.get(0), task);
-//			}
-//			else {//pass to UI
+//		    //return the list to UI to select
+		
+//		    temp.editToTemp(result.get(0), task);
+		
+//		    result = temp.displayTemp();
+//		    //return the list to UI to display
+//		    
+//		    
+//			
+//			
 //				
-//			}
+//			
 //		}
 		
 		//quitOnExitCommand(command);
