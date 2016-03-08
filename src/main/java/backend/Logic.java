@@ -64,7 +64,7 @@ public class Logic {
 		Command command = new Command(userInput);
 		command = parseCommand(parser, command);
 		task = createTask(command);
-		ArrayList<Task> result;
+		ArrayList<Task> result = null;
 
 
 		if (command.isCommand(ADD_COMMAND)) {
@@ -87,23 +87,23 @@ public class Logic {
 			result = handleDisplayCommand();
 		}
 
-		else if (command.isCommand("EDIT_COMMAND")) {
-			result = handleEditCommand(task);
-			if (result.size() == 1) {
-				temp.editToTemp(result.get(0), task);
-			}
-			else {//pass to UI
-				
-			}
-		}
+//		else if (command.isCommand("EDIT_COMMAND")) {
+//			result = handleEditCommand(task);
+//			if (result.size() == 1) {
+//				temp.editToTemp(result.get(0), task);
+//			}
+//			else {//pass to UI
+//				
+//			}
+//		}
 		
 		//quitOnExitCommand(command);
 
-		return task;
+		return result;
 
 	}
 	
-	private void handleAddCommand(Task task) {
+	private void handleAddCommand(Task task) throws Exception {
 		temp.writeToTemp(task);
 	}
 	
@@ -115,26 +115,26 @@ public class Logic {
 		return temp.displayTemp();
 	}
 	
-	private ArrayList<Task> handleEditCommand(Task task) {
-		Task task_A;
-		Task task_B;
-		String toDo_A, toDo_B;
-		String time_A, time_B;
-		String priority_A, priority_B;
-		
-		toDo_A = task.getTask().split(",")[0].trim();
-		toDo_B = task.getTask().split(",")[1].trim();
-		time_A = task.getTime().split(",")[0].trim();
-		time_B = task.getTime().split(",")[1].trim();
-		priority_A = task.getPriority().split(",")[0].trim();
-		priority_B = task.getPriority().split(",")[1].trim();
-		
-		
-		task_A = new Task(toDo_A, time_A, priority_A);
-		task_B = new Task(toDo_B, time_B, priority_B);
-		
-		return temp.editToTemp(task_A, task_B);
-	}
+//	private ArrayList<Task> handleEditCommand(Task task) {
+//		Task task_A;
+//		Task task_B;
+//		String toDo_A, toDo_B;
+//		String time_A, time_B;
+//		String priority_A, priority_B;
+//		
+//		toDo_A = task.getTask().split(",")[0].trim();
+//		toDo_B = task.getTask().split(",")[1].trim();
+//		time_A = task.getTime().split(",")[0].trim();
+//		time_B = task.getTime().split(",")[1].trim();
+//		priority_A = task.getPriority().split(",")[0].trim();
+//		priority_B = task.getPriority().split(",")[1].trim();
+//		
+//		
+//		task_A = new Task(toDo_A, time_A, priority_A);
+//		task_B = new Task(toDo_B, time_B, priority_B);
+//		
+//		return temp.editToTemp(task_A, task_B);
+//	}
 	
 
 
