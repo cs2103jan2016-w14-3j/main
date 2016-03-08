@@ -24,6 +24,7 @@ public class Storage {
 		
 		initialiseFile("Task List.txt");
 		gson = new Gson();
+		taskList = new ArrayList<Task>();
 	}
 	
 	//create the file and streams
@@ -63,7 +64,7 @@ public class Storage {
 	}
 	
 	public void deleteFromFile(int lineNum) throws Exception {
-		taskList = new ArrayList<Task>();
+		ArrayList<Task> tempTaskList = new ArrayList<Task>();
 		int currentLineNum = 0;   //first line is of index 0
 		String lineRead;
 		
@@ -71,14 +72,14 @@ public class Storage {
 			if(currentLineNum != lineNum) {
 				String taskString = bufferedReader.readLine();
 				Task taskRead = gson.fromJson(taskString, Task.class);
-				taskList.add(taskRead);
+				tempTaskList.add(taskRead);
 			}
 			currentLineNum++;
 		}
 		clearFile();
 		
-		for(int i=0; i<taskList.size(); i++) {
-			writeToFile(taskList.get(i));
+		for(int i=0; i<tempTaskList.size(); i++) {
+			writeToFile(tempTaskList.get(i));
 		}	
 	}
 	
