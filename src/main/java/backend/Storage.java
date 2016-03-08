@@ -45,10 +45,21 @@ public class Storage {
     	 bufferedWriter.flush();
 	}
 	
-	public void editToFile(Task editedTask, int lineNum) throws Exception {
+	public void editToFile(int lineNum, Task editedTask) throws Exception {
 		
 		deleteFromFile(lineNum);
 		writeToFile(editedTask);
+	}
+	
+	public ArrayList<Task> readFromFile() throws Exception {
+		String lineRead;
+		
+		while((lineRead = bufferedReader.readLine()) != null) {
+			String taskString = bufferedReader.readLine();
+			Task taskRead = gson.fromJson(taskString, Task.class);
+			taskList.add(taskRead);
+		}
+		return taskList;
 	}
 	
 	public void deleteFromFile(int lineNum) throws Exception {

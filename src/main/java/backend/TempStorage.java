@@ -13,31 +13,31 @@ import main.java.data.Task;
 
 public class TempStorage {
 
-	enum COMMAND_TYPE {
-		ADD_TASK, DISPLAY_ALL, EDIT_TASK, DELETE_TASK, CLEAR_ALL, SEARCH_WORD,
-		SORT
-	};
-	
-	private static final String COMMAND_ADD = "add";
-	private static final String COMMAND_DISPLAY = "display";
-	private static final String COMMAND_UPDATE = "update";
-	private static final String COMMAND_DELETE = "delete";
-	private static final String COMMAND_CLEAR = "clear";
-	private static final String COMMAND_SEARCH = "search";
-	private static final String COMMAND_SORT = "sort";
+//	enum COMMAND_TYPE {
+//		ADD_TASK, DISPLAY_ALL, EDIT_TASK, DELETE_TASK, CLEAR_ALL, SEARCH_WORD,
+//		SORT
+//	};
+//	
+//	private static final String COMMAND_ADD = "add";
+//	private static final String COMMAND_DISPLAY = "display";
+//	private static final String COMMAND_UPDATE = "update";
+//	private static final String COMMAND_DELETE = "delete";
+//	private static final String COMMAND_CLEAR = "clear";
+//	private static final String COMMAND_SEARCH = "search";
+//	private static final String COMMAND_SORT = "sort";
 	
 	private ArrayList<Task> taskList;
 	private Storage storage;
-	private String currentCommand;
-	private Task currentTask;
+	//private String currentCommand;
+	//private Task currentTask;
 	
 	public TempStorage() throws Exception {
-		taskList = new ArrayList<Task>();
 		storage = new Storage();
+		taskList = retrieveListFromFile();
 	}
 	
 	// for logic to call to process the command
-	public void addNewCommand(Command command) throws Exception{
+/*	public void addNewCommand(Command command) throws Exception{
 		processCommand(command);
 	}
 	
@@ -113,45 +113,57 @@ public class TempStorage {
 		else {
 			return null;
 		}
-	}
+	}*/
 	
-	private void writeToTemp(Task task) throws Exception {
+	public void writeToTemp(Task task) throws Exception {
+		assert task != null;
+		
 		taskList.add(task);
 		storage.writeToFile(task);
 	}
 	
-	private ArrayList<Task> displayTemp() {
+	public ArrayList<Task> displayTemp() {
+	
 		return taskList;
 	}
 	
-	private void editToTemp(Task taskToEdit, Task editedTask) throws Exception {
+	public void editToTemp(Task taskToEdit, Task editedTask) throws Exception {
 		assert taskToEdit.getTaskID() >= 0;
 		
 		taskList.set(taskToEdit.getTaskID(), editedTask);
-		storage.editToFile(editedTask, taskToEdit.getTaskID());
+		storage.editToFile(taskToEdit.getTaskID(), editedTask);
 	}
 	
-	private void deleteFromTemp(Task task) throws Exception {
+	public void deleteFromTemp(Task task) throws Exception {
 		assert task.getTaskID() >= 0;
 		
 		taskList.remove(task.getTaskID());			
 		storage.deleteFromFile(task.getTaskID());
 	}
 	
-	private void clearTemp() throws Exception {
+	public void clearTemp() throws Exception {
 		taskList.clear();
 		storage.clearFile();
 	}
 	
-	private ArrayList<Task> searchTemp(Task task) {
+	public ArrayList<Task> searchTemp(Task task) {
 		ArrayList<Task> searchResults = new ArrayList<Task>();
 		Task tempTask;
+		Boolean isTimeSpecified = false;
+		Boolean isPrioritySpecified = false;
 		
 		for(int i=0; i<taskList.size(); i++) {
 			tempTask = taskList.get(i);
+			
+			if(tempTask.getTime() != null) {
+				isTimeSpecified = true;
+			}
+			if(tempTask.getPriority() != null) {
+				isPrioritySpecified = true;
+			}
 			if((searchString(tempTask.getTask(), task.getTask()) >= 1) ||
-					tempTask.getTime().equals(task.getTime()) ||
-					tempTask.getPriority().equals(task.getPriority())) {
+					(isTimeSpecified && tempTask.getTime().equals(task.getTime())) ||
+					(isPrioritySpecified && tempTask.getPriority().equals(task.getPriority()))) {
 				tempTask.setTaskID(i);
 				searchResults.add(tempTask);
 			}
@@ -159,7 +171,7 @@ public class TempStorage {
 		return searchResults;
 	}
 	
-	private void sortTemp() {
+	public void sortTemp() {
 		
 	}
 	
@@ -176,5 +188,11 @@ public class TempStorage {
 			}
 		}
 		return numMatches;
+	}
+	
+	private ArrayList<Task> retrieveListFromFile() throws Exception {
+		ArrayList<Task> list = storage.readFromFile();
+		
+		return list;
 	}
 }
