@@ -31,8 +31,10 @@ public class Main extends Application {
 	private Logic logic = new Logic(); 
 	private EmptyTableController emptyTable;
 	private Task task;
-	private Boolean isTray = true;
+	private Boolean isChange = false;
+	private Boolean isDelete = false;
 	private ArrayList<Task> result;
+	ArrayList<Task> finalResult = new ArrayList<Task>();
 	
 	
 	public static void main(String[] args) {
@@ -119,6 +121,9 @@ public class Main extends Application {
     private void handleEnterPress(CommandBarController commandBarController,
                                   String userInput) throws Exception {
     	int number;
+    	
+    	boolean toBeEdited = false;
+    	
     	//number = Integer.parseInt(userInput);
     	
     	if(userInput.matches("\\d+")){
@@ -127,8 +132,14 @@ public class Main extends Application {
     	 for (Task temp : result) {
      		temp.setShowToUserDelete(false);
  		 }
-    	 
-    	  logic.delete(result.get(number-1));
+    	  
+    	 if(isChange){
+    		 finalResult.add(result.get(number-1));
+    		 logic.edit(finalResult);
+    	  }else{
+    	     logic.delete(result.get(number-1));
+    	  }
+    	
     	  commandBarController.setFeedback("success"); 	 
     	 
     	  tableControl.clearTask();
@@ -153,6 +164,11 @@ public class Main extends Application {
 	    }
     	tableControl.clearTask();
     	
+    	if(logic.isEditCommand(userInput)){
+    		finalResult.add(result.remove(result.size()-1));
+    		isChange= true;
+    	}
+    	
     	populateList(tableControl,result);
     	
         //abc
@@ -161,13 +177,10 @@ public class Main extends Application {
         commandBarController.clear();
     }
     
-    private void handleDeleteEnterPress(CommandBarController commandBarController,
-            String userInput) throws Exception {
-    	
-    }
     
     private void populateList(TasksTableController tableControl,ArrayList<Task> result){
     	int count = 1;
+    	
     	for (Task temp : result) {
     		tableControl.addTask(temp,count++);
 		}

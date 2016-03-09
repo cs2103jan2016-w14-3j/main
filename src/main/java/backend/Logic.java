@@ -106,13 +106,21 @@ public class Logic {
 
 		else if (command.isCommand(EDIT_COMMAND)) {
 			//System.out.println("text");
-			handleEditCommand(task);
+			result = handleEditCommand(task);
+			
+			for (Task temp : result) {
+				temp.setShowToUserDelete(true);
+			}
+			
+			//Task toReplace = result.remove(result.size() - 1);
+			
+			//temp.editToTemp(result.get(0), task_B);
 			
 			//return the list to UI to select
 
-					    temp.editToTemp(result.get(0), task);
+				//	    temp.editToTemp(result.get(0), task);
 
-					    result = temp.displayTemp();
+				//	    result = temp.displayTemp();
 			//		    //return the list to UI to display
 			//		    
 			//		    
@@ -123,7 +131,7 @@ public class Logic {
 		}
 		
 		//quitOnExitCommand(command);
-
+        
 		return result;
 
 	}
@@ -142,7 +150,7 @@ public class Logic {
 		return temp.displayTemp();
 	}
 
-	private void handleEditCommand(Task task) throws Exception {
+	private ArrayList<Task> handleEditCommand(Task task) throws Exception {
 		Task task_A;
 		Task task_B;
 		String toDo_A, toDo_B;
@@ -160,9 +168,9 @@ public class Logic {
 		task_A = new Task(toDo_A, time_A, priority_A);
 		task_B = new Task(toDo_B, time_B, priority_B);
 
-
 		ArrayList<Task> result = temp.searchTemp(task_A);
-		temp.editToTemp(result.get(0), task_B);
+		result.add(task_B);
+		return result;
 	}
 
 
@@ -189,6 +197,17 @@ public class Logic {
     public ArrayList<Task> display()throws Exception{
     	ArrayList<Task> result = temp.displayTemp();
     	return result;
+    }
+    public void edit(ArrayList<Task> result)throws Exception{
+    	temp.editToTemp(result.get(1), result.get(0));
+    }
+    
+    public boolean isDeleteCommand(String userInput) {
+    	return userInput.substring(0,userInput.indexOf(" ")).equals(DELETE_COMMAND);
+    }
+    
+    public boolean isEditCommand(String userInput) {
+    	return userInput.substring(0,userInput.indexOf(" ")).equals(EDIT_COMMAND);
     }
 
 }

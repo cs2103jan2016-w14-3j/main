@@ -15,8 +15,8 @@
 	<center>
 		<StackPane styleClass="cardBg">
 			<children>
-      				<HBox fx:id="card" prefHeight="1.0" prefWidth="130.0" styleClass="card">
-      <children>
+				<HBox fx:id="card" prefHeight="1.0" prefWidth="130.0" styleClass="card">
+   <children>
                   <StackPane alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="178.0" HBox.hgrow="ALWAYS">
                      <children>
       							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="Filename" wrappingWidth="275.7958984375">
@@ -24,28 +24,29 @@
                               <Font size="7.0" />
                            </font>
                         </Text>
-                        <StackPane alignment="CENTER_RIGHT" prefHeight="44.0" prefWidth="276.0">
-                           <children>
-                              <Rectangle fx:id="tagDateColor" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="34.0" stroke="TRANSPARENT" strokeType="INSIDE" width="81.0" />
-                              <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="81.0">
-                                 <font>
-                                    <Font name="AR ESSENCE" size="18.0" />
-                                 </font>
-                                 <effect>
-                                    <Glow level="0.4" />
-                                 </effect>
-                              </Text>
-                              <Label fx:id="labelDate" prefHeight="37.0" prefWidth="79.0" text="Label" textFill="WHITE">
-                                 <font>
-                                    <Font name="System Bold" size="8.0" />
-                                 </font>
-                              </Label>
-                           </children>
-                        </StackPane>
                      </children>
                   </StackPane>
-      </children>
-      				</HBox>
+                  <Region HBox.hgrow="SOMETIMES" />
+                  <StackPane prefHeight="27.0" prefWidth="0.0">
+                     <children>
+                        <Rectangle fx:id="tagDateColor" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" width="52.0" />
+                        <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
+                           <font>
+                              <Font name="AR ESSENCE" size="18.0" />
+                           </font>
+                           <effect>
+                              <Glow level="0.4" />
+                           </effect>
+                        </Text>
+                        <Label fx:id="labelDate" text="Label" textFill="WHITE">
+                           <font>
+                              <Font name="System Bold" size="10.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </StackPane>
+   </children>
+				</HBox>
 			</children>
 		</StackPane>
 	</center>
