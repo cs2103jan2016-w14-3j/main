@@ -57,7 +57,9 @@ public class Storage {
 		
 		while((lineRead = bufferedReader.readLine()) != null) {
 			Task taskRead = gson.fromJson(lineRead, Task.class);
-			taskList.add(taskRead);
+			if(taskRead!=null) {
+				taskList.add(taskRead);
+			}
 		}
 		reopenStream();
 		return taskList;
