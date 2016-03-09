@@ -96,6 +96,9 @@ public class CommandParser {
 
 	private String getFirstKeyword(String command) {
 		assert command != null;
+		if (!command.contains(" ")) {
+			return command;
+		}
 		return command.substring(0,command.indexOf(" ")).trim();
 	}
 
@@ -171,7 +174,7 @@ public class CommandParser {
 		String task;
 
 		String[] segments = content.split(",");
-		task = determineTask(segments[0].trim()) + "," + 
+		task = determineTask(segments[0].trim()) + " , " + 
 		determineTask(segments[1].trim());
 
 		return task;
@@ -182,7 +185,7 @@ public class CommandParser {
 		assert content != null;
 		String time;
 		String[] segments = content.split(",");
-		time = determineTime(segments[0].trim()) + "," + 
+		time = determineTime(segments[0].trim()) + " , " + 
 		determineTime(segments[1].trim());
 		return time;
 
@@ -192,7 +195,7 @@ public class CommandParser {
 		assert content != null;
 		String priority;
 		String[] segments = content.split(",");
-		priority = determinePriority(segments[0].trim()) + "," + 
+		priority = determinePriority(segments[0].trim()) + " , " + 
 		determinePriority(segments[1].trim());
 
 		return priority;

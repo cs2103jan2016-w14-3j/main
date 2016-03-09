@@ -56,7 +56,7 @@ public class Logic {
 
 	public ArrayList<Task> initLogic() throws Exception{
 		Logic logic = new Logic();
-		return temp.displayTemp();
+		return display();
 
 	}
 
@@ -75,6 +75,11 @@ public class Logic {
 			result = temp.displayTemp();
 			
 			//result.add(task); // prepare the list to pass to UI
+		}
+		
+		else if (command.isCommand(CLEAR_COMMAND)){
+			temp.clearTemp();
+			result = temp.displayTemp();
 		}
 
 		else if (command.isCommand(DELETE_COMMAND)) {
@@ -151,6 +156,7 @@ public class Logic {
 	}
 
 	private ArrayList<Task> handleEditCommand(Task task) throws Exception {
+		
 		Task task_A;
 		Task task_B;
 		String toDo_A, toDo_B;
@@ -195,9 +201,20 @@ public class Logic {
 		temp.deleteFromTemp(task);
 	}
     public ArrayList<Task> display()throws Exception{
+    	
+    	ArrayList<Task> result = temp.displayTemp();
+    	
+    	for (Task abc : result) {
+     		abc.setShowToUserDelete(false);
+ 		 }
+    	return result;
+    }
+    public ArrayList<Task> display1()throws Exception{
+    	
     	ArrayList<Task> result = temp.displayTemp();
     	return result;
     }
+    
     public void edit(ArrayList<Task> result)throws Exception{
     	temp.editToTemp(result.get(1), result.get(0));
     }
