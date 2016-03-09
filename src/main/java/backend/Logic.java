@@ -85,10 +85,10 @@ public class Logic {
 				temp.setShowToUserDelete(true);
 			}
 			
-            if(result.size()==1){
+           /* if(result.size()==1){
 			  temp.deleteFromTemp(result.get(0));
 			  result = temp.displayTemp();
-            }
+            }*/
             //else return whatever left
 
 		}
@@ -182,6 +182,13 @@ public class Logic {
 			System.exit(0);
 		}
 	}
-
+	
+	public void delete(Task task) throws Exception {
+		temp.deleteFromTemp(task);
+	}
+    public ArrayList<Task> display()throws Exception{
+    	ArrayList<Task> result = temp.displayTemp();
+    	return result;
+    }
 
 }

@@ -118,24 +118,49 @@ public class Main extends Application {
 
     private void handleEnterPress(CommandBarController commandBarController,
                                   String userInput) throws Exception {
-    	commandBarController.setFeedback("success");
+    	int number;
+    	//number = Integer.parseInt(userInput);
+    	
+    	if(userInput.matches("\\d+")){
+    	 number = Integer.parseInt(userInput);
+    	  logic.delete(result.get(number-1));
+    	  commandBarController.setFeedback("success"); 	 
+    	 
+    	  tableControl.clearTask();
+    	  
+    	  populateList(tableControl, logic.display());
+    	  commandBarController.clear();
+    	  
+    	  return;
+    	  
+    	}else{
+    	 
+        commandBarController.setFeedback("success");
         logControl.addLog(userInput);
     	result = new ArrayList<Task> (logic.handleUserCommand(userInput,result));
+    	
     	//if no more tasks
 	    if(result.isEmpty()){
 	    	rootLayout.setTop(new EmptyTableController());
 	    	System.out.println("lalalal");
 	    }else{
-	    	showTasks(this);
+	    	showTasks(this);    	
 	    }
     	tableControl.clearTask();
     	
     	populateList(tableControl,result);
     	
         //abc
-
+    	}
+    	
         commandBarController.clear();
     }
+    
+    private void handleDeleteEnterPress(CommandBarController commandBarController,
+            String userInput) throws Exception {
+    	
+    }
+    
     private void populateList(TasksTableController tableControl,ArrayList<Task> result){
     	int count = 1;
     	for (Task temp : result) {

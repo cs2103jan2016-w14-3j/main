@@ -64,8 +64,8 @@ Comparable<TasksItemController> {
 
 		//this.percentageValue = percentage;
 		if(task.getShowToUserDelete()== true){
-			//  this.filename.setText(count + ". " + task.getTask());
-			  this.filename.setText(task.getTask());
+			  this.filename.setText(count + ". " + task.getTask());
+			//  this.filename.setText(task.getTask());
 		}else{
 			 this.filename.setText(task.getTask());
 		}
