@@ -123,6 +123,11 @@ public class Main extends Application {
     	
     	if(userInput.matches("\\d+")){
     	 number = Integer.parseInt(userInput);
+    	  
+    	 for (Task temp : result) {
+     		temp.setShowToUserDelete(false);
+ 		 }
+    	 
     	  logic.delete(result.get(number-1));
     	  commandBarController.setFeedback("success"); 	 
     	 
