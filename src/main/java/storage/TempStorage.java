@@ -54,7 +54,7 @@ public class TempStorage {
 		for(int i=0; i<taskList.size(); i++) {
 			Task thisTask = taskList.get(i);
 
-			if((StringUtils.getJaroWinklerDistance(thisTask.getTask(), task.getTask()) >= STR_SIMILARITY_THRESHOLD) ||
+			if(stringCompare(thisTask.getTask(), task.getTask()) ||
 					(!thisTask.getTime().isEmpty() && thisTask.getTime().equals(task.getTime())) ||
 					(!thisTask.getPriority().isEmpty() && thisTask.getPriority().equals(task.getPriority()))) {
 				thisTask.setTaskID(i);
@@ -65,6 +65,22 @@ public class TempStorage {
 	}
 	
 	public void sortTemp() {
+		
+	}
+	
+	public void undo() {
+		
+	}
+	
+	private Boolean stringCompare(String taskInList, String taskToCheck) {
+		
+		Boolean isSimilar = (StringUtils.getJaroWinklerDistance(taskInList, taskToCheck) >= STR_SIMILARITY_THRESHOLD);
+		Boolean isContainExactWord = false;
+		
+		if(taskInList.contains(taskToCheck) || taskToCheck.contains(taskInList)) {
+			isContainExactWord = true;
+		}
+		return (isSimilar || isContainExactWord);
 		
 	}
 	
