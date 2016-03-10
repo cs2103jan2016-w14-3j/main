@@ -1,17 +1,18 @@
-package main.java.backend;
+package main.java.logic;
 
 
 
 
 import java.util.ArrayList;
 import java.util.Date;
-import main.java.backend.*;
 import java.util.List;
 import java.util.Scanner;
 
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import main.java.data.*;
+import main.java.logic.*;
+import main.java.storage.TempStorage;
 
 public class Logic {
 
