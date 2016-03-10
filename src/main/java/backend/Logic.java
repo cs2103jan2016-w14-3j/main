@@ -82,6 +82,7 @@ public class Logic {
 			result = temp.displayTemp();
 		}
 
+		
 		else if (command.isCommand(DELETE_COMMAND)) {
 			result = handleDeleteCommand(task);
 			// return the list to UI
