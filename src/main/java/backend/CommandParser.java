@@ -1,5 +1,6 @@
 package main.java.backend;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
@@ -208,6 +209,29 @@ public class CommandParser {
 		List<Date> dates = new PrettyTimeParser().parse("fri");
 		System.out.println(dates);
 		// Prints: "[Sun Dec 12 13:45:12 CET 2013]"
+	}
+	
+	public static ArrayList<Task> parseEditTask(TempStorage temp, Task task) {
+		Task task_A;
+		Task task_B;
+		String toDo_A, toDo_B;
+		String time_A, time_B;
+		String priority_A, priority_B;
+
+		toDo_A = task.getTask().split(",")[0].trim();
+		toDo_B = task.getTask().split(",")[1].trim();
+		time_A = task.getTime().split(",")[0].trim();
+		time_B = task.getTime().split(",")[1].trim();
+		priority_A = task.getPriority().split(",")[0].trim();
+		priority_B = task.getPriority().split(",")[1].trim();
+
+
+		task_A = new Task(toDo_A, time_A, priority_A);
+		task_B = new Task(toDo_B, time_B, priority_B);
+
+		ArrayList<Task> result = temp.searchTemp(task_A);
+		result.add(task_B);
+		return result;
 	}
 
 
