@@ -49,7 +49,7 @@ public class CommandBarController extends BorderPane {
 
 	@FXML
 	public void onKeyPress(KeyEvent event) throws Exception {
-		mainApp.handleKeyPress(this, event.getCode(), commandBar.getText());
+		mainApp.handleKeyPress(this, event, commandBar.getText());
 	}
 
 	public void clear() {
@@ -60,6 +60,11 @@ public class CommandBarController extends BorderPane {
 		feedback.setText(feedbackText);
 		commandBar.setEffect(new DropShadow(15.65,Color.GREEN));
 	}
+
+	public void updateUserInput(String newInput) {
+        commandBar.setText(newInput);
+        commandBar.end();
+    }
 
 
 }

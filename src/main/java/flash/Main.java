@@ -20,20 +20,29 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-
+import javafx.scene.input.KeyEvent;
 public class Main extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
+	
+	private Logic logic = new Logic();
+	private Task task;
+	
 	private TasksTableController tableControl = new TasksTableController();
 	private HistoryLogsController logControl = new HistoryLogsController();
-	private Logic logic = new Logic();
+	private CommandBarController barControl = new CommandBarController(this);	
 	private EmptyTableController emptyTable;
-	private Task task;
+
 	private Boolean isChange = false;
 	private Boolean isDelete = false;
+	
+	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
-	ArrayList<Task> finalResult = new ArrayList<Task>();
+	private ArrayList<Task> finalResult = new ArrayList<Task>();
+	
+	private final String EMPTY_STRING = "";
+	private int pointer;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -47,17 +56,25 @@ public class Main extends Application {
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/lightning.fw.png"));
 
 		initRootLayout();
+		initLog();
+		result = initLogic();		
+		checkIsTasksEmpty();
+		
 
-		result = initLogic();
+	}
+
+	private void checkIsTasksEmpty() {
 		if (result.isEmpty()) {
 			rootLayout.setTop(new EmptyTableController());
 			System.out.println("lalalal");
 		} else {
 			populateList(tableControl, result);
 		}
-		// Add components to RootLayout
-		// showCommandBar();
+	}
 
+	private void initLog() {
+		// TODO Auto-generated method stub
+		historyLog = new ArrayList<String>();
 	}
 
 	private ArrayList<Task> initLogic() throws Exception {
@@ -101,19 +118,54 @@ public class Main extends Application {
 	}
 
 	private void showCommandBar(Main mainApp) {
-		rootLayout.setBottom(new CommandBarController(mainApp));
+		rootLayout.setBottom(barControl);
 	}
 
 	private void showLog(Main mainApp) {
 		rootLayout.setCenter(logControl);
 	}
 
-	public void handleKeyPress(CommandBarController commandBarController, KeyCode code, String text) throws Exception {
+	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text) throws Exception {
 		// TODO Auto-generated method stub
-		if (code == KeyCode.ENTER) {
+		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
+		}else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
+             event.consume(); // nullifies the default behavior of UP and DOWN on a TextArea
+             handleGetPastCommands(event);
 		}
 	}
+	
+	private void handleGetPastCommands(KeyEvent event) {
+        String pastCommand = getPastCommandFromHistory(event.getCode());
+        barControl.updateUserInput(pastCommand);
+    }
+	
+	private String getPastCommandFromHistory(KeyCode code) {
+        if (code == KeyCode.DOWN) {
+            return getNextCommand();
+        } else if (code == KeyCode.UP) {
+            return getPreviousCommand();
+        } else {
+            return EMPTY_STRING;
+        }
+    }
+	private String getPreviousCommand() {
+        if (pointer > 0) {
+            pointer--;
+        }else {
+        	pointer = historyLog.size()-1;
+        }
+        return historyLog.get(pointer);
+    }
+
+    private String getNextCommand() {
+        if (pointer < historyLog.size() - 1) {
+            pointer++;
+        }else{
+        	pointer = 0;
+        }
+        return historyLog.get(pointer);
+    }
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		int number;
@@ -121,24 +173,18 @@ public class Main extends Application {
 		// if user enter number for either delete or edit
 		if (userInput.matches("\\d+")) {
 			logControl.addLog(userInput);
+			historyLog.add(userInput);
 			number = Integer.parseInt(userInput);
-
-//			for (Task temp : result) {
-//				temp.setShowToUserDelete(false);
-//			}
-
+            //check if is delete or edit
 			if (isChange) {
-				finalResult.add(result.get(number - 1));
-				logic.edit(finalResult);
-				finalResult.clear();
+				handleEditWithNumber(number);
 			} else {
-				logic.delete(result.get(number - 1));
+				handleDeleteWithNumber(number);
 			}
-
-			commandBarController.setFeedback("success");
+			setFeedback(commandBarController);
 
 			// if no more tasks
-			if (logic.display().isEmpty()) {
+			if (isListEmpty()) {
 				rootLayout.setTop(new EmptyTableController());
 				// System.out.println("lalalal");
 			} else {
@@ -154,36 +200,35 @@ public class Main extends Application {
 
 			return;
 
-		} else {
-
-			commandBarController.setFeedback("success");
+		}else if (userInput.isEmpty()){
+			
+			return;
+		}else {
+            //normal command
+			setFeedback(commandBarController);
 			logControl.addLog(userInput);
+			historyLog.add(userInput);
 			result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 
 			// if no more tasks
 			if (result.isEmpty()) {
 				rootLayout.setTop(new EmptyTableController());
+				// System.out.println("lalalal");
 			} else {
 				showTasks(this);
 			}
 			tableControl.clearTask();
 			
-			if(logic.display().isEmpty()){
+			if(isListEmpty()){
 				commandBarController.clear();
 				return;
 			}
 
 			if (logic.isEditCommand(userInput)) {
-				for (Task abc : result) {
-		     		abc.setShowToUserDelete(true);
-		 		 }
-				finalResult.add(result.remove(result.size() - 1));
-				isChange = true;
+				handleEditCommand();
 			}
 			if (logic.isDeleteCommand(userInput)) {
-				for (Task abc : result) {
-		     		abc.setShowToUserDelete(true);
-		 		 }
+				handleDeleteCommand();
 			}
 
 			populateList(tableControl, result);
@@ -191,6 +236,36 @@ public class Main extends Application {
 		}
 
 		commandBarController.clear();
+	}
+
+	private void handleDeleteCommand() {
+		for (Task temp : result) {
+			temp.setShowToUserDelete(true);
+		 }
+	}
+
+	private void handleEditCommand() {
+		handleDeleteCommand();
+		finalResult.add(result.remove(result.size() - 1));
+		isChange = true;
+	}
+
+	private boolean isListEmpty() throws Exception {
+		return logic.display().isEmpty();
+	}
+
+	private void setFeedback(CommandBarController commandBarController) {
+		commandBarController.setFeedback("success");
+	}
+
+	private void handleDeleteWithNumber(int number) throws Exception {
+		logic.delete(result.get(number - 1));
+	}
+
+	private void handleEditWithNumber(int number) throws Exception {
+		finalResult.add(result.get(number - 1));
+		logic.edit(finalResult);
+		finalResult.clear();
 	}
 
 	private void populateList(TasksTableController tableControl, ArrayList<Task> result) {
