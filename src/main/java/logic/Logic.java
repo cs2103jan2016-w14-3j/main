@@ -3,6 +3,8 @@ package main.java.logic;
 
 
 
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -16,7 +18,6 @@ import main.java.storage.TempStorage;
 
 public class Logic {
 
-	private final String EMPTY_COMMAND = "empty";
 	private final String ADD_COMMAND = "add";
 	private final String DELETE_COMMAND = "delete";
 	private final String SEARCH_COMMAND = "search";
@@ -25,8 +26,8 @@ public class Logic {
 	private final String SORT_COMMAND = "sort";
 	private final String CLEAR_COMMAND = "clear";
 	private final String EDIT_COMMAND = "edit";
-	private final String EXIT_COMMAND = "exit";
 	private final String CONFIRM_COMMAND = "confirm";
+	private final String UNDO_COMMAND = "undo";
 
 	private final String WELCOME_MESSAGE = "Welcome to Flashpoint!";
 	private Task task;
@@ -153,8 +154,20 @@ public class Logic {
 			for (Task temp : result) {
 				temp.setShowToUserDelete(true);
 			}
-
 		}
+		
+		else if (command.isCommand(STORE_COMMAND)) {
+			Path path = Paths.get(task.getTask());
+		}
+		
+		else if (command.isCommand(SORT_COMMAND)) {
+			
+		}
+		
+		else if (command.isCommand(UNDO_COMMAND)) {
+				
+		}
+		
 
 		return result;
 	}

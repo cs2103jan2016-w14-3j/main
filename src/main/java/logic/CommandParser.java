@@ -1,9 +1,16 @@
 package main.java.logic;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+import org.ocpsoft.prettytime.PrettyTime;
+
+
+
 
 import main.java.data.*;
 import main.java.storage.TempStorage;
@@ -157,7 +164,18 @@ public class CommandParser {
 		if (!content.contains("-")) {
 			return "";
 		}
-		List<Date> dates = new PrettyTimeParser().parse(content);
+		PrettyTimeParser timeParser = new PrettyTimeParser();
+		List<Date> dates = timeParser.parse(content);
+		
+			for (int i = 0; i < dates.size(); i++) {
+				if (isOverdue(dates.get(i))) {
+					Calendar calendar = Calendar.getInstance();
+					calendar.setTime(dates.get(i));
+					calendar.add(Calendar.DATE, 1);  // number of days to add
+					dates.set(i,calendar.getTime()); // dt is now the new date
+				}
+			}
+		
 		return dates.toString();
 	}
 
@@ -176,7 +194,7 @@ public class CommandParser {
 
 		String[] segments = content.split(",");
 		task = determineTask(segments[0].trim()) + " , " + 
-		determineTask(segments[1].trim());
+				determineTask(segments[1].trim());
 
 		return task;
 
@@ -187,7 +205,7 @@ public class CommandParser {
 		String time;
 		String[] segments = content.split(",");
 		time = determineTime(segments[0].trim()) + " , " + 
-		determineTime(segments[1].trim());
+				determineTime(segments[1].trim());
 		return time;
 
 	}
@@ -197,7 +215,7 @@ public class CommandParser {
 		String priority;
 		String[] segments = content.split(",");
 		priority = determinePriority(segments[0].trim()) + " , " + 
-		determinePriority(segments[1].trim());
+				determinePriority(segments[1].trim());
 
 		return priority;
 	}
@@ -206,11 +224,18 @@ public class CommandParser {
 
 	public static void main(String[] args)
 	{
-		List<Date> dates = new PrettyTimeParser().parse("fri");
-		System.out.println(dates);
+		PrettyTimeParser parser = new PrettyTimeParser();
+
+		//PrettyTime time = new PrettyTime();
+		List<Date> dates = parser.parse("12:01am");
+		DateFormat format = new SimpleDateFormat();
+		//System.out.print(dates);
+		//System.out.print(format.format(dates.toString().substring(1,dates.toString().length())));
+		//System.out.println(dates.get(0).before(new Date()));
+		//System.out.println(time.format(new Date() + 10));
 		// Prints: "[Sun Dec 12 13:45:12 CET 2013]"
 	}
-	
+
 	public static ArrayList<Task> parseEditTask(TempStorage temp, Task task) {
 		Task task_A;
 		Task task_B;
@@ -222,6 +247,7 @@ public class CommandParser {
 		toDo_B = task.getTask().split(",")[1].trim();
 		time_A = task.getTime().split(",")[0].trim();
 		time_B = task.getTime().split(",")[1].trim();
+
 		priority_A = task.getPriority().split(",")[0].trim();
 		priority_B = task.getPriority().split(",")[1].trim();
 
@@ -232,6 +258,13 @@ public class CommandParser {
 		ArrayList<Task> result = temp.searchTemp(task_A);
 		result.add(task_B);
 		return result;
+	}
+
+	private boolean isOverdue(Date time) {
+		//PrettyTime time = new PrettyTime();
+		//List<Date> dates = new PrettyTimeParser().parse(time_B);
+
+		return time.before(new Date());
 	}
 
 
