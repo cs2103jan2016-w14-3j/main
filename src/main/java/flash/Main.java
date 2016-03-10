@@ -163,7 +163,6 @@ public class Main extends Application {
 			// if no more tasks
 			if (result.isEmpty()) {
 				rootLayout.setTop(new EmptyTableController());
-				// System.out.println("lalalal");
 			} else {
 				showTasks(this);
 			}
@@ -189,7 +188,6 @@ public class Main extends Application {
 
 			populateList(tableControl, result);
 
-			// abc
 		}
 
 		commandBarController.clear();

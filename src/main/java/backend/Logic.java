@@ -60,84 +60,18 @@ public class Logic {
 
 	}
 
-	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskFinal) throws Exception {
+	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskOptions) throws Exception {
 		assert userInput != null;
 
 		CommandParser parser = new CommandParser();
 		Command command = new Command(userInput);
 		command = parseCommand(parser, command);
 		task = createTask(command);
-		ArrayList<Task> result = null;
-		
 
-		if (command.isCommand(ADD_COMMAND)) {
-			handleAddCommand(task);
-			result = temp.displayTemp();
-			
-			//result.add(task); // prepare the list to pass to UI
-		}
-		
-		else if (command.isCommand(CLEAR_COMMAND)){
-			temp.clearTemp();
-			result = temp.displayTemp();
-		}
+		ArrayList<Task> result = effectTask(command, task, taskOptions);
 
-		
-		else if (command.isCommand(DELETE_COMMAND)) {
-			result = handleDeleteCommand(task);
-			// return the list to UI
-			
-			for (Task temp : result) {
-				temp.setShowToUserDelete(true);
-			}
-			
-           /* if(result.size()==1){
-			  temp.deleteFromTemp(result.get(0));
-			  result = temp.displayTemp();
-            }*/
-            //else return whatever left
-
-		}
-		
-		else if (command.isCommand(CONFIRM_COMMAND)) {   
-			temp.deleteFromTemp( taskFinal.get(Integer.parseInt( task.getTask() )-1) );
-			temp.deleteFromTemp(task);
-			result = temp.displayTemp();
-		}
-
-
-		else if (command.isCommand(DISPLAY_COMMAND)) {
-			result = handleDisplayCommand();
-		}
-
-		else if (command.isCommand(EDIT_COMMAND)) {
-			//System.out.println("text");
-			result = handleEditCommand(task);
-			
-			for (Task temp : result) {
-				temp.setShowToUserDelete(true);
-			}
-			
-			//Task toReplace = result.remove(result.size() - 1);
-			
-			//temp.editToTemp(result.get(0), task_B);
-			
-			//return the list to UI to select
-
-				//	    temp.editToTemp(result.get(0), task);
-
-				//	    result = temp.displayTemp();
-			//		    //return the list to UI to display
-			//		    
-			//		    
-			//			
-			//			
-			//				
-			//			
-		}
-		
 		//quitOnExitCommand(command);
-        
+
 		return result;
 
 	}
@@ -157,7 +91,7 @@ public class Logic {
 	}
 
 	private ArrayList<Task> handleEditCommand(Task task) throws Exception {
-		
+
 		return CommandParser.parseEditTask(temp, task);
 	}
 
@@ -178,35 +112,81 @@ public class Logic {
 			System.exit(0);
 		}
 	}
-	
+
+	private ArrayList<Task> effectTask(Command command, Task task, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {
+
+		ArrayList<Task> result = new ArrayList<Task>();
+
+		if (command.isCommand(ADD_COMMAND)) {
+			handleAddCommand(task);
+			result = temp.displayTemp();
+		}
+
+		else if (command.isCommand(CLEAR_COMMAND)){
+			temp.clearTemp();
+			result = temp.displayTemp();
+		}
+
+		else if (command.isCommand(DELETE_COMMAND)) {
+			result = handleDeleteCommand(task);
+			// return the list to UI
+
+			for (Task temp : result) {
+				temp.setShowToUserDelete(true);
+			}
+		}
+		
+		else if (command.isCommand(CONFIRM_COMMAND)) {   
+			temp.deleteFromTemp(taskOptions.get(Integer.parseInt( task.getTask() )-1) );
+			temp.deleteFromTemp(task);
+			result = temp.displayTemp();
+		}
+
+
+		else if (command.isCommand(DISPLAY_COMMAND)) {
+			result = handleDisplayCommand();
+		}
+
+		else if (command.isCommand(EDIT_COMMAND)) {
+			result = handleEditCommand(task);
+			for (Task temp : result) {
+				temp.setShowToUserDelete(true);
+			}
+
+		}
+
+		return result;
+	}
+
 	public void delete(Task task) throws Exception {
 		temp.deleteFromTemp(task);
 	}
-    public ArrayList<Task> display()throws Exception{
-    	
-    	ArrayList<Task> result = temp.displayTemp();
-    	
-    	for (Task abc : result) {
-     		abc.setShowToUserDelete(false);
- 		 }
-    	return result;
-    }
-    public ArrayList<Task> display1()throws Exception{
-    	
-    	ArrayList<Task> result = temp.displayTemp();
-    	return result;
-    }
-    
-    public void edit(ArrayList<Task> result)throws Exception{
-    	temp.editToTemp(result.get(1), result.get(0));
-    }
-    
-    public boolean isDeleteCommand(String userInput) {
-    	return userInput.substring(0,userInput.indexOf(" ")).equals(DELETE_COMMAND);
-    }
-    
-    public boolean isEditCommand(String userInput) {
-    	return userInput.substring(0,userInput.indexOf(" ")).equals(EDIT_COMMAND);
-    }
+	public ArrayList<Task> display()throws Exception{
+
+		ArrayList<Task> result = temp.displayTemp();
+
+		for (Task abc : result) {
+			abc.setShowToUserDelete(false);
+		}
+		return result;
+	}
+	
+	public ArrayList<Task> display1()throws Exception{
+
+		ArrayList<Task> result = temp.displayTemp();
+		return result;
+	}
+
+	public void edit(ArrayList<Task> result)throws Exception{
+		temp.editToTemp(result.get(1), result.get(0));
+	}
+
+	public boolean isDeleteCommand(String userInput) {
+		return userInput.substring(0,userInput.indexOf(" ")).equals(DELETE_COMMAND);
+	}
+
+	public boolean isEditCommand(String userInput) {
+		return userInput.substring(0,userInput.indexOf(" ")).equals(EDIT_COMMAND);
+	}
 
 }
