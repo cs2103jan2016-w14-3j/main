@@ -8,16 +8,8 @@ public class Command {
 	private String commandContent;
 	private String[] commandParameters;
 
-	private final String EMPTY_COMMAND = "empty";
-	private final String ADD_COMMAND = "add";
-	private final String DELETE_COMMAND = "delete";
-	private final String SEARCH_COMMAND = "search";
-	private final String STORE_COMMAND = "store";
 	private final String DISPLAY_COMMAND = "display";
-	private final String SORT_COMMAND = "sort";
-	private final String CLEAR_COMMAND = "clear";
-	private final String EDIT_COMMAND = "edit";
-	private final String EXIT_COMMAND = "exit";
+
 
 	private static final int TASK = 0;
 	private static final int TIME = 1;

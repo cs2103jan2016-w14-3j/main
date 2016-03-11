@@ -6,14 +6,10 @@ package main.java.logic;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Scanner;
 
-import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import main.java.data.*;
-import main.java.logic.*;
 import main.java.storage.TempStorage;
 
 public class Logic {
@@ -29,9 +25,7 @@ public class Logic {
 	private final String CONFIRM_COMMAND = "confirm";
 	private final String UNDO_COMMAND = "undo";
 
-	private final String WELCOME_MESSAGE = "Welcome to Flashpoint!";
 	private Task task;
-	private Scanner scanner = new Scanner(System.in);
 	private TempStorage temp;
 
 	public Logic() {
@@ -43,12 +37,6 @@ public class Logic {
 		}
 
 	}
-
-	public void showWelcomeMessage() {
-		System.out.println(WELCOME_MESSAGE);
-	}
-
-
 
 	public static void main(String[] args) throws Exception
 	{
@@ -107,12 +95,6 @@ public class Logic {
 	private Command parseCommand(CommandParser parser, Command command) {
 		assert command != null;
 		return parser.parseCommand(command);
-	}
-
-	private void quitOnExitCommand(Command command) {
-		if (command.getType() == "exit") {
-			System.exit(0);
-		}
 	}
 
 	private ArrayList<Task> effectTask(Command command, Task task, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {

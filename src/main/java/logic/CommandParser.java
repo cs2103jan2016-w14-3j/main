@@ -126,12 +126,10 @@ public class CommandParser {
 
 		if (!commandType.equals(DISPLAY_COMMAND)) {
 			if (commandType.equals(EDIT_COMMAND) && (commandContent.contains(","))) {
-				//System.out.println("test");
 				String[] segments = commandContent.split(",");
 				parameters[TASK] = determineTaskForEditCommand(segments);
 				parameters[TIME] = determineTimeForEditCommand(segments);
 				parameters[PRIORITY] = determinePriorityForEditCommand(segments);
-
 			}
 			else {
 				commandContent = formatToStandardCommandContent(commandContent);
@@ -148,76 +146,77 @@ public class CommandParser {
 	
 	private String formatToStandardCommandContent(String content) {
 		
-		//only contains task
+		//task only
 		if (!content.contains("-") && !content.contains("#")) {
 			return content.trim();
 		}
-		//contains task and tag only
+		
+		//task and tag only
 		else if (!content.contains("-")) {
-			//task comes first
+			//task-tag
 			if (content.trim().charAt(0) != '#') {
 				return content.trim();
 			}
-			//task comes later
+			//tag-task
 			else {
 				content = content.substring((content.indexOf(" ") + 1)).trim() 
 						+ " " + content.substring(0, (content.indexOf(" "))).trim();
 				return content.trim();
 			}
 		}
-		//contains task and time only
+		
+		//task and time only
 		else if (!content.contains("#")) {
-			//task comes first
+			//task-time
 			if (content.trim().charAt(0) != '-') {
 				return content.trim();
 			}
-			//time comes first
+			//time-task
 			else {
 				content = content.substring((content.indexOf(" ") + 1)).trim() 
 						+ " " + content.substring(0, (content.indexOf(" "))).trim();
 				return content.trim();
-			}
-			
+			}	
 		}
 		
-		//contains both tag and time
+		//task, time and tag
 		else {
-			//task comes first
+			//task-time-tag or task-tag-time
 			if (content.charAt(0) != '#' && content.charAt(0) != '-') {
 				String[] segments = content.split(" ");
 				String task = segments[0];
-				//time before tag
+				//task-time-tag
 				if (segments[1].contains("-")) {
 					return content.trim();
 				}
-				//tag before time
+				//task-tag-time
 				else {
 					return task.trim() + " " + segments[2].trim() + " " + segments[1].trim();
 				}
 			}
-			//time comes first
+			//time-task-tag or time-tag-task
 			else if (content.trim().charAt(0) != '#') {
 				String[] segments = content.split(" ");
 				String time = segments[0];
-				//tag before task
+				//time-tag-task
 				if (segments[1].contains("#")) {
 					return segments[2].trim() + " " + time.trim() + " " + segments[1].trim();
 				}
-				//task before time
+				//time-task-tag
 				else {
 					return segments[1].trim() + " " + time.trim() + " " + segments[2].trim();
 				}
 				
 			}
-			//tag comes first
+			//tag-task-time or tag-time-task
 			else {
 				String[] segments = content.split(" ");
 				String tag = segments[0];
-				//time before task
+				//tag-time-task
 				if (segments[1].contains("-")) {
 					return segments[2].trim() + " " + segments[1].trim() + " " + tag.trim();
 				}
-				//task before time
+				//tag-task-time
 				else {
 					return segments[1].trim() + " " + segments[2].trim() + " " + tag.trim();
 				}
@@ -273,10 +272,10 @@ public class CommandParser {
 	}
 
 	private String determineTaskForEditCommand(String[] segments) {
-		//assert content != null;
+		
 		String task;
 
-		//String[] segments = content.split(",");
+		
 		task = determineTask(formatToStandardCommandContent(segments[0].trim())) + " , " + 
 				determineTask(formatToStandardCommandContent(segments[1].trim()));
 
@@ -285,9 +284,8 @@ public class CommandParser {
 	}
 
 	private String determineTimeForEditCommand(String[] segments) {
-		//assert content != null;
+		
 		String time;
-		//String[] segments = content.split(",");
 		time = determineTime(formatToStandardCommandContent(segments[0].trim())) + " , " + 
 				determineTime(formatToStandardCommandContent(segments[1].trim()));
 		return time;
@@ -297,7 +295,6 @@ public class CommandParser {
 	private String determinePriorityForEditCommand(String[] segments) {
 		//assert content != null;
 		String priority;
-		//String[] segments = content.split(",");
 		priority = determinePriority(formatToStandardCommandContent(segments[0].trim())) + " , " + 
 				determinePriority(formatToStandardCommandContent(segments[1].trim()));
 
@@ -311,12 +308,6 @@ public class CommandParser {
 		PrettyTimeParser parser = new PrettyTimeParser();
 
 		//PrettyTime time = new PrettyTime();
-		List<Date> dates = parser.parse("12:01am");
-		DateFormat format = new SimpleDateFormat();
-		//System.out.print(dates);
-		//System.out.print(format.format(dates.toString().substring(1,dates.toString().length())));
-		//System.out.println(dates.get(0).before(new Date()));
-		//System.out.println(time.format(new Date() + 10));
 		// Prints: "[Sun Dec 12 13:45:12 CET 2013]"
 	}
 
@@ -345,9 +336,6 @@ public class CommandParser {
 	}
 
 	private boolean isOverdue(Date time) {
-		//PrettyTime time = new PrettyTime();
-		//List<Date> dates = new PrettyTimeParser().parse(time_B);
-
 		return time.before(new Date());
 	}
 
