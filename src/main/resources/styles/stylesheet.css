@@ -1,5 +1,7 @@
 #root {
 	-fx-padding: 10px;
+	-fx-background-image: url("/main/resources/images/ocean.jpg");
+    -fx-background-size: stretch;
 }
 
 #title {
@@ -7,7 +9,15 @@
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
 }
+#feedback{
+	 -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+.list-cell { -fx-background-color: transparent; /* 1 */ }
 
+.list-cell:selected:focused, .task-cell:filled:selected {
+  -fx-background-color: #82BA82;
+  
+}
 #tasksDisplay {
 	-fx-background-color: transparent;
 }
@@ -39,12 +49,14 @@
 
 .cardBg {
 	/* https://docs.oracle.com/javase/8/javafx/api/javafx/scene/doc-files/cssref.html#typeeffect */
-	-fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2);
+	/* -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2); */
+	
 }
 
 .card {
 	-fx-padding: 14px;
-	-fx-background-color: white;
+	-fx-background-color: rgba(255, 255, 255, 0.5);
+	-fx-border-color : transparent;
 }
 
 .card .text {

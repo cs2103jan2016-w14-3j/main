@@ -29,7 +29,7 @@
                   <Region HBox.hgrow="SOMETIMES" />
                   <StackPane prefHeight="27.0" prefWidth="0.0">
                      <children>
-                        <Rectangle fx:id="tagDateColor" arcHeight="5.0" arcWidth="5.0" fill="WHITE" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" width="170.0" />
+                        <Rectangle fx:id="tagDateColor" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" width="170.0" />
                         <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font name="AR ESSENCE" size="18.0" />
@@ -38,7 +38,7 @@
                               <Glow level="0.4" />
                            </effect>
                         </Text>
-                        <Label fx:id="labelDate" text="Label" textFill="WHITE">
+                        <Label fx:id="labelDate" textFill="WHITE">
                            <font>
                               <Font name="System Bold" size="10.0" />
                            </font>
@@ -46,6 +46,9 @@
                      </children>
                   </StackPane>
    </children>
+               <effect>
+                  <InnerShadow color="#ffffffa9" />
+               </effect>
 				</HBox>
 			</children>
 		</StackPane>
@@ -54,6 +57,9 @@
       <DropShadow color="#43a0e0" />
    </effect>
    <left>
-      <Rectangle fx:id="circle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="55.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER" />
+      <Rectangle fx:id="circle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="55.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER">
+         <effect>
+            <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
+         </effect></Rectangle>
    </left>
 </fx:root>

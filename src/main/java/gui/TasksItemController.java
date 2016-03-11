@@ -49,8 +49,16 @@ Comparable<TasksItemController> {
 	
 	private double percentageValue;
 
+	private String taskName;
+
+	private String taskPriority;
+
+	private String taskTime;
+
 	public TasksItemController(Task task, int count) {
-		double percentage = 0;
+		this.taskName = task.getTask();
+		this.taskPriority = task.getPriority();
+		this.taskTime = task.getTime();
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_ITEM_FXML));
 		loader.setController(this);
@@ -79,6 +87,18 @@ Comparable<TasksItemController> {
 		}
 		this.circle.setStyle(String.format(STRING_CIRCLE_FILL_STYLE_FORMAT,
 				generateColour(task.getPriority())));
+	}
+	
+	public String getTaskName(){
+		return this.taskName;
+	}
+
+	public String getTaskPriority(){
+		return this.taskPriority;
+	}
+
+	public String getTaskTime(){
+		return this.taskTime;
 	}
 
 	private String generateColour(String priority) {

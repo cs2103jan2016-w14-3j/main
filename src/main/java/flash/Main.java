@@ -1,19 +1,25 @@
 package main.java.flash;
 
+import java.io.File;
+
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.prefs.Preferences;
 
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import main.java.logic.Logic;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.EmptyTableController;
 import main.java.gui.RootLayoutController;
+import main.java.gui.TasksItemController;
 import main.java.gui.TasksTableController;
-import main.java.logic.Logic;
 import main.java.gui.HistoryLogsController;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -21,6 +27,8 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.control.ListView;
+
 public class Main extends Application {
 
 	private Stage primaryStage;
@@ -33,6 +41,7 @@ public class Main extends Application {
 	private HistoryLogsController logControl = new HistoryLogsController();
 	private CommandBarController barControl = new CommandBarController(this);	
 	private EmptyTableController emptyTable;
+	
 
 	private Boolean isChange = false;
 	private Boolean isDelete = false;
@@ -40,8 +49,17 @@ public class Main extends Application {
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
 	private ArrayList<Task> finalResult = new ArrayList<Task>();
+	private ArrayList<Task> searchResult = new ArrayList<Task>();
+	private ListView<TasksItemController> list = new ListView<TasksItemController>();
 	
-	private static final String EMPTY_STRING = "";
+	
+	private final String EMPTY_STRING = "";
+	private static final String SPACE = " ";
+	private static final String SPLIT = "\\s+";
+
+	private static final int OFFSET = 1;
+	private static final int COMMAND_INDEX = 0;
+	private static final int THE_REST_INDEX = 1;
 	private int pointer;
 
 	public static void main(String[] args) {
@@ -59,13 +77,11 @@ public class Main extends Application {
 		initLog();
 		result = initLogic();		
 		checkIsTasksEmpty();
-		
-
 	}
 
 	private void checkIsTasksEmpty() {
 		if (result.isEmpty()) {
-			rootLayout.setTop(new EmptyTableController());
+			rootLayout.setCenter(new EmptyTableController());
 			System.out.println("lalalal");
 		} else {
 			populateList(tableControl, result);
@@ -101,11 +117,13 @@ public class Main extends Application {
 			});
 
 			RootLayoutController rootController = new RootLayoutController(this);
+			
 
-			showCommandBar(this);
+			showCommandBar();
 			showTasks(this);
 			showLog(this);
-
+			listenerForTaskList();
+            
 			primaryStage.show();
 
 		} catch (IOException e) {
@@ -113,27 +131,125 @@ public class Main extends Application {
 		}
 	}
 
+	
+
 	private void showTasks(Main mianApp) {
-		rootLayout.setTop(tableControl);
+		rootLayout.setCenter(tableControl);
 	}
 
-	private void showCommandBar(Main mainApp) {
+	private void showCommandBar() {
 		rootLayout.setBottom(barControl);
 	}
 
 	private void showLog(Main mainApp) {
-		rootLayout.setCenter(logControl);
+	//	rootLayout.setCenter(logControl);
 	}
+
+	public void handleSearch(String oldValue, String newValue) throws Exception {
+		// user pressed delete and reverse back to the old list
+		
+		if (oldValue != null && (newValue.length() < oldValue.length())) {
+			result = logic.display();
+			populateList(tableControl,result);
+		}
+
+		String[] fragments = newValue.split(SPLIT);
+//		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
+//		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
+		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
+		if (( /*!isEdit && !isDelete &&*/ !isSearch || fragments.length <= THE_REST_INDEX)) {
+			result = logic.display();
+			populateList(tableControl,result);
+				
+		} else {
+			newValue = fragments[THE_REST_INDEX];
+			String[] parts = newValue.toLowerCase().split(SPACE);
+			
+			// create a temporary subentries list matching list and replace it
+			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
+			for (Task task : result) {
+				boolean match = true;
+				String taskMatch = task.getTask() + task.getPriority() +task.getTime();
+				int count =0;
+				for (String part : parts) {
+					//if didnt match, match is false, do nothing
+					if (!taskMatch.toLowerCase().contains(part) ) {
+						match = false;
+						break;
+					}
+				}
+				//if match add to temp
+				if (match) {
+					temp.add(new TasksItemController(task,count++));
+				}
+			}
+			tableControl.setItems(temp);	
+		}
+	}
+	
+	
 
 	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text) throws Exception {
 		// TODO Auto-generated method stub
+		int i;
+		String taskname = null;
 		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
 		}else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
              event.consume(); // nullifies the default behavior of UP and DOWN on a TextArea
              handleGetPastCommands(event);
+		}else if ((event.getCode() == KeyCode.TAB)){
+			//i = text.indexOf(' ');
+			//String firstWord = text.substring(0,i);
+			   tableControl.controlToList();
+			
 		}
 	}
+	
+	private void listenerForTaskList() {
+		// TODO Auto-generated method stub
+		ListView<TasksItemController> tasksDisplay = tableControl.getListView();
+			
+		    tasksDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+				@Override
+				public void handle(KeyEvent e) {
+					if (e.getCode() == KeyCode.ENTER) {
+					//	System.out.println("enter");
+						 handleEnterKey();
+					} else if (e.getCode() == KeyCode.ESCAPE) {
+					//	handleEscKey();
+				//		System.out.println("escape");
+					} else if (e.getCode() == KeyCode.DELETE) {
+						handleDeleteKey();
+					//	System.out.println("delete");
+					}
+				}
+
+				private void handleEnterKey() {
+						// TODO Auto-generated method stub
+						TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
+						//System.out.println(chosen.getTaskName());
+						barControl.updateUserInput("edit "+ chosen.getTaskName());
+						barControl.requestFocus();
+				}
+				
+				private void handleDeleteKey() {
+					// TODO Auto-generated method stub
+					TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
+					//System.out.println(chosen.getTaskName());
+					barControl.updateUserInput("delete "+ chosen.getTaskName());
+					barControl.requestFocus();
+			}
+
+				
+			});
+		    
+		
+	}
+	
+	
+
+	
 	
 	private void handleGetPastCommands(KeyEvent event) {
         String pastCommand = getPastCommandFromHistory(event.getCode());
@@ -152,17 +268,13 @@ public class Main extends Application {
 	private String getPreviousCommand() {
         if (pointer > 0) {
             pointer--;
-        }else {
-        	pointer = historyLog.size()-1;
-        }
+        }        
         return historyLog.get(pointer);
     }
 
     private String getNextCommand() {
         if (pointer < historyLog.size() - 1) {
             pointer++;
-        }else{
-        	pointer = 0;
         }
         return historyLog.get(pointer);
     }
@@ -181,18 +293,18 @@ public class Main extends Application {
 			} else {
 				handleDeleteWithNumber(number);
 			}
-			setFeedback(commandBarController);
+			setFeedback(commandBarController,userInput);
 
 			// if no more tasks
 			if (isListEmpty()) {
-				rootLayout.setTop(new EmptyTableController());
+				rootLayout.setCenter(new EmptyTableController());
 				// System.out.println("lalalal");
 			} else {
 				showTasks(this);
 			}
 			
 			tableControl.clearTask();
-			populateList(tableControl, logic.display());
+			populateList2(tableControl, logic.display());
             
 			commandBarController.clear();
 
@@ -201,18 +313,18 @@ public class Main extends Application {
 			return;
 
 		}else if (userInput.isEmpty()){
+			
 			return;
 		}else {
             //normal command
-			setFeedback(commandBarController);
+			setFeedback(commandBarController, userInput);
 			logControl.addLog(userInput);
 			historyLog.add(userInput);
 			result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 
 			// if no more tasks
 			if (result.isEmpty()) {
-				rootLayout.setTop(new EmptyTableController());
-				// System.out.println("lalalal");
+				rootLayout.setCenter(new EmptyTableController());
 			} else {
 				showTasks(this);
 			}
@@ -230,7 +342,7 @@ public class Main extends Application {
 				handleDeleteCommand();
 			}
 
-			populateList(tableControl, result);
+			populateList2(tableControl, result);
 
 		}
 
@@ -240,7 +352,7 @@ public class Main extends Application {
 	private void handleDeleteCommand() {
 		for (Task temp : result) {
 			temp.setShowToUserDelete(true);
-		 }
+		}
 	}
 
 	private void handleEditCommand() {
@@ -253,8 +365,16 @@ public class Main extends Application {
 		return logic.display().isEmpty();
 	}
 
-	private void setFeedback(CommandBarController commandBarController) {
-		commandBarController.setFeedback("success");
+	private void setFeedback(CommandBarController commandBarController, String userInput) {
+		int i=1;
+		if(userInput.indexOf(' ')!= -1){
+		  i = userInput.indexOf(' ');
+		  String firstWord = userInput.substring(0,i);
+		  String subString = userInput.substring(i+1);
+		  commandBarController.setFeedback("  Successfully " + firstWord + "ed "+ "["+ subString + "]  ");
+		}else{
+		  commandBarController.setFeedback("  Successfully " + userInput + "ed   ");
+		}
 	}
 
 	private void handleDeleteWithNumber(int number) throws Exception {
@@ -269,10 +389,18 @@ public class Main extends Application {
 
 	private void populateList(TasksTableController tableControl, ArrayList<Task> result) {
 		int count = 1;
+        tableControl.clearTask();
+		for (Task temp : result) {
+			tableControl.addTask(temp, count++);
+		}
+	}
+	private void populateList2(TasksTableController tableControl, ArrayList<Task> result) {
+		int count = 1;
 
 		for (Task temp : result) {
 			tableControl.addTask(temp, count++);
 		}
 	}
+	
 
 }

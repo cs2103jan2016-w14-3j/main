@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.layout.*?>
@@ -11,10 +12,19 @@
    <center>
       <TextField fx:id="commandBar" onKeyPressed="#onKeyPress" promptText="Enter Command">
          <effect>
-            <DropShadow color="blue" height="33.91" radius="15.649999999999999" width="30.69" />
+            <DropShadow color="#9e9e9e" height="32.3" radius="15.247499999999999" width="30.69" />
          </effect></TextField>
    </center>
    <top>
-      <Label fx:id="feedback" focusTraversable="false" BorderPane.alignment="CENTER" />
+      <Label fx:id="feedback" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" textFill="#2b7c1b" BorderPane.alignment="CENTER">
+         <padding>
+            <Insets bottom="5.0" />
+         </padding>
+         <font>
+            <Font name="Calibri Bold" size="14.0" />
+         </font>
+         <effect>
+            <Glow level="0.4" />
+         </effect></Label>
    </top>
 </fx:root>
