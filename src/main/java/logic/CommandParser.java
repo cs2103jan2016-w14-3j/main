@@ -32,6 +32,11 @@ public class CommandParser {
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
+	
+	private static final int DAY_OF_WEEK = 0;
+	private static final int MONTH = 1;
+	private static final int DAY_OF_MONTH = 2;
+	private static final int CLOCK_TIME = 3;
 
 
 	public CommandParser() {
@@ -261,19 +266,14 @@ public class CommandParser {
 		}
 		PrettyTimeParser timeParser = new PrettyTimeParser();
 		content = content.substring(content.indexOf(TIME_FLAG)).trim();
-		if (content.contains(WHITE_SPACE)) {
-			content = content.substring(0, content.indexOf(WHITE_SPACE));
-		}
 		List<Date> dates = timeParser.parse(content);
 		
-			for (int i = 0; i < dates.size(); i++) {
-				if (isOverdue(dates.get(i))) {
+				if (isOverdue(dates.get(0))) {
 					Calendar calendar = Calendar.getInstance();
-					calendar.setTime(dates.get(i));
+					calendar.setTime(dates.get(0));
 					calendar.add(Calendar.DATE, 1);  // number of days to add
-					dates.set(i,calendar.getTime()); // dt is now the new date
+					dates.set(0,calendar.getTime()); // dt is now the new date
 				}
-			}
 			
 			if (dates.size() == 0) {
 				return EMPTY_STRING;
@@ -281,8 +281,10 @@ public class CommandParser {
 			
 			String parsedTime = dates.toString();
 			String currentTime = new Date().toString();
-			parsedTime = parsedTime.substring(parsedTime.indexOf(TIME_SEPARATOR) - 2, parsedTime.indexOf(TIME_SEPARATOR, parsedTime.indexOf(TIME_SEPARATOR) + 1) + 2);
-			currentTime = currentTime.substring(currentTime.indexOf(TIME_SEPARATOR) - 2, currentTime.indexOf(TIME_SEPARATOR, currentTime.indexOf(TIME_SEPARATOR) + 1) + 2);
+			parsedTime = parsedTime.substring(parsedTime.indexOf(TIME_SEPARATOR) - 2, 
+					parsedTime.indexOf(TIME_SEPARATOR, parsedTime.indexOf(TIME_SEPARATOR) + 1) + 2);
+			currentTime = currentTime.substring(currentTime.indexOf(TIME_SEPARATOR) - 2, 
+					currentTime.indexOf(TIME_SEPARATOR, currentTime.indexOf(TIME_SEPARATOR) + 1) + 2);
 			
 			if (parsedTime.equals(currentTime)) {
 				String result = timeParser.parse(content + " 8am").toString();
@@ -367,6 +369,24 @@ public class CommandParser {
 
 	private boolean isOverdue(Date time) {
 		return time.before(new Date());
+	}
+	
+	private static String[] getTimeSpecifics(String unformattedTime) {
+		
+		String[] segments = unformattedTime.split("WHITE_SPACE");
+		String weekday = segments[0];
+		String month = segments[1];
+		String day = segments[2];
+		String time = segments[3];
+		time = time.substring(time.indexOf(TIME_SEPARATOR), 
+				time.indexOf(TIME_SEPARATOR, time.indexOf(TIME_SEPARATOR) + 1) - 1);
+		String[] parameters = new String[4];
+		parameters[DAY_OF_WEEK] = segments[0];
+		parameters[MONTH] = segments[1];
+		parameters[DAY_OF_MONTH] = segments[2];
+		parameters[CLOCK_TIME] = time;
+		
+		return parameters ;
 	}
 
 

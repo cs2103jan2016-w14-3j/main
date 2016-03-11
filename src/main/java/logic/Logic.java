@@ -11,17 +11,16 @@ import main.java.storage.TempStorage;
 
 public class Logic {
 
-	private static final String ADD_COMMAND = "add";
-	private static final String DELETE_COMMAND = "delete";
-	private static final String SEARCH_COMMAND = "search";
-	private static final String STORE_COMMAND = "store";
-	private static final String DISPLAY_COMMAND = "display";
-	private static final String SORT_COMMAND = "sort";
-	private static final String CLEAR_COMMAND = "clear";
-	private static final String EDIT_COMMAND = "edit";
-	private static final String CONFIRM_COMMAND = "confirm";
-	private static final String UNDO_COMMAND = "undo";
-	private static final String WHITE_SPACE = " ";
+	private final String ADD_COMMAND = "add";
+	private final String DELETE_COMMAND = "delete";
+	private final String SEARCH_COMMAND = "search";
+	private final String STORE_COMMAND = "store";
+	private final String DISPLAY_COMMAND = "display";
+	private final String SORT_COMMAND = "sort";
+	private final String CLEAR_COMMAND = "clear";
+	private final String EDIT_COMMAND = "edit";
+	private final String CONFIRM_COMMAND = "confirm";
+	private final String UNDO_COMMAND = "undo";
 
 	private Task task;
 	private TempStorage temp;
@@ -180,11 +179,11 @@ public class Logic {
 	}
 
 	public boolean isDeleteCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(WHITE_SPACE)).equalsIgnoreCase(DELETE_COMMAND);
+		return userInput.substring(0,userInput.indexOf(" ")).equalsIgnoreCase(DELETE_COMMAND);
 	}
 
 	public boolean isEditCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(WHITE_SPACE)).equalsIgnoreCase(EDIT_COMMAND);
+		return userInput.substring(0,userInput.indexOf(" ")).equalsIgnoreCase(EDIT_COMMAND);
 	}
 
 }
