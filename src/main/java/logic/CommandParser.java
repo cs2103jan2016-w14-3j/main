@@ -121,20 +121,20 @@ public class CommandParser {
 
 	private String[] determineParameters(String commandType, String commandContent) {
 		assert commandType != null;
-		 
-		commandContent = formatToStandardCommandContent(commandContent);
 
 		String[] parameters = new String[3];
 
 		if (!commandType.equals(DISPLAY_COMMAND)) {
 			if (commandType.equals(EDIT_COMMAND) && (commandContent.contains(","))) {
 				//System.out.println("test");
-				parameters[TASK] = determineTaskForEditCommand(commandContent);
-				parameters[TIME] = determineTimeForEditCommand(commandContent);
-				parameters[PRIORITY] = determinePriorityForEditCommand(commandContent);
+				String[] segments = commandContent.split(",");
+				parameters[TASK] = determineTaskForEditCommand(segments);
+				parameters[TIME] = determineTimeForEditCommand(segments);
+				parameters[PRIORITY] = determinePriorityForEditCommand(segments);
 
 			}
 			else {
+				commandContent = formatToStandardCommandContent(commandContent);
 				parameters[TASK] = determineTask(commandContent);
 				parameters[TIME] = determineTime(commandContent);
 				parameters[PRIORITY] = determinePriority(commandContent);
@@ -272,34 +272,34 @@ public class CommandParser {
 		}
 	}
 
-	private String determineTaskForEditCommand(String content) {
-		assert content != null;
+	private String determineTaskForEditCommand(String[] segments) {
+		//assert content != null;
 		String task;
 
-		String[] segments = content.split(",");
-		task = determineTask(segments[0].trim()) + " , " + 
-				determineTask(segments[1].trim());
+		//String[] segments = content.split(",");
+		task = determineTask(formatToStandardCommandContent(segments[0].trim())) + " , " + 
+				determineTask(formatToStandardCommandContent(segments[1].trim()));
 
 		return task;
 
 	}
 
-	private String determineTimeForEditCommand(String content) {
-		assert content != null;
+	private String determineTimeForEditCommand(String[] segments) {
+		//assert content != null;
 		String time;
-		String[] segments = content.split(",");
-		time = determineTime(segments[0].trim()) + " , " + 
-				determineTime(segments[1].trim());
+		//String[] segments = content.split(",");
+		time = determineTime(formatToStandardCommandContent(segments[0].trim())) + " , " + 
+				determineTime(formatToStandardCommandContent(segments[1].trim()));
 		return time;
 
 	}
 
-	private String determinePriorityForEditCommand(String content) {
-		assert content != null;
+	private String determinePriorityForEditCommand(String[] segments) {
+		//assert content != null;
 		String priority;
-		String[] segments = content.split(",");
-		priority = determinePriority(segments[0].trim()) + " , " + 
-				determinePriority(segments[1].trim());
+		//String[] segments = content.split(",");
+		priority = determinePriority(formatToStandardCommandContent(segments[0].trim())) + " , " + 
+				determinePriority(formatToStandardCommandContent(segments[1].trim()));
 
 		return priority;
 	}

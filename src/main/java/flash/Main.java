@@ -201,7 +201,6 @@ public class Main extends Application {
 			return;
 
 		}else if (userInput.isEmpty()){
-			
 			return;
 		}else {
             //normal command
