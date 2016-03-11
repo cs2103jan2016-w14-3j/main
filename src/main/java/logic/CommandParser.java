@@ -242,6 +242,10 @@ public class CommandParser {
 			return "";
 		}
 		PrettyTimeParser timeParser = new PrettyTimeParser();
+		content = content.substring(content.indexOf("-")).trim();
+		if (content.contains(" ")) {
+			content = content.substring(0, content.indexOf(" "));
+		}
 		List<Date> dates = timeParser.parse(content);
 		
 			for (int i = 0; i < dates.size(); i++) {
