@@ -41,7 +41,7 @@ public class Main extends Application {
 	private ArrayList<Task> result;
 	private ArrayList<Task> finalResult = new ArrayList<Task>();
 	
-	private final String EMPTY_STRING = "";
+	private static final String EMPTY_STRING = "";
 	private int pointer;
 
 	public static void main(String[] args) {

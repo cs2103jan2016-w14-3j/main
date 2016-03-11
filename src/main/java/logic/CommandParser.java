@@ -5,24 +5,29 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
-
-
-
 import main.java.data.*;
 import main.java.storage.TempStorage;
 
+
 public class CommandParser {
 
-	private final String EMPTY_COMMAND = "empty";
-	private final String ADD_COMMAND = "add";
-	private final String DELETE_COMMAND = "delete";
-	private final String SEARCH_COMMAND = "search";
-	private final String STORE_COMMAND = "store";
-	private final String DISPLAY_COMMAND = "display";
-	private final String SORT_COMMAND = "sort";
-	private final String CLEAR_COMMAND = "clear";
-	private final String EDIT_COMMAND = "edit";
-	private final String EXIT_COMMAND = "exit";
+	private static final String EMPTY_COMMAND = "empty";
+	private static final String ADD_COMMAND = "add";
+	private static final String DELETE_COMMAND = "delete";
+	private static final String SEARCH_COMMAND = "search";
+	private static final String STORE_COMMAND = "store";
+	private static final String DISPLAY_COMMAND = "display";
+	private static final String SORT_COMMAND = "sort";
+	private static final String CLEAR_COMMAND = "clear";
+	private static final String EDIT_COMMAND = "edit";
+	private static final String EXIT_COMMAND = "exit";
+
+	private static final String WHITE_SPACE = " ";
+	private static final String TIME_FLAG = "-";
+	private static final String PRIORITY_FLAG = "#";
+	private static final String EMPTY_STRING = "";
+	private static final String EDIT_COMMAND_SEPARATOR = ",";
+	private static final String TIME_SEPARATOR = ":";
 
 	private static final int TASK = 0;
 	private static final int TIME = 1;
@@ -100,10 +105,10 @@ public class CommandParser {
 
 	private String getFirstKeyword(String command) {
 		assert command != null;
-		if (!command.contains(" ")) {
+		if (!command.contains(WHITE_SPACE)) {
 			return command;
 		}
-		return command.substring(0,command.indexOf(" ")).trim();
+		return command.substring(0,command.indexOf(WHITE_SPACE)).trim();
 	}
 
 	private boolean isCommand(String operation, String keyword) {
@@ -114,7 +119,7 @@ public class CommandParser {
 
 	private String retrieveCommandContent(String originalCommand) {
 		assert originalCommand != null;
-		return originalCommand.substring(originalCommand.indexOf(" ") + 1).trim();
+		return originalCommand.substring(originalCommand.indexOf(WHITE_SPACE) + 1).trim();
 	}
 
 	private String[] determineParameters(String commandType, String commandContent) {
@@ -123,8 +128,8 @@ public class CommandParser {
 		String[] parameters = new String[3];
 
 		if (!commandType.equals(DISPLAY_COMMAND)) {
-			if (commandType.equals(EDIT_COMMAND) && (commandContent.contains(","))) {
-				String[] segments = commandContent.split(",");
+			if (commandType.equals(EDIT_COMMAND) && (commandContent.contains(EDIT_COMMAND_SEPARATOR))) {
+				String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
 				parameters[TASK] = determineTaskForEditCommand(segments);
 				parameters[TIME] = determineTimeForEditCommand(segments);
 				parameters[PRIORITY] = determinePriorityForEditCommand(segments);
@@ -145,34 +150,34 @@ public class CommandParser {
 	private String formatToStandardCommandContent(String content) {
 		
 		//task only
-		if (!content.contains("-") && !content.contains("#")) {
+		if (!content.contains(TIME_FLAG) && !content.contains(PRIORITY_FLAG)) {
 			return content.trim();
 		}
 		
 		//task and tag only
-		else if (!content.contains("-")) {
+		else if (!content.contains(TIME_FLAG)) {
 			//task-tag
 			if (content.trim().charAt(0) != '#') {
 				return content.trim();
 			}
 			//tag-task
 			else {
-				content = content.substring((content.indexOf(" ") + 1)).trim() 
-						+ " " + content.substring(0, (content.indexOf(" "))).trim();
+				content = content.substring((content.indexOf(WHITE_SPACE) + 1)).trim() 
+						+ WHITE_SPACE + content.substring(0, (content.indexOf(WHITE_SPACE))).trim();
 				return content.trim();
 			}
 		}
 		
 		//task and time only
-		else if (!content.contains("#")) {
+		else if (!content.contains(PRIORITY_FLAG)) {
 			//task-time
 			if (content.trim().charAt(0) != '-') {
 				return content.trim();
 			}
 			//time-task
 			else {
-				content = content.substring((content.indexOf(" ") + 1)).trim() 
-						+ " " + content.substring(0, (content.indexOf(" "))).trim();
+				content = content.substring((content.indexOf(WHITE_SPACE) + 1)).trim() 
+						+ WHITE_SPACE + content.substring(0, (content.indexOf(WHITE_SPACE))).trim();
 				return content.trim();
 			}	
 		}
@@ -181,42 +186,55 @@ public class CommandParser {
 		else {
 			//task-time-tag or task-tag-time
 			if (content.charAt(0) != '#' && content.charAt(0) != '-') {
-				String[] segments = content.split(" ");
-				String task = segments[0];
+				
 				//task-time-tag
-				if (segments[1].contains("-")) {
+				if (content.indexOf(TIME_FLAG) < content.indexOf(PRIORITY_FLAG)) {
 					return content.trim();
 				}
 				//task-tag-time
 				else {
-					return task.trim() + " " + segments[2].trim() + " " + segments[1].trim();
+					String task = content.substring(0, content.indexOf(WHITE_SPACE));
+					String tag = content.substring(content.indexOf(PRIORITY_FLAG), content.indexOf(TIME_FLAG) - 1);
+					String time = content.substring(content.indexOf(TIME_FLAG));
+					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
 			}
 			//time-task-tag or time-tag-task
 			else if (content.trim().charAt(0) != '#') {
-				String[] segments = content.split(" ");
-				String time = segments[0];
+				
 				//time-tag-task
-				if (segments[1].contains("#")) {
-					return segments[2].trim() + " " + time.trim() + " " + segments[1].trim();
+				if (content.indexOf(PRIORITY_FLAG) == content.indexOf(WHITE_SPACE) + 1) {
+					String time = content.substring(0, content.indexOf(WHITE_SPACE));
+					String rest = content.substring(content.indexOf(PRIORITY_FLAG)).trim();
+					String tag = rest.substring(0, rest.indexOf(WHITE_SPACE));
+					String task = rest.substring(rest.indexOf(WHITE_SPACE) + 1);
+					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
 				//time-task-tag
 				else {
-					return segments[1].trim() + " " + time.trim() + " " + segments[2].trim();
+					String time = content.substring(0, content.indexOf(WHITE_SPACE));
+					String task = content.substring(content.indexOf(WHITE_SPACE) + 1, content.indexOf(PRIORITY_FLAG) - 1);
+					String tag = content.substring(content.indexOf(PRIORITY_FLAG));
+					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
 				
 			}
 			//tag-task-time or tag-time-task
 			else {
-				String[] segments = content.split(" ");
-				String tag = segments[0];
 				//tag-time-task
-				if (segments[1].contains("-")) {
-					return segments[2].trim() + " " + segments[1].trim() + " " + tag.trim();
+				if (content.indexOf(TIME_FLAG) == content.indexOf(WHITE_SPACE) + 1) {
+					String tag = content.substring(0, content.indexOf(WHITE_SPACE));
+					String rest = content.substring(content.indexOf(TIME_FLAG)).trim();
+					String time = content.substring(0, rest.indexOf(WHITE_SPACE));
+					String task = content.substring(rest.indexOf(WHITE_SPACE) + 1);
+					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
 				//tag-task-time
 				else {
-					return segments[1].trim() + " " + segments[2].trim() + " " + tag.trim();
+					String tag = content.substring(0, content.indexOf(WHITE_SPACE));
+					String task = content.substring(content.indexOf(WHITE_SPACE) + 1, content.indexOf(TIME_FLAG) - 1);
+					String time = content.substring(content.indexOf(TIME_FLAG));
+					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
 				
 			}
@@ -224,12 +242,12 @@ public class CommandParser {
 	}
 
 	private String determineTask(String content) {
-		if (content.contains("-")) {
-			return content.substring(0, content.indexOf("-") - 1).trim();
+		if (content.contains(TIME_FLAG)) {
+			return content.substring(0, content.indexOf(TIME_FLAG) - 1).trim();
 		}
 
-		else if (content.contains("#")) {
-			return content.substring(0, content.indexOf("#") - 1).trim();
+		else if (content.contains(PRIORITY_FLAG)) {
+			return content.substring(0, content.indexOf(PRIORITY_FLAG) - 1).trim();
 		}
 
 		else {
@@ -238,13 +256,13 @@ public class CommandParser {
 	}
 
 	private String determineTime(String content) {
-		if (!content.contains("-")) {
-			return "";
+		if (!content.contains(TIME_FLAG)) {
+			return EMPTY_STRING;
 		}
 		PrettyTimeParser timeParser = new PrettyTimeParser();
-		content = content.substring(content.indexOf("-")).trim();
-		if (content.contains(" ")) {
-			content = content.substring(0, content.indexOf(" "));
+		content = content.substring(content.indexOf(TIME_FLAG)).trim();
+		if (content.contains(WHITE_SPACE)) {
+			content = content.substring(0, content.indexOf(WHITE_SPACE));
 		}
 		List<Date> dates = timeParser.parse(content);
 		
@@ -258,18 +276,28 @@ public class CommandParser {
 			}
 			
 			if (dates.size() == 0) {
-				return "";
+				return EMPTY_STRING;
+			}
+			
+			String parsedTime = dates.toString();
+			String currentTime = new Date().toString();
+			parsedTime = parsedTime.substring(parsedTime.indexOf(TIME_SEPARATOR) - 2, parsedTime.indexOf(TIME_SEPARATOR, parsedTime.indexOf(TIME_SEPARATOR) + 1) + 2);
+			currentTime = currentTime.substring(currentTime.indexOf(TIME_SEPARATOR) - 2, currentTime.indexOf(TIME_SEPARATOR, currentTime.indexOf(TIME_SEPARATOR) + 1) + 2);
+			
+			if (parsedTime.equals(currentTime)) {
+				String result = timeParser.parse(content + " 8am").toString();
+				return result.substring(1, result.length() - 1);
 			}
 		
 		return dates.toString().substring(1, dates.toString().length() - 1);
 	}
 
 	private String determinePriority(String content) {
-		if (content.contains("#")) {
-			return content.substring(content.indexOf("#") + 1).trim();
+		if (content.contains(PRIORITY_FLAG)) {
+			return content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
 		}
 		else {
-			return "";
+			return EMPTY_STRING;
 		}
 	}
 
@@ -320,13 +348,13 @@ public class CommandParser {
 		String time_A, time_B;
 		String priority_A, priority_B;
 
-		toDo_A = task.getTask().split(",")[0].trim();
-		toDo_B = task.getTask().split(",")[1].trim();
-		time_A = task.getTime().split(",")[0].trim();
-		time_B = task.getTime().split(",")[1].trim();
+		toDo_A = task.getTask().split(EDIT_COMMAND_SEPARATOR)[0].trim();
+		toDo_B = task.getTask().split(EDIT_COMMAND_SEPARATOR)[1].trim();
+		time_A = task.getTime().split(EDIT_COMMAND_SEPARATOR)[0].trim();
+		time_B = task.getTime().split(EDIT_COMMAND_SEPARATOR)[1].trim();
 
-		priority_A = task.getPriority().split(",")[0].trim();
-		priority_B = task.getPriority().split(",")[1].trim();
+		priority_A = task.getPriority().split(EDIT_COMMAND_SEPARATOR)[0].trim();
+		priority_B = task.getPriority().split(EDIT_COMMAND_SEPARATOR)[1].trim();
 
 
 		task_A = new Task(toDo_A, time_A, priority_A);
