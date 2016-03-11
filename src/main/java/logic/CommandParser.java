@@ -338,7 +338,9 @@ public class CommandParser {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser parser = new PrettyTimeParser();
-
+		
+         String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
+         //System.out.println(a);
 		//PrettyTime time = new PrettyTime();
 		// Prints: "[Sun Dec 12 13:45:12 CET 2013]"
 	}
@@ -373,10 +375,7 @@ public class CommandParser {
 	
 	private static String[] getTimeSpecifics(String unformattedTime) {
 		
-		String[] segments = unformattedTime.split("WHITE_SPACE");
-		String weekday = segments[0];
-		String month = segments[1];
-		String day = segments[2];
+		String[] segments = unformattedTime.split(WHITE_SPACE);
 		String time = segments[3];
 		time = time.substring(time.indexOf(TIME_SEPARATOR), 
 				time.indexOf(TIME_SEPARATOR, time.indexOf(TIME_SEPARATOR) + 1) - 1);
