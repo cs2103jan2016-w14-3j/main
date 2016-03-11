@@ -7,8 +7,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
-import org.ocpsoft.prettytime.PrettyTime;
-
 
 
 
@@ -123,6 +121,8 @@ public class CommandParser {
 
 	private String[] determineParameters(String commandType, String commandContent) {
 		assert commandType != null;
+		 
+		commandContent = formatToStandardCommandContent(commandContent);
 
 		String[] parameters = new String[3];
 
@@ -144,6 +144,86 @@ public class CommandParser {
 		return parameters;
 
 
+	}
+	
+	private String formatToStandardCommandContent(String content) {
+		
+		//only contains task
+		if (!content.contains("-") && !content.contains("#")) {
+			return content.trim();
+		}
+		//contains task and tag only
+		else if (!content.contains("-")) {
+			//task comes first
+			if (content.trim().charAt(0) != '#') {
+				return content.trim();
+			}
+			//task comes later
+			else {
+				content = content.substring((content.indexOf(" ") + 1)).trim() 
+						+ " " + content.substring(0, (content.indexOf(" "))).trim();
+				return content.trim();
+			}
+		}
+		//contains task and time only
+		else if (!content.contains("#")) {
+			//task comes first
+			if (content.trim().charAt(0) != '-') {
+				return content.trim();
+			}
+			//time comes first
+			else {
+				content = content.substring((content.indexOf(" ") + 1)).trim() 
+						+ " " + content.substring(0, (content.indexOf(" "))).trim();
+				return content.trim();
+			}
+			
+		}
+		
+		//contains both tag and time
+		else {
+			//task comes first
+			if (content.charAt(0) != '#' && content.charAt(0) != '-') {
+				String[] segments = content.split(" ");
+				String task = segments[0];
+				//time before tag
+				if (segments[1].contains("-")) {
+					return content.trim();
+				}
+				//tag before time
+				else {
+					return task.trim() + " " + segments[2].trim() + " " + segments[1].trim();
+				}
+			}
+			//time comes first
+			else if (content.trim().charAt(0) != '#') {
+				String[] segments = content.split(" ");
+				String time = segments[0];
+				//tag before task
+				if (segments[1].contains("#")) {
+					return segments[2].trim() + " " + time.trim() + " " + segments[1].trim();
+				}
+				//task before time
+				else {
+					return segments[1].trim() + " " + time.trim() + " " + segments[2].trim();
+				}
+				
+			}
+			//tag comes first
+			else {
+				String[] segments = content.split(" ");
+				String tag = segments[0];
+				//time before task
+				if (segments[1].contains("-")) {
+					return segments[2].trim() + " " + segments[1].trim() + " " + tag.trim();
+				}
+				//task before time
+				else {
+					return segments[1].trim() + " " + segments[2].trim() + " " + tag.trim();
+				}
+				
+			}
+		}
 	}
 
 	private String determineTask(String content) {
@@ -175,8 +255,12 @@ public class CommandParser {
 					dates.set(i,calendar.getTime()); // dt is now the new date
 				}
 			}
+			
+			if (dates.size() == 0) {
+				return "";
+			}
 		
-		return dates.toString();
+		return dates.toString().substring(1, dates.toString().length() - 1);
 	}
 
 	private String determinePriority(String content) {
