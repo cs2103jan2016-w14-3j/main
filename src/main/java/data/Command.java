@@ -61,7 +61,7 @@ public class Command {
 	}
 
 	public boolean isCommand(String type) {
-		return type.equals(this.getType());
+		return type.equalsIgnoreCase(this.getType());
 	}
 
 }

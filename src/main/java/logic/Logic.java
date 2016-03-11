@@ -6,9 +6,6 @@ package main.java.logic;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Scanner;
-
-
 import main.java.data.*;
 import main.java.storage.TempStorage;
 
@@ -138,6 +135,10 @@ public class Logic {
 			}
 		}
 		
+		else if (command.isCommand(SEARCH_COMMAND)) {
+			
+		}
+		
 		else if (command.isCommand(STORE_COMMAND)) {
 			Path path = Paths.get(task.getTask());
 		}
@@ -178,11 +179,11 @@ public class Logic {
 	}
 
 	public boolean isDeleteCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(" ")).equals(DELETE_COMMAND);
+		return userInput.substring(0,userInput.indexOf(" ")).equalsIgnoreCase(DELETE_COMMAND);
 	}
 
 	public boolean isEditCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(" ")).equals(EDIT_COMMAND);
+		return userInput.substring(0,userInput.indexOf(" ")).equalsIgnoreCase(EDIT_COMMAND);
 	}
 
 }

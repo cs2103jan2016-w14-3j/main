@@ -1,7 +1,5 @@
 package main.java.logic;
 
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -111,7 +109,7 @@ public class CommandParser {
 	private boolean isCommand(String operation, String keyword) {
 		assert operation != null;
 		assert keyword != null;
-		return operation.equals(keyword);
+		return operation.equalsIgnoreCase(keyword);
 	}
 
 	private String retrieveCommandContent(String originalCommand) {
