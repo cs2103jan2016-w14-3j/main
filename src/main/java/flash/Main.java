@@ -33,26 +33,24 @@ public class Main extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-	
+
 	private Logic logic = new Logic();
 	private Task task;
-	
+
 	private TasksTableController tableControl = new TasksTableController();
 	private HistoryLogsController logControl = new HistoryLogsController();
-	private CommandBarController barControl = new CommandBarController(this);	
+	private CommandBarController barControl = new CommandBarController(this);
 	private EmptyTableController emptyTable;
-	
 
 	private Boolean isChange = false;
 	private Boolean isDelete = false;
-	
+
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
 	private ArrayList<Task> finalResult = new ArrayList<Task>();
 	private ArrayList<Task> searchResult = new ArrayList<Task>();
 	private ListView<TasksItemController> list = new ListView<TasksItemController>();
-	
-	
+
 	private final String EMPTY_STRING = "";
 	private static final String SPACE = " ";
 	private static final String SPLIT = "\\s+";
@@ -75,7 +73,7 @@ public class Main extends Application {
 
 		initRootLayout();
 		initLog();
-		result = initLogic();		
+		result = initLogic();
 		checkIsTasksEmpty();
 	}
 
@@ -117,21 +115,18 @@ public class Main extends Application {
 			});
 
 			RootLayoutController rootController = new RootLayoutController(this);
-			
 
 			showCommandBar();
 			showTasks(this);
 			showLog(this);
 			listenerForTaskList();
-            
+
 			primaryStage.show();
 
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
-
-	
 
 	private void showTasks(Main mianApp) {
 		rootLayout.setCenter(tableControl);
@@ -142,142 +137,131 @@ public class Main extends Application {
 	}
 
 	private void showLog(Main mainApp) {
-	//	rootLayout.setCenter(logControl);
+		// rootLayout.setCenter(logControl);
 	}
 
-	public void handleSearch(String oldValue, String newValue) throws Exception {
-		// user pressed delete and reverse back to the old list
-		
-		if (oldValue != null && (newValue.length() < oldValue.length())) {
-			result = logic.display();
-			populateList(tableControl,result);
-		}
+	public void handleSearch(String oldValue, String newValue) {
 
 		String[] fragments = newValue.split(SPLIT);
-//		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
-//		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
+		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
+		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
-		if (( /*!isEdit && !isDelete &&*/ !isSearch || fragments.length <= THE_REST_INDEX)) {
-			result = logic.display();
-			populateList(tableControl,result);
-				
-		} else {
-			newValue = fragments[THE_REST_INDEX];
+        
+		if(newValue.contains(SPACE)){
+			updateList();
+		}
+		if ((isEdit || isDelete || isSearch) && fragments.length > 1) {
+			newValue = fragments[1];
 			String[] parts = newValue.toLowerCase().split(SPACE);
-			
-			// create a temporary subentries list matching list and replace it
 			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
+
+			int count = 0;
 			for (Task task : result) {
 				boolean match = true;
-				String taskMatch = task.getTask() + task.getPriority() +task.getTime();
-				int count =0;
+				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
 				for (String part : parts) {
-					//if didnt match, match is false, do nothing
-					if (!taskMatch.toLowerCase().contains(part) ) {
+//					System.out.println(part);
+					if (!taskMatch.toLowerCase().contains(part)) {
 						match = false;
 						break;
 					}
 				}
-				//if match add to temp
+				// if match add to temp
 				if (match) {
-					temp.add(new TasksItemController(task,count++));
+					temp.add(new TasksItemController(task, count++));
 				}
 			}
-			tableControl.setItems(temp);	
+			 tableControl.setItems(temp);
 		}
+		
 	}
-	
-	
 
-	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text) throws Exception {
+	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text)
+			throws Exception {
 		// TODO Auto-generated method stub
 		int i;
 		String taskname = null;
 		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
-		}else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
-             event.consume(); // nullifies the default behavior of UP and DOWN on a TextArea
-             handleGetPastCommands(event);
-		}else if ((event.getCode() == KeyCode.TAB)){
-			//i = text.indexOf(' ');
-			//String firstWord = text.substring(0,i);
-			   tableControl.controlToList();
-			
+		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
+			event.consume(); // nullifies the default behavior of UP and DOWN on
+								// a TextArea
+			handleGetPastCommands(event);
+		} else if ((event.getCode() == KeyCode.TAB)) {
+			// i = text.indexOf(' ');
+			// String firstWord = text.substring(0,i);
+			tableControl.controlToList();
+
 		}
 	}
-	
+
 	private void listenerForTaskList() {
 		// TODO Auto-generated method stub
 		ListView<TasksItemController> tasksDisplay = tableControl.getListView();
-			
-		    tasksDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
-				@Override
-				public void handle(KeyEvent e) {
-					if (e.getCode() == KeyCode.ENTER) {
-					//	System.out.println("enter");
-						 handleEnterKey();
-					} else if (e.getCode() == KeyCode.ESCAPE) {
-					//	handleEscKey();
-				//		System.out.println("escape");
-					} else if (e.getCode() == KeyCode.DELETE) {
-						handleDeleteKey();
-					//	System.out.println("delete");
-					}
-				}
 
-				private void handleEnterKey() {
-						// TODO Auto-generated method stub
-						TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
-						//System.out.println(chosen.getTaskName());
-						barControl.updateUserInput("edit "+ chosen.getTaskName());
-						barControl.requestFocus();
+		tasksDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				if (e.getCode() == KeyCode.ENTER) {
+					// System.out.println("enter");
+					handleEnterKey();
+				} else if (e.getCode() == KeyCode.ESCAPE) {
+					// handleEscKey();
+					// System.out.println("escape");
+				} else if (e.getCode() == KeyCode.DELETE) {
+					handleDeleteKey();
+					// System.out.println("delete");
 				}
-				
-				private void handleDeleteKey() {
-					// TODO Auto-generated method stub
-					TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
-					//System.out.println(chosen.getTaskName());
-					barControl.updateUserInput("delete "+ chosen.getTaskName());
-					barControl.requestFocus();
 			}
 
-				
-			});
-		    
-		
+			private void handleEnterKey() {
+				// TODO Auto-generated method stub
+				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
+				// System.out.println(chosen.getTaskName());
+				barControl.updateUserInput("edit " + chosen.getTaskName());
+				barControl.requestFocus();
+			}
+
+			private void handleDeleteKey() {
+				// TODO Auto-generated method stub
+				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
+				// System.out.println(chosen.getTaskName());
+				barControl.updateUserInput("delete " + chosen.getTaskName());
+				barControl.requestFocus();
+			}
+
+		});
+
 	}
-	
-	
 
-	
-	
 	private void handleGetPastCommands(KeyEvent event) {
-        String pastCommand = getPastCommandFromHistory(event.getCode());
-        barControl.updateUserInput(pastCommand);
-    }
-	
-	private String getPastCommandFromHistory(KeyCode code) {
-        if (code == KeyCode.DOWN) {
-            return getNextCommand();
-        } else if (code == KeyCode.UP) {
-            return getPreviousCommand();
-        } else {
-            return EMPTY_STRING;
-        }
-    }
-	private String getPreviousCommand() {
-        if (pointer > 0) {
-            pointer--;
-        }        
-        return historyLog.get(pointer);
-    }
+		String pastCommand = getPastCommandFromHistory(event.getCode());
+		barControl.updateUserInput(pastCommand);
+	}
 
-    private String getNextCommand() {
-        if (pointer < historyLog.size() - 1) {
-            pointer++;
-        }
-        return historyLog.get(pointer);
-    }
+	private String getPastCommandFromHistory(KeyCode code) {
+		if (code == KeyCode.DOWN) {
+			return getNextCommand();
+		} else if (code == KeyCode.UP) {
+			return getPreviousCommand();
+		} else {
+			return EMPTY_STRING;
+		}
+	}
+
+	private String getPreviousCommand() {
+		if (pointer > 0) {
+			pointer--;
+		}
+		return historyLog.get(pointer);
+	}
+
+	private String getNextCommand() {
+		if (pointer < historyLog.size() - 1) {
+			pointer++;
+		}
+		return historyLog.get(pointer);
+	}
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		int number;
@@ -287,13 +271,13 @@ public class Main extends Application {
 			logControl.addLog(userInput);
 			historyLog.add(userInput);
 			number = Integer.parseInt(userInput);
-            //check if is delete or edit
+			// check if is delete or edit
 			if (isChange) {
 				handleEditWithNumber(number);
 			} else {
 				handleDeleteWithNumber(number);
 			}
-			setFeedback(commandBarController,userInput);
+			setFeedback(commandBarController, userInput);
 
 			// if no more tasks
 			if (isListEmpty()) {
@@ -302,21 +286,21 @@ public class Main extends Application {
 			} else {
 				showTasks(this);
 			}
-			
+
 			tableControl.clearTask();
 			populateList2(tableControl, logic.display());
-            
+
 			commandBarController.clear();
 
 			isChange = false;
 
 			return;
 
-		}else if (userInput.isEmpty()){
-			
+		} else if (userInput.isEmpty()) {
+
 			return;
-		}else {
-            //normal command
+		} else {
+			// normal command
 			setFeedback(commandBarController, userInput);
 			logControl.addLog(userInput);
 			historyLog.add(userInput);
@@ -329,8 +313,8 @@ public class Main extends Application {
 				showTasks(this);
 			}
 			tableControl.clearTask();
-			
-			if(isListEmpty()){
+
+			if (isListEmpty()) {
 				commandBarController.clear();
 				return;
 			}
@@ -366,14 +350,14 @@ public class Main extends Application {
 	}
 
 	private void setFeedback(CommandBarController commandBarController, String userInput) {
-		int i=1;
-		if(userInput.indexOf(' ')!= -1){
-		  i = userInput.indexOf(' ');
-		  String firstWord = userInput.substring(0,i);
-		  String subString = userInput.substring(i+1);
-		  commandBarController.setFeedback("  Successfully " + firstWord + "ed "+ "["+ subString + "]  ");
-		}else{
-		  commandBarController.setFeedback("  Successfully " + userInput + "ed   ");
+		int i = 1;
+		if (userInput.indexOf(' ') != -1) {
+			i = userInput.indexOf(' ');
+			String firstWord = userInput.substring(0, i);
+			String subString = userInput.substring(i + 1);
+			commandBarController.setFeedback("  Successfully " + firstWord + "ed " + "[" + subString + "]  ");
+		} else {
+			commandBarController.setFeedback("  Successfully " + userInput + "ed   ");
 		}
 	}
 
@@ -387,13 +371,27 @@ public class Main extends Application {
 		finalResult.clear();
 	}
 
-	private void populateList(TasksTableController tableControl, ArrayList<Task> result) {
+	public void populateList(TasksTableController tableControl, ArrayList<Task> result) {
 		int count = 1;
-        tableControl.clearTask();
+		tableControl.clearTask();
 		for (Task temp : result) {
 			tableControl.addTask(temp, count++);
 		}
 	}
+
+	private void updateList() {
+		int count = 1;
+		tableControl.clearTask();
+		try {
+			for (Task temp : logic.display()) {
+				tableControl.addTask(temp, count++);
+			}
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+	}
+
 	private void populateList2(TasksTableController tableControl, ArrayList<Task> result) {
 		int count = 1;
 
@@ -401,6 +399,5 @@ public class Main extends Application {
 			tableControl.addTask(temp, count++);
 		}
 	}
-	
 
 }

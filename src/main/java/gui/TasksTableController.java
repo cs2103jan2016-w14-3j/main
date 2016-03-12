@@ -51,7 +51,6 @@ public class TasksTableController extends BorderPane {
 	private void initialise() {
 		this.items = new ArrayList<TasksItemController>();
 		this.tasksDisplay.setItems(FXCollections.observableList(items));
-		commandBar = new CommandBarController();
 	}
 	
 	public ListView<TasksItemController> getListView(){

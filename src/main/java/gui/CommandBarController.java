@@ -1,8 +1,7 @@
 package main.java.gui;
 
 import java.io.IOException;
-
-
+import java.util.ArrayList;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -27,17 +26,12 @@ public class CommandBarController extends BorderPane {
 
 
 	@FXML
-	private Label feedback;
-
-	
+	private Label feedback;	
 	@FXML
 	private TextField commandBar;
-
-	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/CommandBar.fxml";
-
+	
 	private Main mainApp;
-	private TasksTableController tableControl;
-	private Logic logic;
+	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/CommandBar.fxml";
 
 	public CommandBarController(Main mainApp) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(COMMAND_BAR_LAYOUT_FXML));
@@ -48,7 +42,9 @@ public class CommandBarController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        searchTasks();
+		
+       // searchTasks();
+		search();
 		this.mainApp = mainApp;
 	}
 
@@ -61,10 +57,12 @@ public class CommandBarController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		search();
 	}
 
 	@FXML
 	public void onKeyPress(KeyEvent event) throws Exception {
+		
 		mainApp.handleKeyPress(this, event, commandBar.getText());
 	}
 
@@ -81,6 +79,17 @@ public class CommandBarController extends BorderPane {
         commandBar.setText(newInput);
         commandBar.end();
     }
+	
+	private void search(){
+		// Handle TextField text changes.
+		commandBar.textProperty().addListener((observable, oldValue, newValue) -> {
+			mainApp.handleSearch(oldValue, newValue);
+//			System.out.println("TextField Text Changed (oldValue: " + oldValue + ")");
+//		    System.out.println("TextField Text Changed (newValue: " + newValue + ")");
+		});
+
+	}
+	
 	
 	private void searchTasks(){
 		commandBar.textProperty().addListener(new ChangeListener<String>() {
