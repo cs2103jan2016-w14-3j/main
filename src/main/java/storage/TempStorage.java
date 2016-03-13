@@ -24,18 +24,18 @@ public class TempStorage {
 		undoStack.push(taskList);
 	}
 
-//	public void setDirectory(Path path) {
-//		assert path != null;
-//		
-//		storage.setDirectory(path);
-//	}
-//	
-//	public Boolean renameFile(String name) {
-//		assert name != null;
-//		
-//		Boolean isSuccess = storage.renameFile(name);
-//		return isSuccess;
-//	}
+	public void changeDirectory(String path) {
+		assert path != null;
+		
+		storage.changeDirectory(path);
+	}
+	
+	public Boolean renameFile(String name) {
+		assert name != null;
+		
+		Boolean isSuccess = storage.renameFile(name);
+		return isSuccess;
+	}
 	
 	public void writeToTemp(Task task) {
 		assert task != null;

@@ -22,25 +22,26 @@ public class Storage {
 	private BufferedWriter bufferedWriter;
 	private File file;
 	private FileWriter fileWriter;
-	private String fileName;
+	private DirectoryController dirController;
 	private Gson gson;
 	
 	public Storage() {
 		
-		initialiseFile("Task List.txt");
+		
+		dirController = new DirectoryController();
+		initialiseFile(dirController.getTaskFilePath());
 		gson = new Gson();
 		taskList = new ArrayList<Task>();
 	}
 	
 	//create the file and streams
-	public void initialiseFile(String name) {
+	public void initialiseFile(String filePath) {
 		
-		fileName = name;
-		file = new File(fileName);
+		file = new File(filePath);
 		
 		try {
 			if(!file.exists()) {
-				file.createNewFile();
+				file.createNewFile();			
 			}
 		} catch (IOException e) {
 			System.err.println("Cannot create file");
@@ -54,6 +55,19 @@ public class Storage {
 		}
 	}
 
+	public void changeDirectory(String path) {
+		assert path != null;
+		
+		dirController.changeDirectory(file, path);
+	}
+	
+	public Boolean renameFile(String name) {
+		assert name != null;
+		
+		Boolean isSuccess = dirController.renameTaskFile(file, name);
+		return isSuccess;
+	}
+	
 	public void writeToFile(Task task) {
 		
 		try {
