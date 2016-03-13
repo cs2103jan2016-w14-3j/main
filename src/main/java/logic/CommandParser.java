@@ -43,6 +43,8 @@ public class CommandParser {
 	private static final int DAY_OF_MONTH = 2;
 	private static final int CLOCK_TIME = 3;
 
+	private static PrettyTimeParser parser = new PrettyTimeParser();
+
 
 	public CommandParser() {
 	}
@@ -160,7 +162,7 @@ public class CommandParser {
 	}
 
 	private String formatToStandardCommandContent(String content) {
-		
+
 		String timeIdentifier = EMPTY_STRING;
 		if (searchWord(content, DEADLINE_FLAG) != -1) {
 			timeIdentifier = DEADLINE_FLAG;
@@ -168,16 +170,16 @@ public class CommandParser {
 
 		else if (searchWord(content, EVENT_FLAG) != -1) {
 			timeIdentifier = EVENT_FLAG;
-			
+
 		}
-		
+
 		//task only
 		if (timeIdentifier.equals(EMPTY_STRING) && 
 				content.indexOf(PRIORITY_FLAG) == -1) {
 			return content.trim();
 		}
-		
-		
+
+
 		//task and tag only
 		else if (timeIdentifier.equals(EMPTY_STRING)) {
 			//task-tag
@@ -250,7 +252,7 @@ public class CommandParser {
 				}
 
 			}
-			
+
 			//tag-task-time or tag-time-task
 			else {
 				//tag-time-task
@@ -285,11 +287,11 @@ public class CommandParser {
 		else if (searchWord(content, EVENT_FLAG) != -1) {
 			timeIdentifier = EVENT_FLAG;
 		}
-        //has time
+		
 		if (!timeIdentifier.equals(EMPTY_STRING)) {
 			return content.substring(0, searchWord(content, timeIdentifier) - 1).trim();
 		}
-        //no time but has tag
+		
 		else if (content.contains(PRIORITY_FLAG)) {
 			return content.substring(0, content.indexOf(PRIORITY_FLAG) - 1).trim();
 		}
@@ -301,12 +303,12 @@ public class CommandParser {
 
 	private String determineTime(String content) {
 		String timeIdentifier = EMPTY_STRING;
-		
+
 		if (searchWord(content, DEADLINE_FLAG) != -1 && searchWord
 				(content, EVENT_FLAG) != -1) {
 			return EMPTY_STRING;
 		}
-		
+
 		if (searchWord(content, DEADLINE_FLAG) != -1) {
 			timeIdentifier = DEADLINE_FLAG;
 		}
@@ -319,8 +321,6 @@ public class CommandParser {
 			return EMPTY_STRING;
 		}
 
-		PrettyTimeParser timeParser = new PrettyTimeParser();
-
 		if (content.contains(PRIORITY_FLAG)) {
 			content = content.substring(searchWord(content, timeIdentifier), 
 					content.indexOf(PRIORITY_FLAG));
@@ -329,7 +329,7 @@ public class CommandParser {
 			content = content.substring(searchWord(content, timeIdentifier));
 		}
 
-		List<Date> dates = timeParser.parse(content);
+		List<Date> dates = parser.parse(content);
 
 		if (isOverdue(dates.get(0))) {
 			Calendar calendar = Calendar.getInstance();
@@ -338,9 +338,6 @@ public class CommandParser {
 			dates.set(0,calendar.getTime()); // dt is now the new date
 		}
 
-		//if (dates.size() == 0) {
-		//	return EMPTY_STRING;
-		//}
 
 		String parsedTime = dates.toString();
 		String currentTime = new Date().toString();
@@ -353,7 +350,7 @@ public class CommandParser {
 						(TIME_SEPARATOR) + 1) + 2);
 
 		if (parsedTime.equals(currentTime)) {
-			String result = timeParser.parse(content + " 8am").toString();
+			String result = parser.parse(content + " 8am").toString();
 			return result.substring(1, result.length() - 1);
 		}
 
@@ -418,24 +415,16 @@ public class CommandParser {
 
 	public static void main(String[] args)
 	{
-		PrettyTimeParser parser = new PrettyTimeParser();
-		//System.out.println(parser.parse("#yellow by mon to do sth").toString());
+		//PrettyTimeParser parser = new PrettyTimeParser();
 
 		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
-		//System.out.println("some by time".indexOf("by"));
 		CommandParser par = new CommandParser();
 		//Command command = new Command("edit more, #yellow by mon to do sth");
 		//command = par.parseCommand(command);
 		//Task task = command.createTask();
 		//System.out.println(par.searchWord("I am in EUROPE", "EUROPE"));
 		System.out.println(par.formatToStandardCommandContent("#neon sth to do"));
-		//System.out.print("morethingstodo".indexOf("things"));
-		//System.out.println(task.getTime());
 
-		//String time = parser.parse("add by monday afternoon play basketball").toString();
-		//System.out.println(time);
-		//System.out.println(time.indexOf(TIME_SEPARATOR));
-		//System.out.println(par.getTaskStartingIndex("by monday afternoon 6pm do sth"));
 	}
 	public static ArrayList<Task> parseEditTask(TempStorage temp, Task task) {
 		Task task_A;
@@ -486,24 +475,20 @@ public class CommandParser {
 	private int getTaskStartingIndex(String content, String timeIdentifier) {
 
 		//content = time-task
-		//System.out.println(content.length());
-		PrettyTimeParser parser = new PrettyTimeParser();
-		//StringUtils.ordinalIndexOf("aabaabaa", "b", 1);
 		int count = StringUtils.countMatches(content, WHITE_SPACE);
 		String timeCurr = EMPTY_STRING;
 		for (int i = 2; i <= count; i++) {
 			String check = content.substring(content.indexOf(timeIdentifier) + 3, StringUtils.ordinalIndexOf(content, WHITE_SPACE, i));
 			String timeNext = parser.parse(check).toString();
-            
+
 			if (!timeNext.equals("[]")) {
-			timeNext = timeNext.substring(StringUtils.ordinalIndexOf(timeNext, TIME_SEPARATOR, 1) - 2,
-					StringUtils.ordinalIndexOf(timeNext, TIME_SEPARATOR, 2) + 2);
+				timeNext = timeNext.substring(StringUtils.ordinalIndexOf(timeNext, TIME_SEPARATOR, 1) - 2,
+						StringUtils.ordinalIndexOf(timeNext, TIME_SEPARATOR, 2) + 2);
 			}
-			
+
 			else {
 				timeNext = "" + i;
 			}
-			//System.out.println("Time next is " + timeNext);
 
 			if (timeNext.equals(timeCurr)) {
 				return StringUtils.ordinalIndexOf(content, WHITE_SPACE, i - 1) + 1;
@@ -512,7 +497,7 @@ public class CommandParser {
 		}
 		return content.lastIndexOf(WHITE_SPACE) + 1;
 	}
-	
+
 	private int searchWord(String content, String word) {
 		String[] segments = content.split(WHITE_SPACE);
 		int index = 0;
@@ -520,10 +505,10 @@ public class CommandParser {
 			if (segments[i].matches(".*\\b" + word + "\\b.*")) {
 				return index;
 			}
-			
+
 			index += segments[i].length() + 1;
 		}
-		
+
 		return -1;
 	}
 
