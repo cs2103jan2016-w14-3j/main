@@ -14,10 +14,11 @@ public class Command {
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
+	private static final int TASK_TYPE = 3;
 
 	public Command(String command) {
 		this.original = command;
-		this.commandParameters = new String[5];
+		//this.commandParameters = new String[4];
 	}
 
 	public String getType() {
@@ -51,7 +52,8 @@ public class Command {
 		if (!this.isCommand(DISPLAY_COMMAND)) {
 
 			task = new Task(commandParameters[TASK], 
-					commandParameters[TIME], commandParameters[PRIORITY]);
+					commandParameters[TIME], commandParameters[PRIORITY], 
+					commandParameters[TASK_TYPE]);
 		}
 		
 		return task;

@@ -4,15 +4,25 @@ public class Task {
 	private String task;
 	private String time;
 	private String priority;
+	private String type;
 	private transient int taskID;
 	private transient boolean display;
 	
-	public Task(String task, String time, String priority) {
+	public Task(String task, String time, String priority, String type) {
 		this.task = task;
 		this.time = time;
 		this.priority = priority;
+		this.type = type;
 		this.taskID = -1;
 		this.display = false;
+	}
+	
+	public String getType() {
+		return type;
+	}
+	
+	public void setType(String type) {
+		this.type = type;
 	}
 
 	public String getTask() {
