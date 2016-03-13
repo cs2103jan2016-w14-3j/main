@@ -5,7 +5,7 @@ public class Task {
 	private String time;
 	private String priority;
 	private transient int taskID;
-	private boolean display;
+	private transient boolean display;
 	
 	public Task(String task, String time, String priority) {
 		this.task = task;

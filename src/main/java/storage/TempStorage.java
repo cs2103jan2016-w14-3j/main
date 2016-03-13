@@ -1,8 +1,11 @@
 package main.java.storage;
 
+import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Stack;
 
 import org.apache.commons.lang3.StringUtils;
+import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
 import main.java.data.Task;
 
@@ -11,16 +14,34 @@ public class TempStorage {
 	private static final double STR_SIMILARITY_THRESHOLD = 0.55;
 	private ArrayList<Task> taskList;
 	private Storage storage;
+	private Stack< ArrayList<Task> > undoStack; 
 	
-	public TempStorage() throws Exception {
+	public TempStorage() {
+		
 		storage = new Storage();
+		undoStack =  new Stack< ArrayList<Task> >(); 
 		taskList = retrieveListFromFile();
+		undoStack.push(taskList);
 	}
 
-	public void writeToTemp(Task task) throws Exception {
+//	public void setDirectory(Path path) {
+//		assert path != null;
+//		
+//		storage.setDirectory(path);
+//	}
+//	
+//	public Boolean renameFile(String name) {
+//		assert name != null;
+//		
+//		Boolean isSuccess = storage.renameFile(name);
+//		return isSuccess;
+//	}
+	
+	public void writeToTemp(Task task) {
 		assert task != null;
 		
 		taskList.add(task);
+		undoStack.push(taskList);
 		storage.writeToFile(task);
 	}
 	
@@ -29,26 +50,34 @@ public class TempStorage {
 		return taskList;
 	}
 	
-	public void editToTemp(Task taskToEdit, Task editedTask) throws Exception {
+	public void editToTemp(Task taskToEdit, Task editedTask) {
+		assert taskToEdit != null;
 		assert taskToEdit.getTaskID() >= 0;
 		
 		taskList.set(taskToEdit.getTaskID(), editedTask);
+		undoStack.push(taskList);
 		storage.editToFile(taskToEdit.getTaskID(), editedTask);
 	}
 	
-	public void deleteFromTemp(Task task) throws Exception {
+	public void deleteFromTemp(Task task) {
+		assert task != null;
 		assert task.getTaskID() >= 0;
 		
-		taskList.remove(task.getTaskID());			
+		taskList.remove(task.getTaskID());
+		undoStack.push(taskList);
 		storage.deleteFromFile(task.getTaskID());
 	}
 	
-	public void clearTemp() throws Exception {
+	public void clearTemp() {
+		
 		taskList.clear();
+		undoStack.push(taskList);
 		storage.clearFile();
 	}
 	
 	public ArrayList<Task> searchTemp(Task task) {
+		assert task != null;
+		
 		ArrayList<Task> searchResults = new ArrayList<Task>();
 		
 		for(int i=0; i<taskList.size(); i++) {
@@ -64,12 +93,32 @@ public class TempStorage {
 		return searchResults;
 	}
 	
-	public void sortTemp() {
+	public void sortByTaskName() {
 		
+		Collections.sort(taskList, new TaskNameComparator());
+		undoStack.push(taskList);
+		storage.copyAllToFile((taskList));
+	}
+	
+	public void sortByTime() {
+		
+		Collections.sort(taskList, new TimeComparator());
+		undoStack.push(taskList);
+		storage.copyAllToFile((taskList));
+	}
+	
+	public void sortByPriority() {
+		
+		Collections.sort(taskList, new PriorityComparator());
+		undoStack.push(taskList);
+		storage.copyAllToFile((taskList));
 	}
 	
 	public void undo() {
-		
+		if(!undoStack.empty()) {
+			undoStack.pop();
+			storage.copyAllToFile(undoStack.peek());
+		}
 	}
 	
 	private Boolean stringCompare(String taskInList, String taskToCheck) {
@@ -84,7 +133,7 @@ public class TempStorage {
 		
 	}
 	
-	private ArrayList<Task> retrieveListFromFile() throws Exception {
+	private ArrayList<Task> retrieveListFromFile() {
 		ArrayList<Task> list = storage.readFromFile();
 		
 		return list;
