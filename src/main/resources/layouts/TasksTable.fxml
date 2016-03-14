@@ -12,4 +12,14 @@
 		<ListView id="tasksDisplay" fx:id="tasksDisplay" BorderPane.alignment="CENTER">
 		</ListView>
    </center>
+   <top>
+      <Label id="title" fx:id="title" alignment="CENTER" prefHeight="13.0" prefWidth="239.0" text="upcoming" textAlignment="CENTER" textFill="#087c19" BorderPane.alignment="CENTER">
+         <font>
+            <Font size="9.0" />
+         </font>
+         <effect>
+            <InnerShadow color="#abaaaa" />
+         </effect>
+      </Label>
+   </top>
 </fx:root>

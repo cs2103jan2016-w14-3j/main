@@ -26,8 +26,8 @@ public class TasksTableController extends BorderPane {
 	@FXML
 	private ListView<TasksItemController> tasksDisplay;
 
-//	@FXML
-//	private Label title;
+	@FXML
+	private Label title;
 
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/TasksTable.fxml";
 
@@ -44,7 +44,7 @@ public class TasksTableController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//title.setText(taskName);
+		title.setText("Upcoming");
 		initialise();
 	}
 	
