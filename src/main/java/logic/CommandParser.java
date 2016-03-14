@@ -158,7 +158,7 @@ public class CommandParser {
 		}
 
 		else if (commandType.equalsIgnoreCase(SEARCH_COMMAND)) {
-			parameters[TASK] = commandContent.trim().toLowerCase();	
+			//parameters[TASK] = commandContent.trim().toLowerCase();	
 		}
 
 		else if (commandType.equalsIgnoreCase(DELETE_COMMAND)) {

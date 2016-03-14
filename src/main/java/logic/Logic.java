@@ -155,7 +155,21 @@ public class Logic {
 		}
 
 		else if (command.isCommand(SORT_COMMAND)) {
-
+			if (command.getParameters()[TASK].equalsIgnoreCase("time")) {
+				
+			}
+			
+			else if (command.getParameters()[TASK].equalsIgnoreCase("name")) {
+				
+			}
+			
+			else if (command.getParameters()[TASK].equalsIgnoreCase("priority")) {
+				
+			}
+			
+			else if (command.getParameters()[TASK].equalsIgnoreCase("type")) {
+				
+			}
 		}
 
 		else if (command.isCommand(UNDO_COMMAND)) {
