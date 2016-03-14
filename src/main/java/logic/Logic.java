@@ -11,16 +11,21 @@ import main.java.storage.TempStorage;
 
 public class Logic {
 
-	private final String ADD_COMMAND = "add";
-	private final String DELETE_COMMAND = "delete";
-	private final String SEARCH_COMMAND = "search";
-	private final String STORE_COMMAND = "store";
-	private final String DISPLAY_COMMAND = "display";
-	private final String SORT_COMMAND = "sort";
-	private final String CLEAR_COMMAND = "clear";
-	private final String EDIT_COMMAND = "edit";
-	private final String CONFIRM_COMMAND = "confirm";
-	private final String UNDO_COMMAND = "undo";
+	private static final String ADD_COMMAND = "add";
+	private static final String DELETE_COMMAND = "delete";
+	private static final String SEARCH_COMMAND = "search";
+	private static final String CHANGE_DIRECTORY_COMMAND = "change";
+	private static final String DISPLAY_COMMAND = "display";
+	private static final String SORT_COMMAND = "sort";
+	private static final String CLEAR_COMMAND = "clear";
+	private static final String EDIT_COMMAND = "edit";
+	private static final String CONFIRM_COMMAND = "confirm";
+	private static final String UNDO_COMMAND = "undo";
+
+	private static final int TASK = 0;
+	private static final int TIME = 1;
+	private static final int PRIORITY = 2;
+	private static final int TASK_TYPE = 3;
 
 	private Task task;
 	private TempStorage temp;
@@ -53,9 +58,8 @@ public class Logic {
 		CommandParser parser = new CommandParser();
 		Command command = new Command(userInput);
 		command = parseCommand(parser, command);
-		task = createTask(command);
 
-		ArrayList<Task> result = effectTask(command, task, taskOptions);
+		ArrayList<Task> result = effectTask(command, taskOptions);
 
 		//quitOnExitCommand(command);
 
@@ -68,10 +72,10 @@ public class Logic {
 		temp.writeToTemp(task);
 	}
 
-//	private ArrayList<Task> handleDeleteCommand(Task task) {
-//		assert task != null;
-//		return temp.searchTemp(task);
-//	}
+	//	private ArrayList<Task> handleDeleteCommand(Task task) {
+	//		assert task != null;
+	//		return temp.searchTemp(task);
+	//	}
 
 	private ArrayList<Task> handleDisplayCommand() {
 		return temp.displayTemp();
@@ -94,12 +98,16 @@ public class Logic {
 		return parser.parseCommand(command);
 	}
 
-	private ArrayList<Task> effectTask(Command command, Task task, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {
+	private ArrayList<Task> effectTask(Command command, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {
 
 		ArrayList<Task> result = new ArrayList<Task>();
 
 		if (command.isCommand(ADD_COMMAND)) {
-			handleAddCommand(task);
+
+			task = createTask(command);
+			if (task.getTask() != null) {
+				handleAddCommand(task);
+			}
 			result = temp.displayTemp();
 		}
 
@@ -116,8 +124,9 @@ public class Logic {
 				temp.setShowToUserDelete(true);
 			}
 		}
-		
-		else if (command.isCommand(CONFIRM_COMMAND)) {   
+
+		else if (command.isCommand(CONFIRM_COMMAND)) {
+			task = createTask(command);
 			temp.deleteFromTemp(taskOptions.get(Integer.parseInt( task.getTask() )-1) );
 			temp.deleteFromTemp(task);
 			result = temp.displayTemp();
@@ -129,29 +138,30 @@ public class Logic {
 		}
 
 		else if (command.isCommand(EDIT_COMMAND)) {
+			task = createTask(command);
 			result = handleEditCommand(task);
 
 			for (Task temp : result) {
 				temp.setShowToUserDelete(true);
 			}
 		}
-		
+
 		else if (command.isCommand(SEARCH_COMMAND)) {
-			
+
 		}
-		
-		else if (command.isCommand(STORE_COMMAND)) {
-			Path path = Paths.get(task.getTask());
+
+		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
+			Path path = Paths.get(command.getParameters()[TASK]);
 		}
-		
+
 		else if (command.isCommand(SORT_COMMAND)) {
-			
+
 		}
-		
+
 		else if (command.isCommand(UNDO_COMMAND)) {
 			temp.undoPrevious();
 		}
-		
+
 
 		return result;
 	}
@@ -168,7 +178,7 @@ public class Logic {
 		}
 		return result;
 	}
-	
+
 	public ArrayList<Task> display1()throws Exception{
 
 		ArrayList<Task> result = temp.displayTemp();
@@ -176,7 +186,7 @@ public class Logic {
 	}
 
 	public void edit(ArrayList<Task> result)throws Exception{
-       
+
 		temp.editToTemp(result.get(0), result.get(1));
 	}
 

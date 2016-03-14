@@ -16,12 +16,10 @@ public class CommandParser {
 	private static final String ADD_COMMAND = "add";
 	private static final String DELETE_COMMAND = "delete";
 	private static final String SEARCH_COMMAND = "search";
-	private static final String STORE_COMMAND = "store";
-	private static final String DISPLAY_COMMAND = "display";
+	private static final String CHANGE_DIRECTORY_COMMAND = "change";
 	private static final String SORT_COMMAND = "sort";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
-	private static final String EXIT_COMMAND = "exit";
 
 	private static final String WHITE_SPACE = " ";
 	private static final String DEADLINE_FLAG = "by";
@@ -47,6 +45,7 @@ public class CommandParser {
 
 
 	public CommandParser() {
+
 	}
 
 	public Command parseCommand(Command command) {
@@ -86,8 +85,8 @@ public class CommandParser {
 				return SEARCH_COMMAND;
 			}
 
-			if (isCommand(STORE_COMMAND, firstWord)) {
-				return STORE_COMMAND;
+			else if (isCommand(CHANGE_DIRECTORY_COMMAND, firstWord)) {
+				return CHANGE_DIRECTORY_COMMAND;
 			}
 
 			else if (isCommand(SORT_COMMAND, firstWord)) {
@@ -102,10 +101,6 @@ public class CommandParser {
 			else if (isCommand(EDIT_COMMAND, firstWord)) {
 				return EDIT_COMMAND;
 
-			}
-
-			else if (isCommand(EXIT_COMMAND, firstWord)) {
-				return EXIT_COMMAND;
 			}
 
 			else {
@@ -138,22 +133,36 @@ public class CommandParser {
 
 		String[] parameters = new String[4];
 
-		if (!commandType.equals(DISPLAY_COMMAND)) {
-			if (commandType.equals(EDIT_COMMAND) && 
-					(commandContent.contains(EDIT_COMMAND_SEPARATOR))) {
-				String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
-				parameters[TASK] = determineTaskForEditCommand(segments);
-				parameters[TIME] = determineTimeForEditCommand(segments);
-				parameters[PRIORITY] = determinePriorityForEditCommand(segments);
-				parameters[TASK_TYPE] = determineTaskTypeForEditCommand(segments);
-			}
-			else {
-				commandContent = formatToStandardCommandContent(commandContent);
-				parameters[TASK] = determineTask(commandContent);
-				parameters[TIME] = determineTime(commandContent);
-				parameters[PRIORITY] = determinePriority(commandContent);
-				parameters[TASK_TYPE] = determineTaskType(commandContent);
-			}
+		if (commandType.equalsIgnoreCase(EDIT_COMMAND) && 
+				(commandContent.contains(EDIT_COMMAND_SEPARATOR))) {
+			String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
+			parameters[TASK] = determineTaskForEditCommand(segments);
+			parameters[TIME] = determineTimeForEditCommand(segments);
+			parameters[PRIORITY] = determinePriorityForEditCommand(segments);
+			parameters[TASK_TYPE] = determineTaskTypeForEditCommand(segments);
+		}
+		else if (commandType.equalsIgnoreCase(ADD_COMMAND)){
+			commandContent = formatToStandardCommandContent(commandContent);
+			parameters[TASK] = determineTask(commandContent);
+			parameters[TIME] = determineTime(commandContent);
+			parameters[PRIORITY] = determinePriority(commandContent);
+			parameters[TASK_TYPE] = determineTaskType(commandContent);
+		}
+
+		else if (commandType.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)) {
+			parameters[TASK] = commandContent.trim();
+		}
+
+		else if (commandType.equalsIgnoreCase(SORT_COMMAND)) {
+			parameters[TASK] = commandContent.trim().toLowerCase();
+		}
+
+		else if (commandType.equalsIgnoreCase(SEARCH_COMMAND)) {
+			parameters[TASK] = commandContent.trim().toLowerCase();	
+		}
+
+		else if (commandType.equalsIgnoreCase(DELETE_COMMAND)) {
+
 		}
 
 		return parameters;
@@ -195,7 +204,7 @@ public class CommandParser {
 				if (!content.trim().contains(WHITE_SPACE)) {
 					return content.trim();
 				}
-				
+
 				//have task
 				content = content.substring(content.indexOf(WHITE_SPACE) + 1).trim() 
 						+ WHITE_SPACE + content.substring(0, 
@@ -212,12 +221,14 @@ public class CommandParser {
 			}
 			//time-task
 			else {
-				//int taskStartingIndex = getTaskStartingIndex;
-				
-				content = content.substring((getTaskStartingIndex
-						(content, timeIdentifier))).trim() 
-						+ WHITE_SPACE + content.substring(0, 
-								(getTaskStartingIndex(content, timeIdentifier))).trim();
+				//if have task
+				if (containsTask(content, timeIdentifier)) {
+					content = content.substring((getTaskStartingIndex
+							(content, timeIdentifier))).trim() 
+							+ WHITE_SPACE + content.substring(0, 
+									(getTaskStartingIndex(content, timeIdentifier))).trim();
+				}
+				//no task only time
 				return content.trim();
 			}	
 		}
@@ -226,7 +237,7 @@ public class CommandParser {
 		else {
 			//task-time-tag or task-tag-time
 			if (searchWord(content, timeIdentifier) != 0 && 
-					!content.substring(0,1).equalsIgnoreCase(PRIORITY_FLAG)) {
+					!content.substring(0,1).equals(PRIORITY_FLAG)) {
 
 				//task-time-tag
 				if (searchWord(content, timeIdentifier) < content.indexOf(PRIORITY_FLAG)) {
@@ -237,6 +248,12 @@ public class CommandParser {
 					String task = content.substring(0, content.indexOf(PRIORITY_FLAG));
 					String tag = content.substring(content.indexOf(PRIORITY_FLAG), searchWord(content, timeIdentifier) - 1);
 					String time = content.substring(searchWord(content, timeIdentifier));
+
+					//if no task
+					if (task.isEmpty()) {
+						return time.trim() + WHITE_SPACE + tag.trim();
+					}
+
 					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
 			}
@@ -247,12 +264,28 @@ public class CommandParser {
 				if (content.substring(content.indexOf(PRIORITY_FLAG)).trim().contains(WHITE_SPACE)) {
 					String time = content.substring(0, content.indexOf(PRIORITY_FLAG) - 1);
 					String rest = content.substring(content.indexOf(PRIORITY_FLAG)).trim();
+					//no task
+					if (!rest.contains(WHITE_SPACE)) {
+						return time.trim() + WHITE_SPACE + rest.trim();
+					}
+					//have task
 					String tag = rest.substring(0, rest.indexOf(WHITE_SPACE));
 					String task = rest.substring(rest.indexOf(WHITE_SPACE) + 1);
 					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
 				//time-task-tag
 				else {
+					//no task
+					if (!containsTask(content.substring(0, 
+							content.indexOf(PRIORITY_FLAG) - 1), timeIdentifier)) {
+
+						String time = content.substring(0, content.indexOf(PRIORITY_FLAG) - 1);
+						String tag = content.substring(content.indexOf(PRIORITY_FLAG));
+
+						return time.trim() + WHITE_SPACE + tag.trim();
+					}
+
+					//have task
 					int taskStartingIndex = getTaskStartingIndex(content.substring(0,
 							content.indexOf(PRIORITY_FLAG) - 1).trim(), timeIdentifier);
 					String time = content.substring(0, taskStartingIndex - 1);
@@ -266,19 +299,35 @@ public class CommandParser {
 
 			//tag-task-time or tag-time-task
 			else {
+
 				//tag-time-task
 				if (searchWord(content, timeIdentifier) == content.indexOf(WHITE_SPACE) + 1) {
+
 					String tag = content.substring(0, content.indexOf(WHITE_SPACE));
 					String rest = content.substring(searchWord(content, 
 							timeIdentifier)).trim();
+
+					//no task
+					if (!containsTask(rest, timeIdentifier)) {
+						return rest.trim() + WHITE_SPACE + tag.trim();
+					}
+					//have task
 					int taskStartingIndex = getTaskStartingIndex(rest, timeIdentifier);
 					String time = rest.substring(0, taskStartingIndex - 1);
 					String task = rest.substring(taskStartingIndex);
 					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
 				}
+
 				//tag-task-time
 				else {
+
 					String tag = content.substring(0, content.indexOf(WHITE_SPACE));
+					//no task
+					if (searchWord(content, timeIdentifier) == content.indexOf(WHITE_SPACE) + 1) {
+						return content.substring(content.indexOf(WHITE_SPACE) + 1).trim() +
+								content.substring(0, content.indexOf(WHITE_SPACE));
+					}
+					//have task
 					String task = content.substring(content.indexOf(WHITE_SPACE) + 1, 
 							searchWord(content, timeIdentifier) - 1);
 					String time = content.substring(searchWord(content, timeIdentifier));
@@ -298,27 +347,32 @@ public class CommandParser {
 		else if (searchWord(content, EVENT_FLAG) != -1) {
 			timeIdentifier = EVENT_FLAG;
 		}
-		
+
+
 		if (!timeIdentifier.equals(EMPTY_STRING)) {
+			if (content.substring(0,2).equalsIgnoreCase(timeIdentifier)) {
+				return null;
+			}
 			return content.substring(0, searchWord(content, timeIdentifier) - 1).trim();
 		}
-		
+
 		else if (content.contains(PRIORITY_FLAG)) {
+			if (content.substring(0,1).equals(PRIORITY_FLAG)) {
+				return null;
+			}
 			return content.substring(0, content.indexOf(PRIORITY_FLAG) - 1).trim();
 		}
 
 		else {
+			if (content.trim().isEmpty()) {
+				return null;
+			}
 			return content.trim();
 		}
 	}
 
 	private String determineTime(String content) {
 		String timeIdentifier = EMPTY_STRING;
-
-		if (searchWord(content, DEADLINE_FLAG) != -1 && searchWord
-				(content, EVENT_FLAG) != -1) {
-			return EMPTY_STRING;
-		}
 
 		if (searchWord(content, DEADLINE_FLAG) != -1) {
 			timeIdentifier = DEADLINE_FLAG;
@@ -328,14 +382,18 @@ public class CommandParser {
 			timeIdentifier = EVENT_FLAG;
 		}
 
+
+		//no time
 		if (timeIdentifier.equals(EMPTY_STRING)) {
-			return EMPTY_STRING;
+			return null;
 		}
 
+		//has tag
 		if (content.contains(PRIORITY_FLAG)) {
 			content = content.substring(searchWord(content, timeIdentifier), 
 					content.indexOf(PRIORITY_FLAG));
 		}
+		//no tag
 		else {
 			content = content.substring(searchWord(content, timeIdentifier));
 		}
@@ -373,7 +431,7 @@ public class CommandParser {
 			return content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
 		}
 		else {
-			return EMPTY_STRING;
+			return null;
 		}
 	}
 
@@ -388,33 +446,62 @@ public class CommandParser {
 
 	private String determineTaskForEditCommand(String[] segments) {
 
-		String task;
+		String task_A = determineTask(formatToStandardCommandContent(segments[0].trim())); 
+		String task_B = determineTask(formatToStandardCommandContent(segments[1].trim()));
 
+		if (task_B == null) {
+			return task_A + " , " + task_A;
+		}
 
-		task = determineTask(formatToStandardCommandContent(segments[0].trim())) + " , " + 
-				determineTask(formatToStandardCommandContent(segments[1].trim()));
-
-		return task;
-
+		else {
+			return task_A + " , " + task_B;
+		}
 	}
 
 	private String determineTimeForEditCommand(String[] segments) {
 
-		String time;
-		time = determineTime(formatToStandardCommandContent(segments[0].trim())) + " , " + 
-				determineTime(formatToStandardCommandContent(segments[1].trim()));
-		return time;
+		String time_A = determineTime(formatToStandardCommandContent(segments[0].trim())); 
+		String time_B = determineTime(formatToStandardCommandContent(segments[1].trim()));
+
+		if (time_A != null && time_B != null) {
+			//change A to B
+
+		}
+		else if (time_A != null ) {
+			//retain A
+		}
+		else if (time_B != null) {
+			//change A to B
+
+		}
+		else {
+			//do nothing
+		}
+		return time_A + " , " + time_B;
 
 	}
 
 	private String determinePriorityForEditCommand(String[] segments) {
 		//assert content != null;
-		String priority;
-		priority = determinePriority(formatToStandardCommandContent(segments[0].trim())) + " , " + 
-				determinePriority(formatToStandardCommandContent(segments[1].trim()));
+		String priority_A = determinePriority(formatToStandardCommandContent(segments[0].trim())); 
+		String priority_B = determinePriority(formatToStandardCommandContent(segments[1].trim()));
 
-		return priority;
+		if (priority_A != null && priority_B != null) {
+			//change A to B
+		}
+		else if (priority_A != null ) {
+			//retain A
+		}
+		else if (priority_B != null) {
+			//change A to B
+		}
+		else {
+			//do nothing
+		}
+		return priority_A + " , " + priority_B;
 	}
+
+
 	private String determineTaskTypeForEditCommand(String[] segments) {
 		String taskType;
 		taskType = determineTaskType(formatToStandardCommandContent(segments[0].trim())) + " , " +
@@ -434,7 +521,7 @@ public class CommandParser {
 		//command = par.parseCommand(command);
 		//Task task = command.createTask();
 		//System.out.println(par.searchWord("I am in EUROPE", "EUROPE"));
-		System.out.println(par.formatToStandardCommandContent("#neon sth to do"));
+		System.out.println(par.formatToStandardCommandContent("to do sth okay or not"));
 
 	}
 	public static ArrayList<Task> parseEditTask(TempStorage temp, Task task) {
@@ -491,12 +578,12 @@ public class CommandParser {
 		int count = StringUtils.countMatches(content, WHITE_SPACE);
 		String timeCurr = EMPTY_STRING;
 		for (int i = 2; i <= count; i++) {
-			String check = content.substring(content.indexOf(timeIdentifier) + 3, StringUtils.ordinalIndexOf(content, WHITE_SPACE, i));
+			String check = content.substring(content.indexOf(timeIdentifier) + 3, 
+					StringUtils.ordinalIndexOf(content, WHITE_SPACE, i));
 			String timeNext = parser.parse(check).toString();
 
 			if (!timeNext.equals("[]")) {
-				timeNext = timeNext.substring(StringUtils.ordinalIndexOf(timeNext, TIME_SEPARATOR, 1) - 2,
-						StringUtils.ordinalIndexOf(timeNext, TIME_SEPARATOR, 2) + 2);
+				timeNext = getRoughTime(timeNext);
 			}
 
 			else {
@@ -510,10 +597,40 @@ public class CommandParser {
 		}
 		return content.lastIndexOf(WHITE_SPACE) + 1;
 	}
-	
+
 	private boolean containsTask(String content, String timeIdentifier) {
-		int index = content.lastIndexOf("");
-		
+
+		int index = content.lastIndexOf(WHITE_SPACE);
+
+		if (index == 3) {
+			return false;
+		}
+		//System.out.println(content);
+
+
+		String curr;
+		String check = parser.parse(content).toString();
+		check = getRoughTime(check);
+		//System.out.println(check);
+
+		int num = StringUtils.countMatches(content, WHITE_SPACE);
+		for (int i = 1; i <= num; i++) {
+			curr = content.substring(0, StringUtils.ordinalIndexOf(content, WHITE_SPACE, 
+					i));
+
+			String time = parser.parse(curr).toString();
+
+			if (!time.equals("[]")) {
+				time = getRoughTime(time);
+				if (check.equals(time)) {
+					System.out.println("Task found");
+					return true;
+				}
+			}
+
+		}
+		//System.out.println(check);
+
 		return false;
 	}
 
@@ -529,6 +646,12 @@ public class CommandParser {
 		}
 
 		return -1;
+	}
+
+	private String getRoughTime(String time) {
+		String[] segments = time.split(TIME_SEPARATOR);
+		time = segments[0] + segments[1] + segments[2].substring(2);
+		return time;
 	}
 
 

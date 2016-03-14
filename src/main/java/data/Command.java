@@ -44,6 +44,10 @@ public class Command {
 	public void setParameters(String[] parameters) {
 		this.commandParameters = parameters;
 	}
+	
+	public String[] getParameters() {
+		return this.commandParameters;
+	}
 
 
 	public Task createTask() {
