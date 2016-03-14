@@ -145,7 +145,7 @@ public class Main extends Application {
 	public void handleSearch(String oldValue, String newValue) throws Exception {
 		//int space = newValue.indexOf(",")+1;
 		if(newValue.contains(",")){
-			System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
+			//System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
 			return;
 		}
 
@@ -186,12 +186,12 @@ public class Main extends Application {
 				}
 				// if match add to temp
 				if (match) {
-					System.out.println("match " + task.getTask()); 
+				//	System.out.println("match " + task.getTask()); 
 					temp.add(new TasksItemController(task, count++));
 					searchResult.add(task);
 				//	match = true;
-					System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
-					System.out.println(temp.size()+"  "+ temp.get(0).getTaskName());
+//					System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
+//					System.out.println(temp.size()+"  "+ temp.get(0).getTaskName());
 				}
 			}
 			tableControl.clearTask();
@@ -314,7 +314,7 @@ public class Main extends Application {
 				if (userInput.indexOf(" ") != -1) {
 					if (logic.isDeleteCommand(userInput)) {
 						handleDeleteCommand(userInput);
-						System.out.println("pass throught here");
+//						System.out.println("pass throught here");
 					}
 					if (logic.isEditCommand(userInput)) {
 					    handleEditCommand(userInput);
@@ -335,7 +335,7 @@ public class Main extends Application {
 		//System.out.println(searchResult.get(0).getTask());
 		for (Task temp : searchResult) {
 			if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
-				System.out.println("delete this: "+ temp.getTask());
+//				System.out.println("delete this: "+ temp.getTask());
 				logic.delete(temp);
 				
 				break;
@@ -347,7 +347,7 @@ public class Main extends Application {
 
 	private void handleEditCommand(String userInput) throws Exception {
 		String sub = userInput.substring(5, userInput.indexOf(","));
-		System.out.println(sub);
+		//System.out.println(sub);
 		finalResult.clear();
 		for (Task temp : searchResult) {
 		//	System.out.println("from task here: "+ temp.getTask());
@@ -366,8 +366,8 @@ public class Main extends Application {
 		     		updated.setPriority(original.getPriority());
 		     	}
 		     	
-				System.out.println("from original here: "+ result.get(1).getTask());
-				System.out.println("from editted here: "+ temp.getTask());
+//				System.out.println("from original here: "+ result.get(1).getTask());
+//				System.out.println("from editted here: "+ temp.getTask());
 			//	System.out.println(finalResult.get(0).getTask() + "edit to" + finalResult.get(1).getTask());
 				logic.edit(finalResult);
 				
