@@ -448,7 +448,8 @@ public class CommandParser {
 		task_A = new Task(toDo_A, time_A, priority_A, type_A);
 		task_B = new Task(toDo_B, time_B, priority_B, type_B);
 
-		ArrayList<Task> result = temp.searchTemp(task_A);
+		//ArrayList<Task> result = temp.searchTemp(task_A);
+		ArrayList<Task> result = new ArrayList<Task>();
 		result.add(task_B);
 		return result;
 	}

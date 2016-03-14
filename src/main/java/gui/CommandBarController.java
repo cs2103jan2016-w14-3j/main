@@ -83,7 +83,12 @@ public class CommandBarController extends BorderPane {
 	private void search(){
 		// Handle TextField text changes.
 		commandBar.textProperty().addListener((observable, oldValue, newValue) -> {
-			mainApp.handleSearch(oldValue, newValue);
+			try {
+				mainApp.handleSearch(oldValue, newValue);
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
 //			System.out.println("TextField Text Changed (oldValue: " + oldValue + ")");
 //		    System.out.println("TextField Text Changed (newValue: " + newValue + ")");
 		});
@@ -104,10 +109,16 @@ public class CommandBarController extends BorderPane {
 			}
 		});
 	}
+	
+	public void getFocus (){
+		commandBar.requestFocus();
+		commandBar.positionCaret(0);
+		commandBar.selectAll();
+	}
 
 	public void setText(String taskname) {
 		// TODO Auto-generated method stub
-		commandBar.setText("edit " + taskname );
+		commandBar.setText( taskname );
 		commandBar.requestFocus();
 	}
 	

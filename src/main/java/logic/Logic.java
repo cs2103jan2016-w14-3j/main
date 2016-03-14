@@ -68,10 +68,10 @@ public class Logic {
 		temp.writeToTemp(task);
 	}
 
-	private ArrayList<Task> handleDeleteCommand(Task task) {
-		assert task != null;
-		return temp.searchTemp(task);
-	}
+//	private ArrayList<Task> handleDeleteCommand(Task task) {
+//		assert task != null;
+//		return temp.searchTemp(task);
+//	}
 
 	private ArrayList<Task> handleDisplayCommand() {
 		return temp.displayTemp();
@@ -109,7 +109,7 @@ public class Logic {
 		}
 
 		else if (command.isCommand(DELETE_COMMAND)) {
-			result = handleDeleteCommand(task);
+			//result = handleDeleteCommand(task);
 			// return the list to UI
 
 			for (Task temp : result) {
@@ -184,6 +184,9 @@ public class Logic {
 
 	public boolean isEditCommand(String userInput) {
 		return userInput.substring(0,userInput.indexOf(" ")).equalsIgnoreCase(EDIT_COMMAND);
+	}
+	public boolean isDisplayCommand(String userInput) {
+		return userInput.substring(0,userInput.length()).equalsIgnoreCase(DISPLAY_COMMAND);
 	}
 
 }

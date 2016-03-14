@@ -77,12 +77,13 @@ public class Main extends Application {
 		checkIsTasksEmpty();
 	}
 
-	private void checkIsTasksEmpty() {
-		if (result.isEmpty()) {
+	private void checkIsTasksEmpty() throws Exception {
+		if (isListEmpty()) {
 			rootLayout.setCenter(new EmptyTableController());
 			System.out.println("lalalal");
 		} else {
-			populateList(tableControl, result);
+			rootLayout.setCenter(tableControl);
+			updateList();
 		}
 	}
 
@@ -134,33 +135,38 @@ public class Main extends Application {
 
 	private void showCommandBar() {
 		rootLayout.setBottom(barControl);
+		barControl.setText("What is your main focus for today?");
+		barControl.getFocus();
 	}
 
 	private void showLog(Main mainApp) {
 		// rootLayout.setCenter(logControl);
 	}
 
-	public void handleSearch(String oldValue, String newValue) {
+	public void handleSearch(String oldValue, String newValue) throws Exception {
 
-		String[] fragments = newValue.split(SPLIT);
+		String[] fragments = null;
+		fragments = newValue.split(SPLIT);
 		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
 		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
-        
-		if(newValue.contains(SPACE)){
+
+		if (newValue.contains(SPACE)) {
 			updateList();
 		}
 		if ((isEdit || isDelete || isSearch) && fragments.length > 1) {
-			newValue = fragments[1];
-			String[] parts = newValue.toLowerCase().split(SPACE);
+			newValue = fragments[1];		
+			String[] parts = null;
+			parts = newValue.toLowerCase().split(SPACE);
 			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
-
+            searchResult = new ArrayList<Task>();
+            
 			int count = 0;
-			for (Task task : result) {
+			for (Task task : logic.display()) {
 				boolean match = true;
 				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
 				for (String part : parts) {
-//					System.out.println(part);
+					// System.out.println(part);
 					if (!taskMatch.toLowerCase().contains(part)) {
 						match = false;
 						break;
@@ -168,12 +174,18 @@ public class Main extends Application {
 				}
 				// if match add to temp
 				if (match) {
+					System.out.println("match " + task.getTask()); 
 					temp.add(new TasksItemController(task, count++));
+					searchResult.add(task);
+				//	match = true;
+				//	System.out.println(temp.size()+"  "+ temp.get(0).getTaskName());
 				}
 			}
-			 tableControl.setItems(temp);
-		}
-		
+			tableControl.clearTask();
+			tableControl.setItems(temp);
+		 }
+
+ 
 	}
 
 	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text)
@@ -219,7 +231,7 @@ public class Main extends Application {
 				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
 				// System.out.println(chosen.getTaskName());
 				barControl.updateUserInput("edit " + chosen.getTaskName());
-				barControl.requestFocus();
+				barControl.getFocus();
 			}
 
 			private void handleDeleteKey() {
@@ -227,7 +239,7 @@ public class Main extends Application {
 				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
 				// System.out.println(chosen.getTaskName());
 				barControl.updateUserInput("delete " + chosen.getTaskName());
-				barControl.requestFocus();
+				barControl.getFocus();
 			}
 
 		});
@@ -265,85 +277,83 @@ public class Main extends Application {
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		int number;
+		checkIsTasksEmpty();
 
-		// if user enter number for either delete or edit
-		if (userInput.matches("\\d+")) {
-			logControl.addLog(userInput);
-			historyLog.add(userInput);
-			number = Integer.parseInt(userInput);
-			// check if is delete or edit
-			if (isChange) {
-				handleEditWithNumber(number);
-			} else {
-				handleDeleteWithNumber(number);
-			}
-			setFeedback(commandBarController, userInput);
-
-			// if no more tasks
-			if (isListEmpty()) {
-				rootLayout.setCenter(new EmptyTableController());
-				// System.out.println("lalalal");
-			} else {
-				showTasks(this);
-			}
-
-			tableControl.clearTask();
-			populateList2(tableControl, logic.display());
-
-			commandBarController.clear();
-
-			isChange = false;
-
+		if (userInput.isEmpty()) {
 			return;
 
-		} else if (userInput.isEmpty()) {
-
-			return;
 		} else {
 			// normal command
-			setFeedback(commandBarController, userInput);
-			logControl.addLog(userInput);
+
+			//logControl.addLog(userInput);
 			historyLog.add(userInput);
-			result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+			System.out.println("from userInput: "+ userInput);
+			
+			if (!logic.isDisplayCommand(userInput)) {
+				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+				updateList();
+				
+				//System.out.println("from result here: "+ result.get(0).getTask());
 
-			// if no more tasks
-			if (result.isEmpty()) {
-				rootLayout.setCenter(new EmptyTableController());
-			} else {
-				showTasks(this);
+				//Task task = result.get(0);
+				//System.out.println("from result here: "+ task.getTask());
+				
+				if (userInput.indexOf(" ") != -1) {
+					if (logic.isDeleteCommand(userInput)) {
+						handleDeleteCommand(userInput);
+						System.out.println("pass throught here");
+					}
+					if (logic.isEditCommand(userInput)) {
+					    handleEditCommand(userInput,task);
+					}
+				}
+				updateList();
+
 			}
-			tableControl.clearTask();
-
-			if (isListEmpty()) {
-				commandBarController.clear();
-				return;
-			}
-
-			if (logic.isEditCommand(userInput)) {
-				handleEditCommand();
-			}
-			if (logic.isDeleteCommand(userInput)) {
-				handleDeleteCommand();
-			}
-
-			populateList2(tableControl, result);
-
 		}
-
+		checkIsTasksEmpty();
+			
+		setFeedback(commandBarController, userInput);
+		new CommandBarController();
 		commandBarController.clear();
 	}
-
-	private void handleDeleteCommand() {
-		for (Task temp : result) {
-			temp.setShowToUserDelete(true);
+	
+	private void handleDeleteCommand(String userInput) throws Exception {
+		//System.out.println(searchResult.get(0).getTask());
+		for (Task temp : searchResult) {
+			if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
+				System.out.println("delete this: "+ temp.getTask());
+				logic.delete(temp);
+				
+				break;
+			}
+			
 		}
+		//updateList();
 	}
 
-	private void handleEditCommand() {
-		handleDeleteCommand();
-		finalResult.add(result.remove(result.size() - 1));
-		isChange = true;
+	private void handleEditCommand(String userInput, Task task) throws Exception {
+		String sub = userInput.substring(5, userInput.indexOf(","));
+		//System.out.println(sub);
+		for (Task temp : searchResult) {
+		//	System.out.println("from task here: "+ task.getTask());
+		//	System.out.println("editzhang".equalsIgnoreCase(task.getTask()));
+			if (sub.equals(temp.getTask())) {
+				finalResult.add(temp);
+				finalResult.add(task);
+			//	System.out.println("from temp here: "+ temp.getTask());
+			//	System.out.println("from task here: "+ task.getTask());
+			//	System.out.println(finalResult.get(0).getTask() + "edit to" + finalResult.get(1).getTask());
+				logic.edit(finalResult);
+				
+				break;
+			}
+			
+		}
+		//updateList();
+
 	}
+	
 
 	private boolean isListEmpty() throws Exception {
 		return logic.display().isEmpty();
@@ -361,15 +371,7 @@ public class Main extends Application {
 		}
 	}
 
-	private void handleDeleteWithNumber(int number) throws Exception {
-		logic.delete(result.get(number - 1));
-	}
-
-	private void handleEditWithNumber(int number) throws Exception {
-		finalResult.add(result.get(number - 1));
-		logic.edit(finalResult);
-		finalResult.clear();
-	}
+	
 
 	public void populateList(TasksTableController tableControl, ArrayList<Task> result) {
 		int count = 1;
