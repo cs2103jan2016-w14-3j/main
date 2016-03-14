@@ -175,7 +175,7 @@ public class Logic {
 	}
 
 	public void edit(ArrayList<Task> result)throws Exception{
-		temp.editToTemp(result.get(1), result.get(0));
+		temp.editToTemp(result.get(0), result.get(1));
 	}
 
 	public boolean isDeleteCommand(String userInput) {
