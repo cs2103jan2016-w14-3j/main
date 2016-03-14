@@ -61,11 +61,11 @@ public class TempStorage {
 	
 	public void deleteFromTemp(Task task) {
 		assert task != null;
-		assert task.getTaskID() >= 0;
 		
-		taskList.remove(task.getTaskID());
+		int indexOfTaskToDelete = searchTemp(task);
+		taskList.remove(taskList.get(indexOfTaskToDelete));
 		undoStack.push(taskList);
-		storage.deleteFromFile(task.getTaskID());
+		storage.deleteFromFile(indexOfTaskToDelete);
 	}
 	
 	public void clearTemp() {
@@ -75,23 +75,37 @@ public class TempStorage {
 		storage.clearFile();
 	}
 	
-	public ArrayList<Task> searchTemp(Task task) {
+	public int searchTemp(Task task) {
 		assert task != null;
-		
-		ArrayList<Task> searchResults = new ArrayList<Task>();
 		
 		for(int i=0; i<taskList.size(); i++) {
 			Task thisTask = taskList.get(i);
-
-			if(stringCompare(thisTask.getTask(), task.getTask()) ||
-					(!thisTask.getTime().isEmpty() && thisTask.getTime().equals(task.getTime())) ||
-					(!thisTask.getPriority().isEmpty() && thisTask.getPriority().equals(task.getPriority()))) {
-				thisTask.setTaskID(i);
-				searchResults.add(thisTask);
+			if(thisTask.getTask().equals(task.getTask()) && 
+					thisTask.getTime().equals(task.getTime()) &&
+					thisTask.getPriority().equals(task.getTime())) {
+				return i;
 			}
 		}
-		return searchResults;
+		return -1;
 	}
+	
+//	public ArrayList<Task> searchTemp(Task task) {
+//		assert task != null;
+//		
+//		ArrayList<Task> searchResults = new ArrayList<Task>();
+//		
+//		for(int i=0; i<taskList.size(); i++) {
+//			Task thisTask = taskList.get(i);
+//			
+//			if(stringCompare(thisTask.getTask(), task.getTask()) ||
+//					(!thisTask.getTime().isEmpty() && thisTask.getTime().equals(task.getTime())) ||
+//					(!thisTask.getPriority().isEmpty() && thisTask.getPriority().equals(task.getPriority()))) {
+//				thisTask.setTaskID(i);
+//				searchResults.add(thisTask);
+//			}
+//		}
+//		return searchResults;
+//	}
 	
 	public void sortByTaskName() {
 		
