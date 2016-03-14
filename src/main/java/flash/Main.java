@@ -80,7 +80,6 @@ public class Main extends Application {
 	private void checkIsTasksEmpty() throws Exception {
 		if (isListEmpty()) {
 			rootLayout.setCenter(new EmptyTableController());
-			System.out.println("lalalal");
 		} else {
 			rootLayout.setCenter(tableControl);
 			updateList();
@@ -144,13 +143,18 @@ public class Main extends Application {
 	}
 
 	public void handleSearch(String oldValue, String newValue) throws Exception {
+		//int space = newValue.indexOf(",")+1;
+		if(newValue.contains(",")){
+			System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
+			return;
+		}
 
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
 		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
 		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
-
+         
 		if (newValue.contains(SPACE)) {
 			updateList();
 		}
@@ -159,7 +163,8 @@ public class Main extends Application {
 			String[] parts = null;
 			parts = newValue.toLowerCase().split(SPACE);
 			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
-            searchResult = new ArrayList<Task>();
+          //  searchResult = new ArrayList<Task>();
+            searchResult.clear();
             
 			int count = 0;
 			for (Task task : logic.display()) {
@@ -167,6 +172,13 @@ public class Main extends Application {
 				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
 				for (String part : parts) {
 					// System.out.println(part);
+					String withoutComma = part.substring(0,part.length()-1);
+					//System.out.println(withoutComma);
+					
+					if(taskMatch.toLowerCase().contains(withoutComma)&& newValue.contains(",")){
+						match = true;
+						break;
+					}
 					if (!taskMatch.toLowerCase().contains(part)) {
 						match = false;
 						break;
@@ -178,7 +190,8 @@ public class Main extends Application {
 					temp.add(new TasksItemController(task, count++));
 					searchResult.add(task);
 				//	match = true;
-				//	System.out.println(temp.size()+"  "+ temp.get(0).getTaskName());
+					System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
+					System.out.println(temp.size()+"  "+ temp.get(0).getTaskName());
 				}
 			}
 			tableControl.clearTask();
@@ -287,7 +300,7 @@ public class Main extends Application {
 
 			//logControl.addLog(userInput);
 			historyLog.add(userInput);
-			System.out.println("from userInput: "+ userInput);
+			//System.out.println("from userInput: "+ userInput);
 			
 			if (!logic.isDisplayCommand(userInput)) {
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
@@ -304,7 +317,7 @@ public class Main extends Application {
 						System.out.println("pass throught here");
 					}
 					if (logic.isEditCommand(userInput)) {
-					    handleEditCommand(userInput,task);
+					    handleEditCommand(userInput);
 					}
 				}
 				updateList();
@@ -332,15 +345,14 @@ public class Main extends Application {
 		//updateList();
 	}
 
-	private void handleEditCommand(String userInput, Task task) throws Exception {
+	private void handleEditCommand(String userInput) throws Exception {
 		String sub = userInput.substring(5, userInput.indexOf(","));
-		//System.out.println(sub);
+		System.out.println(sub);
 		for (Task temp : searchResult) {
-		//	System.out.println("from task here: "+ task.getTask());
+		//	System.out.println("from task here: "+ temp.getTask());
 		//	System.out.println("editzhang".equalsIgnoreCase(task.getTask()));
 			if (sub.equals(temp.getTask())) {
 				finalResult.add(temp);
-				finalResult.add(task);
 			//	System.out.println("from temp here: "+ temp.getTask());
 			//	System.out.println("from task here: "+ task.getTask());
 			//	System.out.println(finalResult.get(0).getTask() + "edit to" + finalResult.get(1).getTask());
