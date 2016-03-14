@@ -176,6 +176,9 @@ public class CommandParser {
 		//task only
 		if (timeIdentifier.equals(EMPTY_STRING) && 
 				content.indexOf(PRIORITY_FLAG) == -1) {
+			if (content.isEmpty()) {
+				return null; //if nothing, return null
+			}
 			return content.trim();
 		}
 
@@ -188,6 +191,12 @@ public class CommandParser {
 			}
 			//tag-task
 			else {
+				//if no task
+				if (!content.trim().contains(WHITE_SPACE)) {
+					return content.trim();
+				}
+				
+				//have task
 				content = content.substring(content.indexOf(WHITE_SPACE) + 1).trim() 
 						+ WHITE_SPACE + content.substring(0, 
 								(content.indexOf(WHITE_SPACE))).trim();
@@ -203,6 +212,8 @@ public class CommandParser {
 			}
 			//time-task
 			else {
+				//int taskStartingIndex = getTaskStartingIndex;
+				
 				content = content.substring((getTaskStartingIndex
 						(content, timeIdentifier))).trim() 
 						+ WHITE_SPACE + content.substring(0, 
@@ -450,6 +461,7 @@ public class CommandParser {
 
 		//ArrayList<Task> result = temp.searchTemp(task_A);
 		ArrayList<Task> result = new ArrayList<Task>();
+		result.add(task_A);
 		result.add(task_B);
 		return result;
 	}
@@ -497,6 +509,12 @@ public class CommandParser {
 			timeCurr = timeNext;
 		}
 		return content.lastIndexOf(WHITE_SPACE) + 1;
+	}
+	
+	private boolean containsTask(String content, String timeIdentifier) {
+		int index = content.lastIndexOf("");
+		
+		return false;
 	}
 
 	private int searchWord(String content, String word) {
