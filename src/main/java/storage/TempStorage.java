@@ -106,7 +106,7 @@ public class TempStorage {
 //		}
 //		return searchResults;
 //	}
-	
+//	
 	public void sortByTaskName() {
 		
 		Collections.sort(taskList, new TaskNameComparator());
