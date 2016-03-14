@@ -1,10 +1,11 @@
 package main.java.data;
 
 public class Task {
+	
 	private String task;
 	private String time;
-	private String priority;
 	private String type;
+	private String priority;
 	private transient int taskID;
 	private transient boolean display;
 	

@@ -52,11 +52,11 @@ public class TempStorage {
 	
 	public void editToTemp(Task taskToEdit, Task editedTask) {
 		assert taskToEdit != null;
-		assert taskToEdit.getTaskID() >= 0;
 		
-		taskList.set(taskToEdit.getTaskID(), editedTask);
+		int indexOfTaskToEdit = searchTemp(taskToEdit);
+		taskList.set(indexOfTaskToEdit, editedTask);
 		undoStack.push(taskList);
-		storage.editToFile(taskToEdit.getTaskID(), editedTask);
+		storage.editToFile(indexOfTaskToEdit, editedTask);
 	}
 	
 	public void deleteFromTemp(Task task) {
@@ -128,9 +128,9 @@ public class TempStorage {
 		storage.copyAllToFile((taskList));
 	}
 	
-	public void undo() {
+	public void undoPrevious() {
 		if(!undoStack.empty()) {
-			undoStack.pop();
+			taskList = undoStack.pop();
 			storage.copyAllToFile(undoStack.peek());
 		}
 	}
