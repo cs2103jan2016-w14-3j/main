@@ -174,6 +174,7 @@ public class Logic {
 
 		else if (command.isCommand(UNDO_COMMAND)) {
 			temp.undoPrevious();
+			System.out.println("UNDO IS HERE !!!!");
 		}
 
 

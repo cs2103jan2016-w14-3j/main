@@ -20,6 +20,8 @@ public class CommandParser {
 	private static final String SORT_COMMAND = "sort";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
+	private static final String UNDO_COMMAND = "undo";
+	
 
 	private static final String WHITE_SPACE = " ";
 	private static final String DEADLINE_FLAG = "by";
@@ -102,6 +104,10 @@ public class CommandParser {
 				return EDIT_COMMAND;
 
 			}
+			
+			else if (isCommand(UNDO_COMMAND, firstWord)) {
+				return UNDO_COMMAND;
+			}
 
 			else {
 				return ADD_COMMAND;
@@ -125,6 +131,9 @@ public class CommandParser {
 
 	private String retrieveCommandContent(String originalCommand) {
 		assert originalCommand != null;
+		if (!originalCommand.contains(WHITE_SPACE)) {
+			return EMPTY_STRING;
+		}
 		return originalCommand.substring(originalCommand.indexOf(WHITE_SPACE) + 1).trim();
 	}
 
@@ -164,6 +173,7 @@ public class CommandParser {
 		else if (commandType.equalsIgnoreCase(DELETE_COMMAND)) {
 
 		}
+		
 
 		return parameters;
 
