@@ -149,7 +149,7 @@ public class Logic {
 		}
 		
 		else if (command.isCommand(UNDO_COMMAND)) {
-				
+			temp.undoPrevious();
 		}
 		
 

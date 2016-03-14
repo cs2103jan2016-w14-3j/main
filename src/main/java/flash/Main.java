@@ -69,7 +69,7 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		// this.primaryStage.initStyle(StageStyle.TRANSPARENT);;
 		this.primaryStage.setTitle("Flashpoint");
-		this.primaryStage.getIcons().add(new Image("/main/resources/images/lightning.fw.png"));
+		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
 
 		initRootLayout();
 		initLog();
