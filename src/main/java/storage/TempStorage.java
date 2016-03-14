@@ -140,9 +140,7 @@ public class TempStorage {
 	public void undoPrevious() {
 		if(undoStack.size() >= 2) {
 			undoStack.pop();
-			taskList = undoStack.peek();
-			for(int i=0; i<taskList.size(); i++)
-			System.out.println(taskList.get(i).getTask());
+			taskList = new ArrayList<Task>(undoStack.peek());
 			storage.copyAllToFile(taskList);
 		}
 	}
