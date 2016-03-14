@@ -51,7 +51,7 @@ public class Main extends Application {
 	private ArrayList<Task> searchResult = new ArrayList<Task>();
 	private ListView<TasksItemController> list = new ListView<TasksItemController>();
 
-	private final String EMPTY_STRING = "";
+	private static final String EMPTY_STRING = "";
 	private static final String SPACE = " ";
 	private static final String SPLIT = "\\s+";
 
@@ -355,6 +355,16 @@ public class Main extends Application {
 			if (sub.equals(temp.getTask())) {				
 		     	finalResult.add(temp);	  
 		     	finalResult.add(result.get(1));
+		     	
+		     	Task original = finalResult.get(0);
+		     	Task updated = finalResult.get(1);
+		     	
+		     	if(updated.getTime().equals(EMPTY_STRING)){
+		     		updated.setTime(original.getTime());
+		     	}
+		     	if(updated.getPriority().equals(EMPTY_STRING)){
+		     		updated.setPriority(original.getPriority());
+		     	}
 		     	
 				System.out.println("from original here: "+ result.get(1).getTask());
 				System.out.println("from editted here: "+ temp.getTask());
