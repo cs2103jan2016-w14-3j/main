@@ -51,14 +51,10 @@ public class Command {
 
 
 	public Task createTask() {
-		Task task = null;
 
-		if (!this.isCommand(DISPLAY_COMMAND)) {
-
-			task = new Task(commandParameters[TASK], 
+			Task task = new Task(commandParameters[TASK], 
 					commandParameters[TIME], commandParameters[PRIORITY], 
 					commandParameters[TASK_TYPE]);
-		}
 		
 		return task;
 

@@ -83,7 +83,7 @@ public class Logic {
 
 	private ArrayList<Task> handleEditCommand(Task task) throws Exception {
 
-		return CommandParser.parseEditTask(temp, task);
+		return CommandParser.parseEditTask(task);
 	}
 
 

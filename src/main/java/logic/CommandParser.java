@@ -517,6 +517,8 @@ public class CommandParser {
 
 		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
 		CommandParser par = new CommandParser();
+		String good = null;
+		System.out.println(good + " , " + good);
 		//Command command = new Command("edit more, #yellow by mon to do sth");
 		//command = par.parseCommand(command);
 		//Task task = command.createTask();
@@ -524,7 +526,7 @@ public class CommandParser {
 		System.out.println(par.formatToStandardCommandContent("to do sth okay or not"));
 
 	}
-	public static ArrayList<Task> parseEditTask(TempStorage temp, Task task) {
+	public static ArrayList<Task> parseEditTask(Task task) {
 		Task task_A;
 		Task task_B;
 		String toDo_A, toDo_B;
