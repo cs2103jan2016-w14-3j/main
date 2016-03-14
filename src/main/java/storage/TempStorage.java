@@ -82,7 +82,7 @@ public class TempStorage {
 			Task thisTask = taskList.get(i);
 			if(thisTask.getTask().equals(task.getTask()) && 
 					thisTask.getTime().equals(task.getTime()) &&
-					thisTask.getPriority().equals(task.getTime())) {
+					thisTask.getPriority().equals(task.getPriority())) {
 				return i;
 			}
 		}
