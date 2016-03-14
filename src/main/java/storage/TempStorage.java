@@ -13,15 +13,17 @@ public class TempStorage {
 
 	private static final double STR_SIMILARITY_THRESHOLD = 0.55;
 	private ArrayList<Task> taskList;
+	private ArrayList<Task> tempList;
 	private Storage storage;
 	private Stack< ArrayList<Task> > undoStack; 
-	
+
 	public TempStorage() {
 		
 		storage = new Storage();
 		undoStack =  new Stack< ArrayList<Task> >(); 
 		taskList = retrieveListFromFile();
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 	}
 
 	public void changeDirectory(String path) {
@@ -41,7 +43,8 @@ public class TempStorage {
 		assert task != null;
 		
 		taskList.add(task);
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 		storage.writeToFile(task);
 	}
 	
@@ -55,7 +58,8 @@ public class TempStorage {
 		
 		int indexOfTaskToEdit = searchTemp(taskToEdit);
 		taskList.set(indexOfTaskToEdit, editedTask);
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 		storage.editToFile(indexOfTaskToEdit, editedTask);
 	}
 	
@@ -64,14 +68,16 @@ public class TempStorage {
 		
 		int indexOfTaskToDelete = searchTemp(task);
 		taskList.remove(taskList.get(indexOfTaskToDelete));
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 		storage.deleteFromFile(indexOfTaskToDelete);
 	}
 	
 	public void clearTemp() {
 		
 		taskList.clear();
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 		storage.clearFile();
 	}
 	
@@ -110,28 +116,34 @@ public class TempStorage {
 	public void sortByTaskName() {
 		
 		Collections.sort(taskList, new TaskNameComparator());
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 		storage.copyAllToFile((taskList));
 	}
 	
 	public void sortByTime() {
 		
 		Collections.sort(taskList, new TimeComparator());
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 		storage.copyAllToFile((taskList));
 	}
 	
 	public void sortByPriority() {
 		
 		Collections.sort(taskList, new PriorityComparator());
-		undoStack.push(taskList);
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 		storage.copyAllToFile((taskList));
 	}
 	
 	public void undoPrevious() {
-		if(!undoStack.empty()) {
-			taskList = undoStack.pop();
-			storage.copyAllToFile(undoStack.peek());
+		if(undoStack.size() >= 2) {
+			undoStack.pop();
+			taskList = undoStack.peek();
+			for(int i=0; i<taskList.size(); i++)
+			System.out.println(taskList.get(i).getTask());
+			storage.copyAllToFile(taskList);
 		}
 	}
 	
