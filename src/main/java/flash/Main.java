@@ -348,13 +348,16 @@ public class Main extends Application {
 	private void handleEditCommand(String userInput) throws Exception {
 		String sub = userInput.substring(5, userInput.indexOf(","));
 		System.out.println(sub);
+		finalResult.clear();
 		for (Task temp : searchResult) {
 		//	System.out.println("from task here: "+ temp.getTask());
 		//	System.out.println("editzhang".equalsIgnoreCase(task.getTask()));
-			if (sub.equals(temp.getTask())) {
-				finalResult.add(temp);
-			//	System.out.println("from temp here: "+ temp.getTask());
-			//	System.out.println("from task here: "+ task.getTask());
+			if (sub.equals(temp.getTask())) {				
+		     	finalResult.add(temp);	  
+		     	finalResult.add(result.get(1));
+		     	
+				System.out.println("from original here: "+ result.get(1).getTask());
+				System.out.println("from editted here: "+ temp.getTask());
 			//	System.out.println(finalResult.get(0).getTask() + "edit to" + finalResult.get(1).getTask());
 				logic.edit(finalResult);
 				

@@ -130,6 +130,7 @@ public class Logic {
 
 		else if (command.isCommand(EDIT_COMMAND)) {
 			result = handleEditCommand(task);
+
 			for (Task temp : result) {
 				temp.setShowToUserDelete(true);
 			}
@@ -175,6 +176,7 @@ public class Logic {
 	}
 
 	public void edit(ArrayList<Task> result)throws Exception{
+       
 		temp.editToTemp(result.get(0), result.get(1));
 	}
 
@@ -187,6 +189,11 @@ public class Logic {
 	}
 	public boolean isDisplayCommand(String userInput) {
 		return userInput.substring(0,userInput.length()).equalsIgnoreCase(DISPLAY_COMMAND);
+	}
+
+	public Task editedTask(Task temp2) {
+		// TODO Auto-generated method stub
+		return temp2;
 	}
 
 }
