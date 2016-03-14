@@ -351,21 +351,21 @@ public class CommandParser {
 
 		if (!timeIdentifier.equals(EMPTY_STRING)) {
 			if (content.substring(0,2).equalsIgnoreCase(timeIdentifier)) {
-				return null;
+				return EMPTY_STRING;
 			}
 			return content.substring(0, searchWord(content, timeIdentifier) - 1).trim();
 		}
 
 		else if (content.contains(PRIORITY_FLAG)) {
 			if (content.substring(0,1).equals(PRIORITY_FLAG)) {
-				return null;
+				return EMPTY_STRING;
 			}
 			return content.substring(0, content.indexOf(PRIORITY_FLAG) - 1).trim();
 		}
 
 		else {
 			if (content.trim().isEmpty()) {
-				return null;
+				return EMPTY_STRING;
 			}
 			return content.trim();
 		}
@@ -385,7 +385,7 @@ public class CommandParser {
 
 		//no time
 		if (timeIdentifier.equals(EMPTY_STRING)) {
-			return null;
+			return EMPTY_STRING;
 		}
 
 		//has tag
@@ -431,7 +431,7 @@ public class CommandParser {
 			return content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
 		}
 		else {
-			return null;
+			return EMPTY_STRING;
 		}
 	}
 
@@ -449,7 +449,7 @@ public class CommandParser {
 		String task_A = determineTask(formatToStandardCommandContent(segments[0].trim())); 
 		String task_B = determineTask(formatToStandardCommandContent(segments[1].trim()));
 
-		if (task_B == null) {
+		if (task_B.equals(EMPTY_STRING)) {
 			return task_A + " , " + task_A;
 		}
 
@@ -463,14 +463,14 @@ public class CommandParser {
 		String time_A = determineTime(formatToStandardCommandContent(segments[0].trim())); 
 		String time_B = determineTime(formatToStandardCommandContent(segments[1].trim()));
 
-		if (time_A != null && time_B != null) {
+		if (!time_A.equals(EMPTY_STRING) && !time_B.equals(EMPTY_STRING)) {
 			//change A to B
 
 		}
-		else if (time_A != null ) {
+		else if (!time_A.equals(EMPTY_STRING)) {
 			//retain A
 		}
-		else if (time_B != null) {
+		else if (!time_B.equals(EMPTY_STRING)) {
 			//change A to B
 
 		}
@@ -486,13 +486,13 @@ public class CommandParser {
 		String priority_A = determinePriority(formatToStandardCommandContent(segments[0].trim())); 
 		String priority_B = determinePriority(formatToStandardCommandContent(segments[1].trim()));
 
-		if (priority_A != null && priority_B != null) {
+		if (!priority_A.equals(EMPTY_STRING) && !priority_B.equals(EMPTY_STRING)) {
 			//change A to B
 		}
-		else if (priority_A != null ) {
+		else if (!priority_A.equals(EMPTY_STRING)) {
 			//retain A
 		}
-		else if (priority_B != null) {
+		else if (!priority_B.equals(EMPTY_STRING)) {
 			//change A to B
 		}
 		else {

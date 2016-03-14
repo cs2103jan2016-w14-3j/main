@@ -105,7 +105,7 @@ public class Logic {
 		if (command.isCommand(ADD_COMMAND)) {
 
 			task = createTask(command);
-			if (task.getTask() != null) {
+			if (!task.getTask().equals("")) {
 				handleAddCommand(task);
 			}
 			result = temp.displayTemp();
