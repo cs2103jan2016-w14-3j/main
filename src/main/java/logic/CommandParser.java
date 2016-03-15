@@ -409,6 +409,10 @@ public class CommandParser {
 		}
 
 		List<Date> dates = parser.parse(content);
+		
+		if (dates.size() == 0) {
+			return EMPTY_STRING;
+		}
 
 		if (isOverdue(dates.get(0))) {
 			Calendar calendar = Calendar.getInstance();
