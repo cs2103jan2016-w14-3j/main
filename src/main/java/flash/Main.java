@@ -1,7 +1,6 @@
 package main.java.flash;
 
 import java.io.File;
-
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.prefs.Preferences;
@@ -17,10 +16,8 @@ import main.java.logic.Logic;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.EmptyTableController;
-import main.java.gui.RootLayoutController;
 import main.java.gui.TasksItemController;
 import main.java.gui.TasksTableController;
-import main.java.gui.HistoryLogsController;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
@@ -38,12 +35,9 @@ public class Main extends Application {
 	private Task task;
 
 	private TasksTableController tableControl = new TasksTableController();
-	private HistoryLogsController logControl = new HistoryLogsController();
 	private CommandBarController barControl = new CommandBarController(this);
 	private EmptyTableController emptyTable;
 
-	private Boolean isChange = false;
-	private Boolean isDelete = false;
 
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
@@ -114,7 +108,7 @@ public class Main extends Application {
 				}
 			});
 
-			RootLayoutController rootController = new RootLayoutController(this);
+			//RootLayoutController rootController = new RootLayoutController(this);
 
 			showCommandBar();
 			showTasks(this);
@@ -203,6 +197,7 @@ public class Main extends Application {
 
 	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text)
 			throws Exception {
+		assert commandBarController != null;
 		// TODO Auto-generated method stub
 		int i;
 		String taskname = null;
@@ -260,11 +255,13 @@ public class Main extends Application {
 	}
 
 	private void handleGetPastCommands(KeyEvent event) {
+		assert event != null;
 		String pastCommand = getPastCommandFromHistory(event.getCode());
 		barControl.updateUserInput(pastCommand);
 	}
 
 	private String getPastCommandFromHistory(KeyCode code) {
+		
 		if (code == KeyCode.DOWN) {
 			return getNextCommand();
 		} else if (code == KeyCode.UP) {
@@ -289,6 +286,8 @@ public class Main extends Application {
 	}
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
+		assert commandBarController != null;
+		
 		int number;
 		checkIsTasksEmpty();
 
@@ -332,6 +331,7 @@ public class Main extends Application {
 	}
 	
 	private void handleDeleteCommand(String userInput) throws Exception {
+		assert userInput != null;
 		//System.out.println(searchResult.get(0).getTask());
 		for (Task temp : searchResult) {
 			if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
@@ -346,6 +346,8 @@ public class Main extends Application {
 	}
 
 	private void handleEditCommand(String userInput) throws Exception {
+		assert userInput != null;
+		
 		String sub = userInput.substring(5, userInput.indexOf(","));
 		//System.out.println(sub);
 		finalResult.clear();
@@ -385,6 +387,7 @@ public class Main extends Application {
 	}
 
 	private void setFeedback(CommandBarController commandBarController, String userInput) {
+		assert commandBarController != null;
 		int i = 1;
 		if (userInput.indexOf(' ') != -1) {
 			i = userInput.indexOf(' ');
@@ -419,12 +422,5 @@ public class Main extends Application {
 		}
 	}
 
-	private void populateList2(TasksTableController tableControl, ArrayList<Task> result) {
-		int count = 1;
-
-		for (Task temp : result) {
-			tableControl.addTask(temp, count++);
-		}
-	}
 
 }
