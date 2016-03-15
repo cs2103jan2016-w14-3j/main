@@ -445,31 +445,12 @@ public class CommandParser {
 		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
 		CommandParser par = new CommandParser();
 		String str = "by by by monster on mon";
-		//System.out.println(par.determineTask(str) + "me");
-		//System.out.print(str.length());
-		//String good = null;
-		//assert good != null;
-		//System.out.println(good + " , " + good);
-		//System.out.print("on".split("on").length);
-		//PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
-		//System.out.println(pars.parse("by 2"));
-		int time = par.getStartingIndexOfIdentifier(str);
-		int priority = par.getStartingIndexOfPriority(str);
-		int task = par.getStartingIndexOfTask(str, time, priority);
-		System.out.println(par.formatToStandardCommandContent(str));
-		System.out.print("task:" + task + "; " + "time:" + time + "; " +
-				"priority:" + priority + ";");
-
-		//System.out.println("do".split(" ").length);
-		//pq.offer(3);
-		//pq.offer(5);
-		//pq.offer(1);
-		//pq.offer(10);
-
-		//System.out.print(pq.poll());
-		//System.out.print(pq.poll());
-		//System.out.print(pq.poll());
-		//System.out.print(pq.poll());
+		//int time = par.getStartingIndexOfIdentifier(str);
+		//int priority = par.getStartingIndexOfPriority(str);
+		//int task = par.getStartingIndexOfTask(str, time, priority);
+		//System.out.println(par.formatToStandardCommandContent(str));
+		//System.out.print("task:" + task + "; " + "time:" + time + "; " +
+			//	"priority:" + priority + ";");
 		//Command command = new Command("edit more, #yellow by mon to do sth");
 		//command = par.parseCommand(command);
 		//Task task = command.createTask();
