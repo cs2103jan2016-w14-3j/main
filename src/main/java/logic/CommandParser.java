@@ -4,9 +4,10 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.PriorityQueue;
+
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import main.java.data.*;
-import main.java.storage.TempStorage;
 import org.apache.commons.lang3.StringUtils;
 
 
@@ -21,11 +22,12 @@ public class CommandParser {
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
-	
+
 
 	private static final String WHITE_SPACE = " ";
 	private static final String DEADLINE_FLAG = "by";
-	private static final String EVENT_FLAG = "on";
+	private static final String EVENT_FLAG_ON = "on";
+	private static final String EVENT_FLAG_AT = "at";
 	private static final String DEADLINE_TASK = "deadline";
 	private static final String EVENT_TASK = "event";
 	private static final String PRIORITY_FLAG = "#";
@@ -104,7 +106,7 @@ public class CommandParser {
 				return EDIT_COMMAND;
 
 			}
-			
+
 			else if (isCommand(UNDO_COMMAND, firstWord)) {
 				return UNDO_COMMAND;
 			}
@@ -124,7 +126,6 @@ public class CommandParser {
 	}
 
 	private boolean isCommand(String operation, String keyword) {
-		assert operation != null;
 		assert keyword != null;
 		return operation.equalsIgnoreCase(keyword);
 	}
@@ -139,6 +140,7 @@ public class CommandParser {
 
 	private String[] determineParameters(String commandType, String commandContent) {
 		assert commandType != null;
+		//assert 1==2;
 
 		String[] parameters = new String[4];
 
@@ -173,243 +175,47 @@ public class CommandParser {
 		else if (commandType.equalsIgnoreCase(DELETE_COMMAND)) {
 
 		}
-		
+
 
 		return parameters;
 
 
 	}
 
-	private String formatToStandardCommandContent(String content) {
-
-		String timeIdentifier = EMPTY_STRING;
-		if (searchWord(content, DEADLINE_FLAG) != -1) {
-			timeIdentifier = DEADLINE_FLAG;
-		}
-
-		else if (searchWord(content, EVENT_FLAG) != -1) {
-			timeIdentifier = EVENT_FLAG;
-
-		}
-
-		//task only
-		if (timeIdentifier.equals(EMPTY_STRING) && 
-				content.indexOf(PRIORITY_FLAG) == -1) {
-			if (content.isEmpty()) {
-				return null; //if nothing, return null
-			}
-			return content.trim();
-		}
-
-
-		//task and tag only
-		else if (timeIdentifier.equals(EMPTY_STRING)) {
-			//task-tag
-			if (content.indexOf(PRIORITY_FLAG) != 0) {
-				return content.trim();
-			}
-			//tag-task
-			else {
-				//if no task
-				if (!content.trim().contains(WHITE_SPACE)) {
-					return content.trim();
-				}
-
-				//have task
-				content = content.substring(content.indexOf(WHITE_SPACE) + 1).trim() 
-						+ WHITE_SPACE + content.substring(0, 
-								(content.indexOf(WHITE_SPACE))).trim();
-				return content.trim();
-			}
-		}
-
-		//task and time only
-		else if (!content.contains(PRIORITY_FLAG)) {
-			//task-time
-			if (!content.substring(0,2).equalsIgnoreCase(timeIdentifier)) {
-				return content.trim();
-			}
-			//time-task
-			else {
-				//if have task
-				if (containsTask(content, timeIdentifier)) {
-					content = content.substring((getTaskStartingIndex
-							(content, timeIdentifier))).trim() 
-							+ WHITE_SPACE + content.substring(0, 
-									(getTaskStartingIndex(content, timeIdentifier))).trim();
-				}
-				//no task only time
-				return content.trim();
-			}	
-		}
-
-		//task, time and tag
-		else {
-			//task-time-tag or task-tag-time
-			if (searchWord(content, timeIdentifier) != 0 && 
-					!content.substring(0,1).equals(PRIORITY_FLAG)) {
-
-				//task-time-tag
-				if (searchWord(content, timeIdentifier) < content.indexOf(PRIORITY_FLAG)) {
-					return content.trim();
-				}
-				//task-tag-time
-				else {
-					String task = content.substring(0, content.indexOf(PRIORITY_FLAG));
-					String tag = content.substring(content.indexOf(PRIORITY_FLAG), searchWord(content, timeIdentifier) - 1);
-					String time = content.substring(searchWord(content, timeIdentifier));
-
-					//if no task
-					if (task.isEmpty()) {
-						return time.trim() + WHITE_SPACE + tag.trim();
-					}
-
-					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
-				}
-			}
-			//time-task-tag or time-tag-task
-			else if (!content.substring(0,1).equalsIgnoreCase(PRIORITY_FLAG)) {
-
-				//time-tag-task
-				if (content.substring(content.indexOf(PRIORITY_FLAG)).trim().contains(WHITE_SPACE)) {
-					String time = content.substring(0, content.indexOf(PRIORITY_FLAG) - 1);
-					String rest = content.substring(content.indexOf(PRIORITY_FLAG)).trim();
-					//no task
-					if (!rest.contains(WHITE_SPACE)) {
-						return time.trim() + WHITE_SPACE + rest.trim();
-					}
-					//have task
-					String tag = rest.substring(0, rest.indexOf(WHITE_SPACE));
-					String task = rest.substring(rest.indexOf(WHITE_SPACE) + 1);
-					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
-				}
-				//time-task-tag
-				else {
-					//no task
-					if (!containsTask(content.substring(0, 
-							content.indexOf(PRIORITY_FLAG) - 1), timeIdentifier)) {
-
-						String time = content.substring(0, content.indexOf(PRIORITY_FLAG) - 1);
-						String tag = content.substring(content.indexOf(PRIORITY_FLAG));
-
-						return time.trim() + WHITE_SPACE + tag.trim();
-					}
-
-					//have task
-					int taskStartingIndex = getTaskStartingIndex(content.substring(0,
-							content.indexOf(PRIORITY_FLAG) - 1).trim(), timeIdentifier);
-					String time = content.substring(0, taskStartingIndex - 1);
-					String task = content.substring(taskStartingIndex, 
-							content.indexOf(PRIORITY_FLAG) - 1);
-					String tag = content.substring(content.indexOf(PRIORITY_FLAG));
-					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
-				}
-
-			}
-
-			//tag-task-time or tag-time-task
-			else {
-
-				//tag-time-task
-				if (searchWord(content, timeIdentifier) == content.indexOf(WHITE_SPACE) + 1) {
-
-					String tag = content.substring(0, content.indexOf(WHITE_SPACE));
-					String rest = content.substring(searchWord(content, 
-							timeIdentifier)).trim();
-
-					//no task
-					if (!containsTask(rest, timeIdentifier)) {
-						return rest.trim() + WHITE_SPACE + tag.trim();
-					}
-					//have task
-					int taskStartingIndex = getTaskStartingIndex(rest, timeIdentifier);
-					String time = rest.substring(0, taskStartingIndex - 1);
-					String task = rest.substring(taskStartingIndex);
-					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
-				}
-
-				//tag-task-time
-				else {
-
-					String tag = content.substring(0, content.indexOf(WHITE_SPACE));
-					//no task
-					if (searchWord(content, timeIdentifier) == content.indexOf(WHITE_SPACE) + 1) {
-						return content.substring(content.indexOf(WHITE_SPACE) + 1).trim() +
-								content.substring(0, content.indexOf(WHITE_SPACE));
-					}
-					//have task
-					String task = content.substring(content.indexOf(WHITE_SPACE) + 1, 
-							searchWord(content, timeIdentifier) - 1);
-					String time = content.substring(searchWord(content, timeIdentifier));
-					return task.trim() + WHITE_SPACE + time.trim() + WHITE_SPACE + tag.trim();
-				}
-
-			}
-		}
-	}
-
 	private String determineTask(String content) {
-		String timeIdentifier = EMPTY_STRING;
-		if (searchWord(content, DEADLINE_FLAG) != -1) {
-			timeIdentifier = DEADLINE_FLAG;
-		}
-
-		else if (searchWord(content, EVENT_FLAG) != -1) {
-			timeIdentifier = EVENT_FLAG;
-		}
-
-
-		if (!timeIdentifier.equals(EMPTY_STRING)) {
-			if (content.substring(0,2).equalsIgnoreCase(timeIdentifier)) {
-				return EMPTY_STRING;
+		int timeIndex = getStartingIndexOfIdentifier(content);
+		if (timeIndex == -1) {
+			int priorityIndex = getStartingIndexOfPriority(content);
+			if (priorityIndex == -1) {
+				return content;
 			}
-			return content.substring(0, searchWord(content, timeIdentifier) - 1).trim();
-		}
-
-		else if (content.contains(PRIORITY_FLAG)) {
-			if (content.substring(0,1).equals(PRIORITY_FLAG)) {
-				return EMPTY_STRING;
+			else {
+				return content.substring(0, priorityIndex - 1);
 			}
-			return content.substring(0, content.indexOf(PRIORITY_FLAG) - 1).trim();
 		}
-
 		else {
-			if (content.trim().isEmpty()) {
-				return EMPTY_STRING;
-			}
-			return content.trim();
+			return content.substring(0, timeIndex - 1);
 		}
 	}
 
 	private String determineTime(String content) {
-		String timeIdentifier = EMPTY_STRING;
 
-		if (searchWord(content, DEADLINE_FLAG) != -1) {
-			timeIdentifier = DEADLINE_FLAG;
-		}
-
-		else if (searchWord(content, EVENT_FLAG) != -1) {
-			timeIdentifier = EVENT_FLAG;
-		}
-
-
-		//no time
-		if (timeIdentifier.equals(EMPTY_STRING)) {
+		int timeIndex = getStartingIndexOfIdentifier(content);
+		int priorityIndex = getStartingIndexOfPriority(content);
+		if (timeIndex == -1) {
 			return EMPTY_STRING;
 		}
-
-		//has tag
-		if (content.contains(PRIORITY_FLAG)) {
-			content = content.substring(searchWord(content, timeIdentifier), 
-					content.indexOf(PRIORITY_FLAG));
+		if (priorityIndex == -1) {
+			content = content.substring(timeIndex);
 		}
-		//no tag
 		else {
-			content = content.substring(searchWord(content, timeIdentifier));
+			content = content.substring(timeIndex, priorityIndex - 1);
 		}
+		
+		System.out.println(content + "me");
 
 		List<Date> dates = parser.parse(content);
-		
+
 		if (dates.size() == 0) {
 			return EMPTY_STRING;
 		}
@@ -441,6 +247,7 @@ public class CommandParser {
 	}
 
 	private String determinePriority(String content) {
+
 		if (content.contains(PRIORITY_FLAG)) {
 			return content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
 		}
@@ -450,10 +257,15 @@ public class CommandParser {
 	}
 
 	private String determineTaskType(String content) {
-		if (searchWord(content, DEADLINE_FLAG) != -1) {
-			return DEADLINE_TASK;
+		int timeIndex = getStartingIndexOfIdentifier(content);
+		if (timeIndex == -1) {
+			return EVENT_TASK;
 		}
 		else {
+			String identifier = content.substring(timeIndex, timeIndex + 1);
+			if (identifier.equalsIgnoreCase(DEADLINE_FLAG)) {
+				return DEADLINE_TASK;
+			}
 			return EVENT_TASK;
 		}
 	}
@@ -523,21 +335,146 @@ public class CommandParser {
 		return taskType;
 	}
 
+	private String formatToStandardCommandContent(String content) {
+		content = content.replaceAll("\\s+", " ").trim();
+		int time = getStartingIndexOfIdentifier(content);
+		int priority = getStartingIndexOfPriority(content);
+		int task = getStartingIndexOfTask(content, time, priority);
+
+		//task only
+		if (time == -1 && priority == -1) {
+			//System.out.println(content + "me");
+			return content;
+		}
+		//no time,has priority
+		else if (time == -1) {
+			//only priority
+			if (task == -1) {
+				return content;
+			}
+
+			else {
+				if (task > priority) {
+					return content.substring(task)+ " " +content.substring(0, task - 1);
+				}
+				else {
+					return content;
+				}
+			}
+		}
+		//no priority,has time
+		else if (priority == -1) {
+			//only time
+			if (task == -1) {
+				return content;
+			}
+
+			else {
+				if (task > time) {
+					return content.substring(task)+ " " +content.substring(0, task - 1);
+				}
+				else {
+					return content;
+				}
+			}	
+		}
+
+		//time,priority,task(maybe)
+		else {
+			if (task == -1) {
+				if (time > priority) {
+					return content.substring(time)+ " " +content.substring(0, time - 1);
+				}
+				else {
+					return content;
+				}
+			}
+
+			else {
+				if (task < time && task < priority) {
+					if (time < priority) {
+						return content;
+					}
+					//task-priority-time
+					else {
+						return content.substring(task,priority) + 
+								content.substring(time) + " " + 
+								content.substring(priority,time - 1);
+					}
+				}
+				//priority-task-time
+				else if (task < time) {
+					return content.substring(task) + " " +
+							content.substring(priority,task - 1);
+				}
+				//time-task-priority
+				else if (task < priority) {
+					return content.substring(task, priority - 1) + " " 
+							+ content.substring(time, task - 1) + " " +
+							content.substring(priority);
+				}
+				//task is the last
+				else {
+					//time-priority-task
+					if (time < priority) {
+						return content.substring(task) + " " 
+								+ content.substring(time, priority - 1) + " " +
+								content.substring(priority, task - 1);
+					}
+					//priority-time-task
+					else {
+						return content.substring(task) + " " 
+								+ content.substring(time, task - 1) + " " +
+								content.substring(priority, time - 1);
+					}
+
+				}
+			}
+
+
+		}
+
+	}
+
 
 
 	public static void main(String[] args)
 	{
-		//PrettyTimeParser parser = new PrettyTimeParser();
+		PrettyTimeParser pars = new PrettyTimeParser();
 
 		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
 		CommandParser par = new CommandParser();
-		String good = null;
-		System.out.println(good + " , " + good);
+		String str = "by by by monster on mon";
+		//System.out.println(par.determineTask(str) + "me");
+		//System.out.print(str.length());
+		//String good = null;
+		//assert good != null;
+		//System.out.println(good + " , " + good);
+		//System.out.print("on".split("on").length);
+		//PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+		//System.out.println(pars.parse("by 2"));
+		int time = par.getStartingIndexOfIdentifier(str);
+		int priority = par.getStartingIndexOfPriority(str);
+		int task = par.getStartingIndexOfTask(str, time, priority);
+		System.out.println(par.formatToStandardCommandContent(str));
+		System.out.print("task:" + task + "; " + "time:" + time + "; " +
+				"priority:" + priority + ";");
+
+		//System.out.println("do".split(" ").length);
+		//pq.offer(3);
+		//pq.offer(5);
+		//pq.offer(1);
+		//pq.offer(10);
+
+		//System.out.print(pq.poll());
+		//System.out.print(pq.poll());
+		//System.out.print(pq.poll());
+		//System.out.print(pq.poll());
 		//Command command = new Command("edit more, #yellow by mon to do sth");
 		//command = par.parseCommand(command);
 		//Task task = command.createTask();
 		//System.out.println(par.searchWord("I am in EUROPE", "EUROPE"));
-		System.out.println(par.formatToStandardCommandContent("to do sth okay or not"));
+		//System.out.println(par.formatToStandardCommandContent("take selfie with my kitten to post on mon on instagram"));
 
 	}
 	public static ArrayList<Task> parseEditTask(Task task) {
@@ -588,87 +525,242 @@ public class CommandParser {
 		return parameters ;
 	}
 
-	private int getTaskStartingIndex(String content, String timeIdentifier) {
-
-		//content = time-task
-		int count = StringUtils.countMatches(content, WHITE_SPACE);
-		String timeCurr = EMPTY_STRING;
-		for (int i = 2; i <= count; i++) {
-			String check = content.substring(content.indexOf(timeIdentifier) + 3, 
-					StringUtils.ordinalIndexOf(content, WHITE_SPACE, i));
-			String timeNext = parser.parse(check).toString();
-
-			if (!timeNext.equals("[]")) {
-				timeNext = getRoughTime(timeNext);
-			}
-
-			else {
-				timeNext = "" + i;
-			}
-
-			if (timeNext.equals(timeCurr)) {
-				return StringUtils.ordinalIndexOf(content, WHITE_SPACE, i - 1) + 1;
-			}
-			timeCurr = timeNext;
-		}
-		return content.lastIndexOf(WHITE_SPACE) + 1;
-	}
-
-	private boolean containsTask(String content, String timeIdentifier) {
-
-		int index = content.lastIndexOf(WHITE_SPACE);
-
-		if (index == 3) {
-			return false;
-		}
-		//System.out.println(content);
-
-
-		String curr;
-		String check = parser.parse(content).toString();
-		check = getRoughTime(check);
-		//System.out.println(check);
-
-		int num = StringUtils.countMatches(content, WHITE_SPACE);
-		for (int i = 1; i <= num; i++) {
-			curr = content.substring(0, StringUtils.ordinalIndexOf(content, WHITE_SPACE, 
-					i));
-
-			String time = parser.parse(curr).toString();
-
-			if (!time.equals("[]")) {
-				time = getRoughTime(time);
-				if (check.equals(time)) {
-					System.out.println("Task found");
-					return true;
-				}
-			}
-
-		}
-		//System.out.println(check);
-
-		return false;
-	}
-
-	private int searchWord(String content, String word) {
-		String[] segments = content.split(WHITE_SPACE);
-		int index = 0;
-		for (int i = 0; i < segments.length; i++) {
-			if (segments[i].matches(".*\\b" + word + "\\b.*")) {
-				return index;
-			}
-
-			index += segments[i].length() + 1;
-		}
-
-		return -1;
-	}
-
 	private String getRoughTime(String time) {
 		String[] segments = time.split(TIME_SEPARATOR);
 		time = segments[0] + segments[1] + segments[2].substring(2);
 		return time;
 	}
 
+	private int getStartingIndexOfPriority(String content) {
+
+		return content.indexOf("#");
+	}
+
+
+	private int getStartingIndexOfTask(String content, int timeIndex, int priorityIndex) {
+		//no time, no tag -> must have and only task
+		if (timeIndex == -1 && priorityIndex == -1) {
+			return 0;
+		}
+		//no time, has tag -> tag-task/task-tag/tag
+		else if (timeIndex == -1) {
+			//tag
+			if (!content.contains(WHITE_SPACE)) {
+				return -1;
+			}
+			else {
+				//tag-task
+				if (content.substring(0,1).equals("#")) {
+					return content.indexOf(WHITE_SPACE) + 1;
+				}
+				//task-tag
+				else {
+					return 0;
+				}
+			}
+		}
+
+		//no priority, has time -> time-task/task-time/time
+		else if (priorityIndex == -1) {
+
+			//<time>/<time-task>
+			if (timeIndex == 0) {
+				//fill in
+				return locateTaskIndexInSegment(content);	
+			}
+			//task-time
+			else {
+				//System.out.println(content + "me");
+				return 0;
+			}	
+		}
+
+		//has time, has priority -> 
+		//1.task-priority-time
+		//2.task-time-priority
+		//3.time-task-priority
+		//4.priority-task-time
+		//5.time-priority-task
+		//6.priority-time-task
+		//7.priority-time
+		//8.time-priority
+		else {
+			//3,5,8
+			if (timeIndex == 0) {
+				//5
+				if (priorityIndex < content.lastIndexOf(WHITE_SPACE)) {
+					//System.out.println("here");
+					return content.indexOf(WHITE_SPACE,content.indexOf("#")) + 1;
+				}
+				//3,8   <time-task>-priority/<time>-priority
+				else {
+					//fill in
+					String segment = content.substring(0,content.indexOf("#")-1);
+					//System.out.println(segment);
+					return locateTaskIndexInSegment(segment);
+
+
+				}	
+			}
+
+			//4,6,7
+			else if (priorityIndex == 0) {
+				//6,7 priority-<time>/priority-<time-task>
+				if (timeIndex == content.indexOf(WHITE_SPACE) + 1) {
+					//fill in
+					int baseIndex = content.indexOf(WHITE_SPACE) + 1;
+					String segment = content.substring(baseIndex);
+					//System.out.println(locateTaskIndexInSegment(segment));
+					int val = locateTaskIndexInSegment(segment);
+					if (val == -1) {
+						return -1;
+					}
+					return baseIndex + val;
+
+				}
+				//4
+				else {
+					return content.indexOf(WHITE_SPACE) + 1;
+				}
+
+			}
+
+			//1,2 ->task must be present
+			else {
+				return 0;
+			}
+
+		}
+	}
+
+	private int locateTaskIndexInSegment(String content) {
+		int result = -1;
+		//input: time/time-task
+		int count = StringUtils.countMatches(content, WHITE_SPACE);
+		//System.out.println(count);
+		//
+		if (count == 1) {
+			return -1;
+		}
+
+		else {
+			String oldTime = getRoughTime(parser.parse(content).toString());
+			for (int i = 2; i <= count; i++) {
+				int index = StringUtils.ordinalIndexOf(content, WHITE_SPACE, i);
+				String newTime = content.substring(0, index);
+				newTime = getRoughTime(parser.parse(newTime).toString());
+				if (newTime.equals(oldTime)) {
+					result = index + 1;
+					break;
+				}
+			}
+			return result;
+		}
+
+	}
+
+
+
+	private int getStartingIndexOfIdentifier(String content) {
+		String[] segments = content.split(WHITE_SPACE);
+		int numSpace = segments.length - 1;
+
+		//no time
+		if (numSpace == 0) {
+			return -1;
+		}
+
+		PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
+		int pointer = 0;
+
+
+		for (int i = 1; i <= numSpace; i++) {
+			int index = StringUtils.ordinalIndexOf(content, WHITE_SPACE, i);
+			//System.out.println("wp is at " + index);
+
+			if (isValidTimeIdentifier(content.substring(pointer, index))) {
+				pq.offer(pointer);
+			}
+
+			pointer = index + 1;
+		}
+
+		ArrayList<Integer> list = new ArrayList<Integer>();
+
+		int size = pq.size();
+
+		for (int i = 0; i < size; i++) {
+			list.add(pq.poll());
+		}
+
+		System.out.println("list size is " + list.size());
+
+		//no time
+		if (list.size() == 0) {
+			return -1;
+		}
+
+		//the only one match is the real identifier
+		if (list.size() == 1) {
+			if (!parser.parse(content).toString().equals("[]")) {
+				return list.get(0);
+			}
+			else {
+				return -1;
+			}
+		}
+
+		if (list.size() == 2) {
+			if (!parser.parse(content.substring(list.get(0), list.get(1)))
+					.toString().equals("[]")) {
+				return list.get(0);
+			}
+
+			else if (!parser.parse(content.substring(list.get(1)))
+					.toString().equals("[]")) {
+				return list.get(1);
+			}
+
+			else {
+				return -1;
+			}
+		}
+
+		//list size is at least 3
+		//check substrings to determine the starting index of the real identifier
+		for (int i = 0; i < list.size(); i++) {
+			if (i < list.size() - 1) {
+				String substring = content.substring(list.get(i),list.get(i + 1));
+				if (!parser.parse(substring).toString().equals("[]")) {
+					return list.get(i);
+				}
+			}
+
+			else {
+				String substring = content.substring(list.get(i));
+				if (!parser.parse(substring).toString().equals("[]")) {
+					return list.get(i);
+				}
+			}
+		}
+
+
+		return -1;
+	}
+
+	private boolean isValidTimeIdentifier(String content) {
+		//content.spit
+		if (content.equalsIgnoreCase(DEADLINE_FLAG)) {
+			return true;
+		}
+
+		else if (content.equalsIgnoreCase(EVENT_FLAG_AT)) {
+			return true;
+		}
+		else if (content.equalsIgnoreCase(EVENT_FLAG_ON)) {
+			return true;
+		}
+		return false;
+	}
 
 }
