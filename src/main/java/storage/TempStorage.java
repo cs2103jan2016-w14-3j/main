@@ -1,8 +1,12 @@
 package main.java.storage;
 
+import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Stack;
+import java.util.logging.FileHandler;
+import java.util.logging.Logger;
+import java.util.logging.SimpleFormatter;
 
 import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
@@ -16,14 +20,21 @@ public class TempStorage {
 	private ArrayList<Task> tempList;
 	private Storage storage;
 	private Stack< ArrayList<Task> > undoStack; 
+	Logger logger = Logger.getLogger("MyLog");  
+	FileHandler fileHandler;  
 
-	public TempStorage() {
+	public TempStorage() throws SecurityException, IOException {
 		
 		storage = new Storage();
 		undoStack =  new Stack< ArrayList<Task> >(); 
 		taskList = retrieveListFromFile();
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
+		fileHandler = new FileHandler("MyLogFile.log");  
+        logger.addHandler(fileHandler);
+        SimpleFormatter formatter = new SimpleFormatter();  
+        fileHandler.setFormatter(formatter);  
+		logger.info("Log created");
 	}
 
 	public void changeDirectory(String path) {
@@ -64,13 +75,14 @@ public class TempStorage {
 	}
 	
 	public void deleteFromTemp(Task task) {
-		assert task != null;
+		assert task == null;
 		
 		int indexOfTaskToDelete = searchTemp(task);
 		taskList.remove(taskList.get(indexOfTaskToDelete));
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		storage.deleteFromFile(indexOfTaskToDelete);
+		
 	}
 	
 	public void clearTemp() {
