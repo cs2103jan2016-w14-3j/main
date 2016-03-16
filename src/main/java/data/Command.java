@@ -17,7 +17,7 @@ public class Command {
 	private static final int TASK_TYPE = 3;
 
 	public Command(String command) {
-		this.original = command;
+		this.original = command.trim();
 		//this.commandParameters = new String[4];
 	}
 

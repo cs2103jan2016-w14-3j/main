@@ -132,10 +132,20 @@ public class CommandParser {
 
 	private String retrieveCommandContent(String originalCommand) {
 		assert originalCommand != null;
+		if (originalCommand.isEmpty()) {
+			throw new IllegalArgumentException();
+		}
+		
+		if (getCommandKeyword(originalCommand).equalsIgnoreCase(ADD_COMMAND)) {
+			if (!getFirstKeyword(originalCommand).equalsIgnoreCase(ADD_COMMAND)){
+				return originalCommand;
+			}
+		}
 		if (!originalCommand.contains(WHITE_SPACE)) {
 			return EMPTY_STRING;
 		}
-		return originalCommand.substring(originalCommand.indexOf(WHITE_SPACE) + 1).trim();
+		String content = originalCommand.substring(originalCommand.indexOf(WHITE_SPACE) + 1);
+		return content.trim();
 	}
 
 	private String[] determineParameters(String commandType, String commandContent) {
@@ -211,7 +221,7 @@ public class CommandParser {
 		else {
 			content = content.substring(timeIndex, priorityIndex - 1);
 		}
-		
+
 		System.out.println(content + "me");
 
 		List<Date> dates = parser.parse(content);
@@ -450,7 +460,7 @@ public class CommandParser {
 		//int task = par.getStartingIndexOfTask(str, time, priority);
 		//System.out.println(par.formatToStandardCommandContent(str));
 		//System.out.print("task:" + task + "; " + "time:" + time + "; " +
-			//	"priority:" + priority + ";");
+		//	"priority:" + priority + ";");
 		//Command command = new Command("edit more, #yellow by mon to do sth");
 		//command = par.parseCommand(command);
 		//Task task = command.createTask();
