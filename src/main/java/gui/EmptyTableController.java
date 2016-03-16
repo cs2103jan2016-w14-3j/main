@@ -15,15 +15,6 @@ import main.java.flash.Main;
 
 public class EmptyTableController extends BorderPane {
 
-	private Main mainApp;
-	private HistoryLogsController historyLogs;
-
-	@FXML
-	private ListView<TasksItemController> tasksDisplay;
-
-//	@FXML
-//	private Label title;
-
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/EmptyTable.fxml";
 
 	private ArrayList<TasksItemController> items;
@@ -39,46 +30,8 @@ public class EmptyTableController extends BorderPane {
 			e.printStackTrace();
 		}
 
-		//title.setText(taskName);
-		initialise();
-	}
-	
-	private void initialise() {
-		items = new ArrayList<TasksItemController>();
-		tasksDisplay.setItems(FXCollections.observableList(items));
-	}
-
-	public void addTask(Task task, int count) {	
-	
-		addFileStatsItem(task,count);
-		
-		//Collections.sort(items);
-
-		tasksDisplay.setItems(FXCollections.observableList(items));
-		
-		//showLog();
 	}
 	
 	
-	public void clearTask(){
-	   items.clear();    	
-	}
-	
-	
-	public void showLog(){
-		historyLogs.showLog();
-	}
-
-	/**
-	 * Each TaskItems displayed as a row
-	 * in this custom view.
-	 * @param count 
-	 * 
-	 * @param currentFile
-	 * @param currentNumLines
-	 */
-	private void addFileStatsItem(Task task, int count) {
-		items.add(new TasksItemController(task,count));
-	}
 
 }
