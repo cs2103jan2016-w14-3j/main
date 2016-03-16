@@ -2,6 +2,7 @@ package main.java.gui;
 
 import java.io.IOException;
 
+
 import java.util.ArrayList;
 import java.util.Collections;
 import javafx.collections.FXCollections;
@@ -20,7 +21,6 @@ import main.java.flash.Main;
 public class TasksTableController extends BorderPane {
 
 	private Main mainApp;
-	private HistoryLogsController historyLogs;
 	private CommandBarController commandBar;
 
 	@FXML
@@ -75,10 +75,6 @@ public class TasksTableController extends BorderPane {
 	   items.clear();    	
 	}
 	
-	
-	public void showLog(){
-		historyLogs.showLog();
-	}
 
 	/**
 	 * Each TaskItems displayed as a row

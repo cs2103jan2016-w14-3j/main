@@ -16,8 +16,6 @@ import main.java.flash.Main;
 public class EmptyTableController extends BorderPane {
 
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/EmptyTable.fxml";
-
-	private ArrayList<TasksItemController> items;
 	
 	public EmptyTableController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_FXML));
