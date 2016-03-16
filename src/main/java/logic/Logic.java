@@ -23,9 +23,6 @@ public class Logic {
 	private static final String UNDO_COMMAND = "undo";
 
 	private static final int TASK = 0;
-	private static final int TIME = 1;
-	private static final int PRIORITY = 2;
-	private static final int TASK_TYPE = 3;
 
 	private Task task;
 	private TempStorage temp;

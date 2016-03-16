@@ -443,13 +443,9 @@ public class CommandParser {
 								+ content.substring(time, task - 1) + " " +
 								content.substring(priority, time - 1);
 					}
-
 				}
 			}
-
-
 		}
-
 	}
 
 
@@ -567,7 +563,6 @@ public class CommandParser {
 			}
 			//task-time
 			else {
-				//System.out.println(content + "me");
 				return 0;
 			}	
 		}
@@ -586,14 +581,12 @@ public class CommandParser {
 			if (timeIndex == 0) {
 				//5
 				if (priorityIndex < content.lastIndexOf(WHITE_SPACE)) {
-					//System.out.println("here");
 					return content.indexOf(WHITE_SPACE,content.indexOf("#")) + 1;
 				}
 				//3,8   <time-task>-priority/<time>-priority
 				else {
 					//fill in
 					String segment = content.substring(0,content.indexOf("#")-1);
-					//System.out.println(segment);
 					return locateTaskIndexInSegment(segment);
 
 
@@ -607,7 +600,6 @@ public class CommandParser {
 					//fill in
 					int baseIndex = content.indexOf(WHITE_SPACE) + 1;
 					String segment = content.substring(baseIndex);
-					//System.out.println(locateTaskIndexInSegment(segment));
 					int val = locateTaskIndexInSegment(segment);
 					if (val == -1) {
 						return -1;
@@ -634,7 +626,6 @@ public class CommandParser {
 		int result = -1;
 		//input: time/time-task
 		int count = StringUtils.countMatches(content, WHITE_SPACE);
-		//System.out.println(count);
 		//
 		if (count == 1) {
 			return -1;
@@ -676,7 +667,7 @@ public class CommandParser {
 
 		for (int i = 1; i <= numSpace; i++) {
 			int index = StringUtils.ordinalIndexOf(content, WHITE_SPACE, i);
-			//System.out.println("wp is at " + index);
+		
 
 			if (isValidTimeIdentifier(content.substring(pointer, index))) {
 				pq.offer(pointer);
@@ -693,7 +684,7 @@ public class CommandParser {
 			list.add(pq.poll());
 		}
 
-		System.out.println("list size is " + list.size());
+		
 
 		//no time
 		if (list.size() == 0) {
