@@ -20,9 +20,6 @@ import main.java.flash.Main;
 
 public class TasksTableController extends BorderPane {
 
-	private Main mainApp;
-	private CommandBarController commandBar;
-
 	@FXML
 	private ListView<TasksItemController> tasksDisplay;
 
@@ -30,7 +27,6 @@ public class TasksTableController extends BorderPane {
 	private Label title;
 
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/TasksTable.fxml";
-
 	private ArrayList<TasksItemController> items;
 	protected String taskname;
 	
@@ -58,23 +54,10 @@ public class TasksTableController extends BorderPane {
 	}
 
 
-
-	public void addTask(Task task, int count) {	
-	
-		addFileStatsItem(task,count);
-		
-		//Collections.sort(items);
-
+	public void addTask(Task task) {	
+		setTasksItem(task);
 		tasksDisplay.setItems(FXCollections.observableList(items));
-		
-		//showLog();
-	}
-	
-	
-	public void clearTask(){
-	   items.clear();    	
-	}
-	
+	}	
 
 	/**
 	 * Each TaskItems displayed as a row
@@ -84,12 +67,11 @@ public class TasksTableController extends BorderPane {
 	 * @param currentFile
 	 * @param currentNumLines
 	 */
-	private void addFileStatsItem(Task task, int count) {
-		items.add(new TasksItemController(task,count));
+	private void setTasksItem(Task task) {
+		items.add(new TasksItemController(task));
 	}
 	
 	public void setItems(ObservableList<TasksItemController> subentries) {
-		// TODO Auto-generated method stub
 		tasksDisplay.setItems(subentries);
 	}
 
@@ -100,6 +82,10 @@ public class TasksTableController extends BorderPane {
             tasksDisplay.getFocusModel().focus(count);
 			tasksDisplay.getSelectionModel().select(count);
 		
+	}
+	
+	public void clearTask(){
+		   items.clear();    	
 	}
 
 }

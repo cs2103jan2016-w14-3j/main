@@ -22,13 +22,9 @@ public class TasksItemController extends BorderPane {
 
 	@FXML
 	private Text date;
-
-	@FXML
-	private Text percentage;
 	
 	@FXML
 	private Label labelDate;
-
 
 	@FXML
 	private Shape priorityColor;
@@ -52,7 +48,7 @@ public class TasksItemController extends BorderPane {
 
 	private String taskTime;
 
-	public TasksItemController(Task task, int count) {
+	public TasksItemController(Task task) {
 		this.taskName = task.getTask();
 		this.taskPriority = task.getPriority();
 		this.taskTime = task.getTime();

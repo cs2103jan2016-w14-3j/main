@@ -188,7 +188,7 @@ public class Main extends Application {
 				// if match add to temp
 				if (match) {
 				//	System.out.println("match " + task.getTask()); 
-					temp.add(new TasksItemController(task, count++));
+					temp.add(new TasksItemController(task));
 					searchResult.add(task);
 				//	match = true;
 //					System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
@@ -409,19 +409,17 @@ public class Main extends Application {
 	
 
 	public void populateList(TasksTableController tableControl, ArrayList<Task> result) {
-		int count = 1;
 		tableControl.clearTask();
 		for (Task temp : result) {
-			tableControl.addTask(temp, count++);
+			tableControl.addTask(temp);
 		}
 	}
 
 	private void updateList() {
-		int count = 1;
 		tableControl.clearTask();
 		try {
 			for (Task temp : logic.display()) {
-				tableControl.addTask(temp, count++);
+				tableControl.addTask(temp);
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

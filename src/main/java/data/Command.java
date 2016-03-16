@@ -8,8 +8,6 @@ public class Command {
 	private String commandContent;
 	private String[] commandParameters;
 
-
-
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
@@ -56,8 +54,6 @@ public class Command {
 					commandParameters[TASK_TYPE]);
 		
 		return task;
-
-
 
 	}
 
