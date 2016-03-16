@@ -135,7 +135,7 @@ public class CommandParser {
 		if (originalCommand.isEmpty()) {
 			throw new IllegalArgumentException();
 		}
-		
+
 		if (getCommandKeyword(originalCommand).equalsIgnoreCase(ADD_COMMAND)) {
 			if (!getFirstKeyword(originalCommand).equalsIgnoreCase(ADD_COMMAND)){
 				return originalCommand;
@@ -272,7 +272,7 @@ public class CommandParser {
 			return EVENT_TASK;
 		}
 		else {
-			String identifier = content.substring(timeIndex, timeIndex + 1);
+			String identifier = content.substring(timeIndex, timeIndex + 2);
 			if (identifier.equalsIgnoreCase(DEADLINE_FLAG)) {
 				return DEADLINE_TASK;
 			}
@@ -639,7 +639,10 @@ public class CommandParser {
 			for (int i = 2; i <= count; i++) {
 				int index = StringUtils.ordinalIndexOf(content, WHITE_SPACE, i);
 				String newTime = content.substring(0, index);
-				newTime = getRoughTime(parser.parse(newTime).toString());
+				newTime = parser.parse(newTime).toString();
+				if (!newTime.equals("[]")) {
+					newTime = getRoughTime(newTime);
+				}
 				if (newTime.equals(oldTime)) {
 					result = index + 1;
 					break;
