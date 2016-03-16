@@ -31,11 +31,11 @@ public class Main extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 
-	private Logic logic = new Logic();
+	private Logic logic;
 	private Task task;
 
-	private TasksTableController tableControl = new TasksTableController();
-	private CommandBarController barControl = new CommandBarController(this);
+	private TasksTableController tableControl;
+	private CommandBarController barControl;
 	private EmptyTableController emptyTable;
 
 
@@ -64,11 +64,24 @@ public class Main extends Application {
 		// this.primaryStage.initStyle(StageStyle.TRANSPARENT);;
 		this.primaryStage.setTitle("Flashpoint");
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
-
+		
+		initControllers(this);	
+		initLogic();
 		initRootLayout();
-		initLog();
-		result = initLogic();
 		checkIsTasksEmpty();
+	}
+
+	
+	
+	/**********************************Initialisation***********************************************/
+	/***********************************************************************************************/
+	private void initControllers(Main main) {
+		tableControl =  new TasksTableController();
+		barControl =  new CommandBarController(this);
+	}
+	
+	private void initLogic() throws Exception {
+		logic = new Logic();
 	}
 
 	private void checkIsTasksEmpty() throws Exception {
@@ -78,15 +91,6 @@ public class Main extends Application {
 			rootLayout.setCenter(tableControl);
 			updateList();
 		}
-	}
-
-	private void initLog() {
-		// TODO Auto-generated method stub
-		historyLog = new ArrayList<String>();
-	}
-
-	private ArrayList<Task> initLogic() throws Exception {
-		return logic.initLogic();
 	}
 
 	/**
@@ -111,8 +115,8 @@ public class Main extends Application {
 			//RootLayoutController rootController = new RootLayoutController(this);
 
 			showCommandBar();
-			showTasks(this);
-			showLog(this);
+			showTasks();
+			initLog();
 			listenerForTaskList();
 
 			primaryStage.show();
@@ -122,7 +126,7 @@ public class Main extends Application {
 		}
 	}
 
-	private void showTasks(Main mianApp) {
+	private void showTasks() {
 		rootLayout.setCenter(tableControl);
 	}
 
@@ -131,10 +135,13 @@ public class Main extends Application {
 		barControl.setText("What is your main focus for today?");
 		barControl.getFocus();
 	}
-
-	private void showLog(Main mainApp) {
-		// rootLayout.setCenter(logControl);
+	
+	private void initLog() {
+		// TODO Auto-generated method stub
+		historyLog = new ArrayList<String>();
 	}
+	
+	/*****************************END OF INITIALISATION***********************************/
 
 	public void handleSearch(String oldValue, String newValue) throws Exception {
 		//int space = newValue.indexOf(",")+1;
