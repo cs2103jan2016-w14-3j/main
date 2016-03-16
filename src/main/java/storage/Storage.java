@@ -104,7 +104,7 @@ public class Storage {
 	}
 	
 	public void deleteFromFile(int lineNum) {
-		assert lineNum < 0;
+		assert lineNum >= 0;
 		
 		ArrayList<Task> tempTaskList = new ArrayList<Task>();
 		int currentLineNum = 0;   //first line is of index 0

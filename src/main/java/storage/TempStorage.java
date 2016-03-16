@@ -75,7 +75,7 @@ public class TempStorage {
 	}
 	
 	public void deleteFromTemp(Task task) {
-		assert task == null;
+		assert task != null;
 		
 		int indexOfTaskToDelete = searchTemp(task);
 		taskList.remove(taskList.get(indexOfTaskToDelete));
