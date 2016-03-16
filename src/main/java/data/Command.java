@@ -8,7 +8,6 @@ public class Command {
 	private String commandContent;
 	private String[] commandParameters;
 
-	private static final String DISPLAY_COMMAND = "display";
 
 
 	private static final int TASK = 0;

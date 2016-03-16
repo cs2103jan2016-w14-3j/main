@@ -14,7 +14,7 @@ public class Logic {
 	private static final String ADD_COMMAND = "add";
 	private static final String DELETE_COMMAND = "delete";
 	private static final String SEARCH_COMMAND = "search";
-	private static final String CHANGE_DIRECTORY_COMMAND = "change";
+	private static final String CHANGE_DIRECTORY_COMMAND = "move";
 	private static final String DISPLAY_COMMAND = "display";
 	private static final String SORT_COMMAND = "sort";
 	private static final String CLEAR_COMMAND = "clear";
@@ -120,9 +120,7 @@ public class Logic {
 			//result = handleDeleteCommand(task);
 			// return the list to UI
 
-			for (Task temp : result) {
-				temp.setShowToUserDelete(true);
-			}
+			
 		}
 
 		else if (command.isCommand(CONFIRM_COMMAND)) {
@@ -141,9 +139,6 @@ public class Logic {
 			task = createTask(command);
 			result = handleEditCommand(task);
 
-			for (Task temp : result) {
-				temp.setShowToUserDelete(true);
-			}
 		}
 
 		else if (command.isCommand(SEARCH_COMMAND)) {
@@ -188,9 +183,6 @@ public class Logic {
 
 		ArrayList<Task> result = temp.displayTemp();
 
-		for (Task abc : result) {
-			abc.setShowToUserDelete(false);
-		}
 		return result;
 	}
 

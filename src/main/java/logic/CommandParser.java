@@ -17,7 +17,7 @@ public class CommandParser {
 	private static final String ADD_COMMAND = "add";
 	private static final String DELETE_COMMAND = "delete";
 	private static final String SEARCH_COMMAND = "search";
-	private static final String CHANGE_DIRECTORY_COMMAND = "change";
+	private static final String CHANGE_DIRECTORY_COMMAND = "move";
 	private static final String SORT_COMMAND = "sort";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
@@ -200,10 +200,16 @@ public class CommandParser {
 				return content;
 			}
 			else {
+				if (priorityIndex == 0) {
+					return EMPTY_STRING;
+				}
 				return content.substring(0, priorityIndex - 1);
 			}
 		}
 		else {
+			if (timeIndex == 0) {
+				return EMPTY_STRING;
+			}
 			return content.substring(0, timeIndex - 1);
 		}
 	}

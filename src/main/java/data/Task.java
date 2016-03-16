@@ -6,16 +6,12 @@ public class Task {
 	private String time;
 	private String type;
 	private String priority;
-	private transient int taskID;
-	private transient boolean display;
 	
 	public Task(String task, String time, String priority, String type) {
 		this.task = task;
 		this.time = time;
 		this.priority = priority;
 		this.type = type;
-		this.taskID = -1;
-		this.display = false;
 	}
 	
 	public String getType() {
@@ -48,22 +44,6 @@ public class Task {
 
 	public void setPriority(String priority) {
 		this.priority = priority;
-	}
-	
-	public int getTaskID() {
-		return taskID;
-	}
-	
-	public void setTaskID(int taskID) {
-		this.taskID = taskID;
-	}
-	
-	public boolean getShowToUserDelete() {
-		return display;
-	}
-	
-	public void setShowToUserDelete(boolean display) {
-		this.display = display;
 	}
 	
 }
