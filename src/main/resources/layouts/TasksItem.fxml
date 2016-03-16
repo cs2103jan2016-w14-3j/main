@@ -57,7 +57,7 @@
       <DropShadow color="#43a0e0" />
    </effect>
    <left>
-      <Rectangle fx:id="circle" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="55.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER">
+      <Rectangle fx:id="priorityColor" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="55.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER">
          <effect>
             <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
          </effect></Rectangle>
