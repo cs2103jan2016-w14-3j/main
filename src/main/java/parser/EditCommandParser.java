@@ -1,4 +1,4 @@
-package main.java.logic;
+package main.java.parser;
 
 import java.util.ArrayList;
 
@@ -12,7 +12,7 @@ public class EditCommandParser extends AddCommandParser {
 		super();
 	}
 	
-	protected String[] determineParameters(String commandType, String commandContent) {
+	public String[] determineParameters(String commandType, String commandContent) {
 		assert commandType != null;
 		//assert 1==2;
 		String[] parameters = new String[5];

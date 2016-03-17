@@ -2,6 +2,7 @@ package main.java.logic;
 
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import main.java.data.*;
+import main.java.parser.*;
 
 public class CommandDispatcher {
 
@@ -17,12 +18,9 @@ public class CommandDispatcher {
 	private static final String EMPTY_STRING = "";
 	private static final String WHITE_SPACE = " ";
 
-
-
 	public CommandDispatcher() {
 
 	}
-
 	public Command parseCommand(Command command) {
 		assert command != null;
 		String originalCommand = command.getOriginal();
@@ -163,12 +161,5 @@ public class CommandDispatcher {
 		//Task task = command.createTask();
 		//System.out.println(par.searchWord("I am in EUROPE", "EUROPE"));
 		//System.out.println(par.formatToStandardCommandContent("take selfie with my kitten to post on mon on instagram"));
-
 	}
-
-
-
-
-
-
 }

@@ -1,4 +1,4 @@
-package main.java.logic;
+package main.java.parser;
 
 import java.util.Date;
 
@@ -12,13 +12,8 @@ public abstract class Parser {
 	protected static final int PRIORITY = 2;
 	protected static final int TASK_TYPE = 3;
 	protected static final int STATUS = 4;
-
-
-	//protected PrettyTimeParser timeParser; 
-	
-	
+		
 	public Parser() {
-		//timeParser = new PrettyTimeParser();
 	}
 	
 	
@@ -33,7 +28,7 @@ public abstract class Parser {
 	}
 	
 	
-	protected String[] determineParameters(String commandType, String commandContent) {
+	public String[] determineParameters(String commandType, String commandContent) {
 		assert commandType != null;
 		//assert 1==2;
 		String[] parameters = new String[5];

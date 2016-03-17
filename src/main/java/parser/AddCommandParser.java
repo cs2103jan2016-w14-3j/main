@@ -1,4 +1,4 @@
-package main.java.logic;
+package main.java.parser;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -35,7 +35,7 @@ public class AddCommandParser extends Parser {
 	}
 
 
-	protected String[] determineParameters(String commandType, String commandContent) {
+	public String[] determineParameters(String commandType, String commandContent) {
 		assert commandType != null;
 		//assert 1==2;
 		String[] parameters = new String[5];

@@ -1,4 +1,4 @@
-package main.java.logic;
+package main.java.parser;
 
 public class MoveCommandParser extends Parser {
 
