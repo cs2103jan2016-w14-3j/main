@@ -136,15 +136,15 @@ public class Logic {
 
 		else if (command.isCommand(SORT_COMMAND)) {
 			if (command.getParameters()[TASK].equalsIgnoreCase("time")) {
-				
+				temp.sortByTime();
 			}
 			
 			else if (command.getParameters()[TASK].equalsIgnoreCase("name")) {
-				
+				temp.sortByTime();
 			}
 			
 			else if (command.getParameters()[TASK].equalsIgnoreCase("priority")) {
-				
+				temp.sortByPriority();
 			}
 			
 			else if (command.getParameters()[TASK].equalsIgnoreCase("type")) {

@@ -10,8 +10,6 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 public class AddCommandParser extends Parser {
 
-
-
 	private static final String WHITE_SPACE = " ";
 	private static final String DEADLINE_FLAG = "by";
 	private static final String EVENT_FLAG_ON = "on";
@@ -25,10 +23,6 @@ public class AddCommandParser extends Parser {
 	private static final String EXTRA_WHITE_SPACES = "\\s+";
 	private static final String DEFAULT_TIME = "8am";
 	private static final int FIELD_NOT_EXIST = -1;
-
-
-
-
 
 	protected PrettyTimeParser timeParser;
 
