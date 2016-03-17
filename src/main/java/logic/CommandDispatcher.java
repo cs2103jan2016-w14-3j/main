@@ -14,7 +14,6 @@ public class CommandDispatcher {
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
-	
 	private static final String EMPTY_STRING = "";
 	private static final String WHITE_SPACE = " ";
 
@@ -28,13 +27,13 @@ public class CommandDispatcher {
 
 		String commandContent = retrieveCommandContent(originalCommand);
 		command.setContent(commandContent);
-		
+
 		setParameters(command);
 		return command;
 	}
-	
+
 	private void setParameters(Command command) {
-		
+
 		if (command.isCommand(ADD_COMMAND)) {
 			AddCommandParser parser = new AddCommandParser();
 			command.setParameters(parser.determineParameters
@@ -46,7 +45,7 @@ public class CommandDispatcher {
 					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(CLEAR_COMMAND)) {
-			
+
 		}
 		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
 			MoveCommandParser parser = new MoveCommandParser();
@@ -59,14 +58,14 @@ public class CommandDispatcher {
 					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(UNDO_COMMAND)) {
-			
+
 		}
 		else if (command.isCommand(SORT_COMMAND)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		
+
 	}
 
 	private String determineCommandType(String originalCommand) {
@@ -79,43 +78,43 @@ public class CommandDispatcher {
 		assert command != null;
 		String firstWord = getFirstKeyword(command);
 
-			if (isCommand(ADD_COMMAND, firstWord)) {
-				return ADD_COMMAND;
-			}
+		if (isCommand(ADD_COMMAND, firstWord)) {
+			return ADD_COMMAND;
+		}
 
-			else if (isCommand(DELETE_COMMAND, firstWord)) {
-				return DELETE_COMMAND;
-			}
+		else if (isCommand(DELETE_COMMAND, firstWord)) {
+			return DELETE_COMMAND;
+		}
 
-			else if (isCommand(SEARCH_COMMAND, firstWord)) {
-				return SEARCH_COMMAND;
-			}
+		else if (isCommand(SEARCH_COMMAND, firstWord)) {
+			return SEARCH_COMMAND;
+		}
 
-			else if (isCommand(CHANGE_DIRECTORY_COMMAND, firstWord)) {
-				return CHANGE_DIRECTORY_COMMAND;
-			}
+		else if (isCommand(CHANGE_DIRECTORY_COMMAND, firstWord)) {
+			return CHANGE_DIRECTORY_COMMAND;
+		}
 
-			else if (isCommand(SORT_COMMAND, firstWord)) {
-				return SORT_COMMAND;
-			}
+		else if (isCommand(SORT_COMMAND, firstWord)) {
+			return SORT_COMMAND;
+		}
 
-			else if (isCommand(CLEAR_COMMAND, firstWord)) {
-				return CLEAR_COMMAND;
+		else if (isCommand(CLEAR_COMMAND, firstWord)) {
+			return CLEAR_COMMAND;
 
-			}
+		}
 
-			else if (isCommand(EDIT_COMMAND, firstWord)) {
-				return EDIT_COMMAND;
+		else if (isCommand(EDIT_COMMAND, firstWord)) {
+			return EDIT_COMMAND;
 
-			}
+		}
 
-			else if (isCommand(UNDO_COMMAND, firstWord)) {
-				return UNDO_COMMAND;
-			}
+		else if (isCommand(UNDO_COMMAND, firstWord)) {
+			return UNDO_COMMAND;
+		}
 
-			else {
-				return ADD_COMMAND;
-			}
+		else {
+			return ADD_COMMAND;
+		}
 	}
 
 	private String getFirstKeyword(String command) {
