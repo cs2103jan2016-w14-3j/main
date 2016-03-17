@@ -19,19 +19,17 @@ public class Logic {
 	private static final String SORT_COMMAND = "sort";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
-	private static final String CONFIRM_COMMAND = "confirm";
 	private static final String UNDO_COMMAND = "undo";
 
 	private static final int TASK = 0;
 
-	private Task task;
-	private TempStorage temp;
+	private static Task task;
+	private static TempStorage temp;
 
 	public Logic() {
 		try {
 			temp = new TempStorage();
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -120,14 +118,6 @@ public class Logic {
 			
 		}
 
-		else if (command.isCommand(CONFIRM_COMMAND)) {
-			task = createTask(command);
-			temp.deleteFromTemp(taskOptions.get(Integer.parseInt( task.getTask() )-1) );
-			temp.deleteFromTemp(task);
-			result = temp.displayTemp();
-		}
-
-
 		else if (command.isCommand(DISPLAY_COMMAND)) {
 			result = handleDisplayCommand();
 		}
@@ -206,7 +196,6 @@ public class Logic {
 	}
 
 	public Task editedTask(Task temp2) {
-		// TODO Auto-generated method stub
 		return temp2;
 	}
 
