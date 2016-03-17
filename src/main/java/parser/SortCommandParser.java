@@ -13,7 +13,7 @@ public class SortCommandParser extends Parser {
 		if (!commandContent.isEmpty()) {
 			parameters[TASK] = commandContent;
 		}
-
+		
 		return parameters;
 	}
 

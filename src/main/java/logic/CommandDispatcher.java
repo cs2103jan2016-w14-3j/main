@@ -37,26 +37,34 @@ public class CommandDispatcher {
 		
 		if (command.isCommand(ADD_COMMAND)) {
 			AddCommandParser parser = new AddCommandParser();
-			command.setParameters(parser.determineParameters(command.getType(),command.getContent()));
+			command.setParameters(parser.determineParameters
+					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(EDIT_COMMAND)) {
 			EditCommandParser parser = new EditCommandParser();
-			command.setParameters(parser.determineParameters(command.getType(),command.getContent()));
+			command.setParameters(parser.determineParameters
+					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(CLEAR_COMMAND)) {
 			
 		}
 		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
 			MoveCommandParser parser = new MoveCommandParser();
-			command.setParameters(parser.determineParameters(command.getType(),command.getContent()));
+			command.setParameters(parser.determineParameters
+					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(SEARCH_COMMAND)) {
 			SearchCommandParser parser = new SearchCommandParser();
-			command.setParameters(parser.determineParameters(command.getType(),command.getContent()));
+			command.setParameters(parser.determineParameters
+					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(UNDO_COMMAND)) {
+			
 		}
 		else if (command.isCommand(SORT_COMMAND)) {
+			SortCommandParser parser = new SortCommandParser();
+			command.setParameters(parser.determineParameters
+					(command.getType(),command.getContent()));
 		}
 		
 	}
