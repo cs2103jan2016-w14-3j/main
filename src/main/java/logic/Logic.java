@@ -15,11 +15,11 @@ public class Logic {
 	private static final String DELETE_COMMAND = "delete";
 	private static final String SEARCH_COMMAND = "search";
 	private static final String CHANGE_DIRECTORY_COMMAND = "move";
-	private static final String DISPLAY_COMMAND = "display";
 	private static final String SORT_COMMAND = "sort";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
+	private static final String DISPLAY_COMMAND = "display";
 
 	private static final int TASK = 0;
 
@@ -50,9 +50,9 @@ public class Logic {
 	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskOptions) throws Exception {
 		assert userInput != null;
 
-		CommandParser parser = new CommandParser();
+		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
-		command = parseCommand(parser, command);
+		command = parseCommand(dispatcher, command);
 
 		ArrayList<Task> result = effectTask(command, taskOptions);
 
@@ -78,7 +78,7 @@ public class Logic {
 
 	private ArrayList<Task> handleEditCommand(Task task) throws Exception {
 
-		return CommandParser.parseEditTask(task);
+		return EditCommandParser.parseEditTask(task);
 	}
 
 
@@ -88,9 +88,9 @@ public class Logic {
 		return command.createTask();
 	}
 
-	private Command parseCommand(CommandParser parser, Command command) {
+	private Command parseCommand(CommandDispatcher dispatcher, Command command) {
 		assert command != null;
-		return parser.parseCommand(command);
+		return dispatcher.parseCommand(command);
 	}
 
 	private ArrayList<Task> effectTask(Command command, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {

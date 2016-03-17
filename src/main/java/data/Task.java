@@ -6,12 +6,14 @@ public class Task {
 	private String time;
 	private String type;
 	private String priority;
+	private String status;
 	
-	public Task(String task, String time, String priority, String type) {
+	public Task(String task, String time, String priority, String type, String status) {
 		this.task = task;
 		this.time = time;
 		this.priority = priority;
 		this.type = type;
+		this.status = status;
 	}
 	
 	public String getType() {
@@ -44,6 +46,14 @@ public class Task {
 
 	public void setPriority(String priority) {
 		this.priority = priority;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
+	}
+	
+	public String getStatus() {
+		return this.status;
 	}
 	
 }
