@@ -1,9 +1,5 @@
 package main.java.logic;
 
-
-
-
-
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -56,7 +52,7 @@ public class Logic {
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
 
-		ArrayList<Task> result = effectTask(command, taskOptions);
+		ArrayList<Task> result = executeTask(command, taskOptions);
 
 		//quitOnExitCommand(command);
 
@@ -95,7 +91,7 @@ public class Logic {
 		return dispatcher.parseCommand(command);
 	}
 
-	private ArrayList<Task> effectTask(Command command, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {
+	private ArrayList<Task> executeTask(Command command, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {
 
 		ArrayList<Task> result = new ArrayList<Task>();
 

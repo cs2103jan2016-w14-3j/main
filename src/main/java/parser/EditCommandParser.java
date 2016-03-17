@@ -7,6 +7,7 @@ import main.java.data.Task;
 public class EditCommandParser extends AddCommandParser {
 	
 	private static final String EDIT_COMMAND_SEPARATOR = ",";
+	private static final String EDIT_TASK_SEPARATOR = " , ";
 	
 	public EditCommandParser() {
 		super();
@@ -32,11 +33,11 @@ public class EditCommandParser extends AddCommandParser {
 		String task_B = determineTask(formatToStandardCommandContent(segments[1].trim()));
 
 		if (task_B.equals(EMPTY_STRING)) {
-			return task_A + " , " + task_A;
+			return task_A + EDIT_TASK_SEPARATOR + task_A;
 		}
 
 		else {
-			return task_A + " , " + task_B;
+			return task_A + EDIT_TASK_SEPARATOR + task_B;
 		}
 	}
 
@@ -59,7 +60,7 @@ public class EditCommandParser extends AddCommandParser {
 		else {
 			//do nothing
 		}
-		return time_A + " , " + time_B;
+		return time_A + EDIT_TASK_SEPARATOR + time_B;
 
 	}
 
@@ -80,21 +81,25 @@ public class EditCommandParser extends AddCommandParser {
 		else {
 			//do nothing
 		}
-		return priority_A + " , " + priority_B;
+		return priority_A + EDIT_TASK_SEPARATOR + priority_B;
 	}
 
 
 	private String determineTaskTypeForEditCommand(String[] segments) {
 		String taskType;
-		taskType = determineTaskType(formatToStandardCommandContent(segments[0].trim())) + " , " +
-				determineTaskType(formatToStandardCommandContent(segments[1].trim()));
+		taskType = determineTaskType(formatToStandardCommandContent
+				(segments[0].trim())) + EDIT_TASK_SEPARATOR +
+				determineTaskType(formatToStandardCommandContent
+						(segments[1].trim()));
 		return taskType;
 	}
 	
 	private String determineStatusForEditCommand(String[] segments) {
 		String status;
-		status = determineStatus(formatToStandardCommandContent(segments[0].trim())) + " , " +
-				determineStatus(formatToStandardCommandContent(segments[1].trim()));
+		status = determineStatus(formatToStandardCommandContent
+				(segments[0].trim())) + EDIT_TASK_SEPARATOR +
+				determineStatus(formatToStandardCommandContent
+						(segments[1].trim()));
 		return status;
 	}
 	
@@ -125,7 +130,6 @@ public class EditCommandParser extends AddCommandParser {
 		task_A = new Task(toDo_A, time_A, priority_A, type_A, status_A);
 		task_B = new Task(toDo_B, time_B, priority_B, type_B, status_B);
 
-		//ArrayList<Task> result = temp.searchTemp(task_A);
 		ArrayList<Task> result = new ArrayList<Task>();
 		result.add(task_A);
 		result.add(task_B);

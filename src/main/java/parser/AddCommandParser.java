@@ -20,8 +20,11 @@ public class AddCommandParser extends Parser {
 	private static final String EVENT_TASK = "event";
 	private static final String PRIORITY_FLAG = "#";	
 	private static final String OVERDUE = "overdue";
-	private static final String DONE = "done";
 	private static final String UNDONE = "undone";
+	private static final String EMPTY_TIME = "[]";
+	private static final String EXTRA_WHITE_SPACES = "\\s+";
+	private static final String DEFAULT_TIME = "8am";
+	private static final int FIELD_NOT_EXIST = -1;
 
 
 
@@ -51,9 +54,9 @@ public class AddCommandParser extends Parser {
 
 	protected String determineTask(String content) {
 		int timeIndex = getStartingIndexOfIdentifier(content);
-		if (timeIndex == -1) {
+		if (timeIndex == FIELD_NOT_EXIST) {
 			int priorityIndex = getStartingIndexOfPriority(content);
-			if (priorityIndex == -1) {
+			if (priorityIndex == FIELD_NOT_EXIST) {
 				return content;
 			}
 			else {
@@ -75,17 +78,15 @@ public class AddCommandParser extends Parser {
 
 		int timeIndex = getStartingIndexOfIdentifier(content);
 		int priorityIndex = getStartingIndexOfPriority(content);
-		if (timeIndex == -1) {
+		if (timeIndex == FIELD_NOT_EXIST) {
 			return EMPTY_STRING;
 		}
-		if (priorityIndex == -1) {
+		if (priorityIndex == FIELD_NOT_EXIST) {
 			content = content.substring(timeIndex);
 		}
 		else {
 			content = content.substring(timeIndex, priorityIndex - 1);
 		}
-
-		//System.out.println(content + "me");
 
 		List<Date> dates = timeParser.parse(content);
 
@@ -112,7 +113,8 @@ public class AddCommandParser extends Parser {
 						(TIME_SEPARATOR) + 1) + 2);
 
 		if (parsedTime.equals(currentTime)) {
-			String result = timeParser.parse(content + " 8am").toString();
+			String result = timeParser.parse(content + 
+					WHITE_SPACE + DEFAULT_TIME).toString();
 			return result.substring(1, result.length() - 1);
 		}
 
@@ -131,7 +133,7 @@ public class AddCommandParser extends Parser {
 
 	protected String determineTaskType(String content) {
 		int timeIndex = getStartingIndexOfIdentifier(content);
-		if (timeIndex == -1) {
+		if (timeIndex == FIELD_NOT_EXIST) {
 			return EVENT_TASK;
 		}
 		else {
@@ -154,26 +156,26 @@ public class AddCommandParser extends Parser {
 	}
 
 	protected String formatToStandardCommandContent(String content) {
-		content = content.replaceAll("\\s+", " ").trim();
+		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
 		int time = getStartingIndexOfIdentifier(content);
 		int priority = getStartingIndexOfPriority(content);
 		int task = getStartingIndexOfTask(content, time, priority);
 
 		//task only
-		if (time == -1 && priority == -1) {
-			//System.out.println(content + "me");
+		if (time == FIELD_NOT_EXIST && priority == FIELD_NOT_EXIST) {
 			return content;
 		}
 		//no time,has priority
-		else if (time == -1) {
+		else if (time == FIELD_NOT_EXIST) {
 			//only priority
-			if (task == -1) {
+			if (task == FIELD_NOT_EXIST) {
 				return content;
 			}
 
 			else {
 				if (task > priority) {
-					return content.substring(task)+ " " +content.substring(0, task - 1);
+					return content.substring(task)+ WHITE_SPACE + 
+				content.substring(0, task - 1);
 				}
 				else {
 					return content;
@@ -181,15 +183,16 @@ public class AddCommandParser extends Parser {
 			}
 		}
 		//no priority,has time
-		else if (priority == -1) {
+		else if (priority == FIELD_NOT_EXIST) {
 			//only time
-			if (task == -1) {
+			if (task == FIELD_NOT_EXIST) {
 				return content;
 			}
 
 			else {
 				if (task > time) {
-					return content.substring(task)+ " " +content.substring(0, task - 1);
+					return content.substring(task)+ WHITE_SPACE + 
+							content.substring(0, task - 1);
 				}
 				else {
 					return content;
@@ -199,9 +202,10 @@ public class AddCommandParser extends Parser {
 
 		//time,priority,task(maybe)
 		else {
-			if (task == -1) {
+			if (task == FIELD_NOT_EXIST) {
 				if (time > priority) {
-					return content.substring(time)+ " " +content.substring(0, time - 1);
+					return content.substring(time)+ WHITE_SPACE + 
+							content.substring(0, time - 1);
 				}
 				else {
 					return content;
@@ -216,33 +220,33 @@ public class AddCommandParser extends Parser {
 					//task-priority-time
 					else {
 						return content.substring(task,priority) + 
-								content.substring(time) + " " + 
+								content.substring(time) + WHITE_SPACE + 
 								content.substring(priority,time - 1);
 					}
 				}
 				//priority-task-time
 				else if (task < time) {
-					return content.substring(task) + " " +
+					return content.substring(task) + WHITE_SPACE +
 							content.substring(priority,task - 1);
 				}
 				//time-task-priority
 				else if (task < priority) {
-					return content.substring(task, priority - 1) + " " 
-							+ content.substring(time, task - 1) + " " +
+					return content.substring(task, priority - 1) + WHITE_SPACE 
+							+ content.substring(time, task - 1) + WHITE_SPACE +
 							content.substring(priority);
 				}
 				//task is the last
 				else {
 					//time-priority-task
 					if (time < priority) {
-						return content.substring(task) + " " 
-								+ content.substring(time, priority - 1) + " " +
+						return content.substring(task) + WHITE_SPACE 
+								+ content.substring(time, priority - 1) + WHITE_SPACE +
 								content.substring(priority, task - 1);
 					}
 					//priority-time-task
 					else {
-						return content.substring(task) + " " 
-								+ content.substring(time, task - 1) + " " +
+						return content.substring(task) + WHITE_SPACE 
+								+ content.substring(time, task - 1) + WHITE_SPACE +
 								content.substring(priority, time - 1);
 					}
 				}
@@ -253,24 +257,24 @@ public class AddCommandParser extends Parser {
 
 	private int getStartingIndexOfPriority(String content) {
 
-		return content.indexOf("#");
+		return content.indexOf(PRIORITY_FLAG);
 	}
 
 
-	protected int getStartingIndexOfTask(String content, int timeIndex, int priorityIndex) {
+	private int getStartingIndexOfTask(String content, int timeIndex, int priorityIndex) {
 		//no time, no tag -> must have and only task
-		if (timeIndex == -1 && priorityIndex == -1) {
+		if (timeIndex == FIELD_NOT_EXIST && priorityIndex == FIELD_NOT_EXIST) {
 			return 0;
 		}
 		//no time, has tag -> tag-task/task-tag/tag
-		else if (timeIndex == -1) {
+		else if (timeIndex == FIELD_NOT_EXIST) {
 			//tag
 			if (!content.contains(WHITE_SPACE)) {
-				return -1;
+				return FIELD_NOT_EXIST;
 			}
 			else {
 				//tag-task
-				if (content.substring(0,1).equals("#")) {
+				if (content.substring(0,1).equals(PRIORITY_FLAG)) {
 					return content.indexOf(WHITE_SPACE) + 1;
 				}
 				//task-tag
@@ -281,7 +285,7 @@ public class AddCommandParser extends Parser {
 		}
 
 		//no priority, has time -> time-task/task-time/time
-		else if (priorityIndex == -1) {
+		else if (priorityIndex == FIELD_NOT_EXIST) {
 
 			//<time>/<time-task>
 			if (timeIndex == 0) {
@@ -308,12 +312,14 @@ public class AddCommandParser extends Parser {
 			if (timeIndex == 0) {
 				//5
 				if (priorityIndex < content.lastIndexOf(WHITE_SPACE)) {
-					return content.indexOf(WHITE_SPACE,content.indexOf("#")) + 1;
+					return content.indexOf(WHITE_SPACE,content.indexOf
+							(PRIORITY_FLAG)) + 1;
 				}
 				//3,8   <time-task>-priority/<time>-priority
 				else {
 					//fill in
-					String segment = content.substring(0,content.indexOf("#")-1);
+					String segment = content.substring(0,content.indexOf
+							(PRIORITY_FLAG) - 1);
 					return locateTaskIndexInSegment(segment);
 
 
@@ -327,11 +333,11 @@ public class AddCommandParser extends Parser {
 					//fill in
 					int baseIndex = content.indexOf(WHITE_SPACE) + 1;
 					String segment = content.substring(baseIndex);
-					int val = locateTaskIndexInSegment(segment);
-					if (val == -1) {
-						return -1;
+					int index = locateTaskIndexInSegment(segment);
+					if (index == FIELD_NOT_EXIST) {
+						return FIELD_NOT_EXIST;
 					}
-					return baseIndex + val;
+					return baseIndex + index;
 
 				}
 				//4
@@ -349,13 +355,14 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	protected int locateTaskIndexInSegment(String content) {
-		int result = -1;
+	private int locateTaskIndexInSegment(String content) {
+		int taskIndex = FIELD_NOT_EXIST;
 		//input: time/time-task
 		int count = StringUtils.countMatches(content, WHITE_SPACE);
-		//
+		
+	
 		if (count == 1) {
-			return -1;
+			return FIELD_NOT_EXIST;
 		}
 
 		else {
@@ -364,28 +371,28 @@ public class AddCommandParser extends Parser {
 				int index = StringUtils.ordinalIndexOf(content, WHITE_SPACE, i);
 				String newTime = content.substring(0, index);
 				newTime = timeParser.parse(newTime).toString();
-				if (!newTime.equals("[]")) {
+				if (!newTime.equals(EMPTY_TIME)) {
 					newTime = getRoughTime(newTime);
 				}
 				if (newTime.equals(oldTime)) {
-					result = index + 1;
+					taskIndex = index + 1;
 					break;
 				}
 			}
-			return result;
+			return taskIndex;
 		}
 
 	}
 
 
 
-	protected int getStartingIndexOfIdentifier(String content) {
+	private int getStartingIndexOfIdentifier(String content) {
 		String[] segments = content.split(WHITE_SPACE);
 		int numSpace = segments.length - 1;
 
 		//no time
 		if (numSpace == 0) {
-			return -1;
+			return FIELD_NOT_EXIST;
 		}
 
 		PriorityQueue<Integer> pq = new PriorityQueue<Integer>();
@@ -415,32 +422,32 @@ public class AddCommandParser extends Parser {
 
 		//no time
 		if (list.size() == 0) {
-			return -1;
+			return FIELD_NOT_EXIST;
 		}
 
 		//the only one match is the real identifier
 		if (list.size() == 1) {
-			if (!timeParser.parse(content).toString().equals("[]")) {
+			if (!timeParser.parse(content).toString().equals(EMPTY_TIME)) {
 				return list.get(0);
 			}
 			else {
-				return -1;
+				return FIELD_NOT_EXIST;
 			}
 		}
 
 		if (list.size() == 2) {
 			if (!timeParser.parse(content.substring(list.get(0), list.get(1)))
-					.toString().equals("[]")) {
+					.toString().equals(EMPTY_TIME)) {
 				return list.get(0);
 			}
 
 			else if (!timeParser.parse(content.substring(list.get(1)))
-					.toString().equals("[]")) {
+					.toString().equals(EMPTY_TIME)) {
 				return list.get(1);
 			}
 
 			else {
-				return -1;
+				return FIELD_NOT_EXIST;
 			}
 		}
 
@@ -449,24 +456,24 @@ public class AddCommandParser extends Parser {
 		for (int i = 0; i < list.size(); i++) {
 			if (i < list.size() - 1) {
 				String substring = content.substring(list.get(i),list.get(i + 1));
-				if (!timeParser.parse(substring).toString().equals("[]")) {
+				if (!timeParser.parse(substring).toString().equals(EMPTY_TIME)) {
 					return list.get(i);
 				}
 			}
 
 			else {
 				String substring = content.substring(list.get(i));
-				if (!timeParser.parse(substring).toString().equals("[]")) {
+				if (!timeParser.parse(substring).toString().equals(EMPTY_TIME)) {
 					return list.get(i);
 				}
 			}
 		}
 
 
-		return -1;
+		return FIELD_NOT_EXIST;
 	}
 
-	protected boolean isValidTimeIdentifier(String content) {
+	private boolean isValidTimeIdentifier(String content) {
 		//content.spit
 		if (content.equalsIgnoreCase(DEADLINE_FLAG)) {
 			return true;
@@ -479,5 +486,15 @@ public class AddCommandParser extends Parser {
 			return true;
 		}
 		return false;
+	}
+	
+	private boolean isOverdue(Date time) {
+		return time.before(new Date());
+	}
+	
+	private String getRoughTime(String time) {
+		String[] segments = time.split(TIME_SEPARATOR);
+		time = segments[0] + segments[1] + segments[2].substring(2);
+		return time;
 	}
 }

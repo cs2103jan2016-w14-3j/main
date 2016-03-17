@@ -1,7 +1,4 @@
 package main.java.parser;
-
-import java.util.Date;
-
 public abstract class Parser {
 	
 	protected static final String TIME_SEPARATOR = ":";
@@ -14,17 +11,7 @@ public abstract class Parser {
 	protected static final int STATUS = 4;
 		
 	public Parser() {
-	}
-	
-	
-	protected boolean isOverdue(Date time) {
-		return time.before(new Date());
-	}
-	
-	protected String getRoughTime(String time) {
-		String[] segments = time.split(TIME_SEPARATOR);
-		time = segments[0] + segments[1] + segments[2].substring(2);
-		return time;
+		
 	}
 	
 	
