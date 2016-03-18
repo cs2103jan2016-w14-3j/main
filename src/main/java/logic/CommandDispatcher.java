@@ -20,9 +20,12 @@ public class CommandDispatcher {
 	public CommandDispatcher() {
 
 	}
-	public Command parseCommand(Command command) {
+	public Command parseCommand(Command command)throws InvalidInputFormatException {
 		assert command != null;
 		String originalCommand = command.getOriginal();
+		if (originalCommand.isEmpty()) {
+			throw new InvalidInputFormatException("Empty command is not allowed!");
+		}
 		command.setType(determineCommandType(originalCommand));
 
 		String commandContent = retrieveCommandContent(originalCommand);
@@ -32,7 +35,7 @@ public class CommandDispatcher {
 		return command;
 	}
 
-	private void setParameters(Command command) {
+	private void setParameters(Command command)throws InvalidInputFormatException {
 
 		if (command.isCommand(ADD_COMMAND)) {
 			AddCommandParser parser = new AddCommandParser();

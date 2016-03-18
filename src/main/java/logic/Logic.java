@@ -86,7 +86,7 @@ public class Logic {
 		return command.createTask();
 	}
 
-	private Command parseCommand(CommandDispatcher dispatcher, Command command) {
+	private Command parseCommand(CommandDispatcher dispatcher, Command command)throws InvalidInputFormatException {
 		assert command != null;
 		return dispatcher.parseCommand(command);
 	}
@@ -154,7 +154,7 @@ public class Logic {
 
 		else if (command.isCommand(UNDO_COMMAND)) {
 			temp.undoPrevious();
-			System.out.println("UNDO IS HERE !!!!");
+			//System.out.println("UNDO IS HERE !!!!");
 		}
 
 

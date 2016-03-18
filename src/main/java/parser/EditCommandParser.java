@@ -13,9 +13,12 @@ public class EditCommandParser extends AddCommandParser {
 		super();
 	}
 	
-	public String[] determineParameters(String commandType, String commandContent) {
+	public String[] determineParameters(String commandType, String commandContent)throws InvalidInputFormatException {
 		assert commandType != null;
 		//assert 1==2;
+		if (commandContent.isEmpty() || !commandContent.contains(EDIT_COMMAND_SEPARATOR)) {
+			throw new InvalidInputFormatException("Incorrect command format for editing a task!");
+		}
 		String[] parameters = new String[5];
 		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
 		parameters[TASK] = determineTaskForEditCommand(segments);
