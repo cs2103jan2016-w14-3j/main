@@ -15,7 +15,7 @@ import com.google.gson.JsonSyntaxException;
 
 import main.java.data.Task;
 
-public class Storage {
+public class PermStorage {
 	
 	private ArrayList<Task> taskList;
 	private BufferedReader bufferedReader;
@@ -25,9 +25,8 @@ public class Storage {
 	private DirectoryController dirController;
 	private Gson gson;
 	
-	public Storage() {
-		
-		
+	public PermStorage() {
+	
 		dirController = new DirectoryController();
 		initialiseFile(dirController.getTaskFilePath());
 		gson = new Gson();
@@ -35,7 +34,7 @@ public class Storage {
 	}
 	
 	//create the file and streams
-	public void initialiseFile(String filePath) {
+	private void initialiseFile(String filePath) {
 		
 		file = new File(filePath);
 		
@@ -56,20 +55,18 @@ public class Storage {
 	}
 
 	public void changeDirectory(String path) {
-		assert path != null;
 		
 		dirController.changeDirectory(file, path);
 	}
 	
 	public boolean renameFile(String name) {
-		assert name != null;
 		
 		Boolean isSuccess = dirController.renameTaskFile(file, name);
 		return isSuccess;
 	}
 	
 	public void writeToFile(Task task) {
-		
+
 		try {
 			bufferedWriter.write(gson.toJson(task));
 			bufferedWriter.newLine();
@@ -104,7 +101,6 @@ public class Storage {
 	}
 	
 	public void deleteFromFile(int lineNum) {
-		assert lineNum >= 0;
 		
 		ArrayList<Task> tempTaskList = new ArrayList<Task>();
 		int currentLineNum = 0;   //first line is of index 0

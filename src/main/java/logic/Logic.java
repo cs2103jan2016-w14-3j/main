@@ -6,7 +6,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import main.java.data.*;
 import main.java.parser.*;
-import main.java.storage.TempStorage;
+import main.java.storage.StorageController;
 
 public class Logic {
 
@@ -24,11 +24,11 @@ public class Logic {
 	private static final int TASK = 0;
 
 	private static Task task;
-	private static TempStorage temp;
+	private static StorageController storageController;
 
 	public Logic() {
 		try {
-			temp = new TempStorage();
+			storageController = new StorageController();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -64,7 +64,7 @@ public class Logic {
 
 	private void handleAddCommand(Task task) throws Exception {
 		assert task != null;
-		temp.writeToTemp(task);
+		storageController.addTask(task);
 	}
 
 	//	private ArrayList<Task> handleDeleteCommand(Task task) {
@@ -73,7 +73,7 @@ public class Logic {
 	//	}
 
 	private ArrayList<Task> handleDisplayCommand() {
-		return temp.displayTemp();
+		return storageController.displayPendingTasks();
 	}
 
 	private ArrayList<Task> handleEditCommand(Task task) throws Exception {
@@ -103,12 +103,12 @@ public class Logic {
 			if (!task.getTask().equals("")) {
 				handleAddCommand(task);
 			}
-			result = temp.displayTemp();
+			result = storageController.displayPendingTasks();
 		}
 
 		else if (command.isCommand(CLEAR_COMMAND)){
-			temp.clearTemp();
-			result = temp.displayTemp();
+			storageController.clearPendingTasks();
+			result = storageController.displayPendingTasks();
 		}
 
 		else if (command.isCommand(DELETE_COMMAND)) {
@@ -136,15 +136,15 @@ public class Logic {
 
 		else if (command.isCommand(SORT_COMMAND)) {
 			if (command.getParameters()[TASK].equalsIgnoreCase("time")) {
-				temp.sortByTime();
+				storageController.sortPendingByTime();
 			}
 			
 			else if (command.getParameters()[TASK].equalsIgnoreCase("name")) {
-				temp.sortByTime();
+				storageController.sortPendingByTime();
 			}
 			
 			else if (command.getParameters()[TASK].equalsIgnoreCase("priority")) {
-				temp.sortByPriority();
+				storageController.sortPendingByPriority();
 			}
 			
 			else if (command.getParameters()[TASK].equalsIgnoreCase("type")) {
@@ -153,7 +153,7 @@ public class Logic {
 		}
 
 		else if (command.isCommand(UNDO_COMMAND)) {
-			temp.undoPrevious();
+			storageController.undo();
 			//System.out.println("UNDO IS HERE !!!!");
 		}
 
@@ -162,24 +162,24 @@ public class Logic {
 	}
 
 	public void delete(Task task) throws Exception {
-		temp.deleteFromTemp(task);
+		storageController.deletePendingTask(task);
 	}
 	public ArrayList<Task> display()throws Exception{
 
-		ArrayList<Task> result = temp.displayTemp();
+		ArrayList<Task> result = storageController.displayPendingTasks();
 
 		return result;
 	}
 
 	public ArrayList<Task> display1()throws Exception{
 
-		ArrayList<Task> result = temp.displayTemp();
+		ArrayList<Task> result = storageController.displayPendingTasks();
 		return result;
 	}
 
 	public void edit(ArrayList<Task> result)throws Exception{
 
-		temp.editToTemp(result.get(0), result.get(1));
+		storageController.editPendingTask(result.get(0), result.get(1));
 	}
 
 	public boolean isDeleteCommand(String userInput) {
