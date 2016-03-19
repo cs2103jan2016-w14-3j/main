@@ -17,6 +17,7 @@ import main.java.logic.Logic;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.EmptyTableController;
+import main.java.gui.TabsController;
 import main.java.gui.TasksItemController;
 import main.java.gui.TasksTableController;
 import javafx.scene.Node;
@@ -27,6 +28,8 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 
 import javafx.scene.control.ListView;
+import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.control.TextField;
 
 public class Main extends Application {
@@ -40,7 +43,7 @@ public class Main extends Application {
 	private TasksTableController tableControl;
 	private CommandBarController barControl;
 	private EmptyTableController emptyTable;
-
+	private TabsController tabControl;
 
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
@@ -50,10 +53,8 @@ public class Main extends Application {
 	private static final String EMPTY_STRING = "";
 	private static final String SPACE = " ";
 	private static final String SPLIT = "\\s+";
-
-	private static final int OFFSET = 1;
 	private static final int COMMAND_INDEX = 0;
-	private static final int THE_REST_INDEX = 1;
+	
 	private int pointer;
 	private boolean isFeedback = false;
 
@@ -81,6 +82,7 @@ public class Main extends Application {
 	private void initControllers(Main main) {
 		tableControl =  new TasksTableController();
 		barControl =  new CommandBarController(this);
+		tabControl = new TabsController();
 	}
 	
 	private void initLogic() throws Exception {
@@ -89,9 +91,9 @@ public class Main extends Application {
 
 	private void checkIsTasksEmpty() throws Exception {
 		if (isListEmpty()) {
-			rootLayout.setCenter(new EmptyTableController());
+			tabControl.setUpcomingTab(new EmptyTableController());
 		} else {
-			rootLayout.setCenter(tableControl);
+			tabControl.setUpcomingTab(tableControl);
 			updateList();
 		}
 	}
@@ -107,6 +109,7 @@ public class Main extends Application {
 			rootLayout = loader.load();
 
 			Scene scene = new Scene(rootLayout);
+	        
 			primaryStage.setScene(scene);
 
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
@@ -114,9 +117,8 @@ public class Main extends Application {
 					primaryStage.hide();
 				}
 			});
-
-			//RootLayoutController rootController = new RootLayoutController(this);
-
+			
+            showTabs();
 			showCommandBar();
 			showTasks();
 			initLog();
@@ -129,8 +131,14 @@ public class Main extends Application {
 		}
 	}
 
+
+	private void showTabs() {
+		// TODO Auto-generated method stub
+		rootLayout.setTop(tabControl);
+	}
+
 	private void showTasks() {
-		rootLayout.setCenter(tableControl);
+		tabControl.setUpcomingTab(tableControl);
 	}
 
 	private void showCommandBar() {
@@ -147,9 +155,8 @@ public class Main extends Application {
 	
 
 	public void handleSearch(String oldValue, String newValue) throws Exception {
-		//int space = newValue.indexOf(",")+1;
+		
 		if(newValue.contains(",")){
-			//System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
 			return;
 		}
 
@@ -173,27 +180,18 @@ public class Main extends Application {
 		}
 				
 		if(logic.isCommand(fragments[COMMAND_INDEX])){
-			//setMessage(message,"Password Strength: Bad",Color.RED);
-//			int i = userInput.indexOf(' ');
-//			String firstWord = userInput.substring(0, i);
-//			String subString = userInput.substring(i + 1);
-//			commandBarController.setFeedback("  Successfully " + firstWord + "ed " + "[" + subString + "]  ");
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("best");  
-		}else if(!logic.isCommand(fragments[COMMAND_INDEX])&&!newValue.equals(EMPTY_STRING)){
-			
+		}else if(!logic.isCommand(fragments[COMMAND_INDEX])&&!newValue.equals(EMPTY_STRING)){		
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("bad");    
-			//message.setVisible(false);
 		}
-		
-		
+			
 		if ((isEdit || isDelete || isSearch) && fragments.length > 1) {
 			newValue = fragments[1];		
 			String[] parts = null;
 			parts = newValue.toLowerCase().split(SPACE);
 			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
-          //  searchResult = new ArrayList<Task>();
             searchResult.clear();
             
 			int count = 0;
@@ -201,10 +199,7 @@ public class Main extends Application {
 				boolean match = true;
 				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
 				for (String part : parts) {
-					// System.out.println(part);
 					String withoutComma = part.substring(0,part.length()-1);
-					//System.out.println(withoutComma);
-					
 					if(taskMatch.toLowerCase().contains(withoutComma)&& newValue.contains(",")){
 						match = true;
 						break;
@@ -214,14 +209,9 @@ public class Main extends Application {
 						break;
 					}
 				}
-				// if match add to temp
 				if (match) {
-				//	System.out.println("match " + task.getTask()); 
 					temp.add(new TasksItemController(task));
 					searchResult.add(task);
-				//	match = true;
-//					System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
-//					System.out.println(temp.size()+"  "+ temp.get(0).getTaskName());
 				}
 			}
 			tableControl.clearTask();
@@ -234,9 +224,6 @@ public class Main extends Application {
 	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text)
 			throws Exception {
 		assert commandBarController != null;
-		// TODO Auto-generated method stub
-		int i;
-		String taskname = null;
 		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
 		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
@@ -244,44 +231,33 @@ public class Main extends Application {
 								// a TextArea
 			handleGetPastCommands(event);
 		} else if ((event.getCode() == KeyCode.TAB)) {
-			// i = text.indexOf(' ');
-			// String firstWord = text.substring(0,i);
 			tableControl.controlToList();
-
 		}
 	}
 
 	private void listenerForTaskList() {
-		// TODO Auto-generated method stub
 		ListView<TasksItemController> tasksDisplay = tableControl.getListView();
 
 		tasksDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
 				if (e.getCode() == KeyCode.ENTER) {
-					// System.out.println("enter");
 					handleEnterKey();
 				} else if (e.getCode() == KeyCode.ESCAPE) {
 					// handleEscKey();
-					// System.out.println("escape");
 				} else if (e.getCode() == KeyCode.DELETE) {
 					handleDeleteKey();
-					// System.out.println("delete");
 				}
 			}
 
 			private void handleEnterKey() {
-				// TODO Auto-generated method stub
 				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
-				// System.out.println(chosen.getTaskName());
 				barControl.updateUserInput("edit " + chosen.getTaskName());
 				barControl.getFocus();
 			}
 
 			private void handleDeleteKey() {
-				// TODO Auto-generated method stub
 				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
-				// System.out.println(chosen.getTaskName());
 				barControl.updateUserInput("delete " + chosen.getTaskName());
 				barControl.getFocus();
 			}
@@ -356,8 +332,7 @@ public class Main extends Application {
 		assert userInput != null;
 		for (Task temp : searchResult) {
 			if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
-				logic.delete(temp);
-				
+				logic.delete(temp);			
 				break;
 			}
 			
@@ -390,7 +365,6 @@ public class Main extends Application {
 			}
 			
 		}
-		//updateList();
 
 	}
 	
@@ -403,7 +377,14 @@ public class Main extends Application {
 		assert commandBarController != null;
 		int i = 1;
 		isFeedback = true;
-		
+		if (userInput.indexOf(' ') != -1) {
+			i = userInput.indexOf(' ');
+			String firstWord = userInput.substring(0, i);
+			String subString = userInput.substring(i + 1);
+			commandBarController.setFeedback("  Successfully " + firstWord + "ed " + "' " + subString + " ' ");
+		} else {
+			commandBarController.setFeedback("  Successfully " + userInput + "ed   ");
+		}
 	}
 	
 	// Method that returns the first word
@@ -418,7 +399,6 @@ public class Main extends Application {
 	            break;
 	        }
 	    }
-
 	    return result; 
 	}
 	
@@ -427,7 +407,6 @@ public class Main extends Application {
 		n.getStyleClass().removeAll("bad","med","good","best"); 
 	}
 
-	
 
 	public void populateList(TasksTableController tableControl, ArrayList<Task> result) {
 		tableControl.clearTask();
@@ -443,7 +422,6 @@ public class Main extends Application {
 				tableControl.addTask(temp);
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

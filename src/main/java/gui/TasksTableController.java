@@ -37,7 +37,7 @@ public class TasksTableController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		title.setText("Upcoming");
+		//title.setText("Upcoming");
 		initialise();
 	}
 

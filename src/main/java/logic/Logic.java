@@ -113,9 +113,7 @@ public class Logic {
 
 		else if (command.isCommand(DELETE_COMMAND)) {
 			//result = handleDeleteCommand(task);
-			// return the list to UI
-
-			
+			// return the list to UI		
 		}
 
 		else if (command.isCommand(DISPLAY_COMMAND)) {
