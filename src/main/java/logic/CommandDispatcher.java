@@ -14,6 +14,7 @@ public class CommandDispatcher {
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
+	private static final String MARK_COMMAND = "mark";
 	private static final String EMPTY_STRING = "";
 	private static final String WHITE_SPACE = " ";
 
@@ -68,6 +69,9 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
+		else if (command.isCommand(MARK_COMMAND)) {
+
+		}
 
 	}
 
@@ -114,7 +118,9 @@ public class CommandDispatcher {
 		else if (isCommand(UNDO_COMMAND, firstWord)) {
 			return UNDO_COMMAND;
 		}
-
+		else if (isCommand(MARK_COMMAND, firstWord)) {
+			return MARK_COMMAND;
+		}
 		else {
 			return ADD_COMMAND;
 		}

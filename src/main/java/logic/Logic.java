@@ -19,6 +19,7 @@ public class Logic {
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String DISPLAY_COMMAND = "display";
+	private static final String MARK_COMMAND = "mark";
 	private static final String HELP_COMMAND = "help";
 
 	private static final int TASK = 0;
@@ -132,6 +133,9 @@ public class Logic {
 
 		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
 			Path path = Paths.get(command.getParameters()[TASK]);
+		}
+		else if (command.isCommand(MARK_COMMAND)) {
+			
 		}
 
 		else if (command.isCommand(SORT_COMMAND)) {
