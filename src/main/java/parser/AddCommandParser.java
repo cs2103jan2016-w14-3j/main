@@ -43,10 +43,6 @@ public class AddCommandParser extends Parser {
 	{
 		PrettyTimeParser pars = new PrettyTimeParser();
 		System.out.println(pars.parse("from next monday to next wed"));
-
-		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
-		//CommandParser par = new CommandParser();
-		//String str = "from next mon to next tue";
 		AddCommandParser parser = new AddCommandParser();
 		System.out.println(parser.isRecurringTask("from mon to wed do this and that"));
 		//parser.determineParameters(str);
