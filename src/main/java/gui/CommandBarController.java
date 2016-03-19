@@ -14,7 +14,6 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import main.java.flash.Main;
-
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -85,11 +84,24 @@ public class CommandBarController extends BorderPane {
 	
 	private void search(){
 		// Handle TextField text changes.
-		commandBar.textProperty().addListener((observable, oldValue, newValue) -> {
-			try {
-				mainApp.handleSearch(oldValue, newValue);
-			} catch (Exception e) {
-				e.printStackTrace();
+//		commandBar.textProperty().addListener((observable, oldValue, newValue) -> {
+//			try {
+//				mainApp.handleSearch(oldValue, newValue);
+//			} catch (Exception e) {
+//				e.printStackTrace();
+//			}
+//		});
+		
+		commandBar.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable,
+					String oldValue, String newValue) {
+				try {
+					mainApp.handleSearch(oldValue, newValue);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 		});
 

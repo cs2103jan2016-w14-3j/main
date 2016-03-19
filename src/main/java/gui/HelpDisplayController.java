@@ -11,11 +11,12 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 
-public class EmptyTableController extends BorderPane {
+public class HelpDisplayController extends BorderPane {
 
-	private static final String FILE_STATS_FXML = "/main/resources/layouts/EmptyTable.fxml";
 	
-	public EmptyTableController() {
+	private static final String FILE_STATS_FXML = "/main/resources/layouts/HelpDisplay.fxml";
+	
+	public HelpDisplayController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_FXML));
 		loader.setController(this);
 		loader.setRoot(this);
@@ -28,5 +29,5 @@ public class EmptyTableController extends BorderPane {
 
 	}
 	
-
+	
 }

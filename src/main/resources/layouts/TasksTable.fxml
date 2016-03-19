@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.image.*?>
 <?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.layout.*?>
@@ -9,7 +10,11 @@
 
 <fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-		<ListView id="tasksDisplay" fx:id="tasksDisplay" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="480.0" prefWidth="565.0" BorderPane.alignment="CENTER">
+         <children>
+      		<ListView id="tasksDisplay" fx:id="tasksDisplay">
 		</ListView>
+         </children>
+      </StackPane>
    </center>
 </fx:root>

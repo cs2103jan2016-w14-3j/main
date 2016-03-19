@@ -11,7 +11,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import main.java.data.Task;
 
@@ -22,10 +23,15 @@ public class TasksTableController extends BorderPane {
 
 	@FXML
 	private Label title;
+	
+	@FXML
+    private ImageView helpImage;
 
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/TasksTable.fxml";
+	private static final String HELP_ICON = "/main/resources/images/help.fw.png";
 	private ArrayList<TasksItemController> items;
 	protected String taskname;
+	
 
 	public TasksTableController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_FXML));
@@ -37,13 +43,16 @@ public class TasksTableController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//title.setText("Upcoming");
+	
 		initialise();
 	}
+	
+
 
 	private void initialise() {
 		this.items = new ArrayList<TasksItemController>();
 		this.tasksDisplay.setItems(FXCollections.observableList(items));
+		
 	}
 
 	public ListView<TasksItemController> getListView() {

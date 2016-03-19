@@ -86,16 +86,16 @@ public class TasksItemController extends BorderPane {
 	}
 
 	private String generateColour(String priority) {
-		if (priority.equals("green")) {
+		if (priority.equals("low")) {
 			return BASE_COLOUR_80;
-		} else if (priority.equals("neon")) {
+		} else if (priority.equals("zai")) {
 			return BASE_COLOUR_60;
-		} else if (priority.equals("yellow")) {
+		} else if (priority.equals("med")) {
 			return BASE_COLOUR_40;
-		} else if (priority.equals("orange")) {
-			return BASE_COLOUR_20;
-		} else {
+		} else if (priority.equals("high")) {
 			return BASE_COLOUR_0;
+		} else {
+			return BASE_COLOUR_20;
 		}
 	}
 

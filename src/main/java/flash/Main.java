@@ -17,6 +17,7 @@ import main.java.logic.Logic;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.EmptyTableController;
+import main.java.gui.HelpDisplayController;
 import main.java.gui.TabsController;
 import main.java.gui.TasksItemController;
 import main.java.gui.TasksTableController;
@@ -42,9 +43,7 @@ public class Main extends Application {
 
 	private TasksTableController tableControl;
 	private CommandBarController barControl;
-	private EmptyTableController emptyTable;
 	private TabsController tabControl;
-
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
 	private ArrayList<Task> finalResult = new ArrayList<Task>();
@@ -299,6 +298,12 @@ public class Main extends Application {
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
+		
+		if(userInput.equalsIgnoreCase("help")){
+			tabControl.setUpcomingTab(new HelpDisplayController());
+			commandBarController.clear();
+			return;
+		}
 
 		if (userInput.isEmpty()) {
 			return;
