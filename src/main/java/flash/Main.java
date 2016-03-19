@@ -138,6 +138,7 @@ public class Main extends Application {
 
 	private void showTasks() {
 		tabControl.setUpcomingTab(tableControl);
+		tabControl.setCompleteTab(tableControl);
 	}
 
 	private void showCommandBar() {

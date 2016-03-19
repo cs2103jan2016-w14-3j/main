@@ -125,23 +125,24 @@
 }
 .tab-pane .tab
 {
-    -fx-background-color: #e6e6e6;
-
+    
+-fx-background-color: #3c3c3c;
 }
 
 .tab-pane .tab:selected
 {
-    -fx-background-color: #3c3c3c;
+   -fx-background-color: #e6e6e6;
 }
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
-    -fx-text-fill: #828282;
+ 
     -fx-font-size: 12px;
     -fx-font-weight: bold;
+    -fx-text-fill: #96b946;
 }
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
-    -fx-text-fill: #96b946;
+   -fx-text-fill: #828282;
 }

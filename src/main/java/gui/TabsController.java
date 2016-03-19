@@ -11,6 +11,8 @@ import javafx.scene.control.Label;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
@@ -44,10 +46,16 @@ public class TabsController extends BorderPane {
 	}
 	
 	public void setUpcomingTab(Node value){
+		Image icon = new Image("/main/resources/images/upcomingIcon.fw.png");
+		ImageView iconView = new ImageView(icon);
+		upcomingTab.setGraphic(iconView);
 		upcomingTab.setContent(value);
 	}
 	
 	public void setCompleteTab(Node value){
+		Image icon = new Image("/main/resources/images/test.png");
+		ImageView iconView = new ImageView(icon);
+	    completeTab.setGraphic(iconView);
 		completeTab.setContent(value);
 	}
 }
