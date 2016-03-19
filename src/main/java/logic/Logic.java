@@ -21,6 +21,7 @@ public class Logic {
 	private static final String DISPLAY_COMMAND = "display";
 	private static final String MARK_COMMAND = "mark";
 	private static final String HELP_COMMAND = "help";
+	private static final String WHITE_SPACE = " ";
 
 	private static final int TASK = 0;
 
@@ -187,11 +188,11 @@ public class Logic {
 	}
 
 	public boolean isDeleteCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(" ")).equalsIgnoreCase(DELETE_COMMAND);
+		return userInput.substring(0,userInput.indexOf(WHITE_SPACE)).equalsIgnoreCase(DELETE_COMMAND);
 	}
 
 	public boolean isEditCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(" ")).equalsIgnoreCase(EDIT_COMMAND);
+		return userInput.substring(0,userInput.indexOf(WHITE_SPACE)).equalsIgnoreCase(EDIT_COMMAND);
 	}
 	public boolean isDisplayCommand(String userInput) {
 		return userInput.substring(0,userInput.length()).equalsIgnoreCase(DISPLAY_COMMAND);

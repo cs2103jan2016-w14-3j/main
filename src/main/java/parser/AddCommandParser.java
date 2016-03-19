@@ -28,6 +28,8 @@ public class AddCommandParser extends Parser {
 	private static final String EMPTY_TIME = "[]";
 	private static final String EXTRA_WHITE_SPACES = "\\s+";
 	private static final String DEFAULT_TIME = "8am";
+	private static final String TOMORROW_IN_FULL = "tomorrow";
+	private static final String TOMORROW_IN_SHORT = "tmr";
 	private static final int FIELD_NOT_EXIST = -1;
 
 
@@ -240,6 +242,7 @@ public class AddCommandParser extends Parser {
 
 	protected String formatToStandardCommandContent(String content) {
 		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
+		content = StringUtils.replace(content, TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
 		int time = getStartingIndexOfIdentifier(content);
 		int priority = getStartingIndexOfPriority(content);
 		int task = getStartingIndexOfTask(content, time, priority);
