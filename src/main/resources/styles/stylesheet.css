@@ -1,7 +1,7 @@
 #root {
 	-fx-padding: 10px;
 	-fx-background-color: rgba(255, 255, 255, 0.3);
-	-fx-background-image: url("/main/resources/images/ocean.jpg");
+	-fx-background-image: url("/main/resources/images/vintage.jpg");
     -fx-background-size: stretch;
 }
 #emptyTable {
@@ -59,7 +59,7 @@
 
 .card {
 	-fx-padding: 14px;
-	-fx-background-color: rgba(255, 255, 255, 0.5);
+	-fx-background-color: rgba(255, 255, 255, 0.6);
 	-fx-border-color : transparent;
 }
 
@@ -92,4 +92,17 @@
 	-fx-font-size: 14px;
 	-fx-font-weight: bold;
 	-fx-stroke-width: 0;
+}
+
+.bad{
+	-fx-background-color: red,linear-gradient(to bottom, derive(red,60%) 5%,derive(red,90%) 40%);
+}
+.med{
+	-fx-background-color: black,rgba(255, 255, 255, 0.8);
+}
+.good{
+	-fx-background-color: orange,linear-gradient(to bottom, derive(orange,60%) 5%,derive(orange,90%) 40%);
+}
+.best{
+	-fx-background-color: green,linear-gradient(to bottom, derive(green,60%) 5%,derive(green,90%) 40%);
 }

@@ -1,11 +1,12 @@
 package main.java.gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
+
+
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
+
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
@@ -13,12 +14,11 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import main.java.flash.Main;
-import main.java.logic.Logic;
-import main.java.data.Task;
+
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+import javafx.event.EventHandler;
+
 
 
 
@@ -45,6 +45,7 @@ public class CommandBarController extends BorderPane {
 		
        // searchTasks();
 		search();
+		//testStuff();
 		this.mainApp = mainApp;
 	}
 
@@ -58,6 +59,7 @@ public class CommandBarController extends BorderPane {
 			e.printStackTrace();
 		}
 		search();
+//		testStuff();
 	}
 
 	@FXML
@@ -68,6 +70,10 @@ public class CommandBarController extends BorderPane {
 
 	public void clear() {
 		commandBar.clear();	
+	}
+	
+	public TextField getCommandBar(){
+		return commandBar;
 	}
 
 	public void setFeedback(String feedbackText) {
@@ -95,7 +101,23 @@ public class CommandBarController extends BorderPane {
 
 	}
 	
+ private void testStuff(){
+	 commandBar.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
+			@Override
+			public void handle(KeyEvent arg0) {
+				TextField f=(TextField)arg0.getSource();
+				try {
+					mainApp.search(f.getText());
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+
+			}
+		});
 	
+	
+}
 	private void searchTasks(){
 		commandBar.textProperty().addListener(new ChangeListener<String>() {
 			@Override
@@ -122,7 +144,10 @@ public class CommandBarController extends BorderPane {
 		commandBar.requestFocus();
 	}
 	
+	public void setBgColour(String colour){
+		commandBar.getStyleClass().add(colour);
+	}
 	
-
+	
 
 }

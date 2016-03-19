@@ -2,6 +2,7 @@ package main.java.gui;
 
 import java.io.IOException;
 
+
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -9,7 +10,6 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-import javafx.scene.text.TextBoundsType;
 import main.java.data.Task;
 
 public class TasksItemController extends BorderPane {

@@ -1,17 +1,11 @@
 package main.java.gui;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Collections;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
-import javafx.fxml.FXML;
+
 import javafx.fxml.FXMLLoader;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
+
 import javafx.scene.layout.BorderPane;
-import main.java.data.Task;
-import main.java.flash.Main;
+
 
 public class EmptyTableController extends BorderPane {
 

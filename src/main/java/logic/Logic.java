@@ -1,6 +1,7 @@
 package main.java.logic;
 
 import java.nio.file.Path;
+
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import main.java.data.*;
@@ -18,6 +19,7 @@ public class Logic {
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String DISPLAY_COMMAND = "display";
+	private static final String HELP_COMMAND = "help";
 
 	private static final int TASK = 0;
 
@@ -195,6 +197,15 @@ public class Logic {
 
 	public Task editedTask(Task temp2) {
 		return temp2;
+	}
+	public boolean isCommand(String commandWord) {
+		if(commandWord.equalsIgnoreCase(ADD_COMMAND)||commandWord.equalsIgnoreCase(DISPLAY_COMMAND)||commandWord.equalsIgnoreCase(DELETE_COMMAND)||
+				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
+				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
+				commandWord.equalsIgnoreCase(CLEAR_COMMAND)||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND))
+		    return true;
+		return false;
+		
 	}
 
 }
