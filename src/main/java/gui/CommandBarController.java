@@ -43,9 +43,7 @@ public class CommandBarController extends BorderPane {
 			e.printStackTrace();
 		}
 		
-       // searchTasks();
 		search();
-		//testStuff();
 		this.mainApp = mainApp;
 	}
 
@@ -59,7 +57,6 @@ public class CommandBarController extends BorderPane {
 			e.printStackTrace();
 		}
 		search();
-//		testStuff();
 	}
 
 	@FXML
@@ -92,44 +89,10 @@ public class CommandBarController extends BorderPane {
 			try {
 				mainApp.handleSearch(oldValue, newValue);
 			} catch (Exception e) {
-				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-//			System.out.println("TextField Text Changed (oldValue: " + oldValue + ")");
-//		    System.out.println("TextField Text Changed (newValue: " + newValue + ")");
 		});
 
-	}
-	
- private void testStuff(){
-	 commandBar.addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
-			@Override
-			public void handle(KeyEvent arg0) {
-				TextField f=(TextField)arg0.getSource();
-				try {
-					mainApp.search(f.getText());
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-
-			}
-		});
-	
-	
-}
-	private void searchTasks(){
-		commandBar.textProperty().addListener(new ChangeListener<String>() {
-			@Override
-			public void changed(ObservableValue <?extends String> observable, String oldValue, String newValue) {
-					try {
-						mainApp.handleSearch(oldValue, newValue);
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-			}
-		});
 	}
 	
 	public void getFocus (){

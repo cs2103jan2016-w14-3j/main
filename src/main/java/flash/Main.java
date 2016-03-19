@@ -323,39 +323,25 @@ public class Main extends Application {
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
-		
-		int number;
-		//checkIsTasksEmpty();
 
 		if (userInput.isEmpty()) {
 			return;
 
 		} else {
 			// normal command
-
-			//logControl.addLog(userInput);
 			historyLog.add(userInput);
-			//System.out.println("from userInput: "+ userInput);
 			
 			if (!logic.isDisplayCommand(userInput)) {
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-				//updateList();
-				
-				//System.out.println("from result here: "+ result.get(0).getTask());
-
-				//Task task = result.get(0);
-				//System.out.println("from result here: "+ task.getTask());
 				
 				if (userInput.indexOf(" ") != -1) {
 					if (logic.isDeleteCommand(userInput)) {
 						handleDeleteCommand(userInput);
-//						System.out.println("pass throught here");
 					}
 					if (logic.isEditCommand(userInput)) {
 					    handleEditCommand(userInput);
 					}
 				}
-				//updateList();
 
 			}
 		}
@@ -368,28 +354,22 @@ public class Main extends Application {
 	
 	private void handleDeleteCommand(String userInput) throws Exception {
 		assert userInput != null;
-		//System.out.println(searchResult.get(0).getTask());
 		for (Task temp : searchResult) {
 			if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
-//				System.out.println("delete this: "+ temp.getTask());
 				logic.delete(temp);
 				
 				break;
 			}
 			
 		}
-		//updateList();
 	}
 
 	private void handleEditCommand(String userInput) throws Exception {
 		assert userInput != null;
 		
 		String sub = userInput.substring(5, userInput.indexOf(","));
-		//System.out.println(sub);
 		finalResult.clear();
 		for (Task temp : searchResult) {
-		//	System.out.println("from task here: "+ temp.getTask());
-		//	System.out.println("editzhang".equalsIgnoreCase(task.getTask()));
 			if (sub.equals(temp.getTask())) {				
 		     	finalResult.add(temp);	  
 		     	finalResult.add(result.get(1));
@@ -404,9 +384,6 @@ public class Main extends Application {
 		     		updated.setPriority(original.getPriority());
 		     	}
 		     	
-//				System.out.println("from original here: "+ result.get(1).getTask());
-//				System.out.println("from editted here: "+ temp.getTask());
-			//	System.out.println(finalResult.get(0).getTask() + "edit to" + finalResult.get(1).getTask());
 				logic.edit(finalResult);
 				
 				break;
@@ -426,37 +403,6 @@ public class Main extends Application {
 		assert commandBarController != null;
 		int i = 1;
 		isFeedback = true;
-//		if (userInput.indexOf(' ') != -1) {
-//			i = userInput.indexOf(' ');
-//			String firstWord = userInput.substring(0, i);
-//			String subString = userInput.substring(i + 1);
-//			commandBarController.setFeedback("  Successfully " + firstWord + "ed " + "[" + subString + "]  ");
-//		} else {
-//			commandBarController.setFeedback("  Successfully " + userInput + "ed   ");
-//		}
-		
-//		commandBarController.getCommandBar().addEventFilter(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>(){
-//			@Override
-//			public void handle(KeyEvent arg0) {
-//				TextField f=(TextField)arg0.getSource();
-//				String commandWord = firstWord(f.getText());
-//				if(logic.isCommand(commandWord)){
-//					//setMessage(message,"Password Strength: Bad",Color.RED);
-////					int i = userInput.indexOf(' ');
-////					String firstWord = userInput.substring(0, i);
-////					String subString = userInput.substring(i + 1);
-////					commandBarController.setFeedback("  Successfully " + firstWord + "ed " + "[" + subString + "]  ");
-//					removeAllStyle(f);
-//					f.getStyleClass().add("best");  
-//				}else{
-//					
-//					removeAllStyle(f);
-//					f.getStyleClass().add("bad");  
-//					//message.setVisible(false);
-//				}
-//
-//			}
-//		});
 		
 	}
 	
@@ -476,66 +422,6 @@ public class Main extends Application {
 	    return result; 
 	}
 	
-	public void search(String text) throws Exception {
-		//int space = newValue.indexOf(",")+1;
-		if(text.contains(",")){
-			//System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
-			return;
-		}
-
-		String[] fragments = null;
-		fragments = text.split(SPLIT);
-		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
-		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
-		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
-         
-//		if (text.contains(SPACE)) {
-//			updateList();
-//		}
-		
-		
-		if ((isEdit || isDelete || isSearch) && fragments.length > 1) {
-			text = fragments[1];		
-			String[] parts = null;
-			parts = text.toLowerCase().split(SPACE);
-			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
-          //  searchResult = new ArrayList<Task>();
-            searchResult.clear();
-            
-			int count = 0;
-			for (Task task : logic.display()) {
-				boolean match = true;
-				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
-				for (String part : parts) {
-					// System.out.println(part);
-					String withoutComma = part.substring(0,part.length()-1);
-					//System.out.println(withoutComma);
-					
-					if(taskMatch.toLowerCase().contains(withoutComma)&& text.contains(",")){
-						match = true;
-						break;
-					}
-					if (!taskMatch.toLowerCase().contains(part)) {
-						match = false;
-						break;
-					}
-				}
-				// if match add to temp
-				if (match) {
-				//	System.out.println("match " + task.getTask()); 
-					temp.add(new TasksItemController(task));
-					searchResult.add(task);
-				//	match = true;
-//					System.out.println("searchresult   "+ searchResult.size()+"  "+ searchResult.get(0).getTask());
-//					System.out.println(temp.size()+"  "+ temp.get(0).getTaskName());
-				}
-			}
-			tableControl.clearTask();
-			tableControl.setItems(temp);
-		 }
-
- 
-	}
 	
 	public void removeAllStyle(Node n){
 		n.getStyleClass().removeAll("bad","med","good","best"); 
