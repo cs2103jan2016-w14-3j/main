@@ -19,7 +19,7 @@ public class AddCommandParser extends Parser {
 	private static final String RECURRING_FLAG_AND = "and";
 	private static final String DURATION_OR_RECURRING_FLAG_FROM = "from";
 	private static final String DEADLINE_TASK = "deadline";
-	private static final String EVENT_TASK = "event";
+	private static final String EVENT_TASK = "one-time event";
 	private static final String RECURRING_TASK = "recurring";
 	private static final String DURATION_TASK = "duration";
 	private static final String PRIORITY_FLAG = "#";	
