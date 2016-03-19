@@ -156,6 +156,7 @@ public class CommandDispatcher {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser pars = new PrettyTimeParser();
+		System.out.println(pars.parse("from 8 to 9").get(1));
 
 		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
 		//CommandParser par = new CommandParser();

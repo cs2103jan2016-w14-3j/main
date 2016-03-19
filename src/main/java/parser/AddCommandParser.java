@@ -11,11 +11,17 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 public class AddCommandParser extends Parser {
 
 	private static final String WHITE_SPACE = " ";
-	private static final String DEADLINE_FLAG = "by";
+	private static final String DEADLINE_FLAG_BY = "by";
+	private static final String DEADLINE_FLAG_BEFORE = "before";
 	private static final String EVENT_FLAG_ON = "on";
 	private static final String EVENT_FLAG_AT = "at";
+	private static final String RECURRING_FLAG_EVERY = "every";
+	private static final String RECURRING_FLAG_AND = "and";
+	private static final String DURATION_OR_RECURRING_FLAG_FROM = "from";
 	private static final String DEADLINE_TASK = "deadline";
 	private static final String EVENT_TASK = "event";
+	private static final String RECURRING_TASK = "recurring";
+	private static final String DURATION_TASK = "duration";
 	private static final String PRIORITY_FLAG = "#";	
 	private static final String OVERDUE = "overdue";
 	private static final String UNDONE = "undone";
@@ -24,12 +30,34 @@ public class AddCommandParser extends Parser {
 	private static final String DEFAULT_TIME = "8am";
 	private static final int FIELD_NOT_EXIST = -1;
 
+
 	protected PrettyTimeParser timeParser;
 
 	public AddCommandParser() {
 		super();
 		timeParser = new PrettyTimeParser();
 	}
+
+
+	public static void main(String[] args)
+	{
+		PrettyTimeParser pars = new PrettyTimeParser();
+		System.out.println(pars.parse("from next monday to next wed"));
+
+		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
+		//CommandParser par = new CommandParser();
+		//String str = "from next mon to next tue";
+		AddCommandParser parser = new AddCommandParser();
+		System.out.println(parser.isRecurringTask("from mon to wed do this and that"));
+		//parser.determineParameters(str);
+		//int time = par.getStartingIndexOfIdentifier(str);
+		//int priority = par.getStartingIndexOfPriority(str);
+		//int task = par.getStartingIndexOfTask(str, time, priority);
+		//System.out.println(par.formatToStandardCommandContent(str));
+		//System.out.print("task:" + task + "; " + "time:" + time + "; " +
+		//	"priority:" + priority + ";");
+	}
+
 
 
 	public String[] determineParameters(String commandType, String commandContent) 
@@ -92,11 +120,13 @@ public class AddCommandParser extends Parser {
 			return EMPTY_STRING;
 		}
 
-		if (isOverdue(dates.get(0))) {
-			Calendar calendar = Calendar.getInstance();
-			calendar.setTime(dates.get(0));
-			calendar.add(Calendar.DATE, 1);  // number of days to add
-			dates.set(0,calendar.getTime()); // dt is now the new date
+		for (int i = 0; i < dates.size(); i++) {
+			if (isOverdue(dates.get(i))) {
+				Calendar calendar = Calendar.getInstance();
+				calendar.setTime(dates.get(i));
+				calendar.add(Calendar.DATE, 1);  // number of days to add
+				dates.set(i,calendar.getTime()); // dt is now the new date
+			}
 		}
 
 
@@ -134,11 +164,19 @@ public class AddCommandParser extends Parser {
 		if (timeIndex == FIELD_NOT_EXIST) {
 			return EVENT_TASK;
 		}
+		else if (isRecurringTask(content)) {
+			return RECURRING_TASK;
+		}
+		else if (isDurationTask(content)) {
+			return DURATION_TASK;
+		}
 		else {
 			String identifier = content.substring(timeIndex, timeIndex + 2);
-			if (identifier.equalsIgnoreCase(DEADLINE_FLAG)) {
+			if (identifier.equalsIgnoreCase(DEADLINE_FLAG_BY) ||
+					identifier.equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
 				return DEADLINE_TASK;
 			}
+
 			return EVENT_TASK;
 		}
 	}
@@ -152,6 +190,57 @@ public class AddCommandParser extends Parser {
 		}
 		return UNDONE;
 	}
+
+	private boolean isRecurringTask(String content) {
+
+		int timeIndex = getStartingIndexOfIdentifier(content);
+		int priorityIndex = getStartingIndexOfPriority(content);
+		if (timeIndex == FIELD_NOT_EXIST) {
+			return false;
+		}
+		if (priorityIndex == FIELD_NOT_EXIST) {
+			content = content.substring(timeIndex);
+		}
+		else {
+			content = content.substring(timeIndex, priorityIndex - 1);
+		}
+
+		List<Date> dates = timeParser.parse(content);
+		if (dates.size() == 1) {
+			if (containsWholeWord(content, RECURRING_FLAG_EVERY)) {
+				return true;
+			}
+		}
+		else if (dates.size() > 1) {
+			if (containsWholeWord(content, RECURRING_FLAG_AND)) {
+				return true;
+			}
+			else if (containsWholeWord(content, DURATION_OR_RECURRING_FLAG_FROM)) {
+				if (!dates.get(0).toString().substring(0, 10).equals
+						(dates.get(1).toString().substring(0, 10))) {
+					return true;
+				}
+			}
+		}
+
+		return false;
+	}
+	private boolean containsWholeWord(String content, String keyword) {
+		String[] segments = content.split(WHITE_SPACE);  
+		for (int i = 0; i < segments.length; i++) {
+			if (segments[i].equalsIgnoreCase(keyword)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	private boolean isDurationTask(String content) {
+		if (timeParser.parse(content).size() > 1) {
+			return true;
+		}
+		return false;
+	}
+
 
 	protected String formatToStandardCommandContent(String content) {
 		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
@@ -173,7 +262,7 @@ public class AddCommandParser extends Parser {
 			else {
 				if (task > priority) {
 					return content.substring(task)+ WHITE_SPACE + 
-				content.substring(0, task - 1);
+							content.substring(0, task - 1);
 				}
 				else {
 					return content;
@@ -357,8 +446,8 @@ public class AddCommandParser extends Parser {
 		int taskIndex = FIELD_NOT_EXIST;
 		//input: time/time-task
 		int count = StringUtils.countMatches(content, WHITE_SPACE);
-		
-	
+
+
 		if (count == 1) {
 			return FIELD_NOT_EXIST;
 		}
@@ -473,7 +562,10 @@ public class AddCommandParser extends Parser {
 
 	private boolean isValidTimeIdentifier(String content) {
 		//content.spit
-		if (content.equalsIgnoreCase(DEADLINE_FLAG)) {
+		if (content.equalsIgnoreCase(DEADLINE_FLAG_BY)) {
+			return true;
+		}
+		else if (content.equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
 			return true;
 		}
 
@@ -483,13 +575,19 @@ public class AddCommandParser extends Parser {
 		else if (content.equalsIgnoreCase(EVENT_FLAG_ON)) {
 			return true;
 		}
+		else if (content.equalsIgnoreCase(RECURRING_FLAG_EVERY)) {
+			return true;
+		}
+		else if (content.equalsIgnoreCase(DURATION_OR_RECURRING_FLAG_FROM)) {
+			return true;
+		}
 		return false;
 	}
-	
+
 	private boolean isOverdue(Date time) {
 		return time.before(new Date());
 	}
-	
+
 	private String getRoughTime(String time) {
 		String[] segments = time.split(TIME_SEPARATOR);
 		time = segments[0] + segments[1] + segments[2].substring(2);
