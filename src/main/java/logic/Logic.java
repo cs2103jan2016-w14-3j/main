@@ -209,7 +209,9 @@ public class Logic {
 			//System.out.println("UNDO IS HERE !!!!");
 		}
 		
-		else if (command.isCommand(COMMAND_TYPE.UNDO))
+		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
+			
+		}
 		
 
 
