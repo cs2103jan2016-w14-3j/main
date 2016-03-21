@@ -18,8 +18,8 @@ public class Logic {
 	private static final String SORT_COMMAND = "sort";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
-	private static final String DISPLAY_COMMAND = "display";
 	private static final String HELP_COMMAND = "help";
+	private static final String DISPLAY_COMMAND = "display";
 	private static final String EMPTY_STRING = "";
 
 	private static final int TASK = 0;
@@ -152,6 +152,10 @@ public class Logic {
 					if(updated.getPriority().equals(EMPTY_STRING)){
 						updated.setPriority(original.getPriority());
 					}
+					
+					if (updated.getType().equals(EMPTY_STRING)) {
+						updated.setType(original.getType());
+					}
 
 					edit(finalResult);
 
@@ -204,6 +208,7 @@ public class Logic {
 			storageController.undo();
 			//System.out.println("UNDO IS HERE !!!!");
 		}
+		
 
 
 		return result;

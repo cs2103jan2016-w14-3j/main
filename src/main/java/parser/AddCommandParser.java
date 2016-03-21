@@ -171,7 +171,7 @@ public class AddCommandParser extends Parser {
 	protected String determineTaskType(String content) {
 		int timeIndex = getStartingIndexOfIdentifier(content);
 		if (timeIndex == FIELD_NOT_EXIST) {
-			return EVENT_TASK;
+			return EMPTY_STRING;
 		}
 		else if (isRecurringTask(content)) {
 			return RECURRING_TASK;
