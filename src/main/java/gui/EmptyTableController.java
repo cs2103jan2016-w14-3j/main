@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 
+
 public class EmptyTableController extends BorderPane {
 
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/EmptyTable.fxml";

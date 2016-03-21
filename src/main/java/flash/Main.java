@@ -364,7 +364,8 @@ public class Main extends Application {
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("med");
 		}
-
+   
+		
 		if (logic.isCommand(fragments[COMMAND_INDEX])) {
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("best");

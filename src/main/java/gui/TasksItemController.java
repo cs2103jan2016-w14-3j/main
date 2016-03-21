@@ -12,6 +12,7 @@ import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import main.java.data.Task;
 
+
 public class TasksItemController extends BorderPane {
 
 	@FXML

@@ -11,6 +11,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 
 
+
 public class HelpDisplayController extends BorderPane {
 
 	

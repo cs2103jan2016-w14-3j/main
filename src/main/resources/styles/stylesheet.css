@@ -139,6 +139,7 @@
     -fx-text-fill: #96b946;
 }
 
+
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
    -fx-text-fill: #828282;
