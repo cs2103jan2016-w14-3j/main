@@ -21,11 +21,15 @@ public class DirectoryController {
 	private String taskFilePath;
 
 	public DirectoryController() {
+		
+	}
+	
+	public DirectoryController(String fileName) {
 
-		initialiseFileDir();
+		initialiseFileDir(fileName);
 	}
 
-	private void initialiseFileDir() {
+	private void initialiseFileDir(String fileName) {
 
 		dirFile = new File(DIR_FILE_NAME);
 
@@ -51,7 +55,7 @@ public class DirectoryController {
 				taskFilePath = lineRead;
 			}
 			else {
-				taskFilePath = new File("").getAbsolutePath() + "\\Task List.txt";
+				taskFilePath = new File("").getAbsolutePath() + "\\" + fileName;
 			}
 		} catch (IOException e) {
 			System.err.println("Error reading from file");

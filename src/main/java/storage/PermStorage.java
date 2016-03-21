@@ -24,10 +24,14 @@ public class PermStorage {
 	private FileWriter fileWriter;
 	private DirectoryController dirController;
 	private Gson gson;
-	
+
 	public PermStorage() {
+		
+	}
 	
-		dirController = new DirectoryController();
+	public PermStorage(DirectoryController dirController) {
+	
+		this.dirController = dirController;
 		initialiseFile(dirController.getTaskFilePath());
 		gson = new Gson();
 		taskList = new ArrayList<Task>();

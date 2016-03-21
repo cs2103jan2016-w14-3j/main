@@ -26,6 +26,7 @@ public class StorageController {
 	public void addTask(Task task) {
 		assert task != null;
 		pendingTemp.writeToTemp(task);
+		lastAction = PENDING_TASK;
 	}
 	
 	public ArrayList<Task> displayPendingTasks() {
@@ -40,53 +41,65 @@ public class StorageController {
 		assert taskToEdit != null;
 		assert editedTask != null;
 		pendingTemp.editToTemp(taskToEdit, editedTask);
+		lastAction = PENDING_TASK;
 	}
 	
 	public void editCompletedTask(Task taskToEdit, Task editedTask) {
 		assert taskToEdit != null;
 		assert editedTask != null;
 		completedTemp.editToTemp(taskToEdit, editedTask);
+		lastAction = COMPLETED_TASK;
 	}
 	
 	public void deletePendingTask(Task task) {
 		assert task != null;
 		pendingTemp.deleteFromTemp(task);
+		lastAction = PENDING_TASK;
 	}
 	
 	public void deleteCompletedTask(Task task) {
 		assert task != null;
 		completedTemp.deleteFromTemp(task);
+		lastAction = COMPLETED_TASK;
 	}
 	
 	public void clearPendingTasks() {	
 		pendingTemp.clearTemp();
+		lastAction = PENDING_TASK;
 	}
 	public void clearCompletedTasks() {		
 		completedTemp.clearTemp();
+		lastAction = COMPLETED_TASK;
 	}
 	
 	public void sortPendingByTaskName() {
 		pendingTemp.sortByTaskName();
+		lastAction = PENDING_TASK;
 	}
 	
 	public void sortPendingByTime() {
 		pendingTemp.sortByTime();
+		lastAction = PENDING_TASK;
 	}
 	
 	public void sortPendingByPriority() {
 		pendingTemp.sortByPriority();
+		lastAction = PENDING_TASK;
 	}
 	
 	public void sortCompletedByTaskName() {
 		completedTemp.sortByTaskName();
+		lastAction = COMPLETED_TASK;
 	}
 	
 	public void sortCompletedByTime() {
 		completedTemp.sortByTime();
+		lastAction = COMPLETED_TASK;
 	}
 	
 	public void sortCompletedByPriority() {
 		completedTemp.sortByPriority();
+		lastAction = COMPLETED_TASK;
 	}
 	
 
@@ -94,6 +107,7 @@ public class StorageController {
 		assert task != null;
 		pendingTemp.deleteFromTemp(task);
 		completedTemp.writeToTemp(task);
+		lastAction = MOVE_TASK_TO_COMPLETE;
 	}
 	
 	public void undo() {
