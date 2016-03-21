@@ -381,14 +381,6 @@ public class Main extends Application {
 		}
 	}
 
-	public void getSaveFilename(String filename) {
-		logic.saveFilename(filename);
-	}
-
-	public void getLoadFilename(String filename) {
-		logic.loadFilename(filename);
-	}
-
 	public void saveFilename() {
 		tabControl.getSaveMenu().setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -397,8 +389,10 @@ public class Main extends Application {
 				FileChooser fileChooser = new FileChooser();
 				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
 				fileChooser.getExtensionFilters().add(extFilter);
-				File saveFile = fileChooser.showSaveDialog(null);			
-				getSaveFilename(saveFile.getAbsolutePath());
+				File saveFile = fileChooser.showSaveDialog(null);	
+				if(saveFile!=null){
+				 logic.saveFilename(saveFile.getAbsolutePath());
+				}
 			}
 		});
 
@@ -413,8 +407,9 @@ public class Main extends Application {
 				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
 				fileChooser.getExtensionFilters().add(extFilter);
 				File loadFile = fileChooser.showOpenDialog(null);
-				getLoadFilename(loadFile.getAbsolutePath());
-				
+				if (loadFile!= null){
+					logic.loadFilename(loadFile.getAbsolutePath());
+				}
 			}
 		});
 
