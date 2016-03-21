@@ -16,11 +16,6 @@ public enum COMMAND_TYPE {
 	public String getType() { 
 		return this.type; 
 	} 
-	
-	
-	public static void main(String[] args) {
-		System.out.println(COMMAND_TYPE.ADD);
-	}
 }
 
 

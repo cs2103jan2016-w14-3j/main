@@ -1,4 +1,5 @@
 package main.java.parser;
+import main.java.data.*;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -144,14 +145,27 @@ public class AddCommandParser extends Parser {
 		return dates.toString().substring(1, dates.toString().length() - 1);
 	}
 
-	protected String determinePriority(String content) {
+	protected String determinePriority(String content) throws InvalidInputFormatException {
 
 		if (content.contains(PRIORITY_FLAG)) {
+			String priority = content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
+			if (!isValidPriority(priority)) {
+				throw new InvalidInputFormatException("Please enter a valid priority level");
+			}
 			return content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
 		}
 		else {
 			return EMPTY_STRING;
 		}
+	}
+	
+	protected boolean isValidPriority(String priority) {
+		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) || priority.equalsIgnoreCase(PRIORITY_LEVEL.MEDIUM.getType()) ||
+				priority.equalsIgnoreCase(PRIORITY_LEVEL.LOW.getType())) {
+			//System.out.println((PRIORITY.HIGH).getType());
+			return true;
+		}
+		return false;
 	}
 
 	protected String determineTaskType(String content) {

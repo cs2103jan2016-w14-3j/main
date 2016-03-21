@@ -17,7 +17,7 @@ public class EditCommandParser extends AddCommandParser {
 		assert commandContent != null;
 		//assert 1==2;
 		if (commandContent.isEmpty() || !commandContent.contains(EDIT_COMMAND_SEPARATOR)) {
-			throw new InvalidInputFormatException("Incorrect command format for editing a task!");
+			throw new InvalidInputFormatException("Cannot edit nothing!");
 		}
 		String[] parameters = new String[4];
 		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
@@ -66,7 +66,7 @@ public class EditCommandParser extends AddCommandParser {
 
 	}
 
-	private String determinePriorityForEditCommand(String[] segments) {
+	private String determinePriorityForEditCommand(String[] segments) throws InvalidInputFormatException {
 		//assert content != null;
 		String priority_A = determinePriority(formatToStandardCommandContent(segments[0].trim())); 
 		String priority_B = determinePriority(formatToStandardCommandContent(segments[1].trim()));
