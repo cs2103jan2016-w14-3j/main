@@ -16,7 +16,8 @@ public class Logic {
 	private static final String SEARCH_COMMAND = "search";
 	private static final String CHANGE_DIRECTORY_COMMAND = "move";
 	private static final String SORT_COMMAND = "sort";
-	private static final String CLEAR_COMMAND = "clear";
+	private static final String CLEAR_UPCOMING_COMMAND = "clearUpcoming";
+	private static final String CLEAR_COMPLETE_COMMAND = "clearComplete";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String DISPLAY_COMMAND = "display";
@@ -49,7 +50,7 @@ public class Logic {
 	public ArrayList<Task> initLogic() throws Exception{
 		Logic logic = new Logic();
 		searchResult = new ArrayList<Task>();
-		return display();
+		return displayPending();
 
 	}
 
@@ -59,6 +60,7 @@ public class Logic {
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
+		System.out.println(command.getType() + "hwllo");
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
@@ -112,9 +114,16 @@ public class Logic {
 			result = storageController.displayPendingTasks();
 		}
 
-		else if (command.isCommand(CLEAR_COMMAND)){
+		else if (command.isCommand(CLEAR_UPCOMING_COMMAND)){
+			System.out.println("clear pending");
 			storageController.clearPendingTasks();
 			result = storageController.displayPendingTasks();
+		}
+		
+		else if (command.isCommand(CLEAR_COMPLETE_COMMAND)){
+			System.out.println("clear complete");
+			storageController.clearCompletedTasks();
+			result = storageController.displayCompletedTasks();
 		}
 
 		else if (command.isCommand(DELETE_COMMAND)) {
@@ -167,6 +176,13 @@ public class Logic {
 			Path path = Paths.get(command.getParameters()[TASK]);
 		}
 		else if (command.isCommand(MARK_COMMAND)) {
+			for (Task temp : searchResult) {
+				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
+					System.out.println("hereeeee");
+					storageController.moveTaskToComplete(temp);			
+					break;
+				}			
+			}
 			
 		}
 
@@ -200,16 +216,16 @@ public class Logic {
 	public void delete(Task task) throws Exception {
 		storageController.deletePendingTask(task);
 	}
-	public ArrayList<Task> display()throws Exception{
+	public ArrayList<Task> displayPending()throws Exception{
 
 		ArrayList<Task> result = storageController.displayPendingTasks();
 
 		return result;
 	}
 
-	public ArrayList<Task> display1()throws Exception{
+	public ArrayList<Task> displayComplete()throws Exception{
 
-		ArrayList<Task> result = storageController.displayPendingTasks();
+		ArrayList<Task> result = storageController.displayCompletedTasks();
 		return result;
 	}
 
@@ -236,7 +252,7 @@ public class Logic {
 		if(commandWord.equalsIgnoreCase(ADD_COMMAND)||commandWord.equalsIgnoreCase(DISPLAY_COMMAND)||commandWord.equalsIgnoreCase(DELETE_COMMAND)||
 				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
 				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
-				commandWord.equalsIgnoreCase(CLEAR_COMMAND)||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND))
+				commandWord.equalsIgnoreCase("clear")||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND))
 		    return true;
 		return false;
 		

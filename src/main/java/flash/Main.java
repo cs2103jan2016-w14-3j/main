@@ -43,13 +43,16 @@ public class Main extends Application {
 	private Logic logic;
 	private Task task;
 
-	private TasksTableController tableControl;
+	private TasksTableController pendingTableControl;
+	private TasksTableController completeTableControl;
 	private CommandBarController barControl;
 	private TabsController tabControl;
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
 	private ArrayList<Task> finalResult = new ArrayList<Task>();
 	private ArrayList<Task> searchResult = new ArrayList<Task>();
+	private ListView<TasksItemController> tasksDisplay;
+	private ListView<TasksItemController> completeDisplay;
 
 	private static final String EMPTY_STRING = "";
 	private static final String SPACE = " ";
@@ -66,7 +69,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
-		// this.primaryStage.initStyle(StageStyle.TRANSPARENT);;
 		this.primaryStage.setTitle("Flashpoint");
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
 		
@@ -81,9 +83,12 @@ public class Main extends Application {
 	/**********************************Initialisation***********************************************/
 	/***********************************************************************************************/
 	private void initControllers(Main main) {
-		tableControl =  new TasksTableController();
+		pendingTableControl =  new TasksTableController();
+		completeTableControl =  new TasksTableController();
 		barControl =  new CommandBarController(this);
 		tabControl = new TabsController();
+		tasksDisplay = pendingTableControl.getListView();
+		completeDisplay = completeTableControl.getListView();
 	}
 	
 	private void initLogic() throws Exception {
@@ -94,9 +99,16 @@ public class Main extends Application {
 		if (isListEmpty()) {
 			tabControl.setUpcomingTab(new EmptyTableController());
 		} else {
-			tabControl.setUpcomingTab(tableControl);
-			updateList();
+			tabControl.setUpcomingTab(pendingTableControl);		
 		}
+		
+		if (logic.displayComplete().isEmpty()) {
+			tabControl.setEmptyCompleteTab();
+		} else {
+			tabControl.setCompleteTab(completeTableControl);
+		}
+		
+		updateList();
 	}
 
 	/**
@@ -134,13 +146,12 @@ public class Main extends Application {
 
 
 	private void showTabs() {
-		// TODO Auto-generated method stub
 		rootLayout.setTop(tabControl);
 	}
 
 	private void showTasks() {
-		tabControl.setUpcomingTab(tableControl);
-		//tabControl.setCompleteTab(tableControl);
+		tabControl.setUpcomingTab(pendingTableControl);
+		tabControl.setCompleteTab(completeTableControl);
 	}
 
 	private void showCommandBar() {
@@ -151,7 +162,6 @@ public class Main extends Application {
 	}
 	
 	private void initLog() {
-		// TODO Auto-generated method stub
 		historyLog = new ArrayList<String>();
 	}
 
@@ -165,13 +175,12 @@ public class Main extends Application {
 								// a TextArea
 			handleGetPastCommands(event);
 		} else if ((event.getCode() == KeyCode.TAB)) {
-			tableControl.controlToList();
+			pendingTableControl.controlToList();
 		}
 	}
 
 	private void listenerForTaskList() {
-		ListView<TasksItemController> tasksDisplay = tableControl.getListView();
-
+			
 		tasksDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -184,20 +193,34 @@ public class Main extends Application {
 				}
 			}
 
-			private void handleEnterKey() {
-				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
-				barControl.updateUserInput("edit " + chosen.getTaskName());
-				barControl.getFocus();
-			}
-
-			private void handleDeleteKey() {
-				TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
-				barControl.updateUserInput("delete " + chosen.getTaskName());
-				barControl.getFocus();
+		});
+		
+		completeDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				if (e.getCode() == KeyCode.ENTER) {
+					handleEnterKey();
+				} else if (e.getCode() == KeyCode.ESCAPE) {
+					// handleEscKey();
+				} else if (e.getCode() == KeyCode.DELETE) {
+					handleDeleteKey();
+				}
 			}
 
 		});
 
+	}
+	
+	private void handleEnterKey() {
+		TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
+		barControl.updateUserInput("edit " + chosen.getTaskName());
+		barControl.getFocus();
+	}
+
+	private void handleDeleteKey() {
+		TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
+		barControl.updateUserInput("delete " + chosen.getTaskName());
+		barControl.getFocus();
 	}
 
 	private void handleGetPastCommands(KeyEvent event) {
@@ -235,6 +258,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		
 		if(userInput.equalsIgnoreCase("help")){
+			historyLog.add(userInput);
 			tabControl.setUpcomingTab(new HelpDisplayController());
 			commandBarController.clear();
 			return;
@@ -242,12 +266,19 @@ public class Main extends Application {
 
 		if (userInput.isEmpty()) {
 			return;
-
 		} else {
 			// normal command
 			historyLog.add(userInput);
 			
 			if (!logic.isDisplayCommand(userInput)) {
+				if (userInput.equalsIgnoreCase("clear")){
+					if(tabControl.getUpcomingTab().isSelected()){
+						userInput = userInput+"Upcoming";
+					}else if(tabControl.getCompleteTab().isSelected()){
+						userInput = userInput+"Complete";
+					}
+				}
+				
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 
 			}
@@ -260,7 +291,7 @@ public class Main extends Application {
 	}
 
 	private boolean isListEmpty() throws Exception {
-		return logic.display().isEmpty();
+		return logic.displayPending().isEmpty();
 	}
 
 	private void setFeedback(CommandBarController commandBarController, String userInput) {
@@ -299,17 +330,21 @@ public class Main extends Application {
 
 
 	public void populateList(ArrayList<Task> result) {
-		tableControl.clearTask();
+		pendingTableControl.clearTask();
 		for (Task temp : result) {
-			tableControl.addTask(temp);
+			pendingTableControl.addTask(temp);
 		}
 	}
 
 	private void updateList() {
-		tableControl.clearTask();
+		pendingTableControl.clearTask();
+		completeTableControl.clearTask();
 		try {
-			for (Task temp : logic.display()) {
-				tableControl.addTask(temp);
+			for (Task temp : logic.displayPending()) {
+				pendingTableControl.addTask(temp);
+			}
+			for (Task temp : logic.displayComplete()) {
+				completeTableControl.addTask(temp);
 			}
 		} catch (Exception e) {
 			e.printStackTrace();

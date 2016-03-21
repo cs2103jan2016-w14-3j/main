@@ -58,6 +58,20 @@ public class TabsController extends BorderPane {
 	    completeTab.setGraphic(iconView);
 		completeTab.setContent(value);
 	}
+	
+	public void setEmptyCompleteTab(){
+		Image icon = new Image("/main/resources/images/complete.png");
+		ImageView iconView = new ImageView(icon);
+		completeTab.setContent(iconView);
+	}
+	
+	public Tab getUpcomingTab(){
+		return upcomingTab;
+	}
+	
+	public Tab getCompleteTab(){
+		return completeTab;
+	}
 }
 
 	

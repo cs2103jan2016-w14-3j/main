@@ -11,7 +11,8 @@ public class CommandDispatcher {
 	private static final String SEARCH_COMMAND = "search";
 	private static final String CHANGE_DIRECTORY_COMMAND = "move";
 	private static final String SORT_COMMAND = "sort";
-	private static final String CLEAR_COMMAND = "clear";
+	private static final String CLEAR_UPCOMING_COMMAND = "clearUpcoming";
+	private static final String CLEAR_COMPLETE_COMMAND = "clearComplete";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String MARK_COMMAND = "mark";
@@ -33,6 +34,7 @@ public class CommandDispatcher {
 		command.setContent(commandContent);
 
 		setParameters(command);
+		System.out.println(command.getType());
 		return command;
 	}
 
@@ -48,7 +50,10 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		else if (command.isCommand(CLEAR_COMMAND)) {
+		else if (command.isCommand(CLEAR_UPCOMING_COMMAND)) {
+
+		}
+		else if (command.isCommand(CLEAR_COMPLETE_COMMAND)) {
 
 		}
 		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
@@ -105,9 +110,12 @@ public class CommandDispatcher {
 			return SORT_COMMAND;
 		}
 
-		else if (isCommand(CLEAR_COMMAND, firstWord)) {
-			return CLEAR_COMMAND;
+		else if (isCommand(CLEAR_UPCOMING_COMMAND, firstWord)) {
+			return CLEAR_UPCOMING_COMMAND;
 
+		}
+		else if (isCommand(CLEAR_COMPLETE_COMMAND, firstWord)) {
+			return CLEAR_COMPLETE_COMMAND;
 		}
 
 		else if (isCommand(EDIT_COMMAND, firstWord)) {
