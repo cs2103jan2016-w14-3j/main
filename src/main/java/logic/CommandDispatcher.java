@@ -6,16 +6,6 @@ import main.java.parser.*;
 
 public class CommandDispatcher {
 
-	private static final String ADD_COMMAND = "add";
-	private static final String DELETE_COMMAND = "delete";
-	private static final String SEARCH_COMMAND = "search";
-	private static final String CHANGE_DIRECTORY_COMMAND = "move";
-	private static final String SORT_COMMAND = "sort";
-	private static final String CLEAR_UPCOMING_COMMAND = "clearUpcoming";
-	private static final String CLEAR_COMPLETE_COMMAND = "clearComplete";
-	private static final String EDIT_COMMAND = "edit";
-	private static final String UNDO_COMMAND = "undo";
-	private static final String MARK_COMMAND = "mark";
 	private static final String EMPTY_STRING = "";
 	private static final String WHITE_SPACE = " ";
 
@@ -30,107 +20,113 @@ public class CommandDispatcher {
 		}
 		command.setType(determineCommandType(originalCommand));
 
-		String commandContent = retrieveCommandContent(originalCommand);
+		String commandContent = retrieveCommandContent(command);
 		command.setContent(commandContent);
 
 		setParameters(command);
-		System.out.println(command.getType());
+		//System.out.println(command.getType());
 		return command;
 	}
 
 	private void setParameters(Command command)throws InvalidInputFormatException {
 
-		if (command.isCommand(ADD_COMMAND)) {
+		if (command.isCommand(COMMAND_TYPE.ADD)) {
 			AddCommandParser parser = new AddCommandParser();
 			command.setParameters(parser.determineParameters
-					(command.getType(),command.getContent()));
+					(command.getContent()));
 		}
-		else if (command.isCommand(EDIT_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
 			EditCommandParser parser = new EditCommandParser();
 			command.setParameters(parser.determineParameters
-					(command.getType(),command.getContent()));
+					(command.getContent()));
 		}
-		else if (command.isCommand(CLEAR_UPCOMING_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)) {
 
 		}
-		else if (command.isCommand(CLEAR_COMPLETE_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)) {
 
 		}
-		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
 			MoveCommandParser parser = new MoveCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		else if (command.isCommand(SEARCH_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.SEARCH)) {
 			SearchCommandParser parser = new SearchCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		else if (command.isCommand(UNDO_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
 
 		}
-		else if (command.isCommand(SORT_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.SORT)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		else if (command.isCommand(MARK_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.MARK)) {
 
+		}
+		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
+			
 		}
 
 	}
 
-	private String determineCommandType(String originalCommand) {
+	private COMMAND_TYPE determineCommandType(String originalCommand) {
 		assert originalCommand != null;
-		String keyword = getCommandKeyword(originalCommand);
-		return keyword;
+		COMMAND_TYPE type = getCommandKeyword(originalCommand);
+		return type;
 	}
 
-	private String getCommandKeyword(String command) {
+	private COMMAND_TYPE getCommandKeyword(String command) {
 		assert command != null;
 		String firstWord = getFirstKeyword(command);
 
-		if (isCommand(ADD_COMMAND, firstWord)) {
-			return ADD_COMMAND;
+		if (isCommand(COMMAND_TYPE.ADD, firstWord)) {
+			return COMMAND_TYPE.ADD;
 		}
 
-		else if (isCommand(DELETE_COMMAND, firstWord)) {
-			return DELETE_COMMAND;
+		else if (isCommand(COMMAND_TYPE.DELETE, firstWord)) {
+			return COMMAND_TYPE.DELETE;
 		}
 
-		else if (isCommand(SEARCH_COMMAND, firstWord)) {
-			return SEARCH_COMMAND;
+		else if (isCommand(COMMAND_TYPE.SEARCH, firstWord)) {
+			return COMMAND_TYPE.SEARCH;
 		}
 
-		else if (isCommand(CHANGE_DIRECTORY_COMMAND, firstWord)) {
-			return CHANGE_DIRECTORY_COMMAND;
+		else if (isCommand(COMMAND_TYPE.MOVE, firstWord)) {
+			return COMMAND_TYPE.MOVE;
 		}
 
-		else if (isCommand(SORT_COMMAND, firstWord)) {
-			return SORT_COMMAND;
+		else if (isCommand(COMMAND_TYPE.SORT, firstWord)) {
+			return COMMAND_TYPE.SORT;
 		}
 
-		else if (isCommand(CLEAR_UPCOMING_COMMAND, firstWord)) {
-			return CLEAR_UPCOMING_COMMAND;
+		else if (isCommand(COMMAND_TYPE.CLEAR_UPCOMING, firstWord)) {
+			return COMMAND_TYPE.CLEAR_UPCOMING;
 
 		}
-		else if (isCommand(CLEAR_COMPLETE_COMMAND, firstWord)) {
-			return CLEAR_COMPLETE_COMMAND;
+		else if (isCommand(COMMAND_TYPE.CLEAR_COMPLETE, firstWord)) {
+			return COMMAND_TYPE.CLEAR_COMPLETE;
 		}
 
-		else if (isCommand(EDIT_COMMAND, firstWord)) {
-			return EDIT_COMMAND;
+		else if (isCommand(COMMAND_TYPE.EDIT, firstWord)) {
+			return COMMAND_TYPE.EDIT;
 
 		}
 
-		else if (isCommand(UNDO_COMMAND, firstWord)) {
-			return UNDO_COMMAND;
+		else if (isCommand(COMMAND_TYPE.UNDO, firstWord)) {
+			return COMMAND_TYPE.UNDO;
 		}
-		else if (isCommand(MARK_COMMAND, firstWord)) {
-			return MARK_COMMAND;
+		else if (isCommand(COMMAND_TYPE.MARK, firstWord)) {
+			return COMMAND_TYPE.MARK;
+		}
+		else if (isCommand(COMMAND_TYPE.UNMARK, firstWord)) {
+			return COMMAND_TYPE.UNMARK;
 		}
 		else {
-			return ADD_COMMAND;
+			return COMMAND_TYPE.ADD;
 		}
 	}
 
@@ -142,26 +138,29 @@ public class CommandDispatcher {
 		return command.substring(0,command.indexOf(WHITE_SPACE)).trim();
 	}
 
-	private boolean isCommand(String operation, String keyword) {
+	private boolean isCommand(COMMAND_TYPE type, String keyword) {
 		assert keyword != null;
-		return operation.equalsIgnoreCase(keyword);
+		return type.getType().equalsIgnoreCase(keyword);
 	}
 
-	private String retrieveCommandContent(String originalCommand) {
-		assert originalCommand != null;
-		if (originalCommand.isEmpty()) {
+	private String retrieveCommandContent(Command command) {
+		assert command != null;
+		String original = command.getOriginal();
+		COMMAND_TYPE commandType = command.getType();
+		if (commandType == null) {
 			throw new IllegalArgumentException();
 		}
 
-		if (getCommandKeyword(originalCommand).equalsIgnoreCase(ADD_COMMAND)) {
-			if (!getFirstKeyword(originalCommand).equalsIgnoreCase(ADD_COMMAND)){
-				return originalCommand;
+		if (commandType == COMMAND_TYPE.ADD) {
+			if (!getFirstKeyword(original).
+					equalsIgnoreCase(COMMAND_TYPE.ADD.getType())){
+				return original;
 			}
 		}
-		if (!originalCommand.contains(WHITE_SPACE)) {
+		if (!original.contains(WHITE_SPACE)) {
 			return EMPTY_STRING;
 		}
-		String content = originalCommand.substring(originalCommand.indexOf(WHITE_SPACE) + 1);
+		String content = original.substring(original.indexOf(WHITE_SPACE) + 1);
 		return content.trim();
 	}
 

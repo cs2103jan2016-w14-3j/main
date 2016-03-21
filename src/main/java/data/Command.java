@@ -1,18 +1,15 @@
 package main.java.data;
 
-
 public class Command {
 
 	private String original;
-	private String commandType;
+	private COMMAND_TYPE commandType;
 	private String commandContent;
 	private String[] commandParameters;
-
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
-	private static final int STATUS = 4;
 	
 
 	public Command(String command) {
@@ -20,7 +17,7 @@ public class Command {
 		//this.commandParameters = new String[4];
 	}
 
-	public String getType() {
+	public COMMAND_TYPE getType() {
 		return this.commandType;
 	}
 
@@ -36,7 +33,7 @@ public class Command {
 		this.commandContent = commandContent;
 	}
 
-	public void setType(String commandType) {
+	public void setType(COMMAND_TYPE commandType) {
 		this.commandType = commandType;
 	}
 
@@ -53,14 +50,15 @@ public class Command {
 
 			Task task = new Task(commandParameters[TASK], 
 					commandParameters[TIME], commandParameters[PRIORITY], 
-					commandParameters[TASK_TYPE], commandParameters[STATUS]);
+					commandParameters[TASK_TYPE]);
 		
 		return task;
 
 	}
+	
 
-	public boolean isCommand(String type) {
-		return type.equalsIgnoreCase(this.getType());
+	public boolean isCommand(COMMAND_TYPE type) {
+		return type ==(this.getType());
 	}
 
 }

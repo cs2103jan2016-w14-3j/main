@@ -23,8 +23,6 @@ public class AddCommandParser extends Parser {
 	private static final String RECURRING_TASK = "recurring";
 	private static final String DURATION_TASK = "duration";
 	private static final String PRIORITY_FLAG = "#";	
-	private static final String OVERDUE = "overdue";
-	private static final String UNDONE = "undone";
 	private static final String EMPTY_TIME = "[]";
 	private static final String EXTRA_WHITE_SPACES = "\\s+";
 	private static final String DEFAULT_TIME = "8am";
@@ -58,20 +56,19 @@ public class AddCommandParser extends Parser {
 
 
 
-	public String[] determineParameters(String commandType, String commandContent) 
+	public String[] determineParameters(String commandContent) 
 			throws InvalidInputFormatException {
-		assert commandType != null;
+		assert commandContent != null;
 		//assert 1==2;
 		if (commandContent.isEmpty()) {
 			throw new InvalidInputFormatException("Cannot add an empty task!");
 		}
-		String[] parameters = new String[5];
+		String[] parameters = new String[4];
 		commandContent = formatToStandardCommandContent(commandContent);
 		parameters[TASK] = determineTask(commandContent);
 		parameters[TIME] = determineTime(commandContent);
 		parameters[PRIORITY] = determinePriority(commandContent);
 		parameters[TASK_TYPE] = determineTaskType(commandContent);
-		parameters[STATUS] = determineStatus(commandContent);
 
 		return parameters;
 	}
@@ -179,15 +176,6 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	protected String determineStatus(String content) {
-		List<Date> dates = timeParser.parse(content);
-		if (dates.size() != 0) {
-			if (isOverdue(dates.get(0))) {
-				return OVERDUE;
-			}
-		}
-		return UNDONE;
-	}
 
 	private boolean isRecurringTask(String content) {
 

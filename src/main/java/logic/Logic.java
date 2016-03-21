@@ -16,14 +16,10 @@ public class Logic {
 	private static final String SEARCH_COMMAND = "search";
 	private static final String CHANGE_DIRECTORY_COMMAND = "move";
 	private static final String SORT_COMMAND = "sort";
-	private static final String CLEAR_UPCOMING_COMMAND = "clearUpcoming";
-	private static final String CLEAR_COMPLETE_COMMAND = "clearComplete";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String DISPLAY_COMMAND = "display";
-	private static final String MARK_COMMAND = "mark";
 	private static final String HELP_COMMAND = "help";
-	private static final String WHITE_SPACE = " ";
 	private static final String EMPTY_STRING = "";
 
 	private static final int TASK = 0;
@@ -31,7 +27,7 @@ public class Logic {
 	private static Task task;
 	private static StorageController storageController;
 	private ArrayList<Task> searchResult;
-	
+
 	public Logic() {
 		try {
 			storageController = new StorageController();
@@ -56,11 +52,11 @@ public class Logic {
 
 	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskOptions) throws Exception {
 		assert userInput != null;
-		
+
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
-		System.out.println(command.getType() + "hwllo");
+		//System.out.println(command.getType() + "hwllo");
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
@@ -105,28 +101,28 @@ public class Logic {
 
 		ArrayList<Task> result = new ArrayList<Task>();
 
-		if (command.isCommand(ADD_COMMAND)) {
+		if (command.isCommand(COMMAND_TYPE.ADD)) {
 
 			task = createTask(command);
-			if (!task.getTask().equals("")) {
+			if (!task.getTask().equals(EMPTY_STRING)) {
 				handleAddCommand(task);
 			}
 			result = storageController.displayPendingTasks();
 		}
 
-		else if (command.isCommand(CLEAR_UPCOMING_COMMAND)){
-			System.out.println("clear pending");
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)){
+			//System.out.println("clear pending");
 			storageController.clearPendingTasks();
 			result = storageController.displayPendingTasks();
 		}
-		
-		else if (command.isCommand(CLEAR_COMPLETE_COMMAND)){
+
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)){
 			System.out.println("clear complete");
 			storageController.clearCompletedTasks();
 			result = storageController.displayCompletedTasks();
 		}
 
-		else if (command.isCommand(DELETE_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.DELETE)) {
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
 					delete(temp);			
@@ -135,76 +131,76 @@ public class Logic {
 			}
 		}
 
-		else if (command.isCommand(DISPLAY_COMMAND)) {
-			result = handleDisplayCommand();
-		}
 
-		else if (command.isCommand(EDIT_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
 			ArrayList<Task> finalResult = new ArrayList<Task>(); 
 			task = createTask(command);
 			result = handleEditCommand(task);
-			
+
 			String sub = userInput.substring(5, userInput.indexOf(","));
 			for (Task temp : searchResult) {
 				if (sub.equals(temp.getTask())) {				
-			     	finalResult.add(temp);	  
-			     	finalResult.add(result.get(1));
-			     	
-			     	Task original = finalResult.get(0);
-			     	Task updated = finalResult.get(1);
-			     	
-			     	if(updated.getTime().equals(EMPTY_STRING)){
-			     		updated.setTime(original.getTime());
-			     	}
-			     	if(updated.getPriority().equals(EMPTY_STRING)){
-			     		updated.setPriority(original.getPriority());
-			     	}
-			     	
+					finalResult.add(temp);	  
+					finalResult.add(result.get(1));
+
+					Task original = finalResult.get(0);
+					Task updated = finalResult.get(1);
+
+					if(updated.getTime().equals(EMPTY_STRING)){
+						updated.setTime(original.getTime());
+					}
+					if(updated.getPriority().equals(EMPTY_STRING)){
+						updated.setPriority(original.getPriority());
+					}
+
 					edit(finalResult);
-					
+
 					break;
 				}
-				
+
 			}
 		}
 
-		else if (command.isCommand(SEARCH_COMMAND)) {
-            
+		else if (command.isCommand(COMMAND_TYPE.SEARCH)) {
+			
 		}
 
-		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
 			Path path = Paths.get(command.getParameters()[TASK]);
 		}
-		else if (command.isCommand(MARK_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.MARK)) {
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
-					System.out.println("hereeeee");
+					//System.out.println("hereeeee");
 					storageController.moveTaskToComplete(temp);			
 					break;
 				}			
 			}
+
+		}
+		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
 			
 		}
 
-		else if (command.isCommand(SORT_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.SORT)) {
 			if (command.getParameters()[TASK].equalsIgnoreCase("time")) {
 				storageController.sortPendingByTime();
 			}
-			
+
 			else if (command.getParameters()[TASK].equalsIgnoreCase("name")) {
 				storageController.sortPendingByTime();
 			}
-			
+
 			else if (command.getParameters()[TASK].equalsIgnoreCase("priority")) {
 				storageController.sortPendingByPriority();
 			}
-			
+
 			else if (command.getParameters()[TASK].equalsIgnoreCase("type")) {
-				
+
 			}
 		}
 
-		else if (command.isCommand(UNDO_COMMAND)) {
+		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
 			storageController.undo();
 			//System.out.println("UNDO IS HERE !!!!");
 		}
@@ -234,35 +230,26 @@ public class Logic {
 		storageController.editPendingTask(result.get(0), result.get(1));
 	}
 
-	public boolean isDeleteCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(WHITE_SPACE)).equalsIgnoreCase(DELETE_COMMAND);
-	}
-
-	public boolean isEditCommand(String userInput) {
-		return userInput.substring(0,userInput.indexOf(WHITE_SPACE)).equalsIgnoreCase(EDIT_COMMAND);
-	}
-	public boolean isDisplayCommand(String userInput) {
-		return userInput.substring(0,userInput.length()).equalsIgnoreCase(DISPLAY_COMMAND);
-	}
 
 	public Task editedTask(Task temp2) {
 		return temp2;
 	}
+
 	public boolean isCommand(String commandWord) {
 		if(commandWord.equalsIgnoreCase(ADD_COMMAND)||commandWord.equalsIgnoreCase(DISPLAY_COMMAND)||commandWord.equalsIgnoreCase(DELETE_COMMAND)||
 				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
 				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equalsIgnoreCase("clear")||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND))
-		    return true;
+			return true;
 		return false;
-		
+
 	}
-	
+
 	public ArrayList<Task> handleSearch(String oldValue, String newValue) throws Exception {
-	    searchResult = storageController.searchMatch(oldValue, newValue);	
-	    return searchResult;
+		searchResult = storageController.searchMatch(oldValue, newValue);	
+		return searchResult;
 	}
 
 
-	
+
 }

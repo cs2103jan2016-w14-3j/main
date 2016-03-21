@@ -270,7 +270,7 @@ public class Main extends Application {
 			// normal command
 			historyLog.add(userInput);
 			
-			if (!logic.isDisplayCommand(userInput)) {
+			
 				if (userInput.equalsIgnoreCase("clear")){
 					if(tabControl.getUpcomingTab().isSelected()){
 						userInput = userInput+"Upcoming";
@@ -281,7 +281,7 @@ public class Main extends Application {
 				
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 
-			}
+			
 		}
 		checkIsTasksEmpty();
 			
