@@ -109,6 +109,10 @@ public class StorageController {
 		}
 	}
 	
+	public ArrayList<Task> searchMatch(String oldChar, String newChar) {
+		return pendingTemp.searchMatch(oldChar, newChar);
+	}
+	
 	public void changeDirectory(String path) {
 		assert path != null;
 		

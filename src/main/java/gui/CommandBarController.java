@@ -97,7 +97,10 @@ public class CommandBarController extends BorderPane {
 			public void changed(ObservableValue<? extends String> observable,
 					String oldValue, String newValue) {
 				try {
-					mainApp.handleSearch(oldValue, newValue);
+//					System.out.println("old value: " + oldValue);
+//					System.out.println("new value: " + newValue);
+					mainApp.trySearch(oldValue, newValue);
+					mainApp.showColourCommand(oldValue, newValue);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

@@ -5,7 +5,10 @@ import java.util.Stack;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import main.java.data.Task;
+import main.java.gui.TasksItemController;
 
 public class TempStorage {
 
@@ -13,6 +16,11 @@ public class TempStorage {
 	private ArrayList<Task> tempList;
 	private Stack< ArrayList<Task> > undoStack;
 	private PermStorage permStorage;
+	
+	private static final String SPACE = " ";
+	private static final String SPLIT = "\\s+";
+	private static final int COMMAND_INDEX = 0;
+	private boolean isFeedback = false;
 	
 	public TempStorage () {
 
@@ -113,5 +121,50 @@ public class TempStorage {
 		ArrayList<Task> list = permStorage.readFromFile();
 		
 		return list;
+	}
+
+	public ArrayList<Task> searchMatch(String oldValue, String newValue) {
+
+		ArrayList<Task> searchResult = new ArrayList<Task>();
+		String[] fragments = null;
+		fragments = newValue.split(SPLIT);
+		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
+		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
+		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
+         
+		if(fragments.length==1){
+			searchResult = taskList;
+		}
+		
+		if ((isEdit || isDelete || isSearch) && fragments.length > 1) {
+			newValue = fragments[1];		
+			String[] parts = null;
+			parts = newValue.toLowerCase().split(SPACE);
+			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
+            searchResult.clear();
+            
+			for (Task task : taskList) {
+				boolean match = true;
+				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
+				for (String part : parts) {
+					String withoutComma = part.substring(0,part.length()-1);
+					if(taskMatch.toLowerCase().contains(withoutComma)&& newValue.contains(",")){
+						match = true;
+						break;
+					}
+					if (!taskMatch.toLowerCase().contains(part)) {
+						match = false;
+						break;
+					}
+				}
+				if (match) {
+					temp.add(new TasksItemController(task));
+					searchResult.add(task);
+				}
+			}
+			
+		 }
+		return searchResult;
+		
 	}
 }

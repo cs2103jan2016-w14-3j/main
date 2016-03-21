@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 
 import javafx.application.Application;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.EventHandler;
@@ -138,7 +140,7 @@ public class Main extends Application {
 
 	private void showTasks() {
 		tabControl.setUpcomingTab(tableControl);
-		tabControl.setCompleteTab(tableControl);
+		//tabControl.setCompleteTab(tableControl);
 	}
 
 	private void showCommandBar() {
@@ -315,15 +317,6 @@ public class Main extends Application {
 			
 			if (!logic.isDisplayCommand(userInput)) {
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-				
-				if (userInput.indexOf(" ") != -1) {
-					if (logic.isDeleteCommand(userInput)) {
-						handleDeleteCommand(userInput);
-					}
-					if (logic.isEditCommand(userInput)) {
-					    handleEditCommand(userInput);
-					}
-				}
 
 			}
 		}
@@ -333,47 +326,6 @@ public class Main extends Application {
 		new CommandBarController();
 		commandBarController.clear();
 	}
-	
-	private void handleDeleteCommand(String userInput) throws Exception {
-		assert userInput != null;
-		for (Task temp : searchResult) {
-			if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
-				logic.delete(temp);			
-				break;
-			}
-			
-		}
-	}
-
-	private void handleEditCommand(String userInput) throws Exception {
-		assert userInput != null;
-		
-		String sub = userInput.substring(5, userInput.indexOf(","));
-		finalResult.clear();
-		for (Task temp : searchResult) {
-			if (sub.equals(temp.getTask())) {				
-		     	finalResult.add(temp);	  
-		     	finalResult.add(result.get(1));
-		     	
-		     	Task original = finalResult.get(0);
-		     	Task updated = finalResult.get(1);
-		     	
-		     	if(updated.getTime().equals(EMPTY_STRING)){
-		     		updated.setTime(original.getTime());
-		     	}
-		     	if(updated.getPriority().equals(EMPTY_STRING)){
-		     		updated.setPriority(original.getPriority());
-		     	}
-		     	
-				logic.edit(finalResult);
-				
-				break;
-			}
-			
-		}
-
-	}
-	
 
 	private boolean isListEmpty() throws Exception {
 		return logic.display().isEmpty();
@@ -414,7 +366,7 @@ public class Main extends Application {
 	}
 
 
-	public void populateList(TasksTableController tableControl, ArrayList<Task> result) {
+	public void populateList(ArrayList<Task> result) {
 		tableControl.clearTask();
 		for (Task temp : result) {
 			tableControl.addTask(temp);
@@ -429,6 +381,43 @@ public class Main extends Application {
 			}
 		} catch (Exception e) {
 			e.printStackTrace();
+		}
+	}
+	
+	
+
+	public void trySearch(String oldValue, String newValue) {
+
+		// TODO Auto-generated method stub
+		try {
+			searchResult = logic.handleSearch(oldValue, newValue);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		if(searchResult.size()!=0){
+		  populateList(searchResult);
+		}
+		
+		
+	}
+
+	public void showColourCommand(String oldValue, String newValue) {
+		// TODO Auto-generated method stub
+		String[] fragments = null;
+		fragments = newValue.split(SPLIT);
+		
+		if(isFeedback||newValue.equals(EMPTY_STRING)){
+			removeAllStyle(barControl.getCommandBar());
+			barControl.setBgColour("med");    
+		}
+				
+		if(logic.isCommand(fragments[COMMAND_INDEX])){
+			removeAllStyle(barControl.getCommandBar());
+			barControl.setBgColour("best");  
+		}else if(!logic.isCommand(fragments[COMMAND_INDEX])&&!newValue.equals(EMPTY_STRING)){		
+			removeAllStyle(barControl.getCommandBar());
+			barControl.setBgColour("bad");    
 		}
 	}
 

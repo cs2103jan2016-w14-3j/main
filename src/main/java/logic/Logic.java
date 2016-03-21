@@ -2,11 +2,12 @@ package main.java.logic;
 
 import java.nio.file.Path;
 
+
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import main.java.data.*;
 import main.java.parser.*;
-import main.java.storage.StorageController;
+import main.java.storage.*;
 
 public class Logic {
 
@@ -22,12 +23,14 @@ public class Logic {
 	private static final String MARK_COMMAND = "mark";
 	private static final String HELP_COMMAND = "help";
 	private static final String WHITE_SPACE = " ";
+	private static final String EMPTY_STRING = "";
 
 	private static final int TASK = 0;
 
 	private static Task task;
 	private static StorageController storageController;
-
+	private ArrayList<Task> searchResult;
+	
 	public Logic() {
 		try {
 			storageController = new StorageController();
@@ -45,18 +48,19 @@ public class Logic {
 
 	public ArrayList<Task> initLogic() throws Exception{
 		Logic logic = new Logic();
+		searchResult = new ArrayList<Task>();
 		return display();
 
 	}
 
 	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskOptions) throws Exception {
 		assert userInput != null;
-
+		
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
 
-		ArrayList<Task> result = executeTask(command, taskOptions);
+		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
 		//quitOnExitCommand(command);
 
@@ -95,7 +99,7 @@ public class Logic {
 		return dispatcher.parseCommand(command);
 	}
 
-	private ArrayList<Task> executeTask(Command command, ArrayList<Task> taskOptions) throws NumberFormatException, Exception {
+	private ArrayList<Task> executeTask(Command command, ArrayList<Task> taskOptions,String userInput) throws NumberFormatException, Exception {
 
 		ArrayList<Task> result = new ArrayList<Task>();
 
@@ -114,8 +118,12 @@ public class Logic {
 		}
 
 		else if (command.isCommand(DELETE_COMMAND)) {
-			//result = handleDeleteCommand(task);
-			// return the list to UI		
+			for (Task temp : searchResult) {
+				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
+					delete(temp);			
+					break;
+				}			
+			}
 		}
 
 		else if (command.isCommand(DISPLAY_COMMAND)) {
@@ -123,13 +131,36 @@ public class Logic {
 		}
 
 		else if (command.isCommand(EDIT_COMMAND)) {
+			ArrayList<Task> finalResult = new ArrayList<Task>(); 
 			task = createTask(command);
 			result = handleEditCommand(task);
-
+			
+			String sub = userInput.substring(5, userInput.indexOf(","));
+			for (Task temp : searchResult) {
+				if (sub.equals(temp.getTask())) {				
+			     	finalResult.add(temp);	  
+			     	finalResult.add(result.get(1));
+			     	
+			     	Task original = finalResult.get(0);
+			     	Task updated = finalResult.get(1);
+			     	
+			     	if(updated.getTime().equals(EMPTY_STRING)){
+			     		updated.setTime(original.getTime());
+			     	}
+			     	if(updated.getPriority().equals(EMPTY_STRING)){
+			     		updated.setPriority(original.getPriority());
+			     	}
+			     	
+					edit(finalResult);
+					
+					break;
+				}
+				
+			}
 		}
 
 		else if (command.isCommand(SEARCH_COMMAND)) {
-
+            
 		}
 
 		else if (command.isCommand(CHANGE_DIRECTORY_COMMAND)) {
@@ -210,5 +241,12 @@ public class Logic {
 		return false;
 		
 	}
+	
+	public ArrayList<Task> handleSearch(String oldValue, String newValue) throws Exception {
+	    searchResult = storageController.searchMatch(oldValue, newValue);	
+	    return searchResult;
+	}
 
+
+	
 }
