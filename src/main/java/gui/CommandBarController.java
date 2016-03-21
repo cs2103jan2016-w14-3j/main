@@ -92,15 +92,15 @@ public class CommandBarController extends BorderPane {
 //			}
 //		});
 		
-		commandBar.textProperty().addListener(new ChangeListener<String>() {
+		commandBar.textProperty().addListener(new ChangeListener<Object>() {
 			@Override
-			public void changed(ObservableValue<? extends String> observable,
-					String oldValue, String newValue) {
+			public void changed(ObservableValue<?> observable,
+					Object oldValue, Object newValue) {
 				try {
 //					System.out.println("old value: " + oldValue);
 //					System.out.println("new value: " + newValue);
-					mainApp.trySearch(oldValue, newValue);
-					mainApp.showColourCommand(oldValue, newValue);
+					mainApp.trySearch((String)oldValue, (String)newValue);
+					mainApp.showColourCommand((String)oldValue, (String)newValue);
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

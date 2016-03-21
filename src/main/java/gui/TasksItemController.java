@@ -84,6 +84,10 @@ public class TasksItemController extends BorderPane {
 	public String getTaskTime(){
 		return this.taskTime;
 	}
+	
+	public void setBgColour(){
+		card.setStyle("-fx-background-color: green");
+	}
 
 	private String generateColour(String priority) {
 		if (priority.equals("low")) {

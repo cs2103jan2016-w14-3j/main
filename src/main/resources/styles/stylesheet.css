@@ -13,7 +13,9 @@
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
 }
-
+#setting{
+	 -fx-background-color: transparent;
+}
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
@@ -40,11 +42,6 @@
     -fx-padding: -7;
 }
 
-.list-cell 
-{
-  -fx-font: 7pt "Arial";
-}
-
 .tasksItem {
 	-fx-padding: 2px;
 }
@@ -62,7 +59,7 @@
 }
 
 .card .text {
-	-fx-padding: 0 0 0 16px;  /* top, right, bottom, and left  */
+	-fx-padding: 0 0 0 5px;  /* top, right, bottom, and left  */
 }
 
 .card .filename {

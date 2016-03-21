@@ -1,10 +1,7 @@
 package main.java.flash;
 
-
-
 import java.io.IOException;
 import java.util.ArrayList;
-
 
 import javafx.application.Application;
 import javafx.beans.value.ChangeListener;
@@ -58,7 +55,7 @@ public class Main extends Application {
 	private static final String SPACE = " ";
 	private static final String SPLIT = "\\s+";
 	private static final int COMMAND_INDEX = 0;
-	
+
 	private int pointer;
 	private boolean isFeedback = false;
 
@@ -71,26 +68,24 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Flashpoint");
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
-		
-		initControllers(this);	
+
+		initControllers(this);
 		initLogic();
 		initRootLayout();
 		checkIsTasksEmpty();
 	}
 
-	
-	
-	/**********************************Initialisation***********************************************/
+	/********************************** Initialisation ***********************************************/
 	/***********************************************************************************************/
 	private void initControllers(Main main) {
-		pendingTableControl =  new TasksTableController();
-		completeTableControl =  new TasksTableController();
-		barControl =  new CommandBarController(this);
+		pendingTableControl = new TasksTableController();
+		completeTableControl = new TasksTableController();
+		barControl = new CommandBarController(this);
 		tabControl = new TabsController();
 		tasksDisplay = pendingTableControl.getListView();
 		completeDisplay = completeTableControl.getListView();
 	}
-	
+
 	private void initLogic() throws Exception {
 		logic = new Logic();
 	}
@@ -99,15 +94,15 @@ public class Main extends Application {
 		if (isListEmpty()) {
 			tabControl.setUpcomingTab(new EmptyTableController());
 		} else {
-			tabControl.setUpcomingTab(pendingTableControl);		
+			tabControl.setUpcomingTab(pendingTableControl);
 		}
-		
+
 		if (logic.displayComplete().isEmpty()) {
 			tabControl.setEmptyCompleteTab();
 		} else {
 			tabControl.setCompleteTab(completeTableControl);
 		}
-		
+
 		updateList();
 	}
 
@@ -122,7 +117,7 @@ public class Main extends Application {
 			rootLayout = loader.load();
 
 			Scene scene = new Scene(rootLayout);
-	        
+
 			primaryStage.setScene(scene);
 
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
@@ -130,8 +125,8 @@ public class Main extends Application {
 					primaryStage.hide();
 				}
 			});
-			
-            showTabs();
+
+			showTabs();
 			showCommandBar();
 			showTasks();
 			initLog();
@@ -143,7 +138,6 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-
 
 	private void showTabs() {
 		rootLayout.setTop(tabControl);
@@ -160,7 +154,7 @@ public class Main extends Application {
 		barControl.getFocus();
 		barControl.setBgColour("med");
 	}
-	
+
 	private void initLog() {
 		historyLog = new ArrayList<String>();
 	}
@@ -180,7 +174,7 @@ public class Main extends Application {
 	}
 
 	private void listenerForTaskList() {
-			
+
 		tasksDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -194,7 +188,7 @@ public class Main extends Application {
 			}
 
 		});
-		
+
 		completeDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -210,7 +204,7 @@ public class Main extends Application {
 		});
 
 	}
-	
+
 	private void handleEnterKey() {
 		TasksItemController chosen = tasksDisplay.getSelectionModel().getSelectedItem();
 		barControl.updateUserInput("edit " + chosen.getTaskName());
@@ -230,7 +224,7 @@ public class Main extends Application {
 	}
 
 	private String getPastCommandFromHistory(KeyCode code) {
-		
+
 		if (code == KeyCode.DOWN) {
 			return getNextCommand();
 		} else if (code == KeyCode.UP) {
@@ -256,8 +250,8 @@ public class Main extends Application {
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
-		
-		if(userInput.equalsIgnoreCase("help")){
+
+		if (userInput.equalsIgnoreCase("help")) {
 			historyLog.add(userInput);
 			tabControl.setUpcomingTab(new HelpDisplayController());
 			commandBarController.clear();
@@ -269,22 +263,20 @@ public class Main extends Application {
 		} else {
 			// normal command
 			historyLog.add(userInput);
-			
-			
-				if (userInput.equalsIgnoreCase("clear")){
-					if(tabControl.getUpcomingTab().isSelected()){
-						userInput = userInput+"Upcoming";
-					}else if(tabControl.getCompleteTab().isSelected()){
-						userInput = userInput+"Complete";
-					}
-				}
-				
-				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 
-			
+			if (userInput.equalsIgnoreCase("clear")) {
+				if (tabControl.getUpcomingTab().isSelected()) {
+					userInput = userInput + "Upcoming";
+				} else if (tabControl.getCompleteTab().isSelected()) {
+					userInput = userInput + "Complete";
+				}
+			}
+
+		 result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+
 		}
 		checkIsTasksEmpty();
-			
+
 		setFeedback(commandBarController, userInput);
 		new CommandBarController();
 		commandBarController.clear();
@@ -307,27 +299,24 @@ public class Main extends Application {
 			commandBarController.setFeedback("  Successfully " + userInput + "ed   ");
 		}
 	}
-	
+
 	// Method that returns the first word
 	public static String firstWord(String input) {
-	    String result = input;  // if no space found later, input is the first word
+		String result = input; // if no space found later, input is the first
+								// word
 
-	    for(int i = 0; i < input.length(); i++)
-	    {
-	        if(input.charAt(i) == ' ')
-	        {
-	            result = input.substring(0, i);
-	            break;
-	        }
-	    }
-	    return result; 
-	}
-	
-	
-	public void removeAllStyle(Node n){
-		n.getStyleClass().removeAll("bad","med","good","best"); 
+		for (int i = 0; i < input.length(); i++) {
+			if (input.charAt(i) == ' ') {
+				result = input.substring(0, i);
+				break;
+			}
+		}
+		return result;
 	}
 
+	public void removeAllStyle(Node n) {
+		n.getStyleClass().removeAll("bad", "med", "good", "best");
+	}
 
 	public void populateList(ArrayList<Task> result) {
 		pendingTableControl.clearTask();
@@ -350,8 +339,6 @@ public class Main extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
 	public void trySearch(String oldValue, String newValue) {
 
@@ -362,31 +349,29 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if(searchResult.size()!=0){
-		  populateList(searchResult);
+		if (searchResult.size() != 0) {
+			populateList(searchResult);
 		}
-		
-		
+
 	}
 
 	public void showColourCommand(String oldValue, String newValue) {
 		// TODO Auto-generated method stub
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
-		
-		if(isFeedback||newValue.equals(EMPTY_STRING)){
+
+		if (isFeedback || newValue.equals(EMPTY_STRING)) {
 			removeAllStyle(barControl.getCommandBar());
-			barControl.setBgColour("med");    
+			barControl.setBgColour("med");
 		}
-				
-		if(logic.isCommand(fragments[COMMAND_INDEX])){
+
+		if (logic.isCommand(fragments[COMMAND_INDEX])) {
 			removeAllStyle(barControl.getCommandBar());
-			barControl.setBgColour("best");  
-		}else if(!logic.isCommand(fragments[COMMAND_INDEX])&&!newValue.equals(EMPTY_STRING)){		
+			barControl.setBgColour("best");
+		} else if (!logic.isCommand(fragments[COMMAND_INDEX]) && !newValue.equals(EMPTY_STRING)) {
 			removeAllStyle(barControl.getCommandBar());
-			barControl.setBgColour("bad");    
+			barControl.setBgColour("bad");
 		}
 	}
-
 
 }

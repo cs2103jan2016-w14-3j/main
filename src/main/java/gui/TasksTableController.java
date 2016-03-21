@@ -10,10 +10,12 @@ import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
+import javafx.util.Callback;
 import main.java.data.Task;
 
 public class TasksTableController extends BorderPane {
@@ -78,6 +80,26 @@ public class TasksTableController extends BorderPane {
 
 	public void setItems(ObservableList<TasksItemController> subentries) {
 		tasksDisplay.setItems(subentries);
+		tasksDisplay.setCellFactory(new Callback<ListView<TasksItemController>, ListCell<TasksItemController>>(){
+			 
+            @Override
+            public ListCell<TasksItemController> call(ListView<TasksItemController> p) {
+                 
+                ListCell<TasksItemController> cell = new ListCell<TasksItemController>(){
+ 
+                    @Override
+                    protected void updateItem(TasksItemController t, boolean bln) {
+                        super.updateItem(t, bln);
+                        if (t != null) {
+                            setText(t.getTaskName() + ":" + t.getTaskTime());
+                        }
+                    }
+ 
+                };
+                 
+                return cell;
+            }
+        });
 	}
 
 	public void controlToList() {
