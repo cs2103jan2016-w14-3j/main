@@ -19,6 +19,8 @@ public class Logic {
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
 	private static final String HELP_COMMAND = "help";
+	private static final String MARK_COMMAND = "mark";
+	private static final String CLEAR_COMMAND = "clear";
 	private static final String DISPLAY_COMMAND = "display";
 	private static final String EMPTY_STRING = "";
 
@@ -243,12 +245,23 @@ public class Logic {
 	public Task editedTask(Task temp2) {
 		return temp2;
 	}
+	
+	public void loadFilename(String filename){	
+		System.out.println(filename);
+		storageController.changeDirectory(filename);
+	}
+	
+	public void saveFilename(String filename){	
+		System.out.println(filename);
+		storageController.changeDirectory(filename);
+	}
 
 	public boolean isCommand(String commandWord) {
 		if(commandWord.equalsIgnoreCase(ADD_COMMAND)||commandWord.equalsIgnoreCase(DISPLAY_COMMAND)||commandWord.equalsIgnoreCase(DELETE_COMMAND)||
 				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
 				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
-				commandWord.equalsIgnoreCase("clear")||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND))
+				commandWord.equalsIgnoreCase(CLEAR_COMMAND)||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND)||
+				commandWord.equalsIgnoreCase(MARK_COMMAND))
 			return true;
 		return false;
 

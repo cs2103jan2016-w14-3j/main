@@ -9,29 +9,17 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
-import javafx.scene.control.Button;
-import javafx.scene.control.ChoiceBox;
-import javafx.scene.control.Label;
-import javafx.scene.control.Menu;
-import javafx.scene.control.MenuBar;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
-import javafx.scene.control.TextField;
-import javafx.scene.effect.DropShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
-import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-import javafx.scene.paint.Color;
 import javafx.stage.FileChooser;
-import main.java.flash.Main;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
@@ -68,8 +56,8 @@ public class TabsController extends BorderPane {
 			e.printStackTrace();
 		}
 		initSetting();
-		loadFilename();
-		saveFilename();
+//		loadFilename();
+//		saveFilename();
 		exit();
 	}
 	
@@ -93,7 +81,15 @@ public class TabsController extends BorderPane {
 	    });
 	}
 	
-	public File saveFilename(){
+	public MenuItem getLoadMenu(){
+		return loadFile;
+	}
+	
+	public MenuItem getSaveMenu(){
+		return saveFile;
+	}
+	
+	public String saveFilename(){
 	   saveFile.setOnAction(new EventHandler<ActionEvent>(){
         @Override
        public void handle(ActionEvent arg0) {
@@ -104,10 +100,10 @@ public class TabsController extends BorderPane {
            System.out.println(file);      
        }
       });
-	   return file;
+	   return file.getAbsolutePath();
 	}
 	
-	public File loadFilename(){
+	public String loadFilename(){
 		
 		   loadFile.setOnAction(new EventHandler<ActionEvent>(){
 	        @Override
@@ -119,7 +115,7 @@ public class TabsController extends BorderPane {
 	           System.out.println(file);      
 	       }
 	      });
-		   return file;
+		   return file.getAbsolutePath();
 		}
 	
 	public void setUpcomingTab(Node value){

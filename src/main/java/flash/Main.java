@@ -1,5 +1,6 @@
 package main.java.flash;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 
@@ -8,8 +9,10 @@ import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 
 import main.java.logic.Logic;
@@ -58,6 +61,7 @@ public class Main extends Application {
 
 	private int pointer;
 	private boolean isFeedback = false;
+	
 
 	public static void main(String[] args) {
 		launch(args);
@@ -131,6 +135,9 @@ public class Main extends Application {
 			showTasks();
 			initLog();
 			listenerForTaskList();
+			saveFilename();
+			loadFilename();
+			
 
 			primaryStage.show();
 
@@ -272,7 +279,7 @@ public class Main extends Application {
 				}
 			}
 
-		 result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+			result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 
 		}
 		checkIsTasksEmpty();
@@ -364,8 +371,7 @@ public class Main extends Application {
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("med");
 		}
-   
-		
+
 		if (logic.isCommand(fragments[COMMAND_INDEX])) {
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("best");
@@ -373,6 +379,45 @@ public class Main extends Application {
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("bad");
 		}
+	}
+
+	public void getSaveFilename(String filename) {
+		logic.saveFilename(filename);
+	}
+
+	public void getLoadFilename(String filename) {
+		logic.loadFilename(filename);
+	}
+
+	public void saveFilename() {
+		tabControl.getSaveMenu().setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				
+				FileChooser fileChooser = new FileChooser();
+				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+				fileChooser.getExtensionFilters().add(extFilter);
+				File saveFile = fileChooser.showSaveDialog(null);			
+				getSaveFilename(saveFile.getAbsolutePath());
+			}
+		});
+
+	}
+
+	public void loadFilename() {
+
+		tabControl.getLoadMenu().setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				FileChooser fileChooser = new FileChooser();
+				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+				fileChooser.getExtensionFilters().add(extFilter);
+				File loadFile = fileChooser.showOpenDialog(null);
+				getLoadFilename(loadFile.getAbsolutePath());
+				
+			}
+		});
+
 	}
 
 }
