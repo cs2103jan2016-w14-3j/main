@@ -59,6 +59,9 @@ public class CommandDispatcher {
 		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
 
 		}
+		else if (command.isCommand(COMMAND_TYPE.REDO)) {
+			
+		}
 		else if (command.isCommand(COMMAND_TYPE.SORT)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters

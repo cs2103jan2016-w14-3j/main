@@ -24,7 +24,8 @@ public abstract class Parser {
 		//System.out.println(commandContent + "haha");
 		if (commandType != COMMAND_TYPE.CLEAR_COMPLETE && 
 				commandType != COMMAND_TYPE.CLEAR_UPCOMING && 
-				commandType != COMMAND_TYPE.UNDO) {
+				commandType != COMMAND_TYPE.UNDO &&
+				commandType != COMMAND_TYPE.REDO) {
 			if (commandContent.isEmpty()) {
 				throw new InvalidInputFormatException("This command requires parameter!");
 			}
