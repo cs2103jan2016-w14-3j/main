@@ -262,9 +262,8 @@ public class Main extends Application {
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
 		
-		notification(userInput);
-
 		if (userInput.equalsIgnoreCase("help")) {
+			notification(userInput);
 			historyLog.add(userInput);
 			tabControl.setUpcomingTab(new HelpDisplayController());
 			commandBarController.clear();
