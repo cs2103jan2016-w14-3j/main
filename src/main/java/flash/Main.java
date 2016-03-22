@@ -17,6 +17,7 @@ import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 import main.java.logic.Logic;
+import main.java.parser.InvalidInputFormatException;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -33,7 +34,7 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
-
+import javafx.scene.paint.Color;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -100,16 +101,20 @@ public class Main extends Application {
 	}
 
 	private void checkIsTasksEmpty() throws Exception {
-		if (isListEmpty()) {
+		if (logic.displayPending().isEmpty()) {
 			tabControl.setUpcomingTab(new EmptyTableController());
+			tabControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming task.");
 		} else {
 			tabControl.setUpcomingTab(pendingTableControl);
+			tabControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming tasks.");
 		}
 
 		if (logic.displayComplete().isEmpty()) {
 			tabControl.setEmptyCompleteTab();
+			tabControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed task.");
 		} else {
 			tabControl.setCompleteTab(completeTableControl);
+			tabControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed tasks.");
 		}
 
 		updateList();
@@ -285,21 +290,20 @@ public class Main extends Application {
 					userInput = userInput + "Complete";
 				}
 			}
-
-			result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+            try{
+			 result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+            }catch(InvalidInputFormatException e){
+            	setFeedback(commandBarController,"error", e.toString());
+            }
 
 		}
 
-		setFeedback(commandBarController, userInput);
+		
 		new CommandBarController();
 		commandBarController.clear();
 	}
 
-	private boolean isListEmpty() throws Exception {
-		return logic.displayPending().isEmpty();
-	}
-
-	private void setFeedback(CommandBarController commandBarController, String userInput) {
+	private void setFeedback(CommandBarController commandBarController, String type ,String userInput) {
 		assert commandBarController != null;
 		int i = 1;
 		isFeedback = true;
@@ -307,9 +311,13 @@ public class Main extends Application {
 			i = userInput.indexOf(' ');
 			String firstWord = userInput.substring(0, i);
 			String subString = userInput.substring(i + 1);
-			commandBarController.setFeedback("  Successfully " + firstWord + "ed " + "' " + subString + " ' ");
+			if(type.equals("error")){
+			     commandBarController.setFeedback("Error" + "' " + subString + " '",Color.RED);
+			}else{
+				commandBarController.setFeedback("Successfully " +firstWord+"ed "+ "' " + subString + " '",Color.GREEN);
+			}
 		} else {
-			commandBarController.setFeedback("  Successfully " + userInput + "ed   ");
+			commandBarController.setFeedback("  Successfully " + userInput + "ed   ", Color.GREEN);
 		}
 	}
 

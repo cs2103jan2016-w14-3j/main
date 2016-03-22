@@ -14,6 +14,13 @@
 	-fx-font-weight: bold;
 }
 
+#lblUpcoming{
+	-fx-background-color: rgba(255, 255, 255, 0.6);
+}
+#lblComplete{
+	-fx-background-color: rgba(255, 255, 255, 0.6);
+}
+
 #btnSetting{
 	/*  -fx-background-image: url("/main/resources/images/btnSetting.png");*/
 	  -fx-background-repeat: no-repeat;

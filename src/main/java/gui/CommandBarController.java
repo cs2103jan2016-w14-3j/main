@@ -74,9 +74,11 @@ public class CommandBarController extends BorderPane {
 		return commandBar;
 	}
 
-	public void setFeedback(String feedbackText) {
+	public void setFeedback(String feedbackText, Color color) {
 		feedback.setText(feedbackText);
-		commandBar.setEffect(new DropShadow(15.65,Color.GREEN));
+		feedback.setTextFill(color);
+		commandBar.setEffect(new DropShadow(15.65,color));
+		
 	}
 
 	public void updateUserInput(String newInput) {

@@ -10,6 +10,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -50,6 +51,11 @@ public class TabsController extends BorderPane {
 	private Button btnSetting;
     @FXML
 	private Button btnExit;
+    
+    @FXML
+	private Label lblUpcoming;
+    @FXML
+	private Label lblComplete;
     
     
 	protected File file;
@@ -123,34 +129,42 @@ public class TabsController extends BorderPane {
 		return saveFile;
 	}
 	
-	public String saveFilename(){
-	   saveFile.setOnAction(new EventHandler<ActionEvent>(){
-        @Override
-       public void handle(ActionEvent arg0) {
-           FileChooser fileChooser = new FileChooser();
-           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-           fileChooser.getExtensionFilters().add(extFilter);
-           file = fileChooser.showSaveDialog(null);
-           System.out.println(file);      
-       }
-      });
-	   return file.getAbsolutePath();
+	public void setUpcomingLabel(String text){
+		lblUpcoming.setText(text); 
 	}
 	
-	public String loadFilename(){
-		
-		   loadFile.setOnAction(new EventHandler<ActionEvent>(){
-	        @Override
-	       public void handle(ActionEvent arg0) {
-	           FileChooser fileChooser = new FileChooser();
-	           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-	           fileChooser.getExtensionFilters().add(extFilter);
-	           file = fileChooser.showOpenDialog(null);
-	           System.out.println(file);      
-	       }
-	      });
-		   return file.getAbsolutePath();
-		}
+	public void setCompleteLabel(String text){
+		lblComplete.setText(text); 
+	}
+	
+//	public String saveFilename(){
+//	   saveFile.setOnAction(new EventHandler<ActionEvent>(){
+//        @Override
+//       public void handle(ActionEvent arg0) {
+//           FileChooser fileChooser = new FileChooser();
+//           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+//           fileChooser.getExtensionFilters().add(extFilter);
+//           file = fileChooser.showSaveDialog(null);
+//           System.out.println(file);      
+//       }
+//      });
+//	   return file.getAbsolutePath();
+//	}
+	
+//	public String loadFilename(){
+//		
+//		   loadFile.setOnAction(new EventHandler<ActionEvent>(){
+//	        @Override
+//	       public void handle(ActionEvent arg0) {
+//	           FileChooser fileChooser = new FileChooser();
+//	           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+//	           fileChooser.getExtensionFilters().add(extFilter);
+//	           file = fileChooser.showOpenDialog(null);
+//	           System.out.println(file);      
+//	       }
+//	      });
+//		   return file.getAbsolutePath();
+//		}
 	
 	public void setUpcomingTab(Node value){
 		Image icon = new Image("/main/resources/images/upcomingIcon.fw.png");

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.effect.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
@@ -23,17 +24,23 @@
       <HBox alignment="TOP_RIGHT" prefHeight="0.0" prefWidth="600.0" BorderPane.alignment="CENTER">
          <children>
             <Region prefHeight="39.0" prefWidth="40.0" />
-            <VBox prefHeight="39.0" prefWidth="330.0">
+            <VBox prefHeight="3.0" prefWidth="328.0">
                <children>
-                  <Label prefHeight="6.0" prefWidth="353.0" text="You have 0 Upcoming Task, 5 are Overdue">
+                  <Label fx:id="lblUpcoming" prefHeight="17.0" prefWidth="178.0" text="asdd" textFill="#119e34">
                      <font>
-                        <Font name="System Bold" size="10.0" />
+                        <Font name="System Bold" size="11.0" />
                      </font>
+                     <effect>
+                        <Glow level="0.31" />
+                     </effect>
                   </Label>
-                  <Label prefHeight="6.0" prefWidth="353.0" text="You have 3 Completed Tasks">
+                  <Label fx:id="lblComplete" prefHeight="17.0" prefWidth="178.0" text="asdd" textFill="#119e34">
                      <font>
-                        <Font name="System Bold" size="10.0" />
+                        <Font name="System Bold" size="11.0" />
                      </font>
+                     <effect>
+                        <Glow level="0.31" />
+                     </effect>
                   </Label>
                </children>
             </VBox>

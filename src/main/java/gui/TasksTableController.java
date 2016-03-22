@@ -86,26 +86,6 @@ public class TasksTableController extends BorderPane {
 
 	public void setItems(ObservableList<TasksItemController> subentries) {
 		tasksDisplay.setItems(subentries);
-		tasksDisplay.setCellFactory(new Callback<ListView<TasksItemController>, ListCell<TasksItemController>>(){
-			 
-            @Override
-            public ListCell<TasksItemController> call(ListView<TasksItemController> p) {
-                 
-                ListCell<TasksItemController> cell = new ListCell<TasksItemController>(){
- 
-                    @Override
-                    protected void updateItem(TasksItemController t, boolean bln) {
-                        super.updateItem(t, bln);
-                        if (t != null) {
-                            setText(t.getTaskName() + ":" + t.getTaskTime());
-                        }
-                    }
- 
-                };
-                 
-                return cell;
-            }
-        });
 	}
 
 	public void controlToList() {
