@@ -44,7 +44,7 @@
                   </Label>
                </children>
             </VBox>
-            <Button fx:id="btnNew" alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="34.0" />
+            <Button fx:id="btnNew" alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="35.0" />
             <Button fx:id="btnLoad" mnemonicParsing="false" prefHeight="39.0" prefWidth="33.0" />
             <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="39.0" prefWidth="37.0" />
             <Button fx:id="btnHelp" mnemonicParsing="false" prefHeight="39.0" prefWidth="32.0" />

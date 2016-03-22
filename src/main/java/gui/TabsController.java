@@ -110,7 +110,6 @@ public class TabsController extends BorderPane {
 	    setting.setGraphic(new ImageView(image));
 	}
 	
-
 	private void exit() {
 		exitItem.setMnemonicParsing(true);
 	    exitItem.setAccelerator(new KeyCodeCombination(KeyCode.X,KeyCombination.CONTROL_DOWN));

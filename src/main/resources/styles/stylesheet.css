@@ -45,6 +45,7 @@
 	    -fx-background-position:center;
 	   -fx-background-color: transparent;
 }
+
 #btnHelp{
 	 	/*  -fx-background-image: url("/main/resources/images/btnSetting.png");*/
 	  -fx-background-repeat: no-repeat;

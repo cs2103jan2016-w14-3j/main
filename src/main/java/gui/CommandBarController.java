@@ -74,6 +74,7 @@ public class CommandBarController extends BorderPane {
 		return commandBar;
 	}
 
+	
 	public void setFeedback(String feedbackText, Color color) {
 		feedback.setText(feedbackText);
 		feedback.setTextFill(color);
