@@ -15,6 +15,7 @@ import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
 import main.java.flash.Main;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.EventHandler;
@@ -97,6 +98,7 @@ public class CommandBarController extends BorderPane {
 			@Override
 			public void changed(ObservableValue<?> observable,
 					Object oldValue, Object newValue) {
+			Platform.runLater(() -> {
 				try {
 //					System.out.println("old value: " + oldValue);
 //					System.out.println("new value: " + newValue);
@@ -105,8 +107,9 @@ public class CommandBarController extends BorderPane {
 				} catch (Exception e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();
-				}
-			}
+				} 	
+			});
+	   	}
 		});
 
 	}

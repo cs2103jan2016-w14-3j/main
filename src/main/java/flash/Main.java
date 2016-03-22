@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -14,8 +15,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
-
+import javafx.util.Duration;
 import main.java.logic.Logic;
+import tray.animations.AnimationType;
+import tray.notification.NotificationType;
+import tray.notification.TrayNotification;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.EmptyTableController;
@@ -257,6 +261,8 @@ public class Main extends Application {
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
+		
+		notification(userInput);
 
 		if (userInput.equalsIgnoreCase("help")) {
 			historyLog.add(userInput);
@@ -333,6 +339,7 @@ public class Main extends Application {
 	}
 
 	private void updateList() {
+		Platform.runLater(() -> {
 		pendingTableControl.clearTask();
 		completeTableControl.clearTask();
 		try {
@@ -345,6 +352,7 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+		});
 	}
 
 	public void trySearch(String oldValue, String newValue) {
@@ -413,6 +421,20 @@ public class Main extends Application {
 			}
 		});
 
+	}
+	
+	private void notification(String userInput){
+		String title = "Successfully ";
+        String message = userInput;
+        NotificationType notification = NotificationType.SUCCESS;
+
+        TrayNotification tray = new TrayNotification();
+        tray.setTitle(title);
+        tray.setMessage(message);
+        tray.setAnimationType(AnimationType.POPUP);
+        tray.setNotificationType(notification);
+        tray.showAndDismiss(Duration.seconds(2));
+        
 	}
 
 }
