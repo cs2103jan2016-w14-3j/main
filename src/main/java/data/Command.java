@@ -10,11 +10,19 @@ public class Command {
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
-	
+
 
 	public Command(String command) {
 		this.original = command.trim();
 		//this.commandParameters = new String[4];
+	}
+
+	public Command(String original, COMMAND_TYPE commandType, String commandContent,
+			String[] commandParameters) {
+		this.original = original;
+		this.commandType = commandType;
+		this.commandContent = commandContent;
+		this.commandParameters = commandParameters;
 	}
 
 	public COMMAND_TYPE getType() {
@@ -40,7 +48,7 @@ public class Command {
 	public void setParameters(String[] parameters) {
 		this.commandParameters = parameters;
 	}
-	
+
 	public String[] getParameters() {
 		return this.commandParameters;
 	}
@@ -48,14 +56,14 @@ public class Command {
 
 	public Task createTask() {
 
-			Task task = new Task(commandParameters[TASK], 
-					commandParameters[TIME], commandParameters[PRIORITY], 
-					commandParameters[TASK_TYPE]);
-		
+		Task task = new Task(commandParameters[TASK], 
+				commandParameters[TIME], commandParameters[PRIORITY], 
+				commandParameters[TASK_TYPE]);
+
 		return task;
 
 	}
-	
+
 
 	public boolean isCommand(COMMAND_TYPE type) {
 		return type ==(this.getType());
