@@ -9,6 +9,7 @@ import java.io.IOException;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
+import javafx.scene.control.Button;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
@@ -37,6 +38,20 @@ public class TabsController extends BorderPane {
     private MenuItem loadFile;
     private MenuItem exitItem;
     
+    @FXML
+	private Button btnNew;
+    @FXML
+	private Button btnLoad;
+    @FXML
+	private Button btnSave;
+    @FXML
+	private Button btnHelp;
+    @FXML
+	private Button btnSetting;
+    @FXML
+	private Button btnExit;
+    
+    
 	protected File file;
 
 	private MenuItem saveFile;
@@ -56,12 +71,30 @@ public class TabsController extends BorderPane {
 			e.printStackTrace();
 		}
 		initSetting();
-//		loadFilename();
-//		saveFilename();
+		initButton();
 		exit();
 	}
 	
-	private void initSetting(){	
+	private void initButton() {
+		btnNew = new Button();
+		btnLoad = new Button();
+        btnSave = new Button();
+	    btnHelp = new Button();
+	    btnSetting = new Button();
+	    btnExit = new Button();
+	    
+	    btnNew.setVisible(false);
+	    btnLoad.setVisible(false);
+	    btnSave.setVisible(false);
+	    btnHelp.setVisible(false);
+	    btnExit.setVisible(false);
+	    btnSetting.setVisible(false);
+	    //Image image = new Image("/main/resources/images/loadFile.png");
+	   // btnSetting.setGraphic(new ImageView(image));
+		
+	}
+
+	private void initSetting(){			
 		loadFile = new MenuItem("Load...", null);
 		saveFile = new MenuItem("Save...", null);
 		helpPage = new MenuItem("Help", null);
@@ -70,6 +103,7 @@ public class TabsController extends BorderPane {
 	    Image image = new Image("/main/resources/images/loadFile.png");
 	    setting.setGraphic(new ImageView(image));
 	}
+	
 
 	private void exit() {
 		exitItem.setMnemonicParsing(true);

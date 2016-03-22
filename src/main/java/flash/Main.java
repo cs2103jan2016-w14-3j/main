@@ -262,6 +262,8 @@ public class Main extends Application {
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
 		
+		
+
 		if (userInput.equalsIgnoreCase("help")) {
 			notification(userInput);
 			historyLog.add(userInput);

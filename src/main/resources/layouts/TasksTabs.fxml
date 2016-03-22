@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
 <?import java.lang.*?>
 <?import javafx.scene.control.*?>
@@ -7,23 +8,44 @@
 
 <fx:root prefHeight="558.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TabPane prefHeight="558.0" prefWidth="558.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
-        <tabs>
-          <Tab id="upcomingTab" fx:id="upcomingTab" text="Upcoming Tasks">
-               <content>
-                  <VBox prefHeight="43.0" prefWidth="100.0" />
-               </content>
-            </Tab>
-          <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
-        </tabs>
-      </TabPane>
-   </center>
-   <right>
-      <VBox prefHeight="558.0" prefWidth="0.0" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <MenuButton fx:id="setting" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" VBox.vgrow="NEVER" />
+            <TabPane prefHeight="558.0" prefWidth="558.0" tabClosingPolicy="UNAVAILABLE">
+              <tabs>
+                <Tab id="upcomingTab" fx:id="upcomingTab" text="Upcoming Tasks" />
+                <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
+              </tabs>
+            </TabPane>
          </children>
-      </VBox>
-   </right>
+      </StackPane>
+   </center>
+   <top>
+      <HBox alignment="TOP_RIGHT" prefHeight="0.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Region prefHeight="39.0" prefWidth="40.0" />
+            <VBox prefHeight="39.0" prefWidth="330.0">
+               <children>
+                  <Label prefHeight="6.0" prefWidth="353.0" text="You have 0 Upcoming Task, 5 are Overdue">
+                     <font>
+                        <Font name="System Bold" size="10.0" />
+                     </font>
+                  </Label>
+                  <Label prefHeight="6.0" prefWidth="353.0" text="You have 3 Completed Tasks">
+                     <font>
+                        <Font name="System Bold" size="10.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <Button fx:id="btnNew" alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="34.0" />
+            <Button fx:id="btnLoad" mnemonicParsing="false" prefHeight="39.0" prefWidth="33.0" />
+            <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="39.0" prefWidth="37.0" />
+            <Button fx:id="btnHelp" mnemonicParsing="false" prefHeight="39.0" prefWidth="32.0" />
+            <Button fx:id="btnSetting" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="39.0" prefWidth="28.0" />
+            <Button fx:id="btnExit" mnemonicParsing="false" prefHeight="39.0" prefWidth="31.0" />
+            <MenuButton fx:id="setting" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" />
+         </children>
+      </HBox>
+   </top>
    
 </fx:root>
