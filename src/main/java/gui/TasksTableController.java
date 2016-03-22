@@ -3,7 +3,11 @@ package main.java.gui;
 import java.io.IOException;
 
 import java.util.ArrayList;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
@@ -75,8 +79,9 @@ public class TasksTableController extends BorderPane {
 	 * @param currentFile
 	 * @param currentNumLines
 	 */
-	private void setTasksItem(Task task) {
-		items.add(new TasksItemController(task));
+	private void setTasksItem(Task task) {	
+		items.add(new TasksItemController(task));  
+
 	}
 
 	public void setItems(ObservableList<TasksItemController> subentries) {
@@ -109,11 +114,16 @@ public class TasksTableController extends BorderPane {
 		tasksDisplay.scrollTo(count);
 		tasksDisplay.getFocusModel().focus(count);
 		tasksDisplay.getSelectionModel().select(count);
-
 	}
 
 	public void clearTask() {
 		items.clear();
 	}
+	
+	public int getSize(){
+		return items.size();
+	}
+	
+	
 
 }

@@ -53,7 +53,7 @@ public class Main extends Application {
 	private TabsController tabControl;
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
-	private ArrayList<Task> finalResult = new ArrayList<Task>();
+	private ArrayList<Task> previousResult = new ArrayList<Task>();
 	private ArrayList<Task> searchResult = new ArrayList<Task>();
 	private ListView<TasksItemController> tasksDisplay;
 	private ListView<TasksItemController> completeDisplay;
@@ -65,6 +65,7 @@ public class Main extends Application {
 
 	private int pointer;
 	private boolean isFeedback = false;
+	private int count = 0;
 	
 
 	public static void main(String[] args) {
@@ -175,6 +176,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
+			checkIsTasksEmpty();
 		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
 			event.consume(); // nullifies the default behavior of UP and DOWN on
 								// a TextArea
@@ -261,9 +263,7 @@ public class Main extends Application {
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
-		
-		
-
+		count = 0;
 		if (userInput.equalsIgnoreCase("help")) {
 			notification(userInput);
 			historyLog.add(userInput);
@@ -289,7 +289,6 @@ public class Main extends Application {
 			result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 
 		}
-		checkIsTasksEmpty();
 
 		setFeedback(commandBarController, userInput);
 		new CommandBarController();
@@ -357,17 +356,28 @@ public class Main extends Application {
 	}
 
 	public void trySearch(String oldValue, String newValue) {
-
+		
+		String[] fragments = null;
+		fragments = newValue.split(SPLIT);
+		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
+		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
+		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
+		boolean isMark = fragments[COMMAND_INDEX].equalsIgnoreCase("mark");
+		
 		// TODO Auto-generated method stub
 		try {
-			searchResult = logic.handleSearch(oldValue, newValue);
+			if(isEdit || isDelete || isSearch || isMark){
+			   searchResult = logic.handleSearch(oldValue, newValue);
+			   if (searchResult.size() != 0 && searchResult.size()!= pendingTableControl.getSize()) {
+					populateList(searchResult);
+				}
+			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		if (searchResult.size() != 0) {
-			populateList(searchResult);
-		}
+		
+		
 
 	}
 

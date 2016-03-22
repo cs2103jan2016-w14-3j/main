@@ -128,16 +128,12 @@ public class TempStorage {
 		ArrayList<Task> searchResult = new ArrayList<Task>();
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
-		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
-		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
-		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
-		boolean isMark = fragments[COMMAND_INDEX].equalsIgnoreCase("mark");
          
 		if(fragments.length==1){
 			searchResult = taskList;
 		}
 		
-		if ((isEdit || isDelete || isSearch|| isMark) && fragments.length > 1) {
+		if (fragments.length > 1) {
 			newValue = fragments[1];		
 			String[] parts = null;
 			parts = newValue.toLowerCase().split(SPACE);
