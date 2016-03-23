@@ -29,6 +29,9 @@ public class AddCommandParser extends Parser {
 	private static final String DEFAULT_TIME = "8am";
 	private static final String TOMORROW_IN_FULL = "tomorrow";
 	private static final String TOMORROW_IN_SHORT = "tmr";
+	private static final String OVERDUE_TASK = "overdue";
+	private static final String UPCOMING_TASK = "upcoming";
+	private static final String COMPLETED_TASK = "completed";
 	private static final int FIELD_NOT_EXIST = -1;
 
 
@@ -58,7 +61,7 @@ public class AddCommandParser extends Parser {
 		if (commandContent.isEmpty()) {
 			throw new InvalidInputFormatException("Cannot add an empty task!");
 		}
-		String[] parameters = new String[4];
+		String[] parameters = new String[5];
 		commandContent = formatToStandardCommandContent(commandContent);
 		parameters[TASK] = determineTask(commandContent);
 		if (parameters[TASK].isEmpty()) {
@@ -67,6 +70,7 @@ public class AddCommandParser extends Parser {
 		parameters[TIME] = determineTime(commandContent);
 		parameters[PRIORITY] = determinePriority(commandContent);
 		parameters[TASK_TYPE] = determineTaskType(commandContent);
+		parameters[STATUS] = determineStatus(commandContent);
 
 		return parameters;
 	}
@@ -255,6 +259,20 @@ public class AddCommandParser extends Parser {
 			return true;
 		}
 		return false;
+	}
+	
+	protected String determineStatus(String content) {
+		List<Date> dates = timeParser.parse(content);
+		int size = dates.size();
+		if (size == 0) {
+			return UPCOMING_TASK;
+		}
+		else if (isOverdue(dates.get(size - 1))) {
+			return OVERDUE_TASK;
+		}
+		else {
+			return UPCOMING_TASK;
+		}
 	}
 
 

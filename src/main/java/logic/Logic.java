@@ -22,6 +22,8 @@ public class Logic {
 	private static final String MARK_COMMAND = "mark";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String DISPLAY_COMMAND = "display";
+	private static final String SWITCH_COMMAND = "switch";
+	private static final String REDO_COMMAND = "redo";
 	private static final String EMPTY_STRING = "";
 
 	private static final int TASK = 0;
@@ -158,6 +160,10 @@ public class Logic {
 					if (updated.getType().equals(EMPTY_STRING)) {
 						updated.setType(original.getType());
 					}
+					
+					if (updated.getStatus().equals(EMPTY_STRING)) {
+						updated.setStatus(original.getStatus());
+					}
 
 					edit(finalResult);
 
@@ -211,12 +217,13 @@ public class Logic {
 			//System.out.println("UNDO IS HERE !!!!");
 		}
 		
-		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
+		else if (command.isCommand(COMMAND_TYPE.REDO)) {
+			
+		}
+		else if (command.isCommand(COMMAND_TYPE.SWITCH)) {
 			
 		}
 		
-
-
 		return result;
 	}
 
@@ -261,7 +268,7 @@ public class Logic {
 				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
 				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equalsIgnoreCase(CLEAR_COMMAND)||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND)||
-				commandWord.equalsIgnoreCase(MARK_COMMAND))
+				commandWord.equalsIgnoreCase(MARK_COMMAND)||commandWord.equalsIgnoreCase(REDO_COMMAND) || commandWord.equalsIgnoreCase(SWITCH_COMMAND))
 			return true;
 		return false;
 

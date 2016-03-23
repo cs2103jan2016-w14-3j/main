@@ -17,12 +17,13 @@ public class EditCommandParser extends AddCommandParser {
 		assert commandContent != null;
 		//assert 1==2;
 		checkAndHandleInvalidCommand(commandContent);
-		String[] parameters = new String[4];
+		String[] parameters = new String[5];
 		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
 		parameters[TASK] = determineTaskForEditCommand(segments);
 		parameters[TIME] = determineTimeForEditCommand(segments);
 		parameters[PRIORITY] = determinePriorityForEditCommand(segments);
 		parameters[TASK_TYPE] = determineTaskTypeForEditCommand(segments);
+		parameters[STATUS] = determineStatusForEditCommand(segments);
 		return parameters;
 	}
 
@@ -107,6 +108,14 @@ public class EditCommandParser extends AddCommandParser {
 						(segments[1].trim()));
 		return taskType;
 	}
+	
+	private String determineStatusForEditCommand(String[] segments) {
+		String status;
+		status = determineStatus(formatToStandardCommandContent(segments[0].trim())) +
+				EDIT_TASK_SEPARATOR + determineStatus(
+						formatToStandardCommandContent(segments[1].trim()));
+		return status;
+	}
 
 
 
@@ -117,6 +126,7 @@ public class EditCommandParser extends AddCommandParser {
 		String time_A, time_B;
 		String priority_A, priority_B;
 		String type_A, type_B;
+		String status_A, status_B;
 
 		toDo_A = task.getTask().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		toDo_B = task.getTask().split(EDIT_COMMAND_SEPARATOR)[1].trim();
@@ -128,9 +138,13 @@ public class EditCommandParser extends AddCommandParser {
 
 		type_A = task.getType().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		type_B = task.getType().split(EDIT_COMMAND_SEPARATOR)[1].trim();
+		
+		status_A = task.getStatus().split(EDIT_COMMAND_SEPARATOR)[0].trim();
+		status_B = task.getStatus().split(EDIT_COMMAND_SEPARATOR)[1].trim();
 
-		task_A = new Task(toDo_A, time_A, priority_A, type_A);
-		task_B = new Task(toDo_B, time_B, priority_B, type_B);
+		task_A = new Task(toDo_A, time_A, priority_A, type_A, status_A);
+		task_B = new Task(toDo_B, time_B, priority_B, type_B, status_B);
+		
 
 		ArrayList<Task> result = new ArrayList<Task>();
 		result.add(task_A);

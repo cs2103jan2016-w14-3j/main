@@ -72,6 +72,9 @@ public class CommandDispatcher {
 		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
 
 		}
+		else if (command.isCommand(COMMAND_TYPE.SWITCH)) {
+			
+		}
 
 	}
 
@@ -126,6 +129,9 @@ public class CommandDispatcher {
 		}
 		else if (isCommand(COMMAND_TYPE.UNMARK, firstWord)) {
 			return COMMAND_TYPE.UNMARK;
+		}
+		else if (isCommand(COMMAND_TYPE.SWITCH, firstWord)) {
+			return COMMAND_TYPE.SWITCH;
 		}
 		else {
 			return COMMAND_TYPE.ADD;

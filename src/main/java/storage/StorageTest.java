@@ -7,9 +7,9 @@ import main.java.data.Task;
 
 public class StorageTest {
 
-	private Task task0 = new Task("do homework", "10am", "high", "not done");
-	private Task task1 = new Task("play soccer", "5pm", "low", "not done");
-	private Task task2 = new Task("eat dinner", "7pm", "medium", "not done");
+	private Task task0 = new Task("do homework", "10am", "high", "not done", "upcoming");
+	private Task task1 = new Task("play soccer", "5pm", "low", "not done", "upcoming");
+	private Task task2 = new Task("eat dinner", "7pm", "medium", "not done", "upcoming");
 	private StorageController strCtrl = new StorageController();;
 
 	@Test

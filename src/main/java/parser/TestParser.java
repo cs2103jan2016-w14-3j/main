@@ -36,7 +36,7 @@ public class TestParser {
 
 	@Test
 	//cover a normal case with correct input
-	public void testAdd1() throws InvalidInputFormatException {
+	public void testAddWithFullParameters() throws InvalidInputFormatException {
 		
 		String testInput = "play soccer with my friend on sunday #high";
 		
@@ -52,6 +52,9 @@ public class TestParser {
 		assertArrayEquals(parametersActual, parametersExpected);
 
 	}
+	
+	
+	
 	
 	@Test
 	//cover a exception case with incorrect input

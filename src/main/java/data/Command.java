@@ -10,6 +10,7 @@ public class Command {
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
+	private static final int STATUS = 4;
 
 
 	public Command(String command) {
@@ -58,11 +59,24 @@ public class Command {
 
 		Task task = new Task(commandParameters[TASK], 
 				commandParameters[TIME], commandParameters[PRIORITY], 
-				commandParameters[TASK_TYPE]);
+				commandParameters[TASK_TYPE], commandParameters[STATUS]);
 
 		return task;
 
 	}
+	
+	/*private  PRIORITY_LEVEL determinePriority(String priority) {
+		
+		if (priority.equalsIgnoreCase("high")) {
+			return PRIORITY_LEVEL.HIGH;
+		}
+		else if (priority.equalsIgnoreCase("medium")) {
+			return PRIORITY_LEVEL.MEDIUM;
+		}
+		else {
+			return PRIORITY_LEVEL.LOW;
+		}
+	}*/
 
 
 	public boolean isCommand(COMMAND_TYPE type) {
