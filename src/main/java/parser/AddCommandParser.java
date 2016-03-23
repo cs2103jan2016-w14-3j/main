@@ -60,7 +60,7 @@ public class AddCommandParser extends Parser {
 	public String[] determineParameters(String commandContent) 
 			throws InvalidInputFormatException {
 		assert commandContent != null;
-		
+
 		//assert 1==2;
 		if (commandContent.isEmpty()) {
 			//assert 1==2;
@@ -69,6 +69,9 @@ public class AddCommandParser extends Parser {
 		String[] parameters = new String[4];
 		commandContent = formatToStandardCommandContent(commandContent);
 		parameters[TASK] = determineTask(commandContent);
+		if (parameters[TASK].isEmpty()) {
+			throw new InvalidInputFormatException("Task name is missing!");
+		}
 		parameters[TIME] = determineTime(commandContent);
 		parameters[PRIORITY] = determinePriority(commandContent);
 		parameters[TASK_TYPE] = determineTaskType(commandContent);
@@ -100,24 +103,24 @@ public class AddCommandParser extends Parser {
 
 	protected String determineTime(String content) {
 
-		int timeIndex = getStartingIndexOfIdentifier(content);
-		int priorityIndex = getStartingIndexOfPriority(content);
-		if (timeIndex == FIELD_NOT_EXIST) {
-			return EMPTY_STRING;
-		}
-		if (priorityIndex == FIELD_NOT_EXIST) {
-			content = content.substring(timeIndex);
-		}
-		else {
-			content = content.substring(timeIndex, priorityIndex - 1);
-		}
 
-		List<Date> dates = timeParser.parse(content);
+		String timeSegment = determineTimeSegment(content);
+
+		List<Date> dates = timeParser.parse(timeSegment);
 
 		if (dates.size() == 0) {
 			return EMPTY_STRING;
 		}
+		else {
+			modifyDateToTomorrowIfExpired(dates);
 
+			String result = setDefaultTimeIfNotSpecified(content, dates);
+
+			return result;
+		}
+	}
+
+	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
 		for (int i = 0; i < dates.size(); i++) {
 			if (isOverdue(dates.get(i))) {
 				Calendar calendar = Calendar.getInstance();
@@ -127,24 +130,43 @@ public class AddCommandParser extends Parser {
 			}
 		}
 
+	}
 
+	private String setDefaultTimeIfNotSpecified(String content, List<Date> dates) {
 		String parsedTime = dates.toString();
-		String currentTime = new Date().toString();
-		parsedTime = parsedTime.substring(parsedTime.indexOf(TIME_SEPARATOR) - 2, 
-				parsedTime.indexOf(TIME_SEPARATOR, parsedTime.indexOf
-						(TIME_SEPARATOR) + 1) + 2);
-		currentTime = currentTime.substring(currentTime.indexOf
-				(TIME_SEPARATOR) - 2, 
-				currentTime.indexOf(TIME_SEPARATOR, currentTime.indexOf
-						(TIME_SEPARATOR) + 1) + 2);
+		String currentSystemTime = new Date().toString();
+		parsedTime = getRoughTime(parsedTime);
+		currentSystemTime = getRoughTime(currentSystemTime);
 
-		if (parsedTime.equals(currentTime)) {
-			String result = timeParser.parse(content + 
-					WHITE_SPACE + DEFAULT_TIME).toString();
+		if (parsedTime.equals(currentSystemTime)) {
+			String result = timeParser.parse(
+					content + WHITE_SPACE + DEFAULT_TIME).toString();
 			return result.substring(1, result.length() - 1);
 		}
+		else {
+			return dates.toString().substring(1, dates.toString().length() - 1);
+		}
+	}
+	
+	private String getRoughTime(String fullDate) {
+		
+		return fullDate.substring(fullDate.indexOf(TIME_SEPARATOR) - 2, 
+				fullDate.indexOf(TIME_SEPARATOR, fullDate.indexOf(TIME_SEPARATOR) + 1) + 2);
+	}
 
-		return dates.toString().substring(1, dates.toString().length() - 1);
+	private String determineTimeSegment(String content) {
+		int timeIndex = getStartingIndexOfIdentifier(content);
+		int priorityIndex = getStartingIndexOfPriority(content);
+		if (timeIndex == FIELD_NOT_EXIST) {
+			return EMPTY_STRING;
+		}
+
+		else if (priorityIndex == FIELD_NOT_EXIST) {
+			return content.substring(timeIndex);
+		}
+		else {
+			return content.substring(timeIndex, priorityIndex - 1);
+		}
 	}
 
 	protected String determinePriority(String content) throws InvalidInputFormatException {
@@ -160,7 +182,7 @@ public class AddCommandParser extends Parser {
 			return EMPTY_STRING;
 		}
 	}
-	
+
 	protected boolean isValidPriority(String priority) {
 		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) || priority.equalsIgnoreCase(PRIORITY_LEVEL.MEDIUM.getType()) ||
 				priority.equalsIgnoreCase(PRIORITY_LEVEL.LOW.getType())) {
@@ -456,15 +478,15 @@ public class AddCommandParser extends Parser {
 		}
 
 		else {
-			String oldTime = getRoughTime(timeParser.parse(content).toString());
+			String oldDate = getRoughDate(timeParser.parse(content).toString());
 			for (int i = 2; i <= count; i++) {
 				int index = StringUtils.ordinalIndexOf(content, WHITE_SPACE, i);
-				String newTime = content.substring(0, index);
-				newTime = timeParser.parse(newTime).toString();
-				if (!newTime.equals(EMPTY_TIME)) {
-					newTime = getRoughTime(newTime);
+				String newDate = content.substring(0, index);
+				newDate = timeParser.parse(newDate).toString();
+				if (!newDate.equals(EMPTY_TIME)) {
+					newDate = getRoughDate(newDate);
 				}
-				if (newTime.equals(oldTime)) {
+				if (newDate.equals(oldDate)) {
 					taskIndex = index + 1;
 					break;
 				}
@@ -591,7 +613,7 @@ public class AddCommandParser extends Parser {
 		return time.before(new Date());
 	}
 
-	private String getRoughTime(String time) {
+	private String getRoughDate(String time) {
 		String[] segments = time.split(TIME_SEPARATOR);
 		time = segments[0] + segments[1] + segments[2].substring(2);
 		return time;

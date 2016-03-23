@@ -15,16 +15,15 @@ public class CommandDispatcher {
 	public Command parseCommand(Command command)throws InvalidInputFormatException {
 		assert command != null;
 		String originalCommand = command.getOriginal();
+		
 		if (originalCommand.isEmpty()) {
 			throw new InvalidInputFormatException("Empty command is not allowed!");
 		}
+		
 		command.setType(determineCommandType(originalCommand));
-
 		String commandContent = retrieveCommandContent(command);
 		command.setContent(commandContent);
-       
 		setParameters(command);
-		//System.out.println(command.getType());
 		return command;
 	}
 
@@ -61,7 +60,7 @@ public class CommandDispatcher {
 
 		}
 		else if (command.isCommand(COMMAND_TYPE.REDO)) {
-			
+
 		}
 		else if (command.isCommand(COMMAND_TYPE.SORT)) {
 			SortCommandParser parser = new SortCommandParser();
@@ -72,7 +71,7 @@ public class CommandDispatcher {
 
 		}
 		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
-			
+
 		}
 
 	}
@@ -151,44 +150,28 @@ public class CommandDispatcher {
 		assert command != null;
 		String original = command.getOriginal();
 		COMMAND_TYPE commandType = command.getType();
-		if (commandType == null) {
-			throw new IllegalArgumentException();
-		}
 
+		//add command with no add keyword
 		if (commandType == COMMAND_TYPE.ADD) {
 			if (!getFirstKeyword(original).
 					equalsIgnoreCase(COMMAND_TYPE.ADD.getType())){
 				return original;
 			}
 		}
+		//content is empty
 		if (!original.contains(WHITE_SPACE)) {
-			//System.out.println("here");
 			return EMPTY_STRING;
 		}
-		String content = original.substring(original.indexOf(WHITE_SPACE) + 1);
-		return content.trim();
+		//command is not empty
+		else {
+			String content = original.substring(original.indexOf(WHITE_SPACE) + 1);
+			return content.trim();
+		}
 	}
 
 
 
 	public static void main(String[] args)
 	{
-		PrettyTimeParser pars = new PrettyTimeParser();
-		System.out.println(pars.parse("from 8 to 9").get(1));
-
-		//String[] a = getTimeSpecifics("Sun Dec 12 13:45:12 CET 2013");
-		//CommandParser par = new CommandParser();
-		String str = "by by by monster on mon";
-		//int time = par.getStartingIndexOfIdentifier(str);
-		//int priority = par.getStartingIndexOfPriority(str);
-		//int task = par.getStartingIndexOfTask(str, time, priority);
-		//System.out.println(par.formatToStandardCommandContent(str));
-		//System.out.print("task:" + task + "; " + "time:" + time + "; " +
-		//	"priority:" + priority + ";");
-		//Command command = new Command("edit more, #yellow by mon to do sth");
-		//command = par.parseCommand(command);
-		//Task task = command.createTask();
-		//System.out.println(par.searchWord("I am in EUROPE", "EUROPE"));
-		//System.out.println(par.formatToStandardCommandContent("take selfie with my kitten to post on mon on instagram"));
 	}
 }

@@ -247,12 +247,12 @@ public class Logic {
 	}
 	
 	public void loadFilename(String filename){	
-		System.out.println("logic hereeee load file name "+ filename);
+		//System.out.println("logic hereeee load file name "+ filename);
 		storageController.changeDirectory(filename);
 	}
 	
 	public void saveFilename(String filename){	
-		System.out.println("logic hereeee save file name "+ filename);
+		//System.out.println("logic hereeee save file name "+ filename);
 		storageController.changeDirectory(filename);
 	}
 

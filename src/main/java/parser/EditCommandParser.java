@@ -16,6 +16,17 @@ public class EditCommandParser extends AddCommandParser {
 	public String[] determineParameters(String commandContent)throws InvalidInputFormatException {
 		assert commandContent != null;
 		//assert 1==2;
+		checkAndHandleInvalidCommand(commandContent);
+		String[] parameters = new String[4];
+		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
+		parameters[TASK] = determineTaskForEditCommand(segments);
+		parameters[TIME] = determineTimeForEditCommand(segments);
+		parameters[PRIORITY] = determinePriorityForEditCommand(segments);
+		parameters[TASK_TYPE] = determineTaskTypeForEditCommand(segments);
+		return parameters;
+	}
+
+	private void checkAndHandleInvalidCommand(String commandContent) throws InvalidInputFormatException {
 		if (commandContent.isEmpty()) {
 			throw new InvalidInputFormatException("Cannot edit nothing!");
 		}
@@ -28,19 +39,6 @@ public class EditCommandParser extends AddCommandParser {
 		else if (commandContent.indexOf(EDIT_COMMAND_SEPARATOR) == commandContent.length() - 1) {
 			throw new InvalidInputFormatException("Please specify the information to be updated!");
 		}
-
-		String[] parameters = new String[4];
-		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
-		parameters[TASK] = determineTaskForEditCommand(segments);
-		//System.out.println(parameters[TASK]);
-		parameters[TIME] = determineTimeForEditCommand(segments);
-		//System.out.println(parameters[TIME]);
-		parameters[PRIORITY] = determinePriorityForEditCommand(segments);
-		//System.out.println(parameters[PRIORITY]);
-		parameters[TASK_TYPE] = determineTaskTypeForEditCommand(segments);
-		//System.out.println(parameters[TASK_TYPE]);
-		
-		return parameters;
 	}
 
 	private String determineTaskForEditCommand(String[] segments) {
