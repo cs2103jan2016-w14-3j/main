@@ -3,18 +3,15 @@ package main.java.storage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.StandardOpenOption;
+import java.nio.file.LinkOption;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.google.gson.JsonSyntaxException;
-
 import main.java.data.Task;
 
 public class PermStorage {
@@ -62,13 +59,22 @@ public class PermStorage {
 
 	public void saveToFile(String path) {
 		
-		dirController.saveToFile(file, path);
+		File newFile = new File(path);
+		try {
+			Files.copy(file.toPath(), newFile.toPath());
+			file = newFile;
+			reopenStream();
+		} catch (IOException e) {
+			System.err.println("Cannot save to file");
+		}
+		dirController.saveToFile(path);
 	}
 	
 	public void loadFromFile(String path) {
 		
 		file = new File(path);
 		reopenStream();
+		dirController.loadFromFile(path);
 	}
 	
 	public boolean renameFile(String name) {
@@ -168,15 +174,6 @@ public class PermStorage {
 			bufferedWriter = new BufferedWriter(new FileWriter(file, true));
 		} catch (IOException e) {
 			System.err.println("Cannot reopen stream");
-		}
-	}
-	
-	private void closeStream() {
-		try {
-			bufferedReader.close();
-			bufferedWriter.close();
-		} catch (IOException e) {
-			System.err.println("Cannot close stream");
 		}
 	}
 }

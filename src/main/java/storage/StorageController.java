@@ -130,8 +130,8 @@ public class StorageController {
 	public void saveToFile(String path) {
 		assert path != null;
 		
-		pendingPerm.saveToFile(path);
-		completedPerm.saveToFile(path.substring(0, path.lastIndexOf("\\")+1) + "Completed tasks.txt");
+		pendingTemp.saveToFile(path);
+		//completedTemp.saveToFile(path.substring(0, path.lastIndexOf("\\")+1) + "Completed tasks.txt");
 	}
 
 	public void loadFromFile(String path) {

@@ -117,10 +117,20 @@ public class TempStorage {
 		permStorage.copyAllToFile((taskList));
 	}
 	
+	public void saveToFile(String path) {
+		
+		permStorage.saveToFile(path);
+	}
+	
 	public void loadFromFile(String path) {
 		
 		permStorage.loadFromFile(path);
+		taskList.clear();
 		taskList = retrieveListFromFile();
+		System.out.println(taskList.size());
+		undoStack.clear();
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 	}
 	
 	private ArrayList<Task> retrieveListFromFile() {

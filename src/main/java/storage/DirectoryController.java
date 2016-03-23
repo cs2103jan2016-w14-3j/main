@@ -75,22 +75,19 @@ public class DirectoryController {
 		}
 	}
 	
-	public void saveToFile(File file, String path) {
-
-		File newFile = new File(path);
-		try {
-			Files.copy(file.toPath(), newFile.toPath());
-		} catch (IOException e) {
-			System.err.println("Error saving file");
-		}
-		//updateDirectory(path);
+	public void saveToFile(String path) {
+		updateDirectory(path);
 	}
 	
-//	public void updateDirectory(String path) {
-//		
-//		clearDirFile();
-//		writeDirectory(path);
-//	}
+	public void loadFromFile(String path) {
+		updateDirectory(path);
+	}
+	
+	private void updateDirectory(String path) {
+		
+		clearDirFile();
+		writeDirectory(path);
+	}
 
 	public Boolean renameTaskFile(File file, String name) {
 
