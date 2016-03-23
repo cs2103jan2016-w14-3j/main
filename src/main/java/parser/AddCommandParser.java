@@ -60,8 +60,10 @@ public class AddCommandParser extends Parser {
 	public String[] determineParameters(String commandContent) 
 			throws InvalidInputFormatException {
 		assert commandContent != null;
+		
 		//assert 1==2;
 		if (commandContent.isEmpty()) {
+			//assert 1==2;
 			throw new InvalidInputFormatException("Cannot add an empty task!");
 		}
 		String[] parameters = new String[4];

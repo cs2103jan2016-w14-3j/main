@@ -13,10 +13,6 @@ import main.java.parser.InvalidInputFormatException;
 public class TestCommandDispatcher {
 	private static CommandDispatcher dispatcher;
 	private static AddCommandParser addParser;
-	private static final int TASK = 0;
-	private static final int TIME = 1;
-	private static final int PRIORITY = 2;
-	private static final int TASK_TYPE = 3;
 
 	@Before
 	public void setUp() throws Exception {

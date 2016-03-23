@@ -5,30 +5,44 @@ import java.util.ArrayList;
 import main.java.data.Task;
 
 public class EditCommandParser extends AddCommandParser {
-	
+
 	private static final String EDIT_COMMAND_SEPARATOR = ",";
 	private static final String EDIT_TASK_SEPARATOR = " , ";
-	
+
 	public EditCommandParser() {
 		super();
 	}
-	
+
 	public String[] determineParameters(String commandContent)throws InvalidInputFormatException {
 		assert commandContent != null;
 		//assert 1==2;
-		if (commandContent.isEmpty() || !commandContent.contains(EDIT_COMMAND_SEPARATOR)) {
+		if (commandContent.isEmpty()) {
 			throw new InvalidInputFormatException("Cannot edit nothing!");
 		}
+		else if (commandContent.indexOf(EDIT_COMMAND_SEPARATOR) == -1) {
+			throw new InvalidInputFormatException("Invalid format for edit command!");
+		}
+		else if (commandContent.indexOf(EDIT_COMMAND_SEPARATOR) == 0) {
+			throw new InvalidInputFormatException("Please specify the task to edit!");
+		}
+		else if (commandContent.indexOf(EDIT_COMMAND_SEPARATOR) == commandContent.length() - 1) {
+			throw new InvalidInputFormatException("Please specify the information to be updated!");
+		}
+
 		String[] parameters = new String[4];
 		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
 		parameters[TASK] = determineTaskForEditCommand(segments);
+		//System.out.println(parameters[TASK]);
 		parameters[TIME] = determineTimeForEditCommand(segments);
+		//System.out.println(parameters[TIME]);
 		parameters[PRIORITY] = determinePriorityForEditCommand(segments);
+		//System.out.println(parameters[PRIORITY]);
 		parameters[TASK_TYPE] = determineTaskTypeForEditCommand(segments);
-
+		//System.out.println(parameters[TASK_TYPE]);
+		
 		return parameters;
 	}
-	
+
 	private String determineTaskForEditCommand(String[] segments) {
 
 		String task_A = determineTask(formatToStandardCommandContent(segments[0].trim())); 
@@ -95,9 +109,9 @@ public class EditCommandParser extends AddCommandParser {
 						(segments[1].trim()));
 		return taskType;
 	}
-	
-	
-	
+
+
+
 	public static ArrayList<Task> parseEditTask(Task task) {
 		Task task_A;
 		Task task_B;
@@ -116,7 +130,7 @@ public class EditCommandParser extends AddCommandParser {
 
 		type_A = task.getType().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		type_B = task.getType().split(EDIT_COMMAND_SEPARATOR)[1].trim();
-	
+
 		task_A = new Task(toDo_A, time_A, priority_A, type_A);
 		task_B = new Task(toDo_B, time_B, priority_B, type_B);
 

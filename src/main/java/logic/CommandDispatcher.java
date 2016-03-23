@@ -22,7 +22,7 @@ public class CommandDispatcher {
 
 		String commandContent = retrieveCommandContent(command);
 		command.setContent(commandContent);
-
+       
 		setParameters(command);
 		//System.out.println(command.getType());
 		return command;
@@ -32,6 +32,7 @@ public class CommandDispatcher {
 
 		if (command.isCommand(COMMAND_TYPE.ADD)) {
 			AddCommandParser parser = new AddCommandParser();
+			//System.out.println(command.getContent());
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
@@ -161,6 +162,7 @@ public class CommandDispatcher {
 			}
 		}
 		if (!original.contains(WHITE_SPACE)) {
+			//System.out.println("here");
 			return EMPTY_STRING;
 		}
 		String content = original.substring(original.indexOf(WHITE_SPACE) + 1);
