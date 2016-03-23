@@ -131,7 +131,7 @@ public class StorageController {
 		assert path != null;
 		
 		pendingPerm.changeDirectory(path);
-		completedPerm.changeDirectory(path);
+		completedPerm.changeDirectory(path.substring(0, path.lastIndexOf("\\")+1) + "Completed tasks.txt");
 	}
 	
 	public Boolean renameFile(String name) {

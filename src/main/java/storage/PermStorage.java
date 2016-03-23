@@ -9,6 +9,9 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
+
+import org.apache.commons.io.FileUtils;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.google.gson.JsonSyntaxException;
@@ -61,6 +64,10 @@ public class PermStorage {
 	public void changeDirectory(String path) {
 		
 		dirController.changeDirectory(file, path);
+		file = FileUtils.getFile(path);
+		System.out.println(file.getParentFile());
+		System.out.println(file.getAbsolutePath());
+		reopenStream();
 	}
 	
 	public boolean renameFile(String name) {
@@ -155,10 +162,20 @@ public class PermStorage {
 		
 		try {
 			bufferedReader.close();
+			bufferedWriter.close();
 			bufferedReader = new BufferedReader(new FileReader(file));	
+			bufferedWriter = new BufferedWriter(new FileWriter(file, true));
 		} catch (IOException e) {
 			System.err.println("Cannot reopen stream");
 		}
 	}
-
+	
+	private void closeStream() {
+		try {
+			bufferedReader.close();
+			bufferedWriter.close();
+		} catch (IOException e) {
+			System.err.println("Cannot close stream");
+		}
+	}
 }

@@ -7,12 +7,10 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
+import org.apache.commons.io.FileUtils;
 
 public class DirectoryController {
-
-	private static final String DIR_FILE_NAME = "Directory Info.txt";
 	
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
@@ -24,14 +22,14 @@ public class DirectoryController {
 		
 	}
 	
-	public DirectoryController(String fileName) {
+	public DirectoryController(String taskFileName, String dirFileName) {
 
-		initialiseFileDir(fileName);
+		initialiseFileDir(taskFileName, dirFileName);
 	}
 
-	private void initialiseFileDir(String fileName) {
+	private void initialiseFileDir(String taskFileName, String dirFileName) {
 
-		dirFile = new File(DIR_FILE_NAME);
+		dirFile = new File(dirFileName);
 
 		if(!dirFile.exists()) {
 			try {
@@ -55,13 +53,13 @@ public class DirectoryController {
 				taskFilePath = lineRead;
 			}
 			else {
-				taskFilePath = new File("").getAbsolutePath() + "\\" + fileName;
+				taskFilePath = new File("").getAbsolutePath() + "\\" + taskFileName;
 			}
 		} catch (IOException e) {
 			System.err.println("Error reading from file");
 		}
 	}
-
+	
 	public String getTaskFilePath() {
 
 		return taskFilePath;
@@ -81,15 +79,15 @@ public class DirectoryController {
 	public void changeDirectory(File file, String path) {
 
 		try {
-			
-			Files.copy(file.toPath(), Paths.get(path));
+			Files.copy(file.toPath(), (new File(path)).toPath(), NOFOLLOW_LINKS);
+			//FileUtils.copyFile(file, new File(path), true);
 			updateDirectory(path);
 		} catch (IOException e) {
 			System.err.println("Invalid path");
 		}
 	}
 	
-	private void updateDirectory(String path) {
+	public void updateDirectory(String path) {
 		
 		clearDirFile();
 		writeDirectory(path);
@@ -103,7 +101,7 @@ public class DirectoryController {
 		return isSuccess;
 	}
 	
-	private void clearDirFile() {
+	protected void clearDirFile() {
 		
 		try {
 			fileWriter = new FileWriter(dirFile);
