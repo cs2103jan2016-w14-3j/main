@@ -46,13 +46,6 @@ public class AddCommandParser extends Parser {
 		System.out.println(pars.parse("from next monday to next wed"));
 		AddCommandParser parser = new AddCommandParser();
 		System.out.println(parser.isRecurringTask("from mon to wed do this and that"));
-		//parser.determineParameters(str);
-		//int time = par.getStartingIndexOfIdentifier(str);
-		//int priority = par.getStartingIndexOfPriority(str);
-		//int task = par.getStartingIndexOfTask(str, time, priority);
-		//System.out.println(par.formatToStandardCommandContent(str));
-		//System.out.print("task:" + task + "; " + "time:" + time + "; " +
-		//	"priority:" + priority + ";");
 	}
 
 
@@ -61,9 +54,8 @@ public class AddCommandParser extends Parser {
 			throws InvalidInputFormatException {
 		assert commandContent != null;
 
-		//assert 1==2;
+
 		if (commandContent.isEmpty()) {
-			//assert 1==2;
 			throw new InvalidInputFormatException("Cannot add an empty task!");
 		}
 		String[] parameters = new String[4];
@@ -147,9 +139,9 @@ public class AddCommandParser extends Parser {
 			return dates.toString().substring(1, dates.toString().length() - 1);
 		}
 	}
-	
+
 	private String getRoughTime(String fullDate) {
-		
+
 		return fullDate.substring(fullDate.indexOf(TIME_SEPARATOR) - 2, 
 				fullDate.indexOf(TIME_SEPARATOR, fullDate.indexOf(TIME_SEPARATOR) + 1) + 2);
 	}
@@ -183,7 +175,7 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	protected boolean isValidPriority(String priority) {
+	private boolean isValidPriority(String priority) {
 		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) || priority.equalsIgnoreCase(PRIORITY_LEVEL.MEDIUM.getType()) ||
 				priority.equalsIgnoreCase(PRIORITY_LEVEL.LOW.getType())) {
 			//System.out.println((PRIORITY.HIGH).getType());

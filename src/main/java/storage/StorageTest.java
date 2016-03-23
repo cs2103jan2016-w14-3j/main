@@ -1,4 +1,4 @@
-package main.java.storage;
+ package main.java.storage;
 
 import static org.junit.Assert.*;
 import java.util.ArrayList;
@@ -15,6 +15,7 @@ public class StorageTest {
 	@Test
 	public void testAddTask() {
 		ArrayList<Task> expectedList = new ArrayList<Task>();	
+		//assert 1==1;
 
 		expectedList.add(task0);
 		strCtrl.addTask(task0);

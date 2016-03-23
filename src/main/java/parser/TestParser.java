@@ -37,7 +37,7 @@ public class TestParser {
 	@Test
 	//cover a normal case with correct input
 	public void testAdd1() throws InvalidInputFormatException {
-		//fail("Not yet implemented");
+		
 		String testInput = "play soccer with my friend on sunday #high";
 		
 		String[] parametersActual = addParser.determineParameters(testInput);
@@ -70,7 +70,7 @@ public class TestParser {
 
 	@Test
 	public void testEdit() throws InvalidInputFormatException {
-		//fail("Not yet implemented");
+		
 		String testInput = "better to get, play soccer with my friend on sunday #high";
 		
 		String[] parametersActual = editParser.determineParameters(testInput);

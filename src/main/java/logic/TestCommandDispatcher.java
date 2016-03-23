@@ -41,6 +41,26 @@ public class TestCommandDispatcher {
 		assertArrayEquals(expectedCommand.getParameters(), actualCommand.getParameters());
 	}
 	
+	@Test
+	//cover a case with the command keyword
+	public void test1() throws InvalidInputFormatException {
+		String userInput = "add on mon 5pm to 8pm go shopping #low";
+		Command command = new Command(userInput);
+		Command actualCommand = dispatcher.parseCommand(command);
+		
+		String[] expectedPara = addParser.determineParameters
+				("on mon 5pm to 8pm go shopping #low");
+		
+		Command expectedCommand = new Command(userInput, 
+				COMMAND_TYPE.ADD, "on mon 5pm to 8pm go shopping #low", expectedPara);
+		
+		
+		assertEquals(expectedCommand.getOriginal(), actualCommand.getOriginal());
+		assertEquals(expectedCommand.getType(), actualCommand.getType());
+		assertEquals(expectedCommand.getContent(), actualCommand.getContent());
+		assertArrayEquals(expectedCommand.getParameters(), actualCommand.getParameters());
+	}
+	
 	
 
 }
