@@ -82,7 +82,7 @@ public class DirectoryController {
 
 		try {
 			
-			Files.move(file.toPath(), Paths.get(path));
+			Files.copy(file.toPath(), Paths.get(path));
 			updateDirectory(path);
 		} catch (IOException e) {
 			System.err.println("Invalid path");
