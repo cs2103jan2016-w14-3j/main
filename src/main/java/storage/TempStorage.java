@@ -117,6 +117,12 @@ public class TempStorage {
 		permStorage.copyAllToFile((taskList));
 	}
 	
+	public void loadFromFile(String path) {
+		
+		permStorage.loadFromFile(path);
+		taskList = retrieveListFromFile();
+	}
+	
 	private ArrayList<Task> retrieveListFromFile() {
 		ArrayList<Task> list = permStorage.readFromFile();
 		
@@ -129,7 +135,7 @@ public class TempStorage {
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
          
-		if(fragments.length==1){
+		if(fragments.length == 1){
 			searchResult = taskList;
 		}
 		

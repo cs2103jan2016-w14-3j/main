@@ -248,12 +248,12 @@ public class Logic {
 	
 	public void loadFilename(String filename){	
 		//System.out.println("logic hereeee load file name "+ filename);
-		storageController.changeDirectory(filename);
+		storageController.loadFromFile(filename);
 	}
 	
 	public void saveFilename(String filename){	
 		//System.out.println("logic hereeee save file name "+ filename);
-		storageController.changeDirectory(filename);
+		storageController.saveToFile(filename);
 	}
 
 	public boolean isCommand(String commandWord) {

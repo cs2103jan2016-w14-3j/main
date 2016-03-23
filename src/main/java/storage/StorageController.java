@@ -127,11 +127,17 @@ public class StorageController {
 		return pendingTemp.searchMatch(oldChar, newChar);
 	}
 	
-	public void changeDirectory(String path) {
+	public void saveToFile(String path) {
 		assert path != null;
 		
-		pendingPerm.changeDirectory(path);
-		completedPerm.changeDirectory(path.substring(0, path.lastIndexOf("\\")+1) + "Completed tasks.txt");
+		pendingPerm.saveToFile(path);
+		completedPerm.saveToFile(path.substring(0, path.lastIndexOf("\\")+1) + "Completed tasks.txt");
+	}
+
+	public void loadFromFile(String path) {
+		assert path != null;
+		
+		pendingTemp.loadFromFile(path);
 	}
 	
 	public Boolean renameFile(String name) {

@@ -8,7 +8,6 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
-import org.apache.commons.io.FileUtils;
 
 public class DirectoryController {
 	
@@ -76,22 +75,22 @@ public class DirectoryController {
 		}
 	}
 	
-	public void changeDirectory(File file, String path) {
+	public void saveToFile(File file, String path) {
 
+		File newFile = new File(path);
 		try {
-			Files.copy(file.toPath(), (new File(path)).toPath(), NOFOLLOW_LINKS);
-			//FileUtils.copyFile(file, new File(path), true);
-			updateDirectory(path);
+			Files.copy(file.toPath(), newFile.toPath());
 		} catch (IOException e) {
-			System.err.println("Invalid path");
+			System.err.println("Error saving file");
 		}
+		//updateDirectory(path);
 	}
 	
-	public void updateDirectory(String path) {
-		
-		clearDirFile();
-		writeDirectory(path);
-	}
+//	public void updateDirectory(String path) {
+//		
+//		clearDirFile();
+//		writeDirectory(path);
+//	}
 
 	public Boolean renameTaskFile(File file, String name) {
 

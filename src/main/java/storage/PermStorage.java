@@ -8,9 +8,8 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.nio.file.StandardOpenOption;
 import java.util.ArrayList;
-
-import org.apache.commons.io.FileUtils;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -61,12 +60,14 @@ public class PermStorage {
 		}
 	}
 
-	public void changeDirectory(String path) {
+	public void saveToFile(String path) {
 		
-		dirController.changeDirectory(file, path);
-		file = FileUtils.getFile(path);
-		System.out.println(file.getParentFile());
-		System.out.println(file.getAbsolutePath());
+		dirController.saveToFile(file, path);
+	}
+	
+	public void loadFromFile(String path) {
+		
+		file = new File(path);
 		reopenStream();
 	}
 	
