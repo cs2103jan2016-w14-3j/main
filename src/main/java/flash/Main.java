@@ -292,13 +292,13 @@ public class Main extends Application {
 			}
             try{
 			 result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-            }catch(InvalidInputFormatException e){
+            }catch(Exception e){
             	setFeedback(commandBarController,"error", e.toString());
             }
+            setFeedback(commandBarController,"valid", userInput);
 
 		}
-
-		
+	
 		new CommandBarController();
 		commandBarController.clear();
 	}
@@ -399,7 +399,6 @@ public class Main extends Application {
 			barControl.setBgColour("med");
 		}
 
-		
 		if (logic.isCommand(fragments[COMMAND_INDEX])) {
 			removeAllStyle(barControl.getCommandBar());
 			barControl.setBgColour("best");
