@@ -298,7 +298,6 @@ public class Main extends Application {
             setFeedback(commandBarController,"valid", userInput);
 
 		}
-	
 		new CommandBarController();
 		commandBarController.clear();
 	}
