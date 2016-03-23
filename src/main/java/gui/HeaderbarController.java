@@ -20,13 +20,14 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.stage.FileChooser;
 import javafx.application.Platform;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 
 
-public class TabsController extends BorderPane {
+public class HeaderbarController extends BorderPane {
 	
 	@FXML
 	private Tab upcomingTab;	
@@ -38,7 +39,7 @@ public class TabsController extends BorderPane {
 	private MenuButton setting;
     private MenuItem loadFile;
     private MenuItem exitItem;
-    
+
     @FXML
 	private Button btnNew;
     @FXML
@@ -57,7 +58,8 @@ public class TabsController extends BorderPane {
 	private Label lblUpcoming;
     @FXML
 	private Label lblComplete;
-    
+    @FXML
+    private Button btnSidebar;
     
 	protected File file;
 
@@ -66,9 +68,9 @@ public class TabsController extends BorderPane {
 	private MenuItem helpPage;
 	
 	
-	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/TasksTabs.fxml";
+	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/HeaderBar.fxml";
 
-	public TabsController() {
+	public HeaderbarController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(COMMAND_BAR_LAYOUT_FXML));
 		loader.setController(this);
 		loader.setRoot(this);
@@ -77,9 +79,9 @@ public class TabsController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//initSetting();
-		//initButton();
-		//exit();
+		initSetting();
+		initButton();
+		exit();
 	}
 	
 	private void initButton() {
@@ -100,6 +102,9 @@ public class TabsController extends BorderPane {
 	    //Image image = new Image("/main/resources/images/loadFile.png");
 	   // btnSetting.setGraphic(new ImageView(image));
 		
+	}
+	public void setBtnSidebar(Button button){
+
 	}
 
 

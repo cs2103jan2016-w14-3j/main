@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="42.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <top>
+      <HBox alignment="TOP_RIGHT" prefHeight="37.0" prefWidth="600.0" BorderPane.alignment="CENTER">
+         <children>
+            <Button fx:id="controlButton" mnemonicParsing="false" text="Button" />
+            <Region prefHeight="39.0" prefWidth="138.0" />
+            <VBox prefHeight="39.0" prefWidth="154.0">
+               <children>
+                  <Label fx:id="lblUpcoming" prefHeight="17.0" prefWidth="178.0" text="asdd" textFill="#119e34">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                     <effect>
+                        <Glow level="0.31" />
+                     </effect>
+                  </Label>
+                  <Label fx:id="lblComplete" prefHeight="17.0" prefWidth="178.0" text="asdd" textFill="#119e34">
+                     <font>
+                        <Font name="System Bold" size="11.0" />
+                     </font>
+                     <effect>
+                        <Glow level="0.31" />
+                     </effect>
+                  </Label>
+               </children>
+            </VBox>
+            <Button fx:id="btnNew" alignment="CENTER" mnemonicParsing="false" prefHeight="39.0" prefWidth="35.0" />
+            <Button fx:id="btnLoad" mnemonicParsing="false" prefHeight="39.0" prefWidth="33.0" />
+            <Button fx:id="btnSave" mnemonicParsing="false" prefHeight="39.0" prefWidth="37.0" />
+            <Button fx:id="btnHelp" mnemonicParsing="false" prefHeight="39.0" prefWidth="32.0" />
+            <Button fx:id="btnSetting" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" prefHeight="39.0" prefWidth="28.0" />
+            <Button fx:id="btnExit" mnemonicParsing="false" prefHeight="39.0" prefWidth="31.0" />
+            <MenuButton fx:id="setting" contentDisplay="GRAPHIC_ONLY" mnemonicParsing="false" />
+         </children>
+      </HBox>
+   </top>
+   
+</fx:root>

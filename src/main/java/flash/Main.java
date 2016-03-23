@@ -13,6 +13,7 @@ import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -24,20 +25,30 @@ import tray.notification.TrayNotification;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.EmptyTableController;
+import main.java.gui.HeaderbarController;
 import main.java.gui.HelpDisplayController;
+import main.java.gui.SideBarController;
 import main.java.gui.TabsController;
 import main.java.gui.TasksItemController;
 import main.java.gui.TasksTableController;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
+import javafx.scene.layout.Region;
 import javafx.scene.layout.VBox;
+import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
+import javafx.scene.control.Button;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -55,6 +66,7 @@ public class Main extends Application {
 	private TasksTableController completeTableControl;
 	private CommandBarController barControl;
 	private TabsController tabControl;
+	private HeaderbarController headerControl;
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
 	private ArrayList<Task> previousResult = new ArrayList<Task>();
@@ -82,7 +94,8 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Flashpoint");
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
-
+        this.primaryStage.setHeight(680);
+        this.primaryStage.setWidth(580);
 		initControllers(this);
 		initLogic();
 		initRootLayout();
@@ -96,6 +109,7 @@ public class Main extends Application {
 		completeTableControl = new TasksTableController();
 		barControl = new CommandBarController(this);
 		tabControl = new TabsController();
+		headerControl = new HeaderbarController();
 		tasksDisplay = pendingTableControl.getListView();
 		completeDisplay = completeTableControl.getListView();
 	}
@@ -107,18 +121,18 @@ public class Main extends Application {
 	private void checkIsTasksEmpty() throws Exception {
 		if (logic.displayPending().isEmpty()) {
 			tabControl.setUpcomingTab(new EmptyTableController());
-			tabControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming task.");
+			headerControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming task.");
 		} else {
 			tabControl.setUpcomingTab(pendingTableControl);
-			tabControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming tasks.");
+			headerControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming tasks.");
 		}
 
 		if (logic.displayComplete().isEmpty()) {
 			tabControl.setEmptyCompleteTab();
-			tabControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed task.");
+			headerControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed task.");
 		} else {
 			tabControl.setCompleteTab(completeTableControl);
-			tabControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed tasks.");
+			headerControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed tasks.");
 		}
 
 		updateList();
@@ -143,14 +157,12 @@ public class Main extends Application {
 					primaryStage.hide();
 				}
 			});
-         //  showSidebar();
+            showSidebar();
 			showTabs();
 			showCommandBar();
 			showTasks();
 			initLog();
 			listenerForTaskList();
-			saveFilename();
-			loadFilename();
 			
 
 			primaryStage.show();
@@ -160,21 +172,66 @@ public class Main extends Application {
 		}
 	}
 
-//	private void showSidebar() {
-//		// TODO Auto-generated method stub
-//		 // create a sidebar with some content in it.
-//	    final Pane lyricPane = createSidebarContent();
-//	    SideBar sidebar = new SideBar(250, lyricPane);
-//	    VBox.setVgrow(lyricPane, Priority.ALWAYS);
-//	}
-
-	private Pane createSidebarContent() {
+	private void showSidebar() {
 		// TODO Auto-generated method stub
-		return null;
+		 // create a sidebar with some content in it.
+	    final Pane lyricPane = createSidebarContent();
+	    SideBarController sidebar = new SideBarController(90, lyricPane);
+	    VBox.setVgrow(lyricPane, Priority.ALWAYS);
+	    rootLayout.setLeft(sidebar);
+	    HBox topBar = new HBox();
+	    topBar.getChildren().add(sidebar.getControlButton());
+	    topBar.getStyleClass().add("topBar");
+	    rootLayout.setTop(topBar);
+	   // headerControl.setBtnSidebar(sidebar.getControlButton());
+	    
+	   // rootLayout.setTop(headerControl);
+	    sidebar.hideSidebar();
 	}
+	
+	
+	private VBox createSidebarContent() {// create some content to put in the sidebar.
+	    
+	    final VBox sidePane = new VBox();
+	    sidePane.getStyleClass().add("sidePane");
+	    
+	    Region region = new Region();
+	    
+	    Image icon = new Image("/main/resources/images/sidebuttonIcon.png");
+		ImageView iconView = new ImageView(icon);
+		
+	    final Button a = new Button();
+	    a.setStyle("-fx-background-color:transparent");
+	  
+	    final Button btnNew = new Button();
+	    btnNew.getStyleClass().add("newButton");
+	    btnNew.setPadding(Insets.EMPTY);
+	    
+	    final Button btnSave = new Button();    
+	    btnSave.getStyleClass().add("saveButton");
+	    btnSave.setPadding(Insets.EMPTY);
+	    saveFilename(btnSave);
+	    
+	    final Button btnLoad = new Button();
+	    btnLoad.getStyleClass().add("loadButton");
+	    btnLoad.setPadding(Insets.EMPTY);
+	    loadFilename(btnLoad);
+	    
+	    final Button btnHelp = new Button();
+	    btnHelp.getStyleClass().add("helpButton");
+	    btnHelp.setPadding(Insets.EMPTY);
+	    
+	    final Button btnExit = new Button();
+	    btnExit.getStyleClass().add("exitButton");
+	    btnExit.setPadding(Insets.EMPTY);
+	    exit(btnExit);
+	    sidePane.getChildren().addAll(a,btnNew,btnLoad,btnSave,btnHelp,btnExit);
+	    return sidePane;
+	  }
+
 
 	private void showTabs() {
-		rootLayout.setTop(tabControl);
+		rootLayout.setCenter(tabControl);
 	}
 
 	private void showTasks() {
@@ -312,6 +369,7 @@ public class Main extends Application {
             }catch(Exception e){
             	isError = true;
             	setFeedback(commandBarController,"error", e.toString());
+            	 System.out.println(e.toString());
             }
             
             if(isError == false){
@@ -332,8 +390,9 @@ public class Main extends Application {
 			String firstWord = userInput.substring(0, i);
 			String subString = userInput.substring(i + 1);
 			if(type.equals("error")){
+				 
 			     commandBarController.setFeedback("Error" + "' " + subString + " '",Color.RED);
-			    // System.out.println("errorrrrrrr");
+			     //System.out.println(subString);
 			     return;
 			}else{
 				commandBarController.setFeedback("Successfully " +firstWord+"ed "+ "' " + subString + " '",Color.GREEN);
@@ -430,8 +489,8 @@ public class Main extends Application {
 		}
 	}
 
-	public void saveFilename() {
-		tabControl.getSaveMenu().setOnAction(new EventHandler<ActionEvent>() {
+	public void saveFilename(Button btnSave) {
+		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				
@@ -444,12 +503,12 @@ public class Main extends Application {
 				}
 			}
 		});
-
+       
 	}
 
-	public void loadFilename() {
+	public void loadFilename(Button btnLoad) {
 
-		tabControl.getLoadMenu().setOnAction(new EventHandler<ActionEvent>() {
+		btnLoad.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 				FileChooser fileChooser = new FileChooser();
@@ -458,10 +517,15 @@ public class Main extends Application {
 				File loadFile = fileChooser.showOpenDialog(null);
 				if (loadFile!= null){
 					logic.loadFilename(loadFile.getAbsolutePath());
+					try {
+						checkIsTasksEmpty();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		});
-
 	}
 	
 	private void notification(String userInput){
@@ -476,6 +540,16 @@ public class Main extends Application {
         tray.setNotificationType(notification);
         tray.showAndDismiss(Duration.seconds(2));
         
+	}
+	
+	private void exit(Button btnExit) {
+		btnExit.setMnemonicParsing(true);
+		//btnExit.setAccelerator(new KeyCodeCombination(KeyCode.X,KeyCombination.CONTROL_DOWN));
+		btnExit.setOnAction(new EventHandler<ActionEvent>() {
+	      public void handle(ActionEvent event) {
+	        Platform.exit();
+	      }
+	    });
 	}
 
 }
