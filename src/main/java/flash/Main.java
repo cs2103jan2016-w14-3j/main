@@ -1,9 +1,9 @@
 package main.java.flash;
 
 import java.io.File;
+
 import java.io.IOException;
 import java.util.ArrayList;
-
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -34,6 +34,9 @@ import javafx.scene.image.Image;
 import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.Pane;
+import javafx.scene.layout.Priority;
+import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
@@ -67,6 +70,7 @@ public class Main extends Application {
 	private int pointer;
 	private boolean isFeedback = false;
 	private int count = 0;
+	private boolean isError = false;
 	
 
 	public static void main(String[] args) {
@@ -139,7 +143,7 @@ public class Main extends Application {
 					primaryStage.hide();
 				}
 			});
-
+         //  showSidebar();
 			showTabs();
 			showCommandBar();
 			showTasks();
@@ -154,6 +158,19 @@ public class Main extends Application {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+
+//	private void showSidebar() {
+//		// TODO Auto-generated method stub
+//		 // create a sidebar with some content in it.
+//	    final Pane lyricPane = createSidebarContent();
+//	    SideBar sidebar = new SideBar(250, lyricPane);
+//	    VBox.setVgrow(lyricPane, Priority.ALWAYS);
+//	}
+
+	private Pane createSidebarContent() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	private void showTabs() {
@@ -293,11 +310,15 @@ public class Main extends Application {
             try{
 			 result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
             }catch(Exception e){
+            	isError = true;
             	setFeedback(commandBarController,"error", e.toString());
             }
-            setFeedback(commandBarController,"valid", userInput);
-
+            
+            if(isError == false){
+               setFeedback(commandBarController,"valid", userInput);
+            }
 		}
+		isError = false;
 		new CommandBarController();
 		commandBarController.clear();
 	}
@@ -312,6 +333,8 @@ public class Main extends Application {
 			String subString = userInput.substring(i + 1);
 			if(type.equals("error")){
 			     commandBarController.setFeedback("Error" + "' " + subString + " '",Color.RED);
+			    // System.out.println("errorrrrrrr");
+			     return;
 			}else{
 				commandBarController.setFeedback("Successfully " +firstWord+"ed "+ "' " + subString + " '",Color.GREEN);
 			}
