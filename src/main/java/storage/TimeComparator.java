@@ -12,7 +12,7 @@ public class TimeComparator implements Comparator<Task>{
 	@Override
 	public int compare(Task task1, Task task2) {
 		
-		if(task1.getTime().equals(task2.getTime())) {
+		if((task1.getTime().isEmpty()) || (task2.getTime().isEmpty()) || task1.getTime().equals(task2.getTime())) {
 			
 			if(task1.getTask().equalsIgnoreCase(task2.getTask())) {
 				return task1.getPriority().compareTo(task2.getPriority());
@@ -22,7 +22,7 @@ public class TimeComparator implements Comparator<Task>{
 			}
 		}	
 		else {	
-			return task1.getTime().compareTo(task2.getTime());
+			return task1.getTime().get(0).compareTo(task2.getTime().get(0));
 		}
 	}
 }

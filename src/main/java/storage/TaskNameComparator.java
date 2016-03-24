@@ -18,7 +18,7 @@ public class TaskNameComparator implements Comparator<Task>{
 				return task1.getPriority().compareTo(task2.getPriority());
 			}
 			else {
-				return task1.getTime().compareTo(task2.getTime());
+				return task1.getTime().get(0).compareTo(task2.getTime().get(0));
 			}
 		}	
 		else {			

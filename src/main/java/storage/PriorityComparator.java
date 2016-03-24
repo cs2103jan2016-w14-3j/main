@@ -15,7 +15,7 @@ public class PriorityComparator implements Comparator<Task>{
 		if(task1.getPriority().equals(task2.getPriority())) {
 			
 			if(task1.getTask().equalsIgnoreCase(task2.getTask())) {
-				return task1.getTime().compareTo(task2.getTime());
+				return task1.getTime().get(0).compareTo(task2.getTime().get(0));
 			}
 			else {
 				return task1.getTask().compareToIgnoreCase(task2.getTask());
