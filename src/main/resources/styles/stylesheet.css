@@ -13,10 +13,13 @@
 	-fx-font-weight: bold;
 }
 .topBar{
-	-fx-background-color: #80D8FF;
+	-fx-background-color: #40C4FF;
 }
 .sidePane{
-	-fx-background-color: #40C4FF;
+	-fx-background-color: #80D8FF;
+}
+.profileBox{
+	
 }
 #lblUpcoming{
 	-fx-background-color: rgba(255, 255, 255, 0.6);

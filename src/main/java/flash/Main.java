@@ -14,6 +14,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.util.Duration;
@@ -176,7 +177,7 @@ public class Main extends Application {
 		// TODO Auto-generated method stub
 		 // create a sidebar with some content in it.
 	    final Pane lyricPane = createSidebarContent();
-	    SideBarController sidebar = new SideBarController(90, lyricPane);
+	    SideBarController sidebar = new SideBarController(84, lyricPane);
 	    VBox.setVgrow(lyricPane, Priority.ALWAYS);
 	    rootLayout.setLeft(sidebar);
 	    HBox topBar = new HBox();
@@ -195,10 +196,13 @@ public class Main extends Application {
 	    final VBox sidePane = new VBox();
 	    sidePane.getStyleClass().add("sidePane");
 	    
-	    Region region = new Region();
-	    
-	    Image icon = new Image("/main/resources/images/sidebuttonIcon.png");
+	    VBox profile = new VBox();
+	    Image icon = new Image("/main/resources/images/profilePhoto.png");
 		ImageView iconView = new ImageView(icon);
+	    profile.getChildren().add(iconView);
+	    profile.getStyleClass().add("profileBox");
+	    profile.setAlignment(Pos.CENTER);
+	    profile.setPadding(new Insets(10, 0, 20, 0));
 		
 	    final Button a = new Button();
 	    a.setStyle("-fx-background-color:transparent");
@@ -225,7 +229,7 @@ public class Main extends Application {
 	    btnExit.getStyleClass().add("exitButton");
 	    btnExit.setPadding(Insets.EMPTY);
 	    exit(btnExit);
-	    sidePane.getChildren().addAll(a,btnNew,btnLoad,btnSave,btnHelp,btnExit);
+	    sidePane.getChildren().addAll(profile,btnNew,btnLoad,btnSave,btnHelp,btnExit);
 	    return sidePane;
 	  }
 

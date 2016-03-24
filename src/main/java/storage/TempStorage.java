@@ -150,7 +150,9 @@ public class TempStorage {
 		}
 		
 		if (fragments.length > 1) {
-			newValue = fragments[1];		
+			int i = newValue.indexOf(' ');
+			newValue = newValue.substring(i);
+			//newValue = fragments[1];		
 			String[] parts = null;
 			parts = newValue.toLowerCase().split(SPACE);
 			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
@@ -160,8 +162,8 @@ public class TempStorage {
 				boolean match = true;
 				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
 				for (String part : parts) {
-					String withoutComma = part.substring(0,part.length()-1);
-					if(taskMatch.toLowerCase().contains(withoutComma)&& newValue.contains(",")){
+					//String withoutComma = part.substring(0,part.length()-1);
+					if(taskMatch.toLowerCase().contains(part)&& part.contains(",")){
 						match = true;
 						break;
 					}
