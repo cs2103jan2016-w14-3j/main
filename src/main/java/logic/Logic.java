@@ -41,11 +41,6 @@ public class Logic {
 
 	}
 
-	public static void main(String[] args) throws Exception
-	{
-		Logic logic = new Logic();
-		ArrayList<Task> list = logic.handleUserCommand("edit okay, no -9pm #h",null);
-	}
 
 	public ArrayList<Task> initLogic() throws Exception{
 		Logic logic = new Logic();
@@ -79,10 +74,6 @@ public class Logic {
 	//		assert task != null;
 	//		return temp.searchTemp(task);
 	//	}
-
-	private ArrayList<Task> handleDisplayCommand() {
-		return storageController.displayPendingTasks();
-	}
 
 	private ArrayList<Task> handleEditCommand(TransientTask task) throws Exception {
 
@@ -139,16 +130,20 @@ public class Logic {
 		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
 			ArrayList<Task> finalResult = new ArrayList<Task>(); 
 			transientTask = createTransientTask(command);
-			result = handleEditCommand(transientTask);
-
+			//result = handleEditCommand(transientTask);
+			//System.out.println(result.size());
 			String sub = userInput.substring(5, userInput.indexOf(","));
+			//System.out.println("search " + searchResult.size());
+			//System.out.println(sub + ",");
 			for (Task temp : searchResult) {
 				if (sub.equals(temp.getTask())) {				
 					finalResult.add(temp);	  
 					finalResult.add(result.get(1));
-
+					//System.out.println("HERERERE");
 					Task original = finalResult.get(0);
+					//System.out.println(original.getTask());
 					Task updated = finalResult.get(1);
+					//System.out.println(updated.getTask());
 
 					if(updated.getTime().toString().equals("[]")){
 						updated.setTime(original.getTime());
@@ -279,6 +274,8 @@ public class Logic {
 	
 
 	public ArrayList<Task> handleSearch(String oldValue, String newValue) throws Exception {
+		//System.out.println("new val: " + newValue);
+		//System.out.println("old val: " + oldValue);
 		searchResult = storageController.searchMatch(oldValue, newValue);	
 		return searchResult;
 	}

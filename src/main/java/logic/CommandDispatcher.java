@@ -184,6 +184,6 @@ public class CommandDispatcher {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser parser = new PrettyTimeParser();
-		System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
+		//System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
 	}
 }

@@ -63,20 +63,6 @@ public class EditCommandParser extends AddCommandParser {
 		String time_A = determineTime(formatToStandardCommandContent(segments[0].trim())); 
 		String time_B = determineTime(formatToStandardCommandContent(segments[1].trim()));
 
-		if (!time_A.equals(EMPTY_STRING) && !time_B.equals(EMPTY_STRING)) {
-			//change A to B
-
-		}
-		else if (!time_A.equals(EMPTY_STRING)) {
-			//retain A
-		}
-		else if (!time_B.equals(EMPTY_STRING)) {
-			//change A to B
-
-		}
-		else {
-			//do nothing
-		}
 		return time_A + EDIT_TASK_SEPARATOR + time_B;
 
 	}
@@ -86,18 +72,6 @@ public class EditCommandParser extends AddCommandParser {
 		String priority_A = determinePriority(formatToStandardCommandContent(segments[0].trim())); 
 		String priority_B = determinePriority(formatToStandardCommandContent(segments[1].trim()));
 
-		if (!priority_A.equals(EMPTY_STRING) && !priority_B.equals(EMPTY_STRING)) {
-			//change A to B
-		}
-		else if (!priority_A.equals(EMPTY_STRING)) {
-			//retain A
-		}
-		else if (!priority_B.equals(EMPTY_STRING)) {
-			//change A to B
-		}
-		else {
-			//do nothing
-		}
 		return priority_A + EDIT_TASK_SEPARATOR + priority_B;
 	}
 

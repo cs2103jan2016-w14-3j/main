@@ -368,13 +368,13 @@ public class Main extends Application {
 					userInput = userInput + "Complete";
 				}
 			}
-            try{
+            //try{
 			 result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-            }catch(Exception e){
+            //}catch(Exception e){
             	isError = true;
-            	setFeedback(commandBarController,"error", e.toString());
-            	 System.out.println(e.toString());
-            }
+            	//setFeedback(commandBarController,"error", e.toString());
+            	 //System.out.println(e.toString());
+            //}
             
             if(isError == false){
                setFeedback(commandBarController,"valid", userInput);
@@ -449,10 +449,13 @@ public class Main extends Application {
 	}
 
 	public void trySearch(String oldValue, String newValue) {
+		//System.out.println("main old: " + oldValue + ",");
+		//System.out.println("main new: " + newValue + ",");
 		
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
 		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
+		//System.out.println(isEdit);
 		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
 		boolean isMark = fragments[COMMAND_INDEX].equalsIgnoreCase("mark");

@@ -46,9 +46,9 @@ public class AddCommandParser extends Parser {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser pars = new PrettyTimeParser();
-		System.out.println(pars.parse("from next monday to next wed"));
+		//System.out.println(pars.parse("from next monday to next wed"));
 		AddCommandParser parser = new AddCommandParser();
-		System.out.println(parser.isRecurringTask("from mon to wed do this and that"));
+		//System.out.println(parser.isRecurringTask("from mon to wed do this and that"));
 	}
 
 
@@ -111,7 +111,6 @@ public class AddCommandParser extends Parser {
 			modifyDateToTomorrowIfExpired(dates);
 
 			String result = setDefaultTimeIfNotSpecified(content, dates);
-			System.out.println(result);
 
 			return result;
 		}

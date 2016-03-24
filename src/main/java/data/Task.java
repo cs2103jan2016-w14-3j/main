@@ -11,7 +11,8 @@ public class Task {
 	private PRIORITY_LEVEL priority;
 	private TASK_STATUS status;
 	
-	public Task(String task, List<Date> time, PRIORITY_LEVEL priority, TASK_NATURE type, TASK_STATUS status) {
+	public Task(String task, List<Date> time, PRIORITY_LEVEL priority, 
+			TASK_NATURE type, TASK_STATUS status) {
 		this.task = task;
 		this.time = time;
 		this.priority = priority;
