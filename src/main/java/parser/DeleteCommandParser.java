@@ -7,3 +7,4 @@ public class DeleteCommandParser extends Parser {
 	}
 
 }
+

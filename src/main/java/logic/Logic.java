@@ -215,11 +215,11 @@ public class Logic {
 
 		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
 			storageController.undo();
-			//System.out.println("UNDO IS HERE !!!!");
 		}
 		
 		else if (command.isCommand(COMMAND_TYPE.REDO)) {
 			storageController.redo();
+			//System.out.println("UNDO IS HERE !!!!");
 		}
 		else if (command.isCommand(COMMAND_TYPE.SWITCH)) {
 			

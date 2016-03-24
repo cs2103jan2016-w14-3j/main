@@ -151,6 +151,7 @@ public class AddCommandParser extends Parser {
 				fullDate.indexOf(TIME_SEPARATOR, fullDate.indexOf(TIME_SEPARATOR) + 1) + 2);
 	}
 
+
 	private String determineTimeSegment(String content) {
 		int timeIndex = getStartingIndexOfIdentifier(content);
 		int priorityIndex = getStartingIndexOfPriority(content);

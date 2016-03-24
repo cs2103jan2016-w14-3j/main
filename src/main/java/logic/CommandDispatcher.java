@@ -126,6 +126,9 @@ public class CommandDispatcher {
 		else if (isCommand(COMMAND_TYPE.UNDO, firstWord)) {
 			return COMMAND_TYPE.UNDO;
 		}
+		else if (isCommand(COMMAND_TYPE.REDO, firstWord)) {
+			return COMMAND_TYPE.REDO;
+		}
 		else if (isCommand(COMMAND_TYPE.MARK, firstWord)) {
 			return COMMAND_TYPE.MARK;
 		}

@@ -116,6 +116,7 @@ public class Command {
 		}
 	}
 	
+	
 	public static List<Date> getTime(String time) {
 		List<Date> dates = parser.parse(time);
 		System.out.println("original: " + time);

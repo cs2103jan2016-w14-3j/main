@@ -7,6 +7,7 @@ public class TransientTask {
 	private String priority;
 	private String status;
 	
+	
 	public TransientTask(String task, String time, String priority, 
 			String type, String status) {
 		this.task = task;

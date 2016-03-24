@@ -59,7 +59,7 @@ public class Main extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-
+	
 	private Logic logic;
 	private Task task;
 

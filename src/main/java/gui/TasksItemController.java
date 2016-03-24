@@ -77,6 +77,7 @@ public class TasksItemController extends BorderPane {
 				generateColour(task.getPriority().getType())));
 	}
 	
+	
 	private String showTime( List<Date> dates) {
 		if (dates.size() == 0) {
 			return "";
