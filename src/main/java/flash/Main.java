@@ -17,6 +17,7 @@ import javafx.geometry.Insets;
 import javafx.geometry.Pos;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import main.java.logic.Logic;
 import main.java.parser.InvalidInputFormatException;
@@ -40,6 +41,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyCodeCombination;
 import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
@@ -59,7 +61,7 @@ public class Main extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-	
+
 	private Logic logic;
 	private Task task;
 
@@ -84,7 +86,8 @@ public class Main extends Application {
 	private boolean isFeedback = false;
 	private int count = 0;
 	private boolean isError = false;
-	
+	private static double xOffset = 0;
+    private static double yOffset = 0;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -94,9 +97,10 @@ public class Main extends Application {
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("Flashpoint");
+		this.primaryStage.initStyle(StageStyle.TRANSPARENT);
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
-        this.primaryStage.setHeight(680);
-        this.primaryStage.setWidth(580);
+        this.primaryStage.setHeight(670);
+        this.primaryStage.setWidth(570);
 		initControllers(this);
 		initLogic();
 		initRootLayout();
@@ -155,9 +159,26 @@ public class Main extends Application {
 
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 				if (key.getCode() == KeyCode.ESCAPE) {
-					primaryStage.hide();
+					primaryStage.setIconified(true);
 				}
 			});
+			
+			rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
+	            @Override
+	            public void handle(MouseEvent event) {
+	                xOffset = primaryStage.getX() - event.getScreenX();
+	                yOffset = primaryStage.getY() - event.getScreenY();
+	            }
+	        });
+			rootLayout.setOnMouseDragged(new EventHandler<MouseEvent>() {
+	            @Override
+	            public void handle(MouseEvent event) {
+	                primaryStage.setX(event.getScreenX() + xOffset);
+	                primaryStage.setY(event.getScreenY() + yOffset);
+	            }
+	        });
+			
+			rootLayout.setPadding(new Insets(0, 0, 0, 0));
             showSidebar();
 			showTabs();
 			showCommandBar();
@@ -181,13 +202,58 @@ public class Main extends Application {
 	    VBox.setVgrow(lyricPane, Priority.ALWAYS);
 	    rootLayout.setLeft(sidebar);
 	    HBox topBar = new HBox();
-	    topBar.getChildren().add(sidebar.getControlButton());
+	    HBox leftTopBar = new HBox();
+	    HBox centerTopBar = new HBox();
+	    HBox rightTopBar = new HBox();
+	    //sidebar button
+	    leftTopBar.getChildren().add(sidebar.getControlButton());
+	    leftTopBar.setAlignment(Pos.TOP_LEFT);
+	    //title
+	    Image icon = new Image("/main/resources/images/title.png");
+		ImageView iconView = new ImageView(icon);
+	    centerTopBar.getChildren().add(iconView);
+	    centerTopBar.setAlignment(Pos.CENTER);
+	    
+	    //3 app control buttons
+	    Button closeApp = new Button();
+	    closeApp.getStyleClass().add("closeApp");
+	    exit(closeApp);
+	    
+//	    Button resizeApp = new Button();
+//	    closeApp.getStyleClass().add("resizeApp");
+	    
+	    Button minimiseApp = new Button();
+	    minimiseApp.getStyleClass().add("minimiseApp");
+	    minimiseApp.setPadding(new Insets(5, 0, 0, 0));   
+	    minimise(minimiseApp);
+	    
+	    rightTopBar.getChildren().addAll(minimiseApp,closeApp);
+	    rightTopBar.setAlignment(Pos.TOP_RIGHT);
+	    rightTopBar.setPadding(new Insets(0, 0, 0, 0));
 	    topBar.getStyleClass().add("topBar");
+	    
+	    HBox.setHgrow(leftTopBar, Priority.ALWAYS);
+	    HBox.setHgrow(centerTopBar, Priority.ALWAYS);
+	    HBox.setHgrow(rightTopBar, Priority.ALWAYS);
+	    topBar.getChildren().addAll(leftTopBar,centerTopBar,rightTopBar);
+	    
 	    rootLayout.setTop(topBar);
+	   
 	   // headerControl.setBtnSidebar(sidebar.getControlButton());
 	    
 	   // rootLayout.setTop(headerControl);
 	    sidebar.hideSidebar();
+	}
+
+	private void minimise(Button minimiseApp) {
+		minimiseApp.setOnAction(new EventHandler<ActionEvent>() {
+
+	        public void handle(ActionEvent event) {
+	            Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+	            // is stage minimizable into task bar. (true | false)
+	            stage.setIconified(true);
+	        }
+	    });
 	}
 	
 	
@@ -199,6 +265,9 @@ public class Main extends Application {
 	    VBox profile = new VBox();
 	    Image icon = new Image("/main/resources/images/profilePhoto.png");
 		ImageView iconView = new ImageView(icon);
+		iconView.setFitWidth(70);
+        iconView.setPreserveRatio(true);
+        
 	    profile.getChildren().add(iconView);
 	    profile.getStyleClass().add("profileBox");
 	    profile.setAlignment(Pos.CENTER);
@@ -245,8 +314,8 @@ public class Main extends Application {
 
 	private void showCommandBar() {
 		rootLayout.setBottom(barControl);
-		barControl.setText("What is your main focus for today?");
-		barControl.getFocus();
+		//barControl.setText("What is your main focus for today?");
+		//barControl.getFocus();
 		barControl.setBgColour("med");
 	}
 

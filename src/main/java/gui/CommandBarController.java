@@ -46,6 +46,7 @@ public class CommandBarController extends BorderPane {
 		
 		search();
 		this.mainApp = mainApp;
+		commandBar.getStyleClass().add("default-commandBar");
 	}
 
 	public CommandBarController() {
@@ -58,6 +59,7 @@ public class CommandBarController extends BorderPane {
 			e.printStackTrace();
 		}
 		search();
+		commandBar.getStyleClass().add("default-commandBar");
 	}
 
 	@FXML
@@ -68,6 +70,7 @@ public class CommandBarController extends BorderPane {
 
 	public void clear() {
 		commandBar.clear();	
+		commandBar.getStyleClass().add("default-commandBar");
 	}
 	
 	public TextField getCommandBar(){
@@ -78,7 +81,7 @@ public class CommandBarController extends BorderPane {
 	public void setFeedback(String feedbackText, Color color) {
 		feedback.setText(feedbackText);
 		feedback.setTextFill(color);
-		commandBar.setEffect(new DropShadow(15.65,color));
+		//commandBar.setEffect(new DropShadow(15.65,color));
 		
 	}
 

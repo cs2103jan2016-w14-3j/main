@@ -11,9 +11,6 @@
 <fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
       <TextField fx:id="commandBar" onKeyPressed="#onKeyPress" prefHeight="17.0" prefWidth="224.0" promptText="Enter Command">
-         <effect>
-            <DropShadow color="#9e9e9e" height="32.3" radius="15.247499999999999" width="30.69" />
-         </effect>
          <font>
             <Font name="Century Gothic" size="18.0" />
          </font></TextField>

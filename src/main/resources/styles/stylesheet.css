@@ -1,6 +1,6 @@
 #root {
-	-fx-padding: 10px;
-	-fx-background-color: rgba(255, 255, 255);
+	
+	-fx-background-color: #9FA8DA;
     -fx-background-size: stretch;
 }
 #emptyTable {
@@ -13,13 +13,32 @@
 	-fx-font-weight: bold;
 }
 .topBar{
-	-fx-background-color: #40C4FF;
+	-fx-background-color: #5C6BC0;
+}
+.minimiseApp {
+  -fx-graphic: url("/main/resources/images/minimiseApp.png");
+  -fx-background-color:transparent;
+}
+.minimiseApp:hover {
+  -fx-graphic: url("/main/resources/images/minimiseAppHover.png");
+  -fx-background-color:transparent;
+}
+.closeApp {
+  -fx-graphic: url("/main/resources/images/closeApp.png");
+  -fx-background-color:transparent;
+}
+.closeApp:hover {
+  -fx-graphic: url("/main/resources/images/closeAppHover.png");
+  -fx-background-color:transparent;
 }
 .sidePane{
-	-fx-background-color: #80D8FF;
+	-fx-background-color: white;
 }
 .profileBox{
 	
+}
+.default-commandBar{
+	-fx-background-color: #FFF3E0;
 }
 #lblUpcoming{
 	-fx-background-color: rgba(255, 255, 255, 0.6);
@@ -69,7 +88,7 @@
 
 .card {
 	-fx-padding: 14px;
-	-fx-background-color: rgba(255, 255, 255, 0.6);
+	-fx-background-color: white;
 	-fx-border-color : transparent;
 }
 
@@ -105,16 +124,16 @@
 }
 
 .bad{
-	-fx-background-color: red,linear-gradient(to bottom, derive(red,60%) 5%,derive(red,90%) 40%);
+	-fx-background-color: #FF80AB;
 }
 .med{
-	-fx-background-color: black,rgba(255, 255, 255, 0.8);
+	-fx-background-color: #FFF3E0;
 }
 .good{
-	-fx-background-color: orange,linear-gradient(to bottom, derive(orange,60%) 5%,derive(orange,90%) 40%);
+	-fx-background-color: orange;
 }
 .best{
-	-fx-background-color: green,linear-gradient(to bottom, derive(green,60%) 5%,derive(green,90%) 40%);
+	-fx-background-color: #69F0AE;
 }
 
 
