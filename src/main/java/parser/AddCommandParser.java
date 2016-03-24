@@ -17,8 +17,8 @@ public class AddCommandParser extends Parser {
 	private static final String EVENT_FLAG_ON = "on";
 	private static final String EVENT_FLAG_AT = "at";
 	private static final String RECURRING_FLAG_EVERY = "every";
-	private static final String RECURRING_FLAG_AND = "and";
-	private static final String DURATION_OR_RECURRING_FLAG_FROM = "from";
+	private static final String DURATION_FLAG_FROM = "from";
+	private static final String DURATION_FLAG_TO = "to";
 	private static final String DEADLINE_TASK = "deadline";
 	private static final String EVENT_TASK = "one-time event";
 	private static final String RECURRING_TASK = "recurring";
@@ -46,7 +46,7 @@ public class AddCommandParser extends Parser {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser pars = new PrettyTimeParser();
-		//System.out.println(pars.parse("from next monday to next wed"));
+		//System.out.println(pars.parse("tue , wed"));
 		AddCommandParser parser = new AddCommandParser();
 		//System.out.println(parser.isRecurringTask("from mon to wed do this and that"));
 	}
@@ -105,7 +105,7 @@ public class AddCommandParser extends Parser {
 		List<Date> dates = timeParser.parse(timeSegment);
 
 		if (dates.size() == 0) {
-			return EMPTY_STRING;
+			return "[]";
 		}
 		else {
 			modifyDateToTomorrowIfExpired(dates);
@@ -231,7 +231,7 @@ public class AddCommandParser extends Parser {
 				return true;
 			}
 		}
-		else if (dates.size() > 1) {
+		/*else if (dates.size() > 1) {
 			if (containsWholeWord(content, RECURRING_FLAG_AND)) {
 				return true;
 			}
@@ -241,7 +241,7 @@ public class AddCommandParser extends Parser {
 					return true;
 				}
 			}
-		}
+		}*/
 
 		return false;
 	}
@@ -255,12 +255,15 @@ public class AddCommandParser extends Parser {
 		return false;
 	}
 	private boolean isDurationTask(String content) {
-		if (timeParser.parse(content).size() > 1) {
+		String timeSegment = determineTimeSegment(content).toLowerCase();
+		if (timeParser.parse(content).size() > 1 &&
+				containsWholeWord(timeSegment, DURATION_FLAG_FROM)
+				&& containsWholeWord(timeSegment, DURATION_FLAG_TO)) {
 			return true;
 		}
 		return false;
 	}
-	
+
 	protected String determineStatus(String content) {
 		List<Date> dates = timeParser.parse(content);
 		int size = dates.size();
@@ -613,7 +616,7 @@ public class AddCommandParser extends Parser {
 		else if (content.equalsIgnoreCase(RECURRING_FLAG_EVERY)) {
 			return true;
 		}
-		else if (content.equalsIgnoreCase(DURATION_OR_RECURRING_FLAG_FROM)) {
+		else if (content.equalsIgnoreCase(DURATION_FLAG_FROM)) {
 			return true;
 		}
 		return false;

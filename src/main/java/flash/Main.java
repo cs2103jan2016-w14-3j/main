@@ -87,7 +87,7 @@ public class Main extends Application {
 	private int count = 0;
 	private boolean isError = false;
 	private static double xOffset = 0;
-    private static double yOffset = 0;
+	private static double yOffset = 0;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -99,8 +99,8 @@ public class Main extends Application {
 		this.primaryStage.setTitle("Flashpoint");
 		this.primaryStage.initStyle(StageStyle.TRANSPARENT);
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
-        this.primaryStage.setHeight(670);
-        this.primaryStage.setWidth(570);
+		this.primaryStage.setHeight(670);
+		this.primaryStage.setWidth(570);
 		initControllers(this);
 		initLogic();
 		initRootLayout();
@@ -162,30 +162,30 @@ public class Main extends Application {
 					primaryStage.setIconified(true);
 				}
 			});
-			
+
 			rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
-	            @Override
-	            public void handle(MouseEvent event) {
-	                xOffset = primaryStage.getX() - event.getScreenX();
-	                yOffset = primaryStage.getY() - event.getScreenY();
-	            }
-	        });
+				@Override
+				public void handle(MouseEvent event) {
+					xOffset = primaryStage.getX() - event.getScreenX();
+					yOffset = primaryStage.getY() - event.getScreenY();
+				}
+			});
 			rootLayout.setOnMouseDragged(new EventHandler<MouseEvent>() {
-	            @Override
-	            public void handle(MouseEvent event) {
-	                primaryStage.setX(event.getScreenX() + xOffset);
-	                primaryStage.setY(event.getScreenY() + yOffset);
-	            }
-	        });
-			
+				@Override
+				public void handle(MouseEvent event) {
+					primaryStage.setX(event.getScreenX() + xOffset);
+					primaryStage.setY(event.getScreenY() + yOffset);
+				}
+			});
+
 			rootLayout.setPadding(new Insets(0, 0, 0, 0));
-            showSidebar();
+			showSidebar();
 			showTabs();
 			showCommandBar();
 			showTasks();
 			initLog();
 			listenerForTaskList();
-			
+
 
 			primaryStage.show();
 
@@ -196,111 +196,111 @@ public class Main extends Application {
 
 	private void showSidebar() {
 		// TODO Auto-generated method stub
-		 // create a sidebar with some content in it.
-	    final Pane lyricPane = createSidebarContent();
-	    SideBarController sidebar = new SideBarController(84, lyricPane);
-	    VBox.setVgrow(lyricPane, Priority.ALWAYS);
-	    rootLayout.setLeft(sidebar);
-	    HBox topBar = new HBox();
-	    HBox leftTopBar = new HBox();
-	    HBox centerTopBar = new HBox();
-	    HBox rightTopBar = new HBox();
-	    //sidebar button
-	    leftTopBar.getChildren().add(sidebar.getControlButton());
-	    leftTopBar.setAlignment(Pos.TOP_LEFT);
-	    //title
-	    Image icon = new Image("/main/resources/images/title.png");
+		// create a sidebar with some content in it.
+		final Pane lyricPane = createSidebarContent();
+		SideBarController sidebar = new SideBarController(84, lyricPane);
+		VBox.setVgrow(lyricPane, Priority.ALWAYS);
+		rootLayout.setLeft(sidebar);
+		HBox topBar = new HBox();
+		HBox leftTopBar = new HBox();
+		HBox centerTopBar = new HBox();
+		HBox rightTopBar = new HBox();
+		//sidebar button
+		leftTopBar.getChildren().add(sidebar.getControlButton());
+		leftTopBar.setAlignment(Pos.TOP_LEFT);
+		//title
+		Image icon = new Image("/main/resources/images/title.png");
 		ImageView iconView = new ImageView(icon);
-	    centerTopBar.getChildren().add(iconView);
-	    centerTopBar.setAlignment(Pos.CENTER);
-	    
-	    //3 app control buttons
-	    Button closeApp = new Button();
-	    closeApp.getStyleClass().add("closeApp");
-	    exit(closeApp);
-	    
-//	    Button resizeApp = new Button();
-//	    closeApp.getStyleClass().add("resizeApp");
-	    
-	    Button minimiseApp = new Button();
-	    minimiseApp.getStyleClass().add("minimiseApp");
-	    minimiseApp.setPadding(new Insets(5, 0, 0, 0));   
-	    minimise(minimiseApp);
-	    
-	    rightTopBar.getChildren().addAll(minimiseApp,closeApp);
-	    rightTopBar.setAlignment(Pos.TOP_RIGHT);
-	    rightTopBar.setPadding(new Insets(0, 0, 0, 0));
-	    topBar.getStyleClass().add("topBar");
-	    
-	    HBox.setHgrow(leftTopBar, Priority.ALWAYS);
-	    HBox.setHgrow(centerTopBar, Priority.ALWAYS);
-	    HBox.setHgrow(rightTopBar, Priority.ALWAYS);
-	    topBar.getChildren().addAll(leftTopBar,centerTopBar,rightTopBar);
-	    
-	    rootLayout.setTop(topBar);
-	   
-	   // headerControl.setBtnSidebar(sidebar.getControlButton());
-	    
-	   // rootLayout.setTop(headerControl);
-	    sidebar.hideSidebar();
+		centerTopBar.getChildren().add(iconView);
+		centerTopBar.setAlignment(Pos.CENTER);
+
+		//3 app control buttons
+		Button closeApp = new Button();
+		closeApp.getStyleClass().add("closeApp");
+		exit(closeApp);
+
+		//	    Button resizeApp = new Button();
+		//	    closeApp.getStyleClass().add("resizeApp");
+
+		Button minimiseApp = new Button();
+		minimiseApp.getStyleClass().add("minimiseApp");
+		minimiseApp.setPadding(new Insets(5, 0, 0, 0));   
+		minimise(minimiseApp);
+
+		rightTopBar.getChildren().addAll(minimiseApp,closeApp);
+		rightTopBar.setAlignment(Pos.TOP_RIGHT);
+		rightTopBar.setPadding(new Insets(0, 0, 0, 0));
+		topBar.getStyleClass().add("topBar");
+
+		HBox.setHgrow(leftTopBar, Priority.ALWAYS);
+		HBox.setHgrow(centerTopBar, Priority.ALWAYS);
+		HBox.setHgrow(rightTopBar, Priority.ALWAYS);
+		topBar.getChildren().addAll(leftTopBar,centerTopBar,rightTopBar);
+
+		rootLayout.setTop(topBar);
+
+		// headerControl.setBtnSidebar(sidebar.getControlButton());
+
+		// rootLayout.setTop(headerControl);
+		sidebar.hideSidebar();
 	}
 
 	private void minimise(Button minimiseApp) {
 		minimiseApp.setOnAction(new EventHandler<ActionEvent>() {
 
-	        public void handle(ActionEvent event) {
-	            Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
-	            // is stage minimizable into task bar. (true | false)
-	            stage.setIconified(true);
-	        }
-	    });
+			public void handle(ActionEvent event) {
+				Stage stage = (Stage)((Button)event.getSource()).getScene().getWindow();
+				// is stage minimizable into task bar. (true | false)
+				stage.setIconified(true);
+			}
+		});
 	}
-	
-	
+
+
 	private VBox createSidebarContent() {// create some content to put in the sidebar.
-	    
-	    final VBox sidePane = new VBox();
-	    sidePane.getStyleClass().add("sidePane");
-	    
-	    VBox profile = new VBox();
-	    Image icon = new Image("/main/resources/images/profilePhoto.png");
+
+		final VBox sidePane = new VBox();
+		sidePane.getStyleClass().add("sidePane");
+
+		VBox profile = new VBox();
+		Image icon = new Image("/main/resources/images/profilePhoto.png");
 		ImageView iconView = new ImageView(icon);
 		iconView.setFitWidth(70);
-        iconView.setPreserveRatio(true);
-        
-	    profile.getChildren().add(iconView);
-	    profile.getStyleClass().add("profileBox");
-	    profile.setAlignment(Pos.CENTER);
-	    profile.setPadding(new Insets(10, 0, 20, 0));
-		
-	    final Button a = new Button();
-	    a.setStyle("-fx-background-color:transparent");
-	  
-	    final Button btnNew = new Button();
-	    btnNew.getStyleClass().add("newButton");
-	    btnNew.setPadding(Insets.EMPTY);
-	    
-	    final Button btnSave = new Button();    
-	    btnSave.getStyleClass().add("saveButton");
-	    btnSave.setPadding(Insets.EMPTY);
-	    saveFilename(btnSave);
-	    
-	    final Button btnLoad = new Button();
-	    btnLoad.getStyleClass().add("loadButton");
-	    btnLoad.setPadding(Insets.EMPTY);
-	    loadFilename(btnLoad);
-	    
-	    final Button btnHelp = new Button();
-	    btnHelp.getStyleClass().add("helpButton");
-	    btnHelp.setPadding(Insets.EMPTY);
-	    
-	    final Button btnExit = new Button();
-	    btnExit.getStyleClass().add("exitButton");
-	    btnExit.setPadding(Insets.EMPTY);
-	    exit(btnExit);
-	    sidePane.getChildren().addAll(profile,btnNew,btnLoad,btnSave,btnHelp,btnExit);
-	    return sidePane;
-	  }
+		iconView.setPreserveRatio(true);
+
+		profile.getChildren().add(iconView);
+		profile.getStyleClass().add("profileBox");
+		profile.setAlignment(Pos.CENTER);
+		profile.setPadding(new Insets(10, 0, 20, 0));
+
+		final Button a = new Button();
+		a.setStyle("-fx-background-color:transparent");
+
+		final Button btnNew = new Button();
+		btnNew.getStyleClass().add("newButton");
+		btnNew.setPadding(Insets.EMPTY);
+
+		final Button btnSave = new Button();    
+		btnSave.getStyleClass().add("saveButton");
+		btnSave.setPadding(Insets.EMPTY);
+		saveFilename(btnSave);
+
+		final Button btnLoad = new Button();
+		btnLoad.getStyleClass().add("loadButton");
+		btnLoad.setPadding(Insets.EMPTY);
+		loadFilename(btnLoad);
+
+		final Button btnHelp = new Button();
+		btnHelp.getStyleClass().add("helpButton");
+		btnHelp.setPadding(Insets.EMPTY);
+
+		final Button btnExit = new Button();
+		btnExit.getStyleClass().add("exitButton");
+		btnExit.setPadding(Insets.EMPTY);
+		exit(btnExit);
+		sidePane.getChildren().addAll(profile,btnNew,btnLoad,btnSave,btnHelp,btnExit);
+		return sidePane;
+	}
 
 
 	private void showTabs() {
@@ -331,7 +331,7 @@ public class Main extends Application {
 			checkIsTasksEmpty();
 		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
 			event.consume(); // nullifies the default behavior of UP and DOWN on
-								// a TextArea
+			// a TextArea
 			handleGetPastCommands(event);
 		} else if ((event.getCode() == KeyCode.TAB)) {
 			pendingTableControl.controlToList();
@@ -437,17 +437,17 @@ public class Main extends Application {
 					userInput = userInput + "Complete";
 				}
 			}
-            try{
-			 result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-            }catch(Exception e){
-            	isError = true;
-            	setFeedback(commandBarController,"error", e.toString());
-            	 System.out.println(e.toString());
-            }
-            
-            if(isError == false){
-               setFeedback(commandBarController,"valid", userInput);
-            }
+			try{
+				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+			}catch(Exception e){
+				isError = true;
+				setFeedback(commandBarController,"error", e.toString());
+				System.out.println(e.toString());
+			}
+
+			if(isError == false){
+				setFeedback(commandBarController,"valid", userInput);
+			}
 		}
 		isError = false;
 		new CommandBarController();
@@ -463,10 +463,10 @@ public class Main extends Application {
 			String firstWord = userInput.substring(0, i);
 			String subString = userInput.substring(i + 1);
 			if(type.equals("error")){
-				 
-			     commandBarController.setFeedback("Error" + "' " + subString + " '",Color.RED);
-			     //System.out.println(subString);
-			     return;
+
+				commandBarController.setFeedback("Error" + "' " + subString + " '",Color.RED);
+				//System.out.println(subString);
+				return;
 			}else{
 				commandBarController.setFeedback("Successfully " +firstWord+"ed "+ "' " + subString + " '",Color.GREEN);
 			}
@@ -478,7 +478,7 @@ public class Main extends Application {
 	// Method that returns the first word
 	public static String firstWord(String input) {
 		String result = input; // if no space found later, input is the first
-								// word
+		// word
 
 		for (int i = 0; i < input.length(); i++) {
 			if (input.charAt(i) == ' ') {
@@ -502,35 +502,35 @@ public class Main extends Application {
 
 	private void updateList() {
 		Platform.runLater(() -> {
-		pendingTableControl.clearTask();
-		completeTableControl.clearTask();
-		try {
-			for (Task temp : logic.displayPending()) {
-				pendingTableControl.addTask(temp);
+			pendingTableControl.clearTask();
+			completeTableControl.clearTask();
+			try {
+				for (Task temp : logic.displayPending()) {
+					pendingTableControl.addTask(temp);
+				}
+				for (Task temp : logic.displayComplete()) {
+					completeTableControl.addTask(temp);
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
-			for (Task temp : logic.displayComplete()) {
-				completeTableControl.addTask(temp);
-			}
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
 		});
 	}
 
 	public void trySearch(String oldValue, String newValue) {
-		
+
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
 		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
 		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
 		boolean isMark = fragments[COMMAND_INDEX].equalsIgnoreCase("mark");
-		
+
 		// TODO Auto-generated method stub
 		try {
 			if(isEdit || isDelete || isSearch || isMark){
-			   searchResult = logic.handleSearch(oldValue, newValue);
-			   if (searchResult.size() != 0 && searchResult.size()!= pendingTableControl.getSize()) {
+				searchResult = logic.handleSearch(oldValue, newValue);
+				if (searchResult.size() != 0 && searchResult.size()!= pendingTableControl.getSize()) {
 					populateList(searchResult);
 				}
 			}
@@ -538,8 +538,8 @@ public class Main extends Application {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
+
+
 
 	}
 
@@ -566,17 +566,17 @@ public class Main extends Application {
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				
+
 				FileChooser fileChooser = new FileChooser();
 				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
 				fileChooser.getExtensionFilters().add(extFilter);
 				File saveFile = fileChooser.showSaveDialog(null);	
 				if(saveFile!=null){
-				 logic.saveFilename(saveFile.getAbsolutePath());
+					logic.saveFilename(saveFile.getAbsolutePath());
 				}
 			}
 		});
-       
+
 	}
 
 	public void loadFilename(Button btnLoad) {
@@ -600,29 +600,29 @@ public class Main extends Application {
 			}
 		});
 	}
-	
+
 	private void notification(String userInput){
 		String title = "Successfully ";
-        String message = userInput;
-        NotificationType notification = NotificationType.SUCCESS;
+		String message = userInput;
+		NotificationType notification = NotificationType.SUCCESS;
 
-        TrayNotification tray = new TrayNotification();
-        tray.setTitle(title);
-        tray.setMessage(message);
-        tray.setAnimationType(AnimationType.POPUP);
-        tray.setNotificationType(notification);
-        tray.showAndDismiss(Duration.seconds(2));
-        
+		TrayNotification tray = new TrayNotification();
+		tray.setTitle(title);
+		tray.setMessage(message);
+		tray.setAnimationType(AnimationType.POPUP);
+		tray.setNotificationType(notification);
+		tray.showAndDismiss(Duration.seconds(2));
+
 	}
-	
+
 	private void exit(Button btnExit) {
 		btnExit.setMnemonicParsing(true);
 		//btnExit.setAccelerator(new KeyCodeCombination(KeyCode.X,KeyCombination.CONTROL_DOWN));
 		btnExit.setOnAction(new EventHandler<ActionEvent>() {
-	      public void handle(ActionEvent event) {
-	        Platform.exit();
-	      }
-	    });
+			public void handle(ActionEvent event) {
+				Platform.exit();
+			}
+		});
 	}
 
 }

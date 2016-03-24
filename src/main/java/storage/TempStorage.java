@@ -171,7 +171,7 @@ public class TempStorage {
 
 			for (Task task : taskList) {
 				boolean match = true;
-				String taskMatch = task.getTask() + task.getPriority() + task.getTime();
+				String taskMatch = task.getTask() + task.getPriority().getType() + task.getTime();
 				
 				for (String part : parts) {
 					//String withoutComma = part.substring(0,part.length()-1);

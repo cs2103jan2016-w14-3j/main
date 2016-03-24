@@ -1,7 +1,7 @@
 package main.java.gui;
 
 import java.io.IOException;
-
+import java.text.SimpleDateFormat;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -10,6 +10,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
+import main.java.data.TASK_NATURE;
 import main.java.data.Task;
 import java.util.Date;
 import java.util.List;
@@ -25,13 +26,13 @@ public class TasksItemController extends BorderPane {
 
 	@FXML
 	private Text date;
-	
+
 	@FXML
 	private Label labelDate;
 
 	@FXML
 	private Shape priorityColor;
-	
+
 	@FXML
 	private Shape tagDateColor;
 
@@ -51,12 +52,15 @@ public class TasksItemController extends BorderPane {
 
 	private String taskTime;
 
+	private TASK_NATURE taskType;
+
 	public TasksItemController(Task task) {
 		this.taskName = task.getTask();
 		//System.out.println(task.getPriority());
 		this.taskPriority = task.getPriority().getType();
 		this.taskTime = showTime(task.getTime());
-		
+		this.taskType = task.getType();
+
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_ITEM_FXML));
 		loader.setController(this);
 		loader.setRoot(this);
@@ -66,27 +70,52 @@ public class TasksItemController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		this.filename.setText(task.getTask());
-		
+
 		if(!task.getTime().isEmpty()){
-		   this.labelDate.setText(showTime(task.getTime()));
-	    	labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
+			this.labelDate.setText(showTime(task.getTime()));
+			labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
 		}
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT,
 				generateColour(task.getPriority().getType())));
 	}
-	
-	
+
+
 	private String showTime( List<Date> dates) {
+		SimpleDateFormat df = new SimpleDateFormat("EEEE dd MMM hh:mma");
+		SimpleDateFormat df1 = new SimpleDateFormat("hh:mma");
+		SimpleDateFormat df2 = new SimpleDateFormat("EEEE dd MMM");
+		SimpleDateFormat df3 = new SimpleDateFormat("EEEE");
 		if (dates.size() == 0) {
-			return "";
+			return "No specified time";
 		}
 		else {
-			return dates.toString().substring(1, dates.toString().length() - 1);
+			if (taskType == TASK_NATURE.DEADLINE) {
+				return "Due: " + df.format(dates.get(0));
+			}
+			else if (taskType == TASK_NATURE.DURATION) {
+				String time = df2.format(dates.get(0)) + " from " + df1.format(dates.get(0)) 
+				+ " to " + df1.format(dates.get(1));
+				return time;
+			}
+			else if (taskType == TASK_NATURE.EVENT){
+				String time = "";
+				for (int i = 0; i < dates.size(); i++) {
+					time += df.format(dates.get(i));
+					if (i + 1 < dates.size()) {
+						time += ", ";
+					}
+				}
+				return time;
+			}
+			else {
+				String time = "Every " + df3.format(dates.get(0));
+				return time;
+			}
 		}
 	}
-	
+
 	public String getTaskName(){
 		return this.taskName;
 	}
@@ -98,7 +127,7 @@ public class TasksItemController extends BorderPane {
 	public String getTaskTime(){
 		return this.taskTime;
 	}
-	
+
 	public void setBgColour(){
 		card.setStyle("-fx-background-color: green");
 	}

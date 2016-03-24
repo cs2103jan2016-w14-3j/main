@@ -1,6 +1,8 @@
 package main.java.data;
 
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 public class Command {
@@ -118,8 +120,17 @@ public class Command {
 	
 	
 	public static List<Date> getTime(String time) {
-		List<Date> dates = parser.parse(time);
-		return dates;
+		if (time.equals("[]")) {
+			return parser.parse(time);
+		}
+		time = time.substring(1, time.length() - 1);
+		String[] segments = time.split(", ");
+		List<Date> result = new ArrayList<Date>();
+		for (int i = 0; i < segments.length; i++) {
+			result.add(parser.parse(segments[i]).get(0));
+		}
+		
+		return result;
 	}
 
 

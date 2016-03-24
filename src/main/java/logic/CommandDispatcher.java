@@ -1,5 +1,10 @@
 package main.java.logic;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import main.java.data.*;
@@ -184,6 +189,11 @@ public class CommandDispatcher {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser parser = new PrettyTimeParser();
+		
+		
+		List<Date> date3 = parser.parse("by tomorrow morning 10 to 12");
+		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
+		System.out.println(date3);
 		//System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
 	}
 }
