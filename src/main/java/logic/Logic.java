@@ -130,23 +130,22 @@ public class Logic {
 		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
 			ArrayList<Task> finalResult = new ArrayList<Task>(); 
 			transientTask = createTransientTask(command);
-			//result = handleEditCommand(transientTask);
-			//System.out.println(result.size());
+			result = handleEditCommand(transientTask);
 			String sub = userInput.substring(5, userInput.indexOf(","));
-			//System.out.println("search " + searchResult.size());
-			//System.out.println(sub + ",");
+			
 			for (Task temp : searchResult) {
 				if (sub.equals(temp.getTask())) {				
 					finalResult.add(temp);	  
 					finalResult.add(result.get(1));
-					//System.out.println("HERERERE");
+					
 					Task original = finalResult.get(0);
-					//System.out.println(original.getTask());
+					
 					Task updated = finalResult.get(1);
-					//System.out.println(updated.getTask());
-
+					
 					if(updated.getTime().toString().equals("[]")){
 						updated.setTime(original.getTime());
+						updated.setType(original.getType());
+						updated.setStatus(original.getStatus());
 					}
 					//if(updated.getPriority().getType().equals(EMPTY_STRING)){
 						//updated.setPriority(original.getPriority());
