@@ -21,7 +21,6 @@ public class Logic {
 	private static final String HELP_COMMAND = "help";
 	private static final String MARK_COMMAND = "mark";
 	private static final String CLEAR_COMMAND = "clear";
-	private static final String DISPLAY_COMMAND = "display";
 	private static final String SWITCH_COMMAND = "switch";
 	private static final String REDO_COMMAND = "redo";
 	private static final String EMPTY_STRING = "";
@@ -29,6 +28,7 @@ public class Logic {
 	private static final int TASK = 0;
 
 	private static Task task;
+	private static TransientTask transientTask;
 	private static StorageController storageController;
 	private ArrayList<Task> searchResult;
 
@@ -84,7 +84,7 @@ public class Logic {
 		return storageController.displayPendingTasks();
 	}
 
-	private ArrayList<Task> handleEditCommand(Task task) throws Exception {
+	private ArrayList<Task> handleEditCommand(TransientTask task) throws Exception {
 
 		return EditCommandParser.parseEditTask(task);
 	}
@@ -138,8 +138,8 @@ public class Logic {
 
 		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
 			ArrayList<Task> finalResult = new ArrayList<Task>(); 
-			task = createTask(command);
-			result = handleEditCommand(task);
+			transientTask = createTransientTask(command);
+			result = handleEditCommand(transientTask);
 
 			String sub = userInput.substring(5, userInput.indexOf(","));
 			for (Task temp : searchResult) {
@@ -150,20 +150,20 @@ public class Logic {
 					Task original = finalResult.get(0);
 					Task updated = finalResult.get(1);
 
-					if(updated.getTime().equals(EMPTY_STRING)){
+					if(updated.getTime().toString().equals("[]")){
 						updated.setTime(original.getTime());
 					}
-					if(updated.getPriority().equals(EMPTY_STRING)){
-						updated.setPriority(original.getPriority());
-					}
+					//if(updated.getPriority().getType().equals(EMPTY_STRING)){
+						//updated.setPriority(original.getPriority());
+					//}
 					
-					if (updated.getType().equals(EMPTY_STRING)) {
-						updated.setType(original.getType());
-					}
+					//if (updated.getType().getType().equals(EMPTY_STRING)) {
+						//updated.setType(original.getType());
+					//}
 					
-					if (updated.getStatus().equals(EMPTY_STRING)) {
-						updated.setStatus(original.getStatus());
-					}
+					//if (updated.getStatus().equals(EMPTY_STRING)) {
+						//updated.setStatus(original.getStatus());
+					//}
 
 					edit(finalResult);
 
@@ -180,6 +180,7 @@ public class Logic {
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
 			Path path = Paths.get(command.getParameters()[TASK]);
 		}
+		
 		else if (command.isCommand(COMMAND_TYPE.MARK)) {
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
@@ -226,7 +227,11 @@ public class Logic {
 		
 		return result;
 	}
-
+	
+	private TransientTask createTransientTask(Command command) {
+		return command.createTransientTask();
+	}
+	
 	public void delete(Task task) throws Exception {
 		storageController.deletePendingTask(task);
 	}
@@ -249,9 +254,7 @@ public class Logic {
 	}
 
 
-	public Task editedTask(Task temp2) {
-		return temp2;
-	}
+
 	
 	public void loadFilename(String filename){	
 		//System.out.println("logic hereeee load file name "+ filename);
@@ -264,7 +267,7 @@ public class Logic {
 	}
 
 	public boolean isCommand(String commandWord) {
-		if(commandWord.equalsIgnoreCase(ADD_COMMAND)||commandWord.equalsIgnoreCase(DISPLAY_COMMAND)||commandWord.equalsIgnoreCase(DELETE_COMMAND)||
+		if(commandWord.equalsIgnoreCase(ADD_COMMAND)||commandWord.equalsIgnoreCase(DELETE_COMMAND)||
 				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
 				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equalsIgnoreCase(CLEAR_COMMAND)||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND)||
@@ -273,6 +276,7 @@ public class Logic {
 		return false;
 
 	}
+	
 
 	public ArrayList<Task> handleSearch(String oldValue, String newValue) throws Exception {
 		searchResult = storageController.searchMatch(oldValue, newValue);	

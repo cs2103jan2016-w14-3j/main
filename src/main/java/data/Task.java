@@ -1,14 +1,17 @@
 package main.java.data;
 
+import java.util.Date;
+import java.util.List;
+
 public class Task {
 	
 	private String task;
-	private String time;
-	private String type;
-	private String priority;
-	private String status;
+	private List<Date> time;
+	private TASK_NATURE type;
+	private PRIORITY_LEVEL priority;
+	private TASK_STATUS status;
 	
-	public Task(String task, String time, String priority, String type, String status) {
+	public Task(String task, List<Date> time, PRIORITY_LEVEL priority, TASK_NATURE type, TASK_STATUS status) {
 		this.task = task;
 		this.time = time;
 		this.priority = priority;
@@ -17,11 +20,11 @@ public class Task {
 		
 	}
 	
-	public String getType() {
+	public TASK_NATURE getType() {
 		return type;
 	}
 	
-	public void setType(String type) {
+	public void setType(TASK_NATURE type) {
 		this.type = type;
 	}
 
@@ -33,26 +36,26 @@ public class Task {
 		this.task = task;
 	}
 
-	public String getTime() {
+	public List<Date> getTime() {
 		return time;
 	}
 
-	public void setTime(String time) {
+	public void setTime(List<Date> time) {
 		this.time = time;
 	}
 
-	public String getPriority() {
+	public PRIORITY_LEVEL getPriority() {
 		return priority;
 	}
 
-	public void setPriority(String priority) {
+	public void setPriority(PRIORITY_LEVEL priority) {
 		this.priority = priority;
 	}
 	
-	public void setStatus(String status) {
+	public void setStatus(TASK_STATUS status) {
 		this.status = status;
 	}
-	public String getStatus() {
+	public TASK_STATUS getStatus() {
 		return status;
 	}
 }

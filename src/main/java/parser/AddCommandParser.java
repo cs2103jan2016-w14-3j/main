@@ -111,6 +111,7 @@ public class AddCommandParser extends Parser {
 			modifyDateToTomorrowIfExpired(dates);
 
 			String result = setDefaultTimeIfNotSpecified(content, dates);
+			System.out.println(result);
 
 			return result;
 		}
@@ -137,10 +138,10 @@ public class AddCommandParser extends Parser {
 		if (parsedTime.equals(currentSystemTime)) {
 			String result = timeParser.parse(
 					content + WHITE_SPACE + DEFAULT_TIME).toString();
-			return result.substring(1, result.length() - 1);
+			return result;
 		}
 		else {
-			return dates.toString().substring(1, dates.toString().length() - 1);
+			return dates.toString();
 		}
 	}
 
@@ -175,14 +176,13 @@ public class AddCommandParser extends Parser {
 			return content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
 		}
 		else {
-			return EMPTY_STRING;
+			return PRIORITY_LEVEL.LOW.getType();
 		}
 	}
 
 	private boolean isValidPriority(String priority) {
 		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) || priority.equalsIgnoreCase(PRIORITY_LEVEL.MEDIUM.getType()) ||
 				priority.equalsIgnoreCase(PRIORITY_LEVEL.LOW.getType())) {
-			//System.out.println((PRIORITY.HIGH).getType());
 			return true;
 		}
 		return false;

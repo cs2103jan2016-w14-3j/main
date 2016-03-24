@@ -11,6 +11,8 @@ import javafx.scene.layout.HBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import main.java.data.Task;
+import java.util.Date;
+import java.util.List;
 
 
 public class TasksItemController extends BorderPane {
@@ -51,8 +53,9 @@ public class TasksItemController extends BorderPane {
 
 	public TasksItemController(Task task) {
 		this.taskName = task.getTask();
-		this.taskPriority = task.getPriority();
-		this.taskTime = task.getTime();
+		//System.out.println(task.getPriority());
+		this.taskPriority = task.getPriority().getType();
+		this.taskTime = showTime(task.getTime());
 		
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_ITEM_FXML));
 		loader.setController(this);
@@ -67,11 +70,20 @@ public class TasksItemController extends BorderPane {
 		this.filename.setText(task.getTask());
 		
 		if(!task.getTime().isEmpty()){
-		   this.labelDate.setText(task.getTime());
+		   this.labelDate.setText(showTime(task.getTime()));
 	    	labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
 		}
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT,
-				generateColour(task.getPriority())));
+				generateColour(task.getPriority().getType())));
+	}
+	
+	private String showTime( List<Date> dates) {
+		if (dates.size() == 0) {
+			return "";
+		}
+		else {
+			return dates.toString().substring(1, dates.toString().length() - 1);
+		}
 	}
 	
 	public String getTaskName(){

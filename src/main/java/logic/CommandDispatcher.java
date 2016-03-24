@@ -1,5 +1,7 @@
 package main.java.logic;
 
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+
 import main.java.data.*;
 import main.java.parser.*;
 
@@ -178,5 +180,7 @@ public class CommandDispatcher {
 
 	public static void main(String[] args)
 	{
+		PrettyTimeParser parser = new PrettyTimeParser();
+		System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
 	}
 }

@@ -3,6 +3,8 @@ package main.java.parser;
 import java.util.ArrayList;
 
 import main.java.data.Task;
+import main.java.data.TransientTask;
+import main.java.data.Command;
 
 public class EditCommandParser extends AddCommandParser {
 
@@ -108,7 +110,7 @@ public class EditCommandParser extends AddCommandParser {
 						(segments[1].trim()));
 		return taskType;
 	}
-	
+
 	private String determineStatusForEditCommand(String[] segments) {
 		String status;
 		status = determineStatus(formatToStandardCommandContent(segments[0].trim())) +
@@ -119,7 +121,7 @@ public class EditCommandParser extends AddCommandParser {
 
 
 
-	public static ArrayList<Task> parseEditTask(Task task) {
+	public static ArrayList<Task> parseEditTask(TransientTask task) {
 		Task task_A;
 		Task task_B;
 		String toDo_A, toDo_B;
@@ -138,13 +140,15 @@ public class EditCommandParser extends AddCommandParser {
 
 		type_A = task.getType().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		type_B = task.getType().split(EDIT_COMMAND_SEPARATOR)[1].trim();
-		
+
 		status_A = task.getStatus().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		status_B = task.getStatus().split(EDIT_COMMAND_SEPARATOR)[1].trim();
 
-		task_A = new Task(toDo_A, time_A, priority_A, type_A, status_A);
-		task_B = new Task(toDo_B, time_B, priority_B, type_B, status_B);
-		
+		task_A = new Task(toDo_A, Command.getTime(time_A), Command.getPriority(priority_A), 
+				Command.getType(type_A), Command.getStatus(status_A));
+		task_B = new Task(toDo_B, Command.getTime(time_B), Command.getPriority(priority_B), 
+				Command.getType(type_B), Command.getStatus(status_B));
+
 
 		ArrayList<Task> result = new ArrayList<Task>();
 		result.add(task_A);
