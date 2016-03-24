@@ -9,6 +9,7 @@ public abstract class Parser {
 	protected static final int TIME = 1;
 	protected static final int PRIORITY = 2;
 	protected static final int TASK_TYPE = 3;
+	protected static final int STATUS = 4;
 		
 	public Parser() {
 		
@@ -30,7 +31,7 @@ public abstract class Parser {
 				throw new InvalidInputFormatException("This command requires parameter!");
 			}
 		}
-		String[] parameters = new String[4];
+		String[] parameters = new String[5];
 		if (!commandContent.isEmpty()) {
 			parameters[TASK] = commandContent;
 		}
