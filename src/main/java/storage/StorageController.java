@@ -136,8 +136,8 @@ public class StorageController {
 		}
 	}
 	
-	public ArrayList<Task> searchMatch(String oldChar, String newChar) {
-		return pendingTemp.searchMatch(oldChar, newChar);
+	public ArrayList<Task> searchMatch(String newValue) {
+		return pendingTemp.searchMatch(newValue);
 	}
 	
 	public void saveToFile(String path) {

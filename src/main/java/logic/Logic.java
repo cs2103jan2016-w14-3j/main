@@ -275,7 +275,7 @@ public class Logic {
 	public ArrayList<Task> handleSearch(String oldValue, String newValue) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);
-		searchResult = storageController.searchMatch(oldValue, newValue);	
+		searchResult = storageController.searchMatch(newValue);	
 		return searchResult;
 	}
 

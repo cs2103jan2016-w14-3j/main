@@ -20,8 +20,6 @@ public class TempStorage {
 
 	private static final String SPACE = " ";
 	private static final String SPLIT = "\\s+";
-	private static final int COMMAND_INDEX = 0;
-	private boolean isFeedback = false;
 
 	public TempStorage () {
 
@@ -85,8 +83,8 @@ public class TempStorage {
 
 	public void redoPrevious() {
 		if(redoStack.size() != 0) {
-			ArrayList<Task> currentState = undoStack.peek();
-			undoStack.push(redoStack.pop());
+			ArrayList<Task> currentState = redoStack.pop();
+			undoStack.push(currentState);
 			taskList = new ArrayList<Task>(currentState);
 			permStorage.copyAllToFile(taskList);
 		}
@@ -151,7 +149,7 @@ public class TempStorage {
 		return list;
 	}
 
-	public ArrayList<Task> searchMatch(String oldValue, String newValue) {
+	public ArrayList<Task> searchMatch(String newValue) {
 
 		ArrayList<Task> searchResult = new ArrayList<Task>();
 		String[] fragments = null;
@@ -169,7 +167,6 @@ public class TempStorage {
 			String[] parts = null;
 			
 			parts = newValue.toLowerCase().split(SPACE);
-			ObservableList<TasksItemController> temp = FXCollections.observableArrayList();
 			searchResult.clear();
 
 			for (Task task : taskList) {
@@ -189,7 +186,6 @@ public class TempStorage {
 					}
 				}
 				if (match) {
-					temp.add(new TasksItemController(task));
 					searchResult.add(task);
 				}
 			}
