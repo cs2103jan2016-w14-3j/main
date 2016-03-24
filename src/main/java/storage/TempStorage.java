@@ -15,6 +15,7 @@ public class TempStorage {
 	private ArrayList<Task> taskList;
 	private ArrayList<Task> tempList;
 	private Stack< ArrayList<Task> > undoStack;
+	private Stack< ArrayList<Task> > redoStack;
 	private PermStorage permStorage;
 	
 	private static final String SPACE = " ";
@@ -32,6 +33,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack = new Stack< ArrayList<Task> >();
 		undoStack.push(tempList);
+		redoStack = new Stack< ArrayList<Task> >();
 	}
 	
 	public void writeToTemp(Task task) {
@@ -74,8 +76,18 @@ public class TempStorage {
 	
 	public void undoPrevious() {
 		if(undoStack.size() >= 2) {
-			undoStack.pop();
+			ArrayList<Task> currentState = undoStack.pop();
+			redoStack.push(currentState);
 			taskList = new ArrayList<Task>(undoStack.peek());
+			permStorage.copyAllToFile(taskList);
+		}
+	}
+	
+	public void redoPrevious() {
+		if(redoStack.size() != 0) {
+			ArrayList<Task> currentState = undoStack.peek();
+			undoStack.push(redoStack.pop());
+			taskList = new ArrayList<Task>(currentState);
 			permStorage.copyAllToFile(taskList);
 		}
 	}

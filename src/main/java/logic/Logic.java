@@ -218,7 +218,7 @@ public class Logic {
 		}
 		
 		else if (command.isCommand(COMMAND_TYPE.REDO)) {
-			
+			storageController.redo();
 		}
 		else if (command.isCommand(COMMAND_TYPE.SWITCH)) {
 			

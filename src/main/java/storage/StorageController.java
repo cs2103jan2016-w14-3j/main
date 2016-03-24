@@ -8,7 +8,7 @@ public class StorageController {
 
 	private static final int PENDING_TASK = 0;
 	private static final int COMPLETED_TASK = 1;
-	private static final int MOVE_TASK_TO_COMPLETE = 2;
+	private static final int BOTH_TYPE = 2;
 	
 	private PendingTaskTempStorage pendingTemp;
 	private CompletedTaskTempStorage completedTemp;
@@ -107,7 +107,7 @@ public class StorageController {
 		assert task != null;
 		pendingTemp.deleteFromTemp(task);
 		completedTemp.writeToTemp(task);
-		lastAction = MOVE_TASK_TO_COMPLETE;
+		lastAction = BOTH_TYPE;
 	}
 	
 	public void undo() {
@@ -117,9 +117,22 @@ public class StorageController {
 		else if(lastAction == COMPLETED_TASK) {
 			completedTemp.undoPrevious();
 		}
-		else if(lastAction == MOVE_TASK_TO_COMPLETE) {
+		else if(lastAction == BOTH_TYPE) {
 			pendingTemp.undoPrevious();
 			completedTemp.undoPrevious();
+		}
+	}
+	
+	public void redo() {
+		if(lastAction == PENDING_TASK) {
+			pendingTemp.redoPrevious();
+		}
+		else if(lastAction == COMPLETED_TASK) {
+			completedTemp.redoPrevious();
+		}
+		else if(lastAction == BOTH_TYPE) {
+			pendingTemp.redoPrevious();
+			completedTemp.redoPrevious();
 		}
 	}
 	
