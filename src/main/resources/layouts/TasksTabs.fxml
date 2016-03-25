@@ -13,7 +13,7 @@
          <children>
             <TabPane prefHeight="558.0" prefWidth="558.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
-                <Tab id="upcomingTab" fx:id="upcomingTab" text="Upcoming Tasks" />
+                <Tab id="upcomingTab" fx:id="upcomingTab" text="Pending Tasks" />
                 <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
               </tabs>
             </TabPane>

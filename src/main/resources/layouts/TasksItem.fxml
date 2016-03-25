@@ -19,14 +19,14 @@
                <children>
                   <StackPane prefHeight="39.0" prefWidth="276.0" VBox.vgrow="ALWAYS">
                      <children>
-            							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="525.0" StackPane.alignment="CENTER_LEFT">
+            							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="521.875" StackPane.alignment="CENTER_LEFT">
                            <font>
                               <Font name="Calibri" size="7.0" />
                            </font>
                         </Text>
                      </children>
                   </StackPane>
-                  <StackPane prefHeight="0.0" prefWidth="286.0">
+                  <StackPane alignment="TOP_LEFT" prefHeight="0.0" prefWidth="286.0">
                      <children>
                         <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
@@ -36,7 +36,7 @@
                               <Glow level="0.4" />
                            </effect>
                         </Text>
-                        <Label fx:id="labelDate" textFill="WHITE">
+                        <Label fx:id="labelDate" textFill="#5c6bc0">
                            <font>
                               <Font name="Calibri" size="10.0" />
                            </font>
@@ -49,7 +49,7 @@
 		</StackPane>
 	</center>
    <left>
-      <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="66.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER">
+      <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="66.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="11.0" BorderPane.alignment="CENTER">
          <effect>
             <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
          </effect>

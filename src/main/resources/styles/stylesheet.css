@@ -2,7 +2,18 @@
 	
 	-fx-background-color: white;
     -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
 }
+@font-face { 
+   src: url('Roboto-Regular.ttf');
+}
+.text{
+	-fx-font-family:Roboto;
+}
+.label{
+	-fx-font-family:Roboto;
+}
+
 #emptyTable {
 	-fx-padding: 10px;
 	 -fx-background-color: rgba(255, 255, 255, 0.6);
@@ -11,9 +22,20 @@
 	-fx-padding: 10px;
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
+	-fx-font-family:Roboto;
 }
 .topBar{
-	-fx-background-color: #5C6BC0;
+	-fx-background-color: #3F51B5;
+}
+
+.toolBar{
+	-fx-background-color: #7986CB;
+}
+
+.lblTitle{
+	-fx-font-size:20;
+	-fx-text-fill:white;
+	-fx-font-family:Roboto;
 }
 .minimiseApp {
   -fx-graphic: url("/main/resources/images/minimiseApp.png");
@@ -42,9 +64,11 @@
 }
 #lblUpcoming{
 	-fx-background-color: rgba(255, 255, 255, 0.6);
+	-fx-font-family:Roboto;
 }
 #lblComplete{
 	-fx-background-color: rgba(255, 255, 255, 0.6);
+	-fx-font-family:Roboto;
 }
 
 #setting{
@@ -53,7 +77,7 @@
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #82BA82;
+  -fx-background-color: #CCFF90;
   
 }
 .list-cell{
@@ -88,16 +112,14 @@
 	-fx-border-color : transparent;
 }
 
-.card .text {
-	-fx-padding: 0 0 0 5px;  /* top, right, bottom, and left  */
-}
 
 .card .filename {
 	-fx-font-size: 16px;
-	-fx-font-weight: bold;
+	-fx-font-family:Roboto;
 }
 
 .card .date {
+	-fx-font-family:Roboto;
 	-fx-background-color:
         -fx-focus-color,
         -fx-control-inner-background,
@@ -117,6 +139,7 @@
 	-fx-font-size: 14px;
 	-fx-font-weight: bold;
 	-fx-stroke-width: 0;
+	-fx-font-family:Roboto;
 }
 
 .bad{
@@ -149,12 +172,18 @@
 .tab-pane .tab
 {
     
--fx-background-color: #3c3c3c;
+-fx-background-color: transparent;
+
 }
 
 .tab-pane .tab:selected
 {
-   -fx-background-color: #e6e6e6;
+   -fx-background-color: #CCFF90;
+   -fx-border-color:transparent;
+}
+.tab:selected:focused, .tab:filled:selected {
+  -fx-background-color: #CCFF90;
+  
 }
 
 .tab .tab-label { 
@@ -162,12 +191,14 @@
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: #96b946;
+    -fx-font-family:Roboto;
 }
 
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
    -fx-text-fill: #828282;
+   -fx-font-family:Roboto;
 }
 
 .sideButton {

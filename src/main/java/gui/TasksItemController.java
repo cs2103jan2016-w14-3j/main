@@ -13,6 +13,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import main.java.data.TASK_NATURE;
+import main.java.data.TASK_STATUS;
 import main.java.data.Task;
 import java.util.Date;
 import java.util.List;
@@ -52,7 +53,7 @@ public class TasksItemController extends BorderPane {
 	private static final String BASE_COLOUR_20 = "#E8803D";
 	private static final String BASE_COLOUR_MED = "#F0C419";
 	private static final String BASE_COLOUR_60 = "#D7E84A";
-	private static final String BASE_COLOUR_LOW = "#69F0AE";
+	private static final String BASE_COLOUR_LOW = "#76FF03";
 
 	private String taskName;
 
@@ -79,11 +80,24 @@ public class TasksItemController extends BorderPane {
 			e.printStackTrace();
 		}
 
-		this.filename.setText(task.getTask());
+		this.filename.setText(" "+task.getTask());
+		
+		if(task.getStatus()== TASK_STATUS.OVERDUE){
+			System.out.println(task);
+			filename.setStyle("-fx-fill: #FF80AB;");
+		}
 
 		if(!task.getTime().isEmpty()){
 			this.labelDate.setText(showTime(task.getTime()));
-			labelDate.setStyle("-fx-background-color: #8C9EFF; -fx-padding: 5px;");
+			labelDate.setStyle("-fx-background-color: transparent; -fx-padding: 5px;");
+			if(task.getStatus()== TASK_STATUS.OVERDUE){
+				labelDate.setStyle("-fx-text-fill: #F50057;");
+				this.labelDate.setText(" [OVERDUE] "+showTime(task.getTime()));
+			}
+			if(task.getStatus()== TASK_STATUS.COMPLETED){
+				labelDate.setStyle("-fx-text-fill: #76FF03;");
+				this.labelDate.setText(" [COMPLETED] "+showTime(task.getTime()));
+			}
 		}
 
 		//card.setPadding(Insets.EMPTY);
