@@ -103,15 +103,17 @@ public class EditCommandParser extends AddCommandParser {
 		String priority_A, priority_B;
 		String type_A, type_B;
 		String status_A, status_B;
-
+		
 		toDo_A = task.getTask().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		toDo_B = task.getTask().split(EDIT_COMMAND_SEPARATOR)[1].trim();
-		time_A = task.getTime().split(EDIT_COMMAND_SEPARATOR)[0].trim();
-		time_B = task.getTime().split(EDIT_COMMAND_SEPARATOR)[1].trim();
+		
+		String time = task.getTime().replaceAll(" , ", "%");
+		time_A = time.split("%")[0].trim();
+		time_B = time.split("%")[1].trim();
 
 		priority_A = task.getPriority().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		priority_B = task.getPriority().split(EDIT_COMMAND_SEPARATOR)[1].trim();
-
+		
 		type_A = task.getType().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		type_B = task.getType().split(EDIT_COMMAND_SEPARATOR)[1].trim();
 
@@ -120,6 +122,7 @@ public class EditCommandParser extends AddCommandParser {
 
 		task_A = new Task(toDo_A, Command.getTime(time_A), Command.getPriority(priority_A), 
 				Command.getType(type_A), Command.getStatus(status_A));
+	
 		task_B = new Task(toDo_B, Command.getTime(time_B), Command.getPriority(priority_B), 
 				Command.getType(type_B), Command.getStatus(status_B));
 

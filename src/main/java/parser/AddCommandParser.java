@@ -21,7 +21,8 @@ public class AddCommandParser extends Parser {
 	private static final String DURATION_FLAG_TO = "to";
 	private static final String DEADLINE_TASK = "deadline";
 	private static final String EVENT_TASK = "one-time event";
-	private static final String RECURRING_TASK = "recurring";
+	private static final String RECURRING_TASK_EVERY = "recurring";
+	private static final String RECURRING_TASK_ALTERNATE = "alternate";
 	private static final String DURATION_TASK = "duration";
 	private static final String PRIORITY_FLAG = "#";	
 	private static final String EMPTY_TIME = "[]";
@@ -33,6 +34,10 @@ public class AddCommandParser extends Parser {
 	private static final String UPCOMING_TASK = "upcoming";
 	private static final String COMPLETED_TASK = "completed";
 	private static final int FIELD_NOT_EXIST = -1;
+	private static final String PRIORITY_HIGH_ALIAS = "h";
+	private static final String PRIORITY_MEDIUM_ALIAS_1 = "med";
+	private static final String PRIORITY_MEDIUM_ALIAS_2 = "m";
+	private static final String PRIORITY_LOW_ALIAS = "l";
 
 
 	protected PrettyTimeParser timeParser;
@@ -111,6 +116,7 @@ public class AddCommandParser extends Parser {
 			modifyDateToTomorrowIfExpired(dates);
 
 			String result = setDefaultTimeIfNotSpecified(content, dates);
+			//System.out.println("here " + result);
 
 			return result;
 		}
@@ -170,10 +176,12 @@ public class AddCommandParser extends Parser {
 
 		if (content.contains(PRIORITY_FLAG)) {
 			String priority = content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
+			priority = priority.toLowerCase();
 			if (!isValidPriority(priority)) {
 				throw new InvalidInputFormatException("Please enter a valid priority level");
 			}
-			return content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
+
+			return getPriorityInFull(priority);
 		}
 		else {
 			return PRIORITY_LEVEL.LOW.getType();
@@ -181,22 +189,51 @@ public class AddCommandParser extends Parser {
 	}
 
 	private boolean isValidPriority(String priority) {
-		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) || priority.equalsIgnoreCase(PRIORITY_LEVEL.MEDIUM.getType()) ||
-				priority.equalsIgnoreCase(PRIORITY_LEVEL.LOW.getType())) {
+
+		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) ||
+				priority.equals(PRIORITY_LEVEL.MEDIUM.getType()) ||
+				priority.equals(PRIORITY_LEVEL.LOW.getType()) || 
+				priority.equals(PRIORITY_HIGH_ALIAS) ||
+				priority.equals(PRIORITY_MEDIUM_ALIAS_1) || 
+				priority.equals(PRIORITY_MEDIUM_ALIAS_2) || 
+				priority.equals(PRIORITY_LOW_ALIAS)) {
 			return true;
 		}
 		return false;
 	}
 
+	private String getPriorityInFull(String priority) {
+		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) || 
+				priority.equals(PRIORITY_HIGH_ALIAS)) {
+			priority = PRIORITY_LEVEL.HIGH.getType();
+		}
+		else if (priority.equals(PRIORITY_LEVEL.MEDIUM.getType()) || 
+				priority.equals(PRIORITY_MEDIUM_ALIAS_1) || 
+				priority.equals(PRIORITY_MEDIUM_ALIAS_2)) {
+			priority = PRIORITY_LEVEL.MEDIUM.getType();
+		}
+		else if (priority.equals(PRIORITY_LEVEL.LOW.getType()) ||
+				priority.equals(PRIORITY_LOW_ALIAS)) {
+			priority = PRIORITY_LEVEL.LOW.getType();
+		}
+		return priority;
+	}
+
 	protected String determineTaskType(String content) {
 		int timeIndex = getStartingIndexOfIdentifier(content);
+		String timeSegment = determineTimeSegment(content).toLowerCase();
 		if (timeIndex == FIELD_NOT_EXIST) {
 			return EVENT_TASK;
 		}
-		else if (isRecurringTask(content)) {
-			return RECURRING_TASK;
+		else if (isRecurringTask(timeSegment, timeIndex)) {
+			if (timeSegment.contains(RECURRING_TASK_ALTERNATE)) {
+			return RECURRING_TASK_ALTERNATE;
+			}
+			else {
+				return RECURRING_TASK_EVERY;
+			}
 		}
-		else if (isDurationTask(content)) {
+		else if (isDurationTask(timeSegment)) {
 			return DURATION_TASK;
 		}
 		else {
@@ -211,25 +248,15 @@ public class AddCommandParser extends Parser {
 	}
 
 
-	private boolean isRecurringTask(String content) {
+	private boolean isRecurringTask(String timeSegment, int timeIndex) {
 
-		int timeIndex = getStartingIndexOfIdentifier(content);
-		int priorityIndex = getStartingIndexOfPriority(content);
-		if (timeIndex == FIELD_NOT_EXIST) {
-			return false;
-		}
-		if (priorityIndex == FIELD_NOT_EXIST) {
-			content = content.substring(timeIndex);
-		}
-		else {
-			content = content.substring(timeIndex, priorityIndex - 1);
-		}
-
-		List<Date> dates = timeParser.parse(content);
+		
+		List<Date> dates = timeParser.parse(timeSegment);
 		if (dates.size() == 1) {
-			if (containsWholeWord(content, RECURRING_FLAG_EVERY)) {
+			if (containsWholeWord(timeSegment, RECURRING_FLAG_EVERY)) {
 				return true;
 			}
+			
 		}
 		/*else if (dates.size() > 1) {
 			if (containsWholeWord(content, RECURRING_FLAG_AND)) {
@@ -254,11 +281,11 @@ public class AddCommandParser extends Parser {
 		}
 		return false;
 	}
-	private boolean isDurationTask(String content) {
-		String timeSegment = determineTimeSegment(content).toLowerCase();
-		if (timeParser.parse(content).size() > 1 &&
+	private boolean isDurationTask(String timeSegment) {
+		if (timeParser.parse(timeSegment).size() == 2 &&
 				containsWholeWord(timeSegment, DURATION_FLAG_FROM)
 				&& containsWholeWord(timeSegment, DURATION_FLAG_TO)) {
+			//System.out.println("HERE");
 			return true;
 		}
 		return false;

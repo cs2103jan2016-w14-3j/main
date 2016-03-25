@@ -110,8 +110,11 @@ public class Command {
 		else if (type.equalsIgnoreCase(TASK_NATURE.EVENT.getType())) {
 			return TASK_NATURE.EVENT;
 		}
-		else if (type.equalsIgnoreCase(TASK_NATURE.RECURRING.getType())){
-			return TASK_NATURE.RECURRING;
+		else if (type.equalsIgnoreCase(TASK_NATURE.RECURRING_EVERY.getType())){
+			return TASK_NATURE.RECURRING_EVERY;
+		}
+		else if (type.equalsIgnoreCase(TASK_NATURE.RECURRING_ALTERNATE.getType())){
+			return TASK_NATURE.RECURRING_ALTERNATE;
 		}
 		else {
 			return TASK_NATURE.DURATION;

@@ -486,6 +486,7 @@ public class Main extends Application {
 			if (input.charAt(i) == ' ') {
 				result = input.substring(0, i);
 				break;
+				
 			}
 		}
 		return result;

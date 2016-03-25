@@ -19,10 +19,10 @@ import java.util.List;
 
 
 public class TasksItemController extends BorderPane {
-	
+
 	@FXML
 	private BorderPane cardLayout;
-	
+
 	@FXML
 	private VBox card;
 
@@ -40,7 +40,7 @@ public class TasksItemController extends BorderPane {
 
 	@FXML
 	private Shape tagDateColor;
-	
+
 	@FXML
 	private VBox vbox;
 
@@ -85,14 +85,14 @@ public class TasksItemController extends BorderPane {
 			this.labelDate.setText(showTime(task.getTime()));
 			labelDate.setStyle("-fx-background-color: #8C9EFF; -fx-padding: 5px;");
 		}
-	
+
 		//card.setPadding(Insets.EMPTY);
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT,
 				generateColour(task.getPriority().getType())));
 	}
 
 
-	private String showTime( List<Date> dates) {
+	private String showTime(List<Date> dates) {
 		SimpleDateFormat df = new SimpleDateFormat("EEEE dd MMM hh:mma");
 		SimpleDateFormat df1 = new SimpleDateFormat("hh:mma");
 		SimpleDateFormat df2 = new SimpleDateFormat("EEEE dd MMM");
@@ -105,8 +105,16 @@ public class TasksItemController extends BorderPane {
 				return "Due: " + df.format(dates.get(0));
 			}
 			else if (taskType == TASK_NATURE.DURATION) {
-				String time = df2.format(dates.get(0)) + " from " + df1.format(dates.get(0)) 
-				+ " to " + df1.format(dates.get(1));
+				String time;
+				//System.out.println(dates);
+				if (dates.get(0).toString().substring(0, 10).equals(dates.get(1).toString().substring(0, 10))) {
+					time = df2.format(dates.get(0)) + " from " + df1.format(dates.get(0)) 
+					+ " to " + df1.format(dates.get(1));
+				}
+				else {
+					time = "From " + df.format(dates.get(0)) 
+					+ " to " + df.format(dates.get(1));
+				}
 				return time;
 			}
 			else if (taskType == TASK_NATURE.EVENT){
@@ -119,8 +127,12 @@ public class TasksItemController extends BorderPane {
 				}
 				return time;
 			}
-			else {
+			else if (taskType == TASK_NATURE.RECURRING_EVERY){
 				String time = "Every " + df3.format(dates.get(0));
+				return time;
+			}
+			else {
+				String time = "Every alternate " + df3.format(dates.get(0));
 				return time;
 			}
 		}

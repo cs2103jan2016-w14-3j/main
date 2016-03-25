@@ -24,6 +24,7 @@ public class Logic {
 	private static final String SWITCH_COMMAND = "switch";
 	private static final String REDO_COMMAND = "redo";
 	private static final String EMPTY_STRING = "";
+	
 
 	private static final int TASK = 0;
 
@@ -190,6 +191,7 @@ public class Logic {
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.SORT)) {
+			
 			if (command.getParameters()[TASK].equalsIgnoreCase("time")) {
 				storageController.sortPendingByTime();
 			}
