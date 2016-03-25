@@ -52,6 +52,7 @@ import javafx.scene.layout.VBoxBuilder;
 import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
@@ -69,10 +70,8 @@ public class Main extends Application {
 	private TasksTableController completeTableControl;
 	private CommandBarController barControl;
 	private TabsController tabControl;
-	private HeaderbarController headerControl;
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
-	private ArrayList<Task> previousResult = new ArrayList<Task>();
 	private ArrayList<Task> searchResult = new ArrayList<Task>();
 	private ListView<TasksItemController> tasksDisplay;
 	private ListView<TasksItemController> completeDisplay;
@@ -88,6 +87,8 @@ public class Main extends Application {
 	private boolean isError = false;
 	private static double xOffset = 0;
 	private static double yOffset = 0;
+	private Label lblPending = new Label();
+	private Label lblCompleted = new Label();
 
 	public static void main(String[] args) {
 		launch(args);
@@ -114,7 +115,6 @@ public class Main extends Application {
 		completeTableControl = new TasksTableController();
 		barControl = new CommandBarController(this);
 		tabControl = new TabsController();
-		headerControl = new HeaderbarController();
 		tasksDisplay = pendingTableControl.getListView();
 		completeDisplay = completeTableControl.getListView();
 	}
@@ -126,18 +126,18 @@ public class Main extends Application {
 	private void checkIsTasksEmpty() throws Exception {
 		if (logic.displayPending().isEmpty()) {
 			tabControl.setUpcomingTab(new EmptyTableController());
-			headerControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming task.");
+			lblPending.setText(logic.displayPending().size()+" Pending Task");
 		} else {
 			tabControl.setUpcomingTab(pendingTableControl);
-			headerControl.setUpcomingLabel("   You have " +logic.displayPending().size()+" upcoming tasks.");
+			lblPending.setText(logic.displayPending().size()+" Pending Tasks");
 		}
 
 		if (logic.displayComplete().isEmpty()) {
 			tabControl.setEmptyCompleteTab();
-			headerControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed task.");
+			lblCompleted.setText(logic.displayComplete().size()+" Completed Task");
 		} else {
 			tabControl.setCompleteTab(completeTableControl);
-			headerControl.setCompleteLabel("   You have " +logic.displayComplete().size()+" completed tasks.");
+			lblCompleted.setText(logic.displayComplete().size()+" Completed Tasks");
 		}
 
 		updateList();
@@ -195,7 +195,7 @@ public class Main extends Application {
 	}
 
 	private void showSidebar() {
-		// TODO Auto-generated method stub
+
 		// create a sidebar with some content in it.
 		final Pane lyricPane = createSidebarContent();
 		SideBarController sidebar = new SideBarController(84, lyricPane);
@@ -239,9 +239,6 @@ public class Main extends Application {
 
 		rootLayout.setTop(topBar);
 
-		// headerControl.setBtnSidebar(sidebar.getControlButton());
-
-		// rootLayout.setTop(headerControl);
 		sidebar.hideSidebar();
 	}
 
@@ -267,14 +264,18 @@ public class Main extends Application {
 		ImageView iconView = new ImageView(icon);
 		iconView.setFitWidth(70);
 		iconView.setPreserveRatio(true);
+		
+		Label empty = new Label();
+		lblPending.getStyleClass().add("lblPendingCompleted");
+	    lblCompleted.getStyleClass().add("lblPendingCompleted");
 
-		profile.getChildren().add(iconView);
+		profile.getChildren().addAll(iconView,empty,lblPending,lblCompleted);
 		profile.getStyleClass().add("profileBox");
 		profile.setAlignment(Pos.CENTER);
 		profile.setPadding(new Insets(10, 0, 20, 0));
 
-		final Button a = new Button();
-		a.setStyle("-fx-background-color:transparent");
+		
+	    
 
 		final Button btnNew = new Button();
 		btnNew.getStyleClass().add("newButton");
@@ -334,6 +335,7 @@ public class Main extends Application {
 			// a TextArea
 			handleGetPastCommands(event);
 		} else if ((event.getCode() == KeyCode.TAB)) {
+			event.consume();
 			pendingTableControl.controlToList();
 		}
 	}

@@ -1,6 +1,6 @@
 #root {
 	
-	-fx-background-color: #9FA8DA;
+	-fx-background-color: white;
     -fx-background-size: stretch;
 }
 #emptyTable {
@@ -34,8 +34,8 @@
 .sidePane{
 	-fx-background-color: white;
 }
-.profileBox{
-	
+.lblPendingCompleted{
+	-fx-font-size: 8px;
 }
 .default-commandBar{
 	-fx-background-color: #FFF3E0;
@@ -55,6 +55,9 @@
 .list-cell:selected:focused, .task-cell:filled:selected {
   -fx-background-color: #82BA82;
   
+}
+.list-cell{
+	-fx-border-color : #E3F2FD;
 }
 #tasksDisplay {
 	-fx-background-color: transparent;
@@ -80,15 +83,8 @@
 	-fx-padding: 2px;
 }
 
-.cardBg {
-	/* https://docs.oracle.com/javase/8/javafx/api/javafx/scene/doc-files/cssref.html#typeeffect */
-	/* -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.4), 5, 0, 0, 2); */
-	
-}
-
 .card {
-	-fx-padding: 14px;
-	-fx-background-color: white;
+	-fx-padding:  3 0 0 10 px;
 	-fx-border-color : transparent;
 }
 
@@ -163,7 +159,6 @@
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
- 
     -fx-font-size: 12px;
     -fx-font-weight: bold;
     -fx-text-fill: #96b946;

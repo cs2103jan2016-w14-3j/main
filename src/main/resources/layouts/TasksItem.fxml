@@ -11,25 +11,23 @@
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.HBox?>
 
-<fx:root styleClass="tasksItem" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root fx:id="cardLayout" styleClass="tasksItem" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
 	<center>
 		<StackPane styleClass="cardBg">
 			<children>
-				<HBox fx:id="card" prefHeight="1.0" prefWidth="130.0" styleClass="card">
-   <children>
-                  <StackPane alignment="CENTER_LEFT" prefHeight="27.0" prefWidth="178.0" HBox.hgrow="ALWAYS">
+            <VBox fx:id="card" prefHeight="0.0" prefWidth="276.0" styleClass="card">
+               <children>
+                  <StackPane prefHeight="39.0" prefWidth="276.0" VBox.vgrow="ALWAYS">
                      <children>
-      							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="Filename" wrappingWidth="275.7958984375">
+            							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="525.0" StackPane.alignment="CENTER_LEFT">
                            <font>
-                              <Font size="7.0" />
+                              <Font name="Calibri" size="7.0" />
                            </font>
                         </Text>
                      </children>
                   </StackPane>
-                  <Region HBox.hgrow="SOMETIMES" />
-                  <StackPane prefHeight="27.0" prefWidth="0.0">
+                  <StackPane prefHeight="0.0" prefWidth="286.0">
                      <children>
-                        <Rectangle fx:id="tagDateColor" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="27.0" stroke="TRANSPARENT" strokeType="INSIDE" width="170.0" />
                         <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
                               <Font name="AR ESSENCE" size="18.0" />
@@ -40,26 +38,21 @@
                         </Text>
                         <Label fx:id="labelDate" textFill="WHITE">
                            <font>
-                              <Font name="System Bold" size="10.0" />
+                              <Font name="Calibri" size="10.0" />
                            </font>
                         </Label>
                      </children>
                   </StackPane>
-   </children>
-               <effect>
-                  <InnerShadow color="#ffffffa9" />
-               </effect>
-				</HBox>
+               </children>
+            </VBox>
 			</children>
 		</StackPane>
 	</center>
-   <effect>
-      <DropShadow color="#43a0e0" />
-   </effect>
    <left>
-      <Rectangle fx:id="priorityColor" arcHeight="5.0" arcWidth="5.0" fill="DODGERBLUE" height="55.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER">
+      <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="66.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="10.0" BorderPane.alignment="CENTER">
          <effect>
             <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
-         </effect></Rectangle>
+         </effect>
+      </Rectangle>
    </left>
 </fx:root>

@@ -5,9 +5,11 @@ import java.text.SimpleDateFormat;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.geometry.Insets;
 import javafx.scene.control.Label;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import main.java.data.TASK_NATURE;
@@ -17,9 +19,12 @@ import java.util.List;
 
 
 public class TasksItemController extends BorderPane {
-
+	
 	@FXML
-	private HBox card;
+	private BorderPane cardLayout;
+	
+	@FXML
+	private VBox card;
 
 	@FXML
 	private Text filename;
@@ -35,16 +40,19 @@ public class TasksItemController extends BorderPane {
 
 	@FXML
 	private Shape tagDateColor;
+	
+	@FXML
+	private VBox vbox;
 
 	private static final String FILE_STATS_ITEM_FXML = "/main/resources/layouts/TasksItem.fxml";
 
 	private static final String STRING_FILL_STYLE_FORMAT = "-fx-fill: %s";
 
-	private static final String BASE_COLOUR_0 = "#FF4D5E";
+	private static final String BASE_COLOUR_HIGH = "#FF80AB";
 	private static final String BASE_COLOUR_20 = "#E8803D";
-	private static final String BASE_COLOUR_40 = "#FFD251";
+	private static final String BASE_COLOUR_MED = "#F0C419";
 	private static final String BASE_COLOUR_60 = "#D7E84A";
-	private static final String BASE_COLOUR_80 = "#51FF61";
+	private static final String BASE_COLOUR_LOW = "#69F0AE";
 
 	private String taskName;
 
@@ -75,8 +83,10 @@ public class TasksItemController extends BorderPane {
 
 		if(!task.getTime().isEmpty()){
 			this.labelDate.setText(showTime(task.getTime()));
-			labelDate.setStyle("-fx-background-color: #1160F2; -fx-padding: 5px;");
+			labelDate.setStyle("-fx-background-color: #8C9EFF; -fx-padding: 5px;");
 		}
+	
+		//card.setPadding(Insets.EMPTY);
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT,
 				generateColour(task.getPriority().getType())));
 	}
@@ -134,13 +144,13 @@ public class TasksItemController extends BorderPane {
 
 	private String generateColour(String priority) {
 		if (priority.equals("low")) {
-			return BASE_COLOUR_80;
+			return BASE_COLOUR_LOW;
 		} else if (priority.equals("zai")) {
 			return BASE_COLOUR_60;
-		} else if (priority.equals("med")) {
-			return BASE_COLOUR_40;
+		} else if (priority.equals("medium")) {
+			return BASE_COLOUR_MED;
 		} else if (priority.equals("high")) {
-			return BASE_COLOUR_0;
+			return BASE_COLOUR_HIGH;
 		} else {
 			return BASE_COLOUR_20;
 		}
