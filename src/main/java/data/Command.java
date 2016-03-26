@@ -104,16 +104,16 @@ public class Command {
 	}
 	
 	public static TASK_NATURE getType(String type) {
-		if (type.equalsIgnoreCase(TASK_NATURE.DEADLINE.getType())) {
+		if (type.equals(TASK_NATURE.DEADLINE.getType())) {
 			return TASK_NATURE.DEADLINE;
 		}
-		else if (type.equalsIgnoreCase(TASK_NATURE.EVENT.getType())) {
+		else if (type.equals(TASK_NATURE.EVENT.getType())) {
 			return TASK_NATURE.EVENT;
 		}
-		else if (type.equalsIgnoreCase(TASK_NATURE.RECURRING_EVERY.getType())){
+		else if (type.equals(TASK_NATURE.RECURRING_EVERY.getType())){
 			return TASK_NATURE.RECURRING_EVERY;
 		}
-		else if (type.equalsIgnoreCase(TASK_NATURE.RECURRING_ALTERNATE.getType())){
+		else if (type.equals(TASK_NATURE.RECURRING_ALTERNATE.getType())){
 			return TASK_NATURE.RECURRING_ALTERNATE;
 		}
 		else {

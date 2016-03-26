@@ -100,7 +100,7 @@ public class Logic {
 	private ArrayList<Task> executeTask(Command command, ArrayList<Task> taskOptions,String userInput) throws NumberFormatException, Exception {
 
 		ArrayList<Task> result = new ArrayList<Task>();
-
+		
 		if (command.isCommand(COMMAND_TYPE.ADD)) {
 
 			task = createTask(command);
@@ -201,20 +201,20 @@ public class Logic {
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.SORT)) {
-			
-			if (command.getParameters()[TASK].equalsIgnoreCase("time")) {
+			String parameter = command.getParameters()[TASK].toLowerCase();
+			if (parameter.equals("time")) {
 				storageController.sortPendingByTime();
 			}
 
-			else if (command.getParameters()[TASK].equalsIgnoreCase("name")) {
+			else if (parameter.equals("name")) {
 				storageController.sortPendingByTime();
 			}
 
-			else if (command.getParameters()[TASK].equalsIgnoreCase("priority")) {
+			else if (parameter.equals("priority")) {
 				storageController.sortPendingByPriority();
 			}
 
-			else if (command.getParameters()[TASK].equalsIgnoreCase("type")) {
+			else if (parameter.equals("type")) {
 
 			}
 		}
@@ -273,12 +273,13 @@ public class Logic {
 	}
 
 	public boolean isCommand(String commandWord) {
-		if(commandWord.equalsIgnoreCase(ADD_COMMAND)||commandWord.equalsIgnoreCase(DELETE_COMMAND)||
-				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
-				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
-				commandWord.equalsIgnoreCase(CLEAR_COMMAND)||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND)||
-				commandWord.equalsIgnoreCase(MARK_COMMAND)||commandWord.equalsIgnoreCase(REDO_COMMAND) || commandWord.equalsIgnoreCase(SWITCH_COMMAND)|| 
-				commandWord.equalsIgnoreCase(UNMARK_COMMAND)||commandWord.equalsIgnoreCase(THEME_COMMAND))
+		commandWord = commandWord.toLowerCase();
+		if(commandWord.equals(ADD_COMMAND)||commandWord.equals(DELETE_COMMAND)||
+				commandWord.equals(EDIT_COMMAND)||commandWord.equals(SEARCH_COMMAND)||
+				commandWord.equals(SORT_COMMAND)||commandWord.equals(CHANGE_DIRECTORY_COMMAND)||
+				commandWord.equals(CLEAR_COMMAND)||commandWord.equals(UNDO_COMMAND)||commandWord.equals(HELP_COMMAND)||
+				commandWord.equals(MARK_COMMAND)||commandWord.equals(REDO_COMMAND) || commandWord.equals(SWITCH_COMMAND)|| 
+				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND))
 			return true;
 		return false;
 

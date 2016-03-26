@@ -18,6 +18,7 @@ public class TaskChecker implements Runnable {
 		} catch (InterruptedException e) {
 			System.out.println("Thread " +  threadName + " interrupted.");
 		}
+		//return;
 	}
 
 	public void start ()
