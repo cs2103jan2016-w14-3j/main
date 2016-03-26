@@ -227,7 +227,7 @@ public class AddCommandParser extends Parser {
 		}
 		else if (isRecurringTask(timeSegment, timeIndex)) {
 			if (timeSegment.contains(RECURRING_TASK_ALTERNATE)) {
-			return RECURRING_TASK_ALTERNATE;
+				return RECURRING_TASK_ALTERNATE;
 			}
 			else {
 				return RECURRING_TASK_EVERY;
@@ -237,9 +237,9 @@ public class AddCommandParser extends Parser {
 			return DURATION_TASK;
 		}
 		else {
-			String identifier = content.substring(timeIndex, timeIndex + 2);
-			if (identifier.equalsIgnoreCase(DEADLINE_FLAG_BY) ||
-					identifier.equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
+			if (content.substring(timeIndex, timeIndex + 2).equalsIgnoreCase
+					(DEADLINE_FLAG_BY)|| content.substring(timeIndex, 
+							timeIndex + 6).equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
 				return DEADLINE_TASK;
 			}
 
@@ -250,25 +250,14 @@ public class AddCommandParser extends Parser {
 
 	private boolean isRecurringTask(String timeSegment, int timeIndex) {
 
-		
+
 		List<Date> dates = timeParser.parse(timeSegment);
 		if (dates.size() == 1) {
 			if (containsWholeWord(timeSegment, RECURRING_FLAG_EVERY)) {
 				return true;
 			}
-			
+
 		}
-		/*else if (dates.size() > 1) {
-			if (containsWholeWord(content, RECURRING_FLAG_AND)) {
-				return true;
-			}
-			else if (containsWholeWord(content, DURATION_OR_RECURRING_FLAG_FROM)) {
-				if (!dates.get(0).toString().substring(0, 10).equals
-						(dates.get(1).toString().substring(0, 10))) {
-					return true;
-				}
-			}
-		}*/
 
 		return false;
 	}
@@ -297,18 +286,68 @@ public class AddCommandParser extends Parser {
 		if (size == 0) {
 			return UPCOMING_TASK;
 		}
-		else if (isOverdue(dates.get(size - 1))) {
+		else if (isOverdue(dates.get(size - 1)) && (!dates.toString().
+				substring(1,11).equals(new Date().toString().substring(0, 10)))) {
 			return OVERDUE_TASK;
 		}
 		else {
 			return UPCOMING_TASK;
 		}
 	}
-
+	private String addPrepositionIfApplicable(String content) {
+		if (content.contains(TOMORROW_IN_FULL)) {
+			if (content.indexOf(TOMORROW_IN_FULL) == 0) {
+				int startIndex = content.indexOf(WHITE_SPACE) + 1;
+				if ((startIndex < content.length() && 
+						(isValidTimeIdentifier(content.substring(
+								startIndex, startIndex + 2)) || isValidTimeIdentifier
+								(content.substring(startIndex, startIndex + 4)) || 
+								isValidTimeIdentifier(content.substring
+										(startIndex, startIndex + 6))))) {
+					content = content.substring(startIndex);
+					int index = content.indexOf(WHITE_SPACE) + 1;
+					content = content.substring(0, index) + TOMORROW_IN_FULL + WHITE_SPACE 
+							+ content.substring(index);
+					return content;
+				}
+				content = EVENT_FLAG_ON + WHITE_SPACE + content;
+			}
+			else {
+				String[] segments = content.split(WHITE_SPACE);
+				int len = segments.length;
+				int index = 0;
+				for (int i = 0; i < len; i++) {
+					if (segments[i].equals(TOMORROW_IN_FULL)) {
+						index = i;
+						break;
+					}
+				}
+				if (isValidTimeIdentifier(segments[index - 1])) {
+					return content;
+				}
+				else if (index + 1 < len && 
+						isValidTimeIdentifier(segments[index + 1])) {
+					String newContent = EMPTY_STRING;
+					for (int i = 0; i < index; i++) {
+						newContent += segments[i] + WHITE_SPACE;
+					}
+					newContent += segments[index + 1] + WHITE_SPACE + segments[index];
+					if (len > index + 2) {
+						for (int i = index + 2; i < len; i++) {
+							newContent += WHITE_SPACE + segments[i];
+						}
+					}
+					return newContent;
+				}
+			}
+		}
+		return content;
+	}
 
 	protected String formatToStandardCommandContent(String content) {
 		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
 		content = StringUtils.replace(content, TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
+		content = addPrepositionIfApplicable(content);
 		int time = getStartingIndexOfIdentifier(content);
 		int priority = getStartingIndexOfPriority(content);
 		int task = getStartingIndexOfTask(content, time, priority);
@@ -626,24 +665,25 @@ public class AddCommandParser extends Parser {
 	}
 
 	private boolean isValidTimeIdentifier(String content) {
+		String word = content.toLowerCase();
 		//content.spit
-		if (content.equalsIgnoreCase(DEADLINE_FLAG_BY)) {
+		if (word.equals(DEADLINE_FLAG_BY)) {
 			return true;
 		}
-		else if (content.equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
+		else if (word.equals(DEADLINE_FLAG_BEFORE)) {
 			return true;
 		}
 
-		else if (content.equalsIgnoreCase(EVENT_FLAG_AT)) {
+		else if (word.equals(EVENT_FLAG_AT)) {
 			return true;
 		}
-		else if (content.equalsIgnoreCase(EVENT_FLAG_ON)) {
+		else if (word.equals(EVENT_FLAG_ON)) {
 			return true;
 		}
-		else if (content.equalsIgnoreCase(RECURRING_FLAG_EVERY)) {
+		else if (word.equals(RECURRING_FLAG_EVERY)) {
 			return true;
 		}
-		else if (content.equalsIgnoreCase(DURATION_FLAG_FROM)) {
+		else if (word.equals(DURATION_FLAG_FROM)) {
 			return true;
 		}
 		return false;

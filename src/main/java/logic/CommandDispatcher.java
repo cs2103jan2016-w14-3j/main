@@ -191,8 +191,9 @@ public class CommandDispatcher {
 		PrettyTimeParser parser = new PrettyTimeParser();
 		
 		
-		List<Date> date3 = parser.parse("by tomorrow morning 10 to 12");
+		List<Date> date3 = parser.parse("tmr 10pm");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
+		
 		System.out.println(date3);
 		//System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
 	}
