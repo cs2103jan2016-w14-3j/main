@@ -110,6 +110,13 @@ public class StorageController {
 		lastAction = BOTH_TYPE;
 	}
 	
+	public void moveTaskToPending(Task task) {
+		assert task != null;
+		completedTemp.deleteFromTemp(task);
+		pendingTemp.writeToTemp(task);
+		lastAction = BOTH_TYPE;
+	}
+	
 	public void undo() {
 		if(lastAction == PENDING_TASK) {
 			pendingTemp.undoPrevious();
@@ -136,8 +143,12 @@ public class StorageController {
 		}
 	}
 	
-	public ArrayList<Task> searchMatch(String newValue) {
+	public ArrayList<Task> searchMatchPending(String newValue) {
 		return pendingTemp.searchMatch(newValue);
+	}
+	
+	public ArrayList<Task> searchMatchCompleted(String newValue) {
+		return completedTemp.searchMatch(newValue);
 	}
 	
 	public void saveToFile(String path) {

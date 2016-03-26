@@ -12,9 +12,9 @@ public class PriorityComparator implements Comparator<Task>{
 	@Override
 	public int compare(Task task1, Task task2) {
 		
-		if(task1.getPriority().equals(task2.getPriority())) {
+		if(task1.getPriority() == null && task2.getPriority() == null || task1.getPriority().equals(task2.getPriority())) {
 			
-			if(task1.getTask().equalsIgnoreCase(task2.getTask())) {
+			if(!task1.getTime().isEmpty() || !task2.getTime().isEmpty() || task1.getTask().equalsIgnoreCase(task2.getTask())) {
 				return task1.getTime().get(0).compareTo(task2.getTime().get(0));
 			}
 			else {

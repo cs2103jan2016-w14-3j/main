@@ -20,6 +20,7 @@ public class Logic {
 	private static final String UNDO_COMMAND = "undo";
 	private static final String HELP_COMMAND = "help";
 	private static final String MARK_COMMAND = "mark";
+	private static final String UNMARK_COMMAND = "unmark";
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String SWITCH_COMMAND = "switch";
 	private static final String REDO_COMMAND = "redo";
@@ -32,6 +33,7 @@ public class Logic {
 	private static TransientTask transientTask;
 	private static StorageController storageController;
 	private ArrayList<Task> searchResult;
+	private ArrayList<Task> searchResultCompleted;
 
 	public Logic() {
 		try {
@@ -46,6 +48,7 @@ public class Logic {
 	public ArrayList<Task> initLogic() throws Exception{
 		Logic logic = new Logic();
 		searchResult = new ArrayList<Task>();
+		searchResultCompleted = new ArrayList<Task>();
 		return displayPending();
 
 	}
@@ -187,7 +190,13 @@ public class Logic {
 
 		}
 		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
-			
+			for (Task temp : searchResultCompleted) {
+				if (userInput.equalsIgnoreCase("unmark " + temp.getTask()) || searchResultCompleted.size()==1) {
+					//System.out.println("hereeeee");
+					storageController.moveTaskToPending(temp);			
+					break;
+				}			
+			}
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.SORT)) {
@@ -274,13 +283,19 @@ public class Logic {
 	}
 	
 
-	public ArrayList<Task> handleSearch(String oldValue, String newValue) throws Exception {
+	public ArrayList<Task> handleSearchPending(String oldValue, String newValue) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);
-		searchResult = storageController.searchMatch(newValue);	
+		searchResult = storageController.searchMatchPending(newValue);	
 		return searchResult;
 	}
 
+	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) throws Exception {
+		//System.out.println("new val: " + newValue);
+		//System.out.println("old val: " + oldValue);
+		searchResultCompleted = storageController.searchMatchCompleted(newValue);	
+		return searchResultCompleted;
+	}
 
 
 }

@@ -14,7 +14,7 @@ public class TimeComparator implements Comparator<Task>{
 		
 		if((task1.getTime().isEmpty()) || (task2.getTime().isEmpty()) || task1.getTime().equals(task2.getTime())) {
 			
-			if(task1.getTask().equalsIgnoreCase(task2.getTask())) {
+			if(task1.getPriority() != null || task2.getPriority() != null || task1.getTask().equalsIgnoreCase(task2.getTask())) {
 				return task1.getPriority().compareTo(task2.getPriority());
 			}
 			else {
