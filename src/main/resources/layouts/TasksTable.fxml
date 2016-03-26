@@ -14,7 +14,7 @@
          <children>
       		<ListView id="tasksDisplay" fx:id="tasksDisplay">
                <effect>
-                  <DropShadow color="#61a2f8" />
+                  <DropShadow blurType="TWO_PASS_BOX" height="40.37" radius="18.07" spread="0.17" width="33.91" />
                </effect></ListView>
          </children>
       </StackPane>

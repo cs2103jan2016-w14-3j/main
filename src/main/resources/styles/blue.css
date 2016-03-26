@@ -81,7 +81,7 @@
 	 -fx-background-color: transparent;
 }
 #tasksDisplay .list-cell { 
-	-fx-background-color:#BBDEFB; 
+	-fx-background-color:white; 
 }
 .blue{
 	-fx-background-color:#E3F2FD; 
@@ -89,7 +89,7 @@
 
 
 #tasksDisplay .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #6BA5E7;
+  -fx-background-color: #BBDEFB;
   
 }
 .list-cell{
