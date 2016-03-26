@@ -46,6 +46,9 @@
                </children>
             </VBox>
 			</children>
+         <effect>
+            <InnerShadow color="#ffffff68" />
+         </effect>
 		</StackPane>
 	</center>
    <left>
@@ -55,4 +58,7 @@
          </effect>
       </Rectangle>
    </left>
+   <effect>
+      <DropShadow color="#598add" />
+   </effect>
 </fx:root>
