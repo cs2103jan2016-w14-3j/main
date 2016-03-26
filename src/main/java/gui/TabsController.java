@@ -77,60 +77,9 @@ public class TabsController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		//initSetting();
-		//initButton();
-		//exit();
-	}
-	
-	private void initButton() {
-		btnNew = new Button();
-		btnLoad = new Button();
-        btnSave = new Button();
-	    btnHelp = new Button();
-	    btnSetting = new Button();
-	    btnExit = new Button();
-	    
-	    
-	    btnNew.setVisible(false);
-	    btnLoad.setVisible(false);
-	    btnSave.setVisible(false);
-	    btnHelp.setVisible(false);
-	    btnExit.setVisible(false);
-	    btnSetting.setVisible(false);
-	    //Image image = new Image("/main/resources/images/loadFile.png");
-	   // btnSetting.setGraphic(new ImageView(image));
-		
-	}
 
-
-	private void initSetting(){			
-		loadFile = new MenuItem("Load...", null);
-		saveFile = new MenuItem("Save...", null);
-		helpPage = new MenuItem("Help", null);
-		exitItem = new MenuItem("Exit", null);    
-	    setting.getItems().addAll(loadFile,saveFile,helpPage,exitItem);
-	    Image image = new Image("/main/resources/images/loadFile.png");
-	    setting.setGraphic(new ImageView(image));
 	}
 	
-
-	private void exit() {
-		exitItem.setMnemonicParsing(true);
-	    exitItem.setAccelerator(new KeyCodeCombination(KeyCode.X,KeyCombination.CONTROL_DOWN));
-	    exitItem.setOnAction(new EventHandler<ActionEvent>() {
-	      public void handle(ActionEvent event) {
-	        Platform.exit();
-	      }
-	    });
-	}
-	
-	public MenuItem getLoadMenu(){
-		return loadFile;
-	}
-	
-	public MenuItem getSaveMenu(){
-		return saveFile;
-	}
 	
 	public void setUpcomingLabel(String text){
 		lblUpcoming.setText(text); 
@@ -139,35 +88,6 @@ public class TabsController extends BorderPane {
 	public void setCompleteLabel(String text){
 		lblComplete.setText(text); 
 	}
-	
-	public String saveFilename(){
-	   saveFile.setOnAction(new EventHandler<ActionEvent>(){
-        @Override
-       public void handle(ActionEvent arg0) {
-           FileChooser fileChooser = new FileChooser();
-           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-           fileChooser.getExtensionFilters().add(extFilter);
-           file = fileChooser.showSaveDialog(null);
-           System.out.println(file);      
-       }
-      });
-	   return file.getAbsolutePath();
-	}
-	
-	public String loadFilename(){
-		
-		   loadFile.setOnAction(new EventHandler<ActionEvent>(){
-	        @Override
-	       public void handle(ActionEvent arg0) {
-	           FileChooser fileChooser = new FileChooser();
-	           FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
-	           fileChooser.getExtensionFilters().add(extFilter);
-	           file = fileChooser.showOpenDialog(null);
-	           System.out.println(file);      
-	       }
-	      });
-		   return file.getAbsolutePath();
-		}
 	
 	public void setUpcomingTab(Node value){
 		Image icon = new Image("/main/resources/images/upcomingIcon.fw.png");

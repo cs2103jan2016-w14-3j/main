@@ -16,9 +16,6 @@
                <font>
                   <Font size="25.0" />
                </font>
-               <effect>
-                  <Reflection />
-               </effect>
             </Label>
             <ImageView fx:id="helpImage" fitHeight="351.0" fitWidth="370.0" pickOnBounds="true">
                <image>

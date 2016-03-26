@@ -21,7 +21,7 @@
                      <children>
             							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="521.875" StackPane.alignment="CENTER_LEFT">
                            <font>
-                              <Font name="Calibri" size="7.0" />
+                              <Font name="Century Gothic" size="7.0" />
                            </font>
                         </Text>
                      </children>

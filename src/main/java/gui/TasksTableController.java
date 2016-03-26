@@ -52,6 +52,7 @@ public class TasksTableController extends BorderPane {
 		}
 	
 		initialise();
+		setColour("red");
 	}
 	
 
@@ -102,6 +103,13 @@ public class TasksTableController extends BorderPane {
 	
 	public int getSize(){
 		return items.size();
+	}
+
+
+
+	public void setColour(String colour) {
+		// TODO Auto-generated method stub
+		tasksDisplay.getStylesheets().add("/main/resources/styles/stylesheet.css");
 	}
 	
 	

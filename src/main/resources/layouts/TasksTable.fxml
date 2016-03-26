@@ -13,7 +13,9 @@
       <StackPane prefHeight="480.0" prefWidth="565.0" BorderPane.alignment="CENTER">
          <children>
       		<ListView id="tasksDisplay" fx:id="tasksDisplay">
-		</ListView>
+               <effect>
+                  <DropShadow color="#61a2f8" />
+               </effect></ListView>
          </children>
       </StackPane>
    </center>

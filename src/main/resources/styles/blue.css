@@ -1,0 +1,268 @@
+#root {
+	
+	-fx-background-color: white;
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+@font-face { 
+   src: url('Roboto-Regular.ttf');
+}
+.text{
+	-fx-font-family:Roboto;
+}
+.label{
+	-fx-font-family:Roboto;
+}
+
+#emptyTable {
+	-fx-padding: 10px;
+	 -fx-background-color: rgba(255, 255, 255, 0.6);
+}
+#title {
+	-fx-padding: 10px;
+	-fx-font-size: 24px;
+	-fx-font-weight: bold;
+	-fx-font-family:Roboto;
+}
+.toolBar{
+	-fx-background-color: #4294DE;
+}
+
+.topBar{
+	-fx-background-color: #6BA5E7;
+}
+.blueToolBar{
+	-fx-background-color: #4294DE;
+}
+
+.blueTopBar{
+	-fx-background-color: #6BA5E7;
+}
+.lblTitle{
+	-fx-font-size:20;
+	-fx-text-fill:white;
+	-fx-font-family:Roboto;
+}
+.minimiseApp {
+  -fx-graphic: url("/main/resources/images/minimiseApp.png");
+  -fx-background-color:transparent;
+}
+.minimiseApp:hover {
+  -fx-graphic: url("/main/resources/images/minimiseAppHover.png");
+  -fx-background-color:transparent;
+}
+.closeApp {
+  -fx-graphic: url("/main/resources/images/closeApp.png");
+  -fx-background-color:transparent;
+}
+.closeApp:hover {
+  -fx-graphic: url("/main/resources/images/closeAppHover.png");
+  -fx-background-color:transparent;
+}
+.sidePane{
+	-fx-background-color: white;
+}
+.lblPendingCompleted{
+	-fx-font-size: 8px;
+}
+.default-commandBar{
+	-fx-background-color: #FFF3E0;
+}
+#lblUpcoming{
+	-fx-background-color: rgba(255, 255, 255, 0.6);
+	-fx-font-family:Roboto;
+}
+#lblComplete{
+	-fx-background-color: rgba(255, 255, 255, 0.6);
+	-fx-font-family:Roboto;
+}
+
+#setting{
+	 -fx-background-color: transparent;
+}
+#tasksDisplay .list-cell { 
+	-fx-background-color:#BBDEFB; 
+}
+.blue{
+	-fx-background-color:#E3F2FD; 
+ }
+
+
+#tasksDisplay .list-cell:selected:focused, .task-cell:filled:selected {
+  -fx-background-color: white;
+  
+}
+.list-cell{
+	-fx-border-color : 	#E1F5FE;
+}
+#tasksDisplay {
+	-fx-background-color: #FCE4EC;
+}
+
+/* Hide horizontal scrollbars */
+#tasksDisplay .scroll-bar:horizontal {
+    -fx-opacity: 0;
+    -fx-padding: -7;
+}
+
+/* Hide vertical scrollbars */
+#tasksDisplay  .scroll-bar:vertical {
+    -fx-opacity: 0;
+    -fx-padding: -7;
+}
+
+.tasksItem {
+	-fx-padding: 2px;
+}
+
+.card {
+	-fx-padding:  3 0 0 10 px;
+	-fx-border-color : transparent;
+}
+
+
+.card .filename {
+	-fx-font-size: 16px;
+	-fx-font-family:Roboto;
+}
+
+.card .date {
+	-fx-font-family:Roboto;
+	-fx-background-color:
+        -fx-focus-color,
+        -fx-control-inner-background,
+        -fx-faint-focus-color,
+        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
+}
+
+.card .circle {
+	-fx-fill: white;
+}
+
+.card .stackpane {
+	-fx-background-color: black;
+}
+
+.card .percentage {
+	-fx-font-size: 14px;
+	-fx-font-weight: bold;
+	-fx-stroke-width: 0;
+	-fx-font-family:Roboto;
+}
+
+.bad{
+	-fx-background-color: #FF80AB;
+}
+.med{
+	-fx-background-color: #FFF3E0;
+}
+.good{
+	-fx-background-color: orange;
+}
+.best{
+	-fx-background-color: #69F0AE;
+}
+
+
+
+.tab-pane .tab-header-area .tab-header-background {
+    -fx-opacity: 0;
+}
+
+.tab-pane
+{
+    -fx-tab-min-width:90px;
+}
+
+.tab{
+    -fx-background-insets: 0 1 0 1,0,0;
+}
+.tab-pane .tab
+{
+    
+-fx-background-color: transparent;
+
+}
+
+.tab-pane .tab:selected
+{
+   -fx-background-color: #BBDEFB;
+   -fx-border-color:transparent;
+}
+
+.tab .tab-label { 
+    -fx-alignment: CENTER;
+    -fx-font-size: 12px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #96b946;
+    -fx-font-family:Roboto;
+}
+
+
+.tab:selected .tab-label { 
+    -fx-alignment: CENTER;
+   -fx-text-fill: #828282;
+   -fx-font-family:Roboto;
+}
+
+.sideButton {
+  -fx-graphic: url("/main/resources/images/sidebuttonIcon.png");
+  -fx-background-color:transparent;
+}
+.sideButton:hover {
+  -fx-graphic: url("/main/resources/images/sidebuttonIcon1.png");
+  -fx-background-color:transparent;
+}
+
+.sideButton1 {
+  -fx-graphic: url("/main/resources/images/sidebuttonIcon1.png");
+  -fx-background-color:transparent;
+}
+.sideButton1:hover {
+  -fx-graphic: url("/main/resources/images/sidebuttonIcon.png");
+  -fx-background-color:transparent;
+}
+
+.newButton {
+  -fx-graphic: url("/main/resources/images/btnNew.png");
+  -fx-background-color:transparent;
+}
+.newButton:hover {
+  -fx-graphic: url("/main/resources/images/btnNewHover.png");
+  -fx-background-color:transparent;
+}
+
+.loadButton {
+  -fx-graphic: url("/main/resources/images/btnLoad.png");
+  -fx-background-color:transparent;
+}
+.loadButton:hover {
+  -fx-graphic: url("/main/resources/images/btnLoadHover.png");
+  -fx-background-color:transparent;
+}
+.saveButton {
+  -fx-graphic: url("/main/resources/images/btnSave.png");
+  -fx-background-color:transparent;
+}
+.saveButton:hover {
+  -fx-graphic: url("/main/resources/images/btnSaveHover.png");
+  -fx-background-color:transparent;
+}
+
+.helpButton {
+  -fx-graphic: url("/main/resources/images/btnHelp.png");
+  -fx-background-color:transparent;
+}
+.helpButton:hover {
+  -fx-graphic: url("/main/resources/images/btnHelpHover.png");
+  -fx-background-color:transparent;
+}
+
+.exitButton {
+  -fx-graphic: url("/main/resources/images/btnExit.png");
+  -fx-background-color:transparent;
+}
+.exitButton:hover {
+  -fx-graphic: url("/main/resources/images/btnExitHover.png");
+  -fx-background-color:transparent;
+}

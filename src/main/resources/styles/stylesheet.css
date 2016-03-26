@@ -24,14 +24,20 @@
 	-fx-font-weight: bold;
 	-fx-font-family:Roboto;
 }
-.topBar{
-	-fx-background-color: #3F51B5;
-}
-
 .toolBar{
-	-fx-background-color: #7986CB;
+	-fx-background-color: #9E1716;
 }
 
+.topBar{
+	-fx-background-color: #AA4344;
+}
+.blueToolBar{
+	-fx-background-color: #4294DE;
+}
+
+.blueTopBar{
+	-fx-background-color: #6BA5E7;
+}
 .lblTitle{
 	-fx-font-size:20;
 	-fx-text-fill:white;
@@ -74,21 +80,23 @@
 #setting{
 	 -fx-background-color: transparent;
 }
-.list-cell { -fx-background-color: transparent; /* 1 */ }
+#tasksDisplay .list-cell { 
+	-fx-background-color:#FCE4EC; 
+}
+.blue{
+	-fx-background-color:#E3F2FD; 
+ }
+
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #CCFF90;
+  -fx-background-color: white;
   
 }
 .list-cell{
 	-fx-border-color : #E3F2FD;
 }
 #tasksDisplay {
-	-fx-background-color: transparent;
-}
-
-#tasksDisplay.list-cell {
-	-fx-background-color: transparent;
+	-fx-background-color: #FCE4EC;
 }
 
 /* Hide horizontal scrollbars */
@@ -178,7 +186,7 @@
 
 .tab-pane .tab:selected
 {
-   -fx-background-color: #CCFF90;
+   -fx-background-color: #F8BBD0;
    -fx-border-color:transparent;
 }
 .tab:selected:focused, .tab:filled:selected {

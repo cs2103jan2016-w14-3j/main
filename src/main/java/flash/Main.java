@@ -6,10 +6,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import javafx.application.Application;
 import javafx.application.Platform;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
+
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXMLLoader;
@@ -20,7 +17,7 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 import javafx.util.Duration;
 import main.java.logic.Logic;
-import main.java.parser.InvalidInputFormatException;
+
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
@@ -37,31 +34,32 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
+
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
-import javafx.scene.layout.Region;
+
 import javafx.scene.layout.VBox;
-import javafx.scene.layout.VBoxBuilder;
+
 import javafx.scene.paint.Color;
-import javafx.scene.text.Text;
+
 import javafx.scene.control.Button;
+import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.Tab;
-import javafx.scene.control.TabPane;
-import javafx.scene.control.TextField;
+
 
 public class Main extends Application {
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
-
+	private HBox hBar;
+	private HBox topBar;
+	private Scene scene;
+	
 	private Logic logic;
 	private Task task;
 
@@ -76,13 +74,11 @@ public class Main extends Application {
 	private ListView<TasksItemController> completeDisplay;
 
 	private static final String EMPTY_STRING = "";
-	private static final String SPACE = " ";
 	private static final String SPLIT = "\\s+";
 	private static final int COMMAND_INDEX = 0;
 
 	private int pointer;
 	private boolean isFeedback = false;
-	private int count = 0;
 	private boolean isError = false;
 	private static double xOffset = 0;
 	private static double yOffset = 0;
@@ -103,7 +99,7 @@ public class Main extends Application {
 		this.primaryStage.setWidth(570);
 		initControllers(this);
 		initLogic();
-		initRootLayout();
+		initRootLayout("");
 		checkIsTasksEmpty();
 	}
 
@@ -145,17 +141,17 @@ public class Main extends Application {
 	/**
 	 * Initialises the RootLayout that will contain all other JavaFX components.
 	 */
-	private void initRootLayout() {
+	private void initRootLayout(String userInput) {
 
 		try {
 			// load root layout from fxml file
 			FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/resources/layouts/RootLayout.fxml"));
 			rootLayout = loader.load();
 
-			Scene scene = new Scene(rootLayout);
+			scene = new Scene(rootLayout);
 
 			primaryStage.setScene(scene);
-
+            
 			scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
 				if (key.getCode() == KeyCode.ESCAPE) {
 					primaryStage.setIconified(true);
@@ -178,6 +174,7 @@ public class Main extends Application {
 			});
 
 			rootLayout.setPadding(new Insets(0, 0, 0, 0));
+			
 			showSidebar();
 			showTabs();
 			showCommandBar();
@@ -201,9 +198,9 @@ public class Main extends Application {
 		rootLayout.setLeft(sidebar);
 		HBox toolBar = new HBox();
 		HBox titleBar = new HBox();
-		HBox hBar = new HBox();
+		hBar = new HBox();
 
-		HBox topBar = new HBox();
+		topBar = new HBox();
 		HBox leftTopBar = new HBox();
 		HBox centerTopBar = new HBox();
 		HBox rightTopBar = new HBox();
@@ -216,7 +213,6 @@ public class Main extends Application {
 		ImageView iconView = new ImageView(imgTitle);
 		titleBar.getChildren().addAll(flashView,empty1,iconView);
 		titleBar.setAlignment(Pos.CENTER_LEFT);
-		titleBar.getStyleClass().add("toolBar");
 		titleBar.setPadding(new Insets(0, 0, 0, 5));
 
 //		 2 app control buttons
@@ -231,9 +227,10 @@ public class Main extends Application {
 
 		toolBar.getChildren().addAll(minimiseApp, closeApp);
 		toolBar.setAlignment(Pos.TOP_RIGHT);
-		toolBar.getStyleClass().add("toolBar");
+		
 
 		hBar.getChildren().addAll(titleBar, toolBar);
+		hBar.getStyleClass().add("toolBar");
 
 		// sidebar button
 		Label lblTitle = new Label("Pending");
@@ -337,7 +334,9 @@ public class Main extends Application {
 		assert commandBarController != null;
 		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
-			checkIsTasksEmpty();
+			if(!text.equalsIgnoreCase("help")){
+			  checkIsTasksEmpty();
+			}
 		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
 			event.consume(); // nullifies the default behavior of UP and DOWN on
 			// a TextArea
@@ -425,18 +424,37 @@ public class Main extends Application {
 
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
-		count = 0;
-		if (userInput.equalsIgnoreCase("help")) {
-			notification(userInput);
-			historyLog.add(userInput);
-			tabControl.setUpcomingTab(new HelpDisplayController());
-			commandBarController.clear();
-			return;
-		}
 
-		if (userInput.isEmpty()) {
-			return;
-		} else {
+		if (userInput.isEmpty()) {                        
+		}else if (userInput.equalsIgnoreCase("help")) {
+			tabControl.setUpcomingTab(new HelpDisplayController());
+			notification(userInput);
+			historyLog.add(userInput);	
+			System.out.println("whyyyyy");
+		}else if(userInput.equalsIgnoreCase("blue theme")){
+			topBar.getStyleClass().clear();
+			topBar.getStyleClass().add("blueTopBar");
+			hBar.getStyleClass().clear();
+			hBar.getStyleClass().add("blueToolBar");
+			pendingTableControl.getStylesheets().clear();
+			completeTableControl.getStylesheets().clear();
+			tabControl.getStylesheets().clear();
+		    pendingTableControl.getStylesheets().add("/main/resources/styles/blue.css");
+		    completeTableControl.getStylesheets().add("/main/resources/styles/blue.css");
+		    tabControl.getStylesheets().add("/main/resources/styles/blue.css");
+		}else if(userInput.equalsIgnoreCase("red theme")){
+			topBar.getStyleClass().clear();
+			hBar.getStyleClass().clear();
+			topBar.getStyleClass().add("topBar");
+			hBar.getStyleClass().add("toolBar");
+			pendingTableControl.getStylesheets().clear();
+			completeTableControl.getStylesheets().clear();
+			tabControl.getStylesheets().clear();
+			pendingTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+		    completeTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+		    tabControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+		}
+		else {
 			// normal command
 			historyLog.add(userInput);
 
@@ -458,6 +476,12 @@ public class Main extends Application {
 			if (isError == false) {
 				setFeedback(commandBarController, "valid", userInput);
 			}
+		}
+		if (userInput.equalsIgnoreCase("help")) {
+			tabControl.setUpcomingTab(new HelpDisplayController());
+			notification(userInput);
+			historyLog.add(userInput);	
+			commandBarController.clear();
 		}
 		isError = false;
 		new CommandBarController();

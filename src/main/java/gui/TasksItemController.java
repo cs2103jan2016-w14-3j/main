@@ -53,7 +53,7 @@ public class TasksItemController extends BorderPane {
 	private static final String BASE_COLOUR_20 = "#E8803D";
 	private static final String BASE_COLOUR_MED = "#F0C419";
 	private static final String BASE_COLOUR_60 = "#D7E84A";
-	private static final String BASE_COLOUR_LOW = "#76FF03";
+	private static final String BASE_COLOUR_LOW = "#00C853";
 
 	private String taskName;
 
