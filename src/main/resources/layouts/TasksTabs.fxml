@@ -12,7 +12,7 @@
    <center>
       <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
          <children>
-            <TabPane prefHeight="558.0" prefWidth="558.0" tabClosingPolicy="UNAVAILABLE">
+            <TabPane fx:id="tabPane" prefHeight="558.0" prefWidth="558.0" tabClosingPolicy="UNAVAILABLE">
               <tabs>
                 <Tab id="upcomingTab" fx:id="upcomingTab" text="Pending Tasks" />
                 <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />

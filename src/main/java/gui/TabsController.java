@@ -14,6 +14,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
 import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
+import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
@@ -27,6 +28,9 @@ import javafx.event.EventHandler;
 
 
 public class TabsController extends BorderPane {
+	
+	@FXML
+	private TabPane tabPane;	
 	
 	@FXML
 	private Tab upcomingTab;	
@@ -115,6 +119,10 @@ public class TabsController extends BorderPane {
 	
 	public Tab getCompleteTab(){
 		return completeTab;
+	}
+	
+	public TabPane getTabPane(){
+		return tabPane;
 	}
 
 }

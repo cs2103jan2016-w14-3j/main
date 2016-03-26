@@ -84,6 +84,7 @@ public class Main extends Application {
 	private static double yOffset = 0;
 	private Label lblPending = new Label();
 	private Label lblCompleted = new Label();
+	private Label lblTitle;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -214,18 +215,19 @@ public class Main extends Application {
 		titleBar.getChildren().addAll(flashView,empty1,iconView);
 		titleBar.setAlignment(Pos.CENTER_LEFT);
 		titleBar.setPadding(new Insets(0, 0, 0, 5));
-
+        HBox empty2 = new HBox();
+        empty2.setPadding(new Insets(0, 0, 0, 455));
 //		 2 app control buttons
 		Button closeApp = new Button();
 		closeApp.getStyleClass().add("closeApp");
 		exit(closeApp);
-
+    
 		Button minimiseApp = new Button();
 		minimiseApp.getStyleClass().add("minimiseApp");
-		minimiseApp.setPadding(new Insets(4, 0, 0, 457));
+		minimiseApp.setPadding(new Insets(4, 0, 0, 0));
 		minimise(minimiseApp);
-
-		toolBar.getChildren().addAll(minimiseApp, closeApp);
+        
+		toolBar.getChildren().addAll(empty2, minimiseApp,closeApp);
 		toolBar.setAlignment(Pos.TOP_RIGHT);
 		
 
@@ -233,7 +235,9 @@ public class Main extends Application {
 		hBar.getStyleClass().add("toolBar");
 
 		// sidebar button
-		Label lblTitle = new Label("Pending");
+		lblTitle = new Label("Pending");
+		
+		
 		lblTitle.getStyleClass().add("lblTitle");
 		lblTitle.setPadding(new Insets(0, 0, 5, 10));
 		leftTopBar.getChildren().addAll(sidebar.getControlButton(), lblTitle);
@@ -376,6 +380,20 @@ public class Main extends Application {
 			}
 
 		});
+		
+		tabControl.getTabPane().setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if(tabControl.getUpcomingTab().isSelected()){
+					lblTitle.setText("Pending");
+				}else if(tabControl.getCompleteTab().isSelected()){
+					lblTitle.setText("Completed");
+				}
+			}
+
+		});
+		
+		
 
 	}
 
@@ -431,7 +449,7 @@ public class Main extends Application {
 			notification(userInput);
 			historyLog.add(userInput);	
 			System.out.println("whyyyyy");
-		}else if(userInput.equalsIgnoreCase("blue theme")){
+		}else if(userInput.equalsIgnoreCase("theme blue")){
 			topBar.getStyleClass().clear();
 			topBar.getStyleClass().add("blueTopBar");
 			hBar.getStyleClass().clear();
@@ -442,7 +460,7 @@ public class Main extends Application {
 		    pendingTableControl.getStylesheets().add("/main/resources/styles/blue.css");
 		    completeTableControl.getStylesheets().add("/main/resources/styles/blue.css");
 		    tabControl.getStylesheets().add("/main/resources/styles/blue.css");
-		}else if(userInput.equalsIgnoreCase("red theme")){
+		}else if(userInput.equalsIgnoreCase("theme red")){
 			topBar.getStyleClass().clear();
 			hBar.getStyleClass().clear();
 			topBar.getStyleClass().add("topBar");
@@ -453,11 +471,19 @@ public class Main extends Application {
 			pendingTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
 		    completeTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
 		    tabControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+		}else if(userInput.equalsIgnoreCase("switch")){
+			if(tabControl.getUpcomingTab().isSelected()){
+			   tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
+			   lblTitle.setText("Completed");
+			}else{
+			   tabControl.getTabPane().getSelectionModel().select(tabControl.getUpcomingTab());
+			   lblTitle.setText("Pending");
+			}
 		}
 		else {
 			// normal command
 			historyLog.add(userInput);
-
+            
 			if (userInput.equalsIgnoreCase("clear")) {
 				if (tabControl.getUpcomingTab().isSelected()) {
 					userInput = userInput + "Upcoming";
@@ -561,12 +587,18 @@ public class Main extends Application {
 		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
 		boolean isMark = fragments[COMMAND_INDEX].equalsIgnoreCase("mark");
+		boolean isUnmark = fragments[COMMAND_INDEX].equalsIgnoreCase("unmark");
 
 		// TODO Auto-generated method stub
 		try {
-			if (isEdit || isDelete || isSearch || isMark) {
-				searchResult = logic.handleSearch(oldValue, newValue);
+			if ((tabControl.getUpcomingTab().isSelected()) && isEdit || isDelete || isSearch || isMark) {
+				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (searchResult.size() != 0 && searchResult.size() != pendingTableControl.getSize()) {
+					populateList(searchResult);
+				}
+			}else if ((tabControl.getCompleteTab().isSelected()) && isEdit || isDelete || isSearch || isUnmark ) {
+				searchResult = logic.handleSearchCompleted(oldValue, newValue);
+				if (searchResult.size() != 0 && searchResult.size() != completeTableControl.getSize()) {
 					populateList(searchResult);
 				}
 			}

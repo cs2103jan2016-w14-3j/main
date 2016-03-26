@@ -24,6 +24,7 @@ public class Logic {
 	private static final String CLEAR_COMMAND = "clear";
 	private static final String SWITCH_COMMAND = "switch";
 	private static final String REDO_COMMAND = "redo";
+	private static final String THEME_COMMAND = "theme";
 	private static final String EMPTY_STRING = "";
 	
 
@@ -276,7 +277,8 @@ public class Logic {
 				commandWord.equalsIgnoreCase(EDIT_COMMAND)||commandWord.equalsIgnoreCase(SEARCH_COMMAND)||
 				commandWord.equalsIgnoreCase(SORT_COMMAND)||commandWord.equalsIgnoreCase(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equalsIgnoreCase(CLEAR_COMMAND)||commandWord.equalsIgnoreCase(UNDO_COMMAND)||commandWord.equalsIgnoreCase(HELP_COMMAND)||
-				commandWord.equalsIgnoreCase(MARK_COMMAND)||commandWord.equalsIgnoreCase(REDO_COMMAND) || commandWord.equalsIgnoreCase(SWITCH_COMMAND))
+				commandWord.equalsIgnoreCase(MARK_COMMAND)||commandWord.equalsIgnoreCase(REDO_COMMAND) || commandWord.equalsIgnoreCase(SWITCH_COMMAND)|| 
+				commandWord.equalsIgnoreCase(UNMARK_COMMAND)||commandWord.equalsIgnoreCase(THEME_COMMAND))
 			return true;
 		return false;
 
