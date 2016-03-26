@@ -89,7 +89,7 @@
 
 
 #tasksDisplay .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: white;
+  -fx-background-color: #6BA5E7;
   
 }
 .list-cell{
