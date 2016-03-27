@@ -272,8 +272,8 @@ public class AddCommandParser extends Parser {
 	}
 	private boolean isDurationTask(String timeSegment) {
 		if (timeParser.parse(timeSegment).size() == 2 &&
-				containsWholeWord(timeSegment, DURATION_FLAG_FROM)
-				&& containsWholeWord(timeSegment, DURATION_FLAG_TO)) {
+				(containsWholeWord(timeSegment, DURATION_FLAG_FROM)
+				|| containsWholeWord(timeSegment, DURATION_FLAG_TO))) {
 			//System.out.println("HERE");
 			return true;
 		}
@@ -447,7 +447,6 @@ public class AddCommandParser extends Parser {
 
 
 	private int getStartingIndexOfPriority(String content) {
-
 		return content.indexOf(PRIORITY_FLAG);
 	}
 
