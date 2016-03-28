@@ -1,7 +1,6 @@
 package main.java.logic;
 
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
+
 import java.util.Date;
 import java.util.List;
 
@@ -88,6 +87,9 @@ public class CommandDispatcher {
 		else if (command.isCommand(COMMAND_TYPE.SWITCH)) {
 			
 		}
+		else if (command.isCommand(COMMAND_TYPE.REFRESH)) {
+			
+		}
 
 	}
 
@@ -135,6 +137,9 @@ public class CommandDispatcher {
 		else if (isCommand(COMMAND_TYPE.EDIT, firstWord)) {
 			return COMMAND_TYPE.EDIT;
 
+		}
+		else if (isCommand(COMMAND_TYPE.REFRESH, firstWord)) {
+			return COMMAND_TYPE.REFRESH;
 		}
 
 		else if (isCommand(COMMAND_TYPE.UNDO, firstWord)) {

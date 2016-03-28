@@ -51,9 +51,8 @@ public class AddCommandParser extends Parser {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser pars = new PrettyTimeParser();
-		//System.out.println(pars.parse("tue , wed"));
+		System.out.println(pars.parse("by mon 11:19pm"));
 		AddCommandParser parser = new AddCommandParser();
-		//System.out.println(parser.isRecurringTask("from mon to wed do this and that"));
 	}
 
 
@@ -108,15 +107,15 @@ public class AddCommandParser extends Parser {
 		String timeSegment = determineTimeSegment(content);
 
 		List<Date> dates = timeParser.parse(timeSegment);
-
+		
 		if (dates.size() == 0) {
 			return "[]";
 		}
 		else {
 			modifyDateToTomorrowIfExpired(dates);
-
+			
 			String result = setDefaultTimeIfNotSpecified(timeSegment, dates);
-			//System.out.println("here " + result);
+			
 
 			return result;
 		}
@@ -716,6 +715,7 @@ public class AddCommandParser extends Parser {
 	}
 
 	private boolean isOverdue(Date time) {
+		//System.out.println(new Date());
 		return time.before(new Date());
 	}
 

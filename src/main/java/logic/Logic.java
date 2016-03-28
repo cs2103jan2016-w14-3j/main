@@ -25,6 +25,7 @@ public class Logic {
 	private static final String SWITCH_COMMAND = "switch";
 	private static final String REDO_COMMAND = "redo";
 	private static final String THEME_COMMAND = "theme";
+	private static final String REFRESH_COMMAND = "refresh";
 	private static final String EMPTY_STRING = "";
 	
 
@@ -171,6 +172,9 @@ public class Logic {
 
 			}
 		}
+		else if (command.isCommand(COMMAND_TYPE.REFRESH)) {
+			
+		}
 
 		else if (command.isCommand(COMMAND_TYPE.SEARCH)) {
 			
@@ -282,7 +286,7 @@ public class Logic {
 				commandWord.equals(SORT_COMMAND)||commandWord.equals(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equals(CLEAR_COMMAND)||commandWord.equals(UNDO_COMMAND)||commandWord.equals(HELP_COMMAND)||
 				commandWord.equals(MARK_COMMAND)||commandWord.equals(REDO_COMMAND) || commandWord.equals(SWITCH_COMMAND)|| 
-				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND))
+				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND) || commandWord.equals(REFRESH_COMMAND))
 			return true;
 		return false;
 
