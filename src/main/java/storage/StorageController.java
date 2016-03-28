@@ -151,10 +151,10 @@ public class StorageController {
 		return completedTemp.searchMatch(newValue);
 	}
 	
-	public void saveToFile(String path) {
+	public void moveToLocation(String path) {
 		assert path != null;
 		
-		pendingTemp.saveToFile(path);
+		pendingTemp.moveToLocation(path);
 		//completedTemp.saveToFile(path.substring(0, path.lastIndexOf("\\")+1) + "Completed tasks.txt");
 	}
 

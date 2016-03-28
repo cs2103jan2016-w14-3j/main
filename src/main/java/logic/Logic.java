@@ -267,9 +267,9 @@ public class Logic {
 		storageController.loadFromFile(filename);
 	}
 	
-	public void saveFilename(String filename){	
+	public void moveToLocation(String path){	
 		//System.out.println("logic hereeee save file name "+ filename);
-		storageController.saveToFile(filename);
+		storageController.moveToLocation(path);
 	}
 
 	public boolean isCommand(String commandWord) {

@@ -57,7 +57,7 @@ public class PermStorage {
 		}
 	}
 
-	public void saveToFile(String path) {
+	public void moveToLocation(String path) {
 		
 		File newFile = new File(path);
 		try {
@@ -67,7 +67,7 @@ public class PermStorage {
 		} catch (IOException e) {
 			System.err.println("Cannot save to file");
 		}
-		dirController.saveToFile(path);
+		dirController.moveToLocation(path);
 	}
 	
 	public void loadFromFile(String path) {

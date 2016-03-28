@@ -75,7 +75,7 @@ public class DirectoryController {
 		}
 	}
 	
-	public void saveToFile(String path) {
+	public void moveToLocation(String path) {
 		updateDirectory(path);
 	}
 	

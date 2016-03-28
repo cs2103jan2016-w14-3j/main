@@ -127,9 +127,9 @@ public class TempStorage {
 		permStorage.copyAllToFile((taskList));
 	}
 
-	public void saveToFile(String path) {
+	public void moveToLocation(String path) {
 
-		permStorage.saveToFile(path);
+		permStorage.moveToLocation(path);
 	}
 
 	public void loadFromFile(String path) {
