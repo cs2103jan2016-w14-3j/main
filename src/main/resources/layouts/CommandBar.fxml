@@ -21,7 +21,7 @@
             <Insets bottom="5.0" />
          </padding>
          <font>
-            <Font name="Calibri Bold" size="14.0" />
+            <Font name="Calibri" size="14.0" />
          </font>
          <effect>
             <Glow level="0.4" />
