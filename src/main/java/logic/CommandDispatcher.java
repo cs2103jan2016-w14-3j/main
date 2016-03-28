@@ -207,12 +207,13 @@ public class CommandDispatcher {
 		String keyword = "ClEaR";
 		String newWord = keyword.toLowerCase();
 		if (newWord.equals("clear")) {
-			System.out.println(keyword);
+			//System.out.println(keyword);
 		}
+		
 		List<Date> date3 = parser.parse("tmr 10pm");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
 		
-		System.out.println(date3);
+		System.out.println(new Date());
 		//System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
 	}
 }

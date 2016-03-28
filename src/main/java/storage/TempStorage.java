@@ -177,7 +177,8 @@ public class TempStorage {
 
 			for (Task task : taskList) {
 				boolean match = true;
-				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + task.getTime();
+				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + 
+						task.getTime().toString().replaceAll("SGT", "");;
 				taskNumber++;
 				
 				for (String part : parts) {
