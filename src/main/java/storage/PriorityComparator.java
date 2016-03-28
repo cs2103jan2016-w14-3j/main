@@ -24,6 +24,9 @@ public class PriorityComparator implements Comparator<Task>{
 //		else {
 //			return task2.getPriority().compareTo(task1.getPriority());
 //		}
+		if (task1.getPriority().compareTo(task2.getPriority()) == 0) {
+			return task1.getTask().compareTo(task2.getTask());
+		}
 		
 		
 		return task1.getPriority().compareTo(task2.getPriority());

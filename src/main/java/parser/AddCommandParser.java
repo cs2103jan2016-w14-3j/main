@@ -115,7 +115,7 @@ public class AddCommandParser extends Parser {
 		else {
 			modifyDateToTomorrowIfExpired(dates);
 
-			String result = setDefaultTimeIfNotSpecified(content, dates);
+			String result = setDefaultTimeIfNotSpecified(timeSegment, dates);
 			//System.out.println("here " + result);
 
 			return result;
