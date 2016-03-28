@@ -295,9 +295,12 @@ public class AddCommandParser extends Parser {
 		}
 	}
 	private String addPrepositionIfApplicable(String content) {
+		//contains keyword "tomorrow"
 		if (content.contains(TOMORROW_IN_FULL)) {
+			//"tomorrow" is the first word
 			if (content.indexOf(TOMORROW_IN_FULL) == 0) {
 				int startIndex = content.indexOf(WHITE_SPACE) + 1;
+				//there is a valid preposition following "tomorrow"
 				if ((startIndex < content.length() && 
 						(isValidTimeIdentifier(content.substring(
 								startIndex, startIndex + 2)) || isValidTimeIdentifier
@@ -310,10 +313,14 @@ public class AddCommandParser extends Parser {
 							+ content.substring(index);
 					return content;
 				}
-				content = EVENT_FLAG_ON + WHITE_SPACE + content;
+				//no preposition after "tomorrow"
+				else {
+					content = EVENT_FLAG_ON + WHITE_SPACE + content;
+				}
 			}
-
+			//"tomorrow" is not the first word
 			else {
+				//determine the position of "tomorrow"
 				String[] segments = content.split(WHITE_SPACE);
 				int len = segments.length;
 				int index = 0;
@@ -323,11 +330,14 @@ public class AddCommandParser extends Parser {
 						break;
 					}
 				}
+				
+				//there is a valid preposition before "tomorrow"
 				if (isValidTimeIdentifier(segments[index - 1])) {
 					return content;
 				}
+				
+				//there is no valid preposition before "tomorrow"
 				else {
-
 					if (index + 1 <= len && 
 							!isValidTimeIdentifier(segments[index + 1])) {
 						String newContent = EMPTY_STRING;
