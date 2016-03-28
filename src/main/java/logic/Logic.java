@@ -207,7 +207,7 @@ public class Logic {
 			}
 
 			else if (parameter.equals("name")) {
-				storageController.sortPendingByTime();
+				storageController.sortPendingByTaskName();
 			}
 
 			else if (parameter.equals("priority")) {
