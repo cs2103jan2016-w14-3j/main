@@ -170,13 +170,15 @@ public class TempStorage {
 			newValue = newValue.substring(i);
 					
 			String[] parts = null;
+			int taskNumber = 1;
 			
 			parts = newValue.toLowerCase().split(SPACE);
 			searchResult.clear();
 
 			for (Task task : taskList) {
 				boolean match = true;
-				String taskMatch = task.getTask() + task.getPriority().getType() + task.getTime();
+				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + task.getTime();
+				taskNumber++;
 				
 				for (String part : parts) {
 					//String withoutComma = part.substring(0,part.length()-1);
