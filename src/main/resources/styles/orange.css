@@ -38,19 +38,13 @@
 .blueTopBar{
 	-fx-background-color: #3F51BF;
 }
+
 .orangeToolBar{
 	-fx-background-color: #F57C00;
 }
 
 .orangeTopBar{
 	-fx-background-color: #FF9800;
-}
-.greenToolBar{
-	-fx-background-color: #388E3C;
-}
-
-.greenTopBar{
-	-fx-background-color: #4CAF50;
 }
 .lblTitle{
 	-fx-font-size:20;
@@ -97,7 +91,7 @@
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #F8BBD0;
+  -fx-background-color: #FFCC80;
   -fx-font-family:Roboto;
   
 }
@@ -186,7 +180,7 @@
 
 .tab-pane .tab:selected
 {
-   -fx-background-color: #F8BBD0;
+   -fx-background-color: #FFCC80;
    -fx-border-color:transparent;
 }
 .tab:selected:focused, .tab:filled:selected {

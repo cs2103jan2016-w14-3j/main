@@ -102,6 +102,7 @@ public class Main extends Application {
 		initLogic();
 		initRootLayout("");
 		checkIsTasksEmpty();
+		changeBlueTheme();
 	}
 
 	/********************************** Initialisation ***********************************************/
@@ -294,7 +295,7 @@ public class Main extends Application {
 		final Button btnSave = new Button();
 		btnSave.getStyleClass().add("saveButton");
 		btnSave.setPadding(Insets.EMPTY);
-		saveFilename(btnSave);
+		moveToLocation(btnSave);
 
 		final Button btnLoad = new Button();
 		btnLoad.getStyleClass().add("loadButton");
@@ -324,8 +325,8 @@ public class Main extends Application {
 
 	private void showCommandBar() {
 		rootLayout.setBottom(barControl);
-		// barControl.setText("What is your main focus for today?");
-		// barControl.getFocus();
+		//barControl.setText("What is your main focus for today?");
+		barControl.getFocus();
 		barControl.setBgColour("med");
 	}
 
@@ -446,31 +447,17 @@ public class Main extends Application {
 		if (userInput.isEmpty()) {                        
 		}else if (userInput.equalsIgnoreCase("help")) {
 			tabControl.setUpcomingTab(new HelpDisplayController());
-			notification(userInput);
+			//notification(userInput);
 			historyLog.add(userInput);	
 			System.out.println("whyyyyy");
 		}else if(userInput.equalsIgnoreCase("theme blue")){
-			topBar.getStyleClass().clear();
-			topBar.getStyleClass().add("blueTopBar");
-			hBar.getStyleClass().clear();
-			hBar.getStyleClass().add("blueToolBar");
-			pendingTableControl.getStylesheets().clear();
-			completeTableControl.getStylesheets().clear();
-			tabControl.getStylesheets().clear();
-		    pendingTableControl.getStylesheets().add("/main/resources/styles/blue.css");
-		    completeTableControl.getStylesheets().add("/main/resources/styles/blue.css");
-		    tabControl.getStylesheets().add("/main/resources/styles/blue.css");
+			changeBlueTheme();
 		}else if(userInput.equalsIgnoreCase("theme red")){
-			topBar.getStyleClass().clear();
-			hBar.getStyleClass().clear();
-			topBar.getStyleClass().add("topBar");
-			hBar.getStyleClass().add("toolBar");
-			pendingTableControl.getStylesheets().clear();
-			completeTableControl.getStylesheets().clear();
-			tabControl.getStylesheets().clear();
-			pendingTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
-		    completeTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
-		    tabControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+			changeRedTheme();
+		}else if(userInput.equalsIgnoreCase("theme orange")){
+			changeOrangeTheme();
+		}else if(userInput.equalsIgnoreCase("theme green")){
+			changeGreenTheme();
 		}else if(userInput.equalsIgnoreCase("switch")){
 			if(tabControl.getUpcomingTab().isSelected()){
 			   tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
@@ -512,6 +499,58 @@ public class Main extends Application {
 		isError = false;
 		new CommandBarController();
 		commandBarController.clear();
+	}
+
+	private void changeRedTheme() {
+		topBar.getStyleClass().clear();
+		hBar.getStyleClass().clear();
+		topBar.getStyleClass().add("topBar");
+		hBar.getStyleClass().add("toolBar");
+		pendingTableControl.getStylesheets().clear();
+		completeTableControl.getStylesheets().clear();
+		tabControl.getStylesheets().clear();
+		pendingTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+		completeTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+		tabControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+	}
+	
+	private void changeGreenTheme() {
+		topBar.getStyleClass().clear();
+		hBar.getStyleClass().clear();
+		topBar.getStyleClass().add("greenTopBar");
+		hBar.getStyleClass().add("greenToolBar");
+		pendingTableControl.getStylesheets().clear();
+		completeTableControl.getStylesheets().clear();
+		tabControl.getStylesheets().clear();
+		pendingTableControl.getStylesheets().add("/main/resources/styles/green.css");
+		completeTableControl.getStylesheets().add("/main/resources/styles/green.css");
+		tabControl.getStylesheets().add("/main/resources/styles/green.css");
+	}
+	
+	private void changeOrangeTheme() {
+		topBar.getStyleClass().clear();
+		hBar.getStyleClass().clear();
+		topBar.getStyleClass().add("orangeTopBar");
+		hBar.getStyleClass().add("orangeToolBar");
+		pendingTableControl.getStylesheets().clear();
+		completeTableControl.getStylesheets().clear();
+		tabControl.getStylesheets().clear();
+		pendingTableControl.getStylesheets().add("/main/resources/styles/orange.css");
+		completeTableControl.getStylesheets().add("/main/resources/styles/orange.css");
+		tabControl.getStylesheets().add("/main/resources/styles/orange.css");
+	}
+
+	private void changeBlueTheme() {
+		topBar.getStyleClass().clear();	    
+		topBar.getStyleClass().add("blueTopBar");		
+		hBar.getStyleClass().clear();
+		hBar.getStyleClass().add("blueToolBar");
+		pendingTableControl.getStylesheets().clear();
+		completeTableControl.getStylesheets().clear();
+		tabControl.getStylesheets().clear();
+		pendingTableControl.getStylesheets().add("/main/resources/styles/blue.css");
+		completeTableControl.getStylesheets().add("/main/resources/styles/blue.css");
+		tabControl.getStylesheets().add("/main/resources/styles/blue.css");
 	}
 
 	private void setFeedback(CommandBarController commandBarController, String type, String userInput) {
@@ -628,7 +667,7 @@ public class Main extends Application {
 		}
 	}
 
-	public void saveFilename(Button btnSave) {
+	public void moveToLocation(Button btnSave) {
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -638,7 +677,7 @@ public class Main extends Application {
 				fileChooser.getExtensionFilters().add(extFilter);
 				File saveFile = fileChooser.showSaveDialog(null);
 				if (saveFile != null) {
-					logic.saveFilename(saveFile.getAbsolutePath());
+					logic.moveToLocation(saveFile.getAbsolutePath());
 				}
 			}
 		});
