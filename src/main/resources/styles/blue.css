@@ -93,10 +93,10 @@
   
 }
 .list-cell{
-	-fx-border-color : 	#E1F5FE;
+	-fx-border-color : 	transparent;
 }
 #tasksDisplay {
-	-fx-background-color: #FCE4EC;
+	-fx-background-color: transparent;
 }
 
 /* Hide horizontal scrollbars */
@@ -140,7 +140,7 @@
 }
 
 .card .stackpane {
-	-fx-background-color: black;
+	-fx-background-color: transparent;
 }
 
 .card .percentage {

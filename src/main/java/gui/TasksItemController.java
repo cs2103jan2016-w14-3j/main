@@ -7,6 +7,8 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.scene.control.Label;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -37,6 +39,9 @@ public class TasksItemController extends BorderPane {
 	private Label labelDate;
 
 	@FXML
+	private Label firstLetter;
+	
+	@FXML
 	private Shape priorityColor;
 
 	@FXML
@@ -44,6 +49,9 @@ public class TasksItemController extends BorderPane {
 
 	@FXML
 	private VBox vbox;
+	
+	@FXML
+	private ImageView banner;
 
 	private static final String FILE_STATS_ITEM_FXML = "/main/resources/layouts/TasksItem.fxml";
 
@@ -79,22 +87,29 @@ public class TasksItemController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+		
+		//firstLetter.setText(String.valueOf(task.getTask().charAt(0)).toUpperCase());
+		firstLetter.setStyle("-fx-font-size: 40px; -font-text-fill:white;");
         if(count==999){
         	this.filename.setText(" " + task.getTask());
         }else{
-		this.filename.setText(" "+count+ " "+ task.getTask());
+		    this.filename.setText(" "+task.getTask());
+		    firstLetter.setText(String.valueOf(count));
         }
 		if(task.getStatus()== TASK_STATUS.OVERDUE){
 			System.out.println(task);
-			filename.setStyle("-fx-fill: #FF80AB;");
+			filename.setStyle("-fx-fill: #F50057;");
 		}
 
 		if(!task.getTime().isEmpty()){
 			this.labelDate.setText(showTime(task.getTime()));
-			labelDate.setStyle("-fx-background-color: transparent; -fx-padding: 5px;");
+			labelDate.setStyle("-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
 			if(task.getStatus()== TASK_STATUS.OVERDUE){
 				labelDate.setStyle("-fx-text-fill: #F50057;");
 				this.labelDate.setText(" [OVERDUE] "+showTime(task.getTime()));
+				this.banner.setImage(new Image("/main/resources/images/overdue.png"));
+				banner.setFitWidth(70);
+				banner.setPreserveRatio(true);
 			}
 			if(task.getStatus()== TASK_STATUS.COMPLETED){
 				labelDate.setStyle("-fx-text-fill: #76FF03;");
@@ -105,6 +120,8 @@ public class TasksItemController extends BorderPane {
 		//card.setPadding(Insets.EMPTY);
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT,
 				generateColour(task.getPriority().getType())));
+		
+		
 	}
 
 

@@ -122,7 +122,7 @@ public class Main extends Application {
 
 	private void checkIsTasksEmpty() throws Exception {
 		if (logic.displayPending().isEmpty()) {
-			tabControl.setUpcomingTab(new EmptyTableController());
+			tabControl.setUpcomingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
 			lblPending.setText(logic.displayPending().size() + " Pending Task");
 		} else {
 			tabControl.setUpcomingTab(pendingTableControl);
@@ -305,6 +305,7 @@ public class Main extends Application {
 		final Button btnHelp = new Button();
 		btnHelp.getStyleClass().add("helpButton");
 		btnHelp.setPadding(Insets.EMPTY);
+		showHelpPage(btnHelp);
 
 		final Button btnExit = new Button();
 		btnExit.getStyleClass().add("exitButton");
@@ -312,6 +313,16 @@ public class Main extends Application {
 		exit(btnExit);
 		sidePane.getChildren().addAll(profile, btnNew, btnLoad, btnSave, btnHelp, btnExit);
 		return sidePane;
+	}
+
+	private void showHelpPage(Button btnHelp) {
+		btnHelp.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+				tabControl.setUpcomingTab(new ImageView(new Image("/main/resources/images/help.png")));
+			}
+		});
+		
 	}
 
 	private void showTabs() {
@@ -349,6 +360,8 @@ public class Main extends Application {
 		} else if ((event.getCode() == KeyCode.TAB)) {
 			event.consume();
 			pendingTableControl.controlToList();
+		}else if ((event.getCode()== KeyCode.F5)){
+			checkIsTasksEmpty();
 		}
 	}
 
@@ -446,7 +459,7 @@ public class Main extends Application {
 
 		if (userInput.isEmpty()) {                        
 		}else if (userInput.equalsIgnoreCase("help")) {
-			tabControl.setUpcomingTab(new HelpDisplayController());
+			tabControl.setUpcomingTab(new ImageView(new Image("/main/resources/images/help.png")));
 			//notification(userInput);
 			historyLog.add(userInput);	
 			System.out.println("whyyyyy");
@@ -489,12 +502,6 @@ public class Main extends Application {
 			if (isError == false) {
 				setFeedback(commandBarController, "valid", userInput);
 			}
-		}
-		if (userInput.equalsIgnoreCase("help")) {
-			tabControl.setUpcomingTab(new HelpDisplayController());
-			notification(userInput);
-			historyLog.add(userInput);	
-			commandBarController.clear();
 		}
 		isError = false;
 		new CommandBarController();
@@ -711,19 +718,19 @@ public class Main extends Application {
 		});
 	}
 
-	private void notification(String userInput) {
-		String title = "Successfully ";
-		String message = userInput;
-		NotificationType notification = NotificationType.SUCCESS;
-
-		TrayNotification tray = new TrayNotification();
-		tray.setTitle(title);
-		tray.setMessage(message);
-		tray.setAnimationType(AnimationType.POPUP);
-		tray.setNotificationType(notification);
-		tray.showAndDismiss(Duration.seconds(2));
-
-	}
+//	private void notification(String userInput) {
+//		String title = "Successfully ";
+//		String message = userInput;
+//		NotificationType notification = NotificationType.SUCCESS;
+//
+//		TrayNotification tray = new TrayNotification();
+//		tray.setTitle(title);
+//		tray.setMessage(message);
+//		tray.setAnimationType(AnimationType.POPUP);
+//		tray.setNotificationType(notification);
+//		tray.showAndDismiss(Duration.seconds(2));
+//
+//	}
 
 	private void exit(Button btnExit) {
 		btnExit.setMnemonicParsing(true);

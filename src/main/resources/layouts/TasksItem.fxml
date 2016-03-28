@@ -15,18 +15,23 @@
 	<center>
 		<StackPane styleClass="cardBg">
 			<children>
-            <VBox fx:id="card" prefHeight="0.0" prefWidth="276.0" styleClass="card">
+            <VBox fx:id="card" prefHeight="70.0" prefWidth="500.0" styleClass="card">
                <children>
-                  <StackPane prefHeight="39.0" prefWidth="276.0" VBox.vgrow="ALWAYS">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-            							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="521.875" StackPane.alignment="CENTER_LEFT">
-                           <font>
-                              <Font name="Century Gothic" size="7.0" />
-                           </font>
-                        </Text>
+                        <StackPane prefHeight="39.0" prefWidth="416.0">
+                           <children>
+                  							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="427.125" StackPane.alignment="CENTER_LEFT">
+                                 <font>
+                                    <Font name="Century Gothic" size="7.0" />
+                                 </font>
+                              </Text>
+                           </children>
+                        </StackPane>
+                        <ImageView fx:id="banner" fitHeight="50.0" fitWidth="33.0" layoutX="425.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
-                  </StackPane>
-                  <StackPane alignment="TOP_LEFT" prefHeight="0.0" prefWidth="286.0">
+                  </AnchorPane>
+                  <StackPane alignment="TOP_LEFT" prefHeight="24.0" prefWidth="324.0">
                      <children>
                         <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
                            <font>
@@ -51,14 +56,23 @@
          </effect>
 		</StackPane>
 	</center>
-   <left>
-      <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="66.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="11.0" BorderPane.alignment="CENTER">
-         <effect>
-            <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
-         </effect>
-      </Rectangle>
-   </left>
    <effect>
       <DropShadow color="#598add" />
    </effect>
+   <left>
+      <StackPane prefHeight="30.0" prefWidth="46.0" BorderPane.alignment="CENTER">
+         <children>
+            <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="72.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="44.0">
+               <effect>
+                  <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
+               </effect>
+            </Rectangle>
+            <Label fx:id="firstLetter" prefHeight="85.0" prefWidth="23.0" text="L">
+               <font>
+                  <Font size="48.0" />
+               </font>
+            </Label>
+         </children>
+      </StackPane>
+   </left>
 </fx:root>

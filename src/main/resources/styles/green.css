@@ -93,7 +93,7 @@
   
 }
 .list-cell{
-	-fx-border-color : 	#E1F5FE;
+	-fx-border-color : 	transparent;
 }
 #tasksDisplay {
 	-fx-background-color: #FCE4EC;
@@ -176,6 +176,7 @@
 
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
+    -fx-background-color: transparent;
 }
 .tab-pane .tab
 {

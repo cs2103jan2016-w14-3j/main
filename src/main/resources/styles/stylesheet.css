@@ -55,6 +55,7 @@
 .lblTitle{
 	-fx-font-size:20;
 	-fx-text-fill:white;
+	-fx-font-weight:bold;
 	-fx-font-family:Roboto;
 }
 .minimiseApp {
