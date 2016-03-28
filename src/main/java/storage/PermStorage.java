@@ -65,7 +65,7 @@ public class PermStorage {
 			file = newFile;
 			reopenStream();
 		} catch (IOException e) {
-			System.err.println("Cannot save to file");
+			System.err.println("Cannot move to location");
 		}
 		dirController.moveToLocation(path);
 	}
@@ -75,6 +75,16 @@ public class PermStorage {
 		file = new File(path);
 		reopenStream();
 		dirController.loadFromFile(path);
+	}
+	
+	public void saveToLocation(String path) {
+		
+		File newFile = new File(path);
+		try {
+			Files.copy(file.toPath(), newFile.toPath());
+		} catch (IOException e) {
+			System.err.println("Cannot save to location");
+		}
 	}
 	
 	public boolean renameFile(String name) {

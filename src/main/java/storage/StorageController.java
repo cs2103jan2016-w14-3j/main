@@ -164,6 +164,12 @@ public class StorageController {
 		pendingTemp.loadFromFile(path);
 	}
 	
+	public void saveToLocation(String path) {
+		assert path != null;
+		
+		pendingTemp.saveToLocation(path);
+	}
+	
 	public Boolean renameFile(String name) {
 		assert name != null;
 		

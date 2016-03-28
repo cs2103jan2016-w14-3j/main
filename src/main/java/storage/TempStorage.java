@@ -142,6 +142,11 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 	}
+	
+	public void saveToLocation(String path) {
+		
+		permStorage.saveToLocation(path);
+	}
 
 	private ArrayList<Task> retrieveListFromFile() {
 		ArrayList<Task> list = permStorage.readFromFile();

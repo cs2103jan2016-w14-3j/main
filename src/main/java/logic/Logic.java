@@ -259,17 +259,18 @@ public class Logic {
 		storageController.editPendingTask(result.get(0), result.get(1));
 	}
 
-
-
+	public void moveToLocation(String path){	
+		//System.out.println("logic hereeee save file name "+ filename);
+		storageController.moveToLocation(path);
+	}
 	
 	public void loadFilename(String filename){	
 		//System.out.println("logic hereeee load file name "+ filename);
 		storageController.loadFromFile(filename);
 	}
-	
-	public void moveToLocation(String path){	
-		//System.out.println("logic hereeee save file name "+ filename);
-		storageController.moveToLocation(path);
+
+	public void saveToLocation(String path) {
+		storageController.saveToLocation(path);
 	}
 
 	public boolean isCommand(String commandWord) {
