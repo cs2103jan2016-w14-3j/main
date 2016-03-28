@@ -70,8 +70,7 @@ public class DirectoryController {
 			bufferedWriter.write(dir);
 			bufferedWriter.flush();
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			System.err.println("Error writing directory");
 		}
 	}
 	

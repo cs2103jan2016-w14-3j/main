@@ -26,6 +26,9 @@ public class PermStorage {
 
 	public PermStorage() {
 		
+		initialiseFile(new File("").getAbsolutePath() + "\\Completed Tasks.txt");
+		gson = new Gson();
+		taskList = new ArrayList<Task>();
 	}
 	
 	public PermStorage(DirectoryController dirController) {

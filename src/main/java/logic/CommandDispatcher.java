@@ -50,9 +50,15 @@ public class CommandDispatcher {
 
 		}
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)) {
-
+           
 		}
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
+			MoveCommandParser parser = new MoveCommandParser();
+			command.setParameters(parser.determineParameters
+					(command.getType(),command.getContent()));
+		}
+		else if (command.isCommand(COMMAND_TYPE.SAVE)) {
+			
 			MoveCommandParser parser = new MoveCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
@@ -109,6 +115,9 @@ public class CommandDispatcher {
 
 		else if (isCommand(COMMAND_TYPE.MOVE, firstWord)) {
 			return COMMAND_TYPE.MOVE;
+		}
+		else if (isCommand(COMMAND_TYPE.SAVE, firstWord)) {
+			return COMMAND_TYPE.SAVE;
 		}
 
 		else if (isCommand(COMMAND_TYPE.SORT, firstWord)) {

@@ -177,9 +177,11 @@ public class Logic {
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
-			Path path = Paths.get(command.getParameters()[TASK]);
+			moveToLocation(command.getParameters()[TASK]);
 		}
-		
+		else if (command.isCommand(COMMAND_TYPE.SAVE)) {
+			saveToLocation(command.getParameters()[TASK]);
+		}
 		else if (command.isCommand(COMMAND_TYPE.MARK)) {
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
