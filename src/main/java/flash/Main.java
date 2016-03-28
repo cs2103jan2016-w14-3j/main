@@ -236,7 +236,7 @@ public class Main extends Application {
 		hBar.getStyleClass().add("toolBar");
 
 		// sidebar button
-		lblTitle = new Label("Pending");
+		lblTitle = new Label("Pending Tasks");
 		
 		
 		lblTitle.getStyleClass().add("lblTitle");
@@ -386,9 +386,9 @@ public class Main extends Application {
 			@Override
 			public void handle(MouseEvent e) {
 				if(tabControl.getUpcomingTab().isSelected()){
-					lblTitle.setText("Pending");
+					lblTitle.setText("Pending Tasks");
 				}else if(tabControl.getCompleteTab().isSelected()){
-					lblTitle.setText("Completed");
+					lblTitle.setText("Completed Tasks");
 				}
 			}
 
@@ -596,8 +596,12 @@ public class Main extends Application {
 
 	public void populateList(ArrayList<Task> result) {
 		pendingTableControl.clearTask();
+		int count=1;
 		for (Task temp : result) {
-			pendingTableControl.addTask(temp);
+			if(result.size()==1){
+				count = 999;
+			}
+			pendingTableControl.addTask(temp,count++);
 		}
 	}
 
@@ -606,11 +610,12 @@ public class Main extends Application {
 			pendingTableControl.clearTask();
 			completeTableControl.clearTask();
 			try {
+				int count=1;
 				for (Task temp : logic.displayPending()) {
-					pendingTableControl.addTask(temp);
+					pendingTableControl.addTask(temp,count++);
 				}
 				for (Task temp : logic.displayComplete()) {
-					completeTableControl.addTask(temp);
+					completeTableControl.addTask(temp,count++);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

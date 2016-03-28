@@ -63,7 +63,7 @@ public class TasksItemController extends BorderPane {
 
 	private TASK_NATURE taskType;
 
-	public TasksItemController(Task task) {
+	public TasksItemController(Task task,int count) {
 		this.taskName = task.getTask();
 		//System.out.println(task.getPriority());
 		this.taskPriority = task.getPriority().getType();
@@ -79,9 +79,11 @@ public class TasksItemController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
-		this.filename.setText(" "+task.getTask());
-		
+        if(count==999){
+        	this.filename.setText(" " + task.getTask());
+        }else{
+		this.filename.setText(" "+count+ " "+ task.getTask());
+        }
 		if(task.getStatus()== TASK_STATUS.OVERDUE){
 			System.out.println(task);
 			filename.setStyle("-fx-fill: #FF80AB;");

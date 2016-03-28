@@ -67,8 +67,8 @@ public class TasksTableController extends BorderPane {
 		return tasksDisplay;
 	}
 
-	public void addTask(Task task) {
-		setTasksItem(task);
+	public void addTask(Task task, int count) {
+		setTasksItem(task,count);
 		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
@@ -80,8 +80,8 @@ public class TasksTableController extends BorderPane {
 	 * @param currentFile
 	 * @param currentNumLines
 	 */
-	private void setTasksItem(Task task) {	
-		items.add(new TasksItemController(task));  
+	private void setTasksItem(Task task,int count) {	
+		items.add(new TasksItemController(task,count));  
 
 	}
 
