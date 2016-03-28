@@ -273,7 +273,7 @@ public class AddCommandParser extends Parser {
 	private boolean isDurationTask(String timeSegment) {
 		if (timeParser.parse(timeSegment).size() == 2 &&
 				(containsWholeWord(timeSegment, DURATION_FLAG_FROM)
-				|| containsWholeWord(timeSegment, DURATION_FLAG_TO))) {
+						|| containsWholeWord(timeSegment, DURATION_FLAG_TO))) {
 			//System.out.println("HERE");
 			return true;
 		}
@@ -312,6 +312,7 @@ public class AddCommandParser extends Parser {
 				}
 				content = EVENT_FLAG_ON + WHITE_SPACE + content;
 			}
+
 			else {
 				String[] segments = content.split(WHITE_SPACE);
 				int len = segments.length;
@@ -325,19 +326,34 @@ public class AddCommandParser extends Parser {
 				if (isValidTimeIdentifier(segments[index - 1])) {
 					return content;
 				}
-				else if (index + 1 < len && 
-						isValidTimeIdentifier(segments[index + 1])) {
-					String newContent = EMPTY_STRING;
-					for (int i = 0; i < index; i++) {
-						newContent += segments[i] + WHITE_SPACE;
+				else {
+
+					if (index + 1 <= len && 
+							!isValidTimeIdentifier(segments[index + 1])) {
+						String newContent = EMPTY_STRING;
+						for (int i = 0; i < index; i++) {
+							newContent += segments[i] + WHITE_SPACE;
+						}
+						newContent += EVENT_FLAG_ON + WHITE_SPACE + segments[index];
+						for (int i = index + 1; i < len; i++) {
+							newContent += WHITE_SPACE + segments[i];
+						}
+						return newContent;
 					}
-					newContent += segments[index + 1] + WHITE_SPACE + segments[index];
-					if (len > index + 2) {
+
+					if (index + 1 < len && 
+							isValidTimeIdentifier(segments[index + 1])) {
+						String newContent = EMPTY_STRING;
+						for (int i = 0; i < index; i++) {
+							newContent += segments[i] + WHITE_SPACE;
+						}
+						newContent += segments[index + 1] + WHITE_SPACE + segments[index];
 						for (int i = index + 2; i < len; i++) {
 							newContent += WHITE_SPACE + segments[i];
 						}
+
+						return newContent;
 					}
-					return newContent;
 				}
 			}
 		}
@@ -348,6 +364,7 @@ public class AddCommandParser extends Parser {
 		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
 		content = StringUtils.replace(content, TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
 		content = addPrepositionIfApplicable(content);
+		//System.out.println(content);
 		int time = getStartingIndexOfIdentifier(content);
 		int priority = getStartingIndexOfPriority(content);
 		int task = getStartingIndexOfTask(content, time, priority);
