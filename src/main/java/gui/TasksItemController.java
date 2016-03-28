@@ -73,7 +73,6 @@ public class TasksItemController extends BorderPane {
 
 	public TasksItemController(Task task,int count) {
 		this.taskName = task.getTask();
-		//System.out.println(task.getPriority());
 		this.taskPriority = task.getPriority().getType();
 		this.taskTime = showTime(task.getTime());
 		this.taskType = task.getType();
@@ -87,17 +86,16 @@ public class TasksItemController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
-		//firstLetter.setText(String.valueOf(task.getTask().charAt(0)).toUpperCase());
+
 		firstLetter.setStyle("-fx-font-size: 40px; -font-text-fill:white;");
         if(count==999){
         	this.filename.setText(" " + task.getTask());
+        	firstLetter.setText("1");
         }else{
 		    this.filename.setText(" "+task.getTask());
 		    firstLetter.setText(String.valueOf(count));
         }
 		if(task.getStatus()== TASK_STATUS.OVERDUE){
-			System.out.println(task);
 			filename.setStyle("-fx-fill: #F50057;");
 		}
 

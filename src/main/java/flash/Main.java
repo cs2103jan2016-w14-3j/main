@@ -76,6 +76,23 @@ public class Main extends Application {
 	private static final String EMPTY_STRING = "";
 	private static final String SPLIT = "\\s+";
 	private static final int COMMAND_INDEX = 0;
+	private static final String ADD_COMMAND = "add";
+	private static final String DELETE_COMMAND = "delete";
+	private static final String SEARCH_COMMAND = "search";
+	private static final String MOVE_COMMAND = "move";
+	private static final String SORT_COMMAND = "sort";
+	private static final String EDIT_COMMAND = "edit";
+	private static final String UNDO_COMMAND = "undo";
+	private static final String HELP_COMMAND = "help";
+	private static final String MARK_COMMAND = "mark";
+	private static final String UNMARK_COMMAND = "unmark";
+	private static final String SWITCH_COMMAND = "switch";
+	private static final String REDO_COMMAND = "redo";
+	private static final String THEME_COMMAND = "theme";
+	private static final String OPEN_COMMAND = "open";
+	private static final String SAVE_COMMAND = "save";
+	private static final String CLEARUPCOMING_COMMAND = "clearUpcoming";
+	private static final String CLEARCOMPLETE_COMMAND = "clearComplete";
 
 	private int pointer;
 	private boolean isFeedback = false;
@@ -462,22 +479,28 @@ public class Main extends Application {
 			tabControl.setUpcomingTab(new ImageView(new Image("/main/resources/images/help.png")));
 			//notification(userInput);
 			historyLog.add(userInput);	
-			System.out.println("whyyyyy");
+			setFeedback(commandBarController, "valid", userInput);
 		}else if(userInput.equalsIgnoreCase("theme blue")){
 			changeBlueTheme();
+			setFeedback(commandBarController, "valid", userInput);
 		}else if(userInput.equalsIgnoreCase("theme red")){
 			changeRedTheme();
+			setFeedback(commandBarController, "valid", userInput);
 		}else if(userInput.equalsIgnoreCase("theme orange")){
 			changeOrangeTheme();
+			setFeedback(commandBarController, "valid", userInput);
 		}else if(userInput.equalsIgnoreCase("theme green")){
 			changeGreenTheme();
+			setFeedback(commandBarController, "valid", userInput);
 		}else if(userInput.equalsIgnoreCase("switch")){
 			if(tabControl.getUpcomingTab().isSelected()){
 			   tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
 			   lblTitle.setText("Completed");
+			   setFeedback(commandBarController, "valid", userInput);
 			}else{
 			   tabControl.getTabPane().getSelectionModel().select(tabControl.getUpcomingTab());
 			   lblTitle.setText("Pending");
+			   setFeedback(commandBarController, "valid", userInput);
 			}
 		}
 		else {
@@ -564,22 +587,59 @@ public class Main extends Application {
 		assert commandBarController != null;
 		int i = 1;
 		isFeedback = true;
+		
 		if (userInput.indexOf(' ') != -1) {
 			i = userInput.indexOf(' ');
 			String firstWord = userInput.substring(0, i);
 			String subString = userInput.substring(i + 1);
 			if (type.equals("error")) {
-
-				commandBarController.setFeedback("Error" + "<" + subString + ">", Color.RED);
-				// System.out.println(subString);
+				commandBarController.setFeedback("Invalid Command" + ": " + subString, Color.RED);
 				return;
 			} else {
-				commandBarController.setFeedback("Successfully " + firstWord + "ed " + "<" + subString + ">",
-						Color.GREEN);
+				if(isTasksCommand(firstWord)){
+					if(firstWord.equalsIgnoreCase(DELETE_COMMAND)){
+						commandBarController.setFeedback("Task has been successfully " + firstWord + "d" + ": " + subString,Color.GREEN);
+					}
+				     commandBarController.setFeedback("Task has been successfully " + firstWord + "ed" + ": " + subString,Color.GREEN);
+				}else if(firstWord.equalsIgnoreCase(SORT_COMMAND)){
+					commandBarController.setFeedback("Task has been successfully " + firstWord + "ed " + "by " + subString,Color.GREEN);
+				}else if(firstWord.equalsIgnoreCase(OPEN_COMMAND)||firstWord.equalsIgnoreCase(SAVE_COMMAND)||firstWord.equalsIgnoreCase(MOVE_COMMAND)){
+					commandBarController.setFeedback("File has been successfully " + firstWord + "ed ",Color.GREEN);
+				}else if(firstWord.equalsIgnoreCase(THEME_COMMAND)){
+					commandBarController.setFeedback(subString +" "+ firstWord + " has been activated",Color.GREEN);
+			    }else{
+			    	commandBarController.setFeedback("Invalid Command", Color.RED);
+			    }
 			}
 		} else {
-			commandBarController.setFeedback("  Successfully " + userInput + "ed   ", Color.GREEN);
+			if(userInput.equalsIgnoreCase(UNDO_COMMAND)){
+				 commandBarController.setFeedback("Previous command has been undone",Color.GREEN);
+			}
+			else if(userInput.equalsIgnoreCase(REDO_COMMAND)){
+				commandBarController.setFeedback("Previous Change has been restored",Color.GREEN);
+			}
+			else if(userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)||userInput.equalsIgnoreCase(CLEARCOMPLETE_COMMAND)){
+				commandBarController.setFeedback("All tasks have been cleared",Color.GREEN);
+			}
+			else if(userInput.equalsIgnoreCase(SWITCH_COMMAND)){
+				if(tabControl.getUpcomingTab().isSelected()){
+					commandBarController.setFeedback("Switched to pending tab",Color.GREEN);
+				}else if(tabControl.getCompleteTab().isSelected()){
+					commandBarController.setFeedback("Switched to completed tab",Color.GREEN);
+		     	}
+			}else{
+				commandBarController.setFeedback("Invalid Command", Color.RED);
+			}
 		}
+	}
+	
+	private boolean isTasksCommand(String firstWord){
+		if(firstWord.equalsIgnoreCase(MARK_COMMAND)||firstWord.equalsIgnoreCase(UNMARK_COMMAND)||firstWord.equalsIgnoreCase(ADD_COMMAND)
+				||firstWord.equalsIgnoreCase(DELETE_COMMAND)||firstWord.equalsIgnoreCase(EDIT_COMMAND)){
+			return true;
+		}
+		return false;
+		
 	}
 
 	// Method that returns the first word

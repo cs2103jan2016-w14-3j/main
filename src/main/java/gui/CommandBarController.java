@@ -2,37 +2,39 @@ package main.java.gui;
 
 import java.io.IOException;
 
-
-
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
-
+import javafx.scene.Node;
 import javafx.scene.control.Label;
 import javafx.scene.control.TextField;
 import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.util.Duration;
 import main.java.flash.Main;
+import javafx.animation.FadeTransition;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
-
-
-
 
 public class CommandBarController extends BorderPane {
 
-
 	@FXML
-	private Label feedback;	
+	private Label feedback;
 	@FXML
 	private TextField commandBar;
-	
+
 	private Main mainApp;
+	private Timeline feedbackTimeline;
 	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/CommandBar.fxml";
+	private static final int FADE_IN_TIME = 1000;
+	private static final int FADE_OUT_TIME = 1000;
+	private static final int FEEDBACK_DISPLAY = 3;
 
 	public CommandBarController(Main mainApp) {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(COMMAND_BAR_LAYOUT_FXML));
@@ -43,10 +45,11 @@ public class CommandBarController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		
+
 		search();
 		this.mainApp = mainApp;
 		commandBar.getStyleClass().add("default-commandBar");
+		feedbackTimeline = new Timeline();
 	}
 
 	public CommandBarController() {
@@ -60,82 +63,103 @@ public class CommandBarController extends BorderPane {
 		}
 		search();
 		commandBar.getStyleClass().add("default-commandBar");
+		feedbackTimeline = new Timeline();
 	}
 
 	@FXML
 	public void onKeyPress(KeyEvent event) throws Exception {
-		
+
 		mainApp.handleKeyPress(this, event, commandBar.getText());
 	}
 
 	public void clear() {
-		commandBar.clear();	
+		commandBar.clear();
 		commandBar.getStyleClass().add("default-commandBar");
 	}
-	
-	public TextField getCommandBar(){
+
+	public TextField getCommandBar() {
 		return commandBar;
 	}
 
-	
-	public void setFeedback(String feedbackText, Color color) {
-		feedback.setText(feedbackText);
-		feedback.setTextFill(color);
-		//commandBar.setEffect(new DropShadow(15.65,color));
-		
+	public void updateUserInput(String newInput) {
+		commandBar.setText(newInput);
+		commandBar.end();
 	}
 
-	public void updateUserInput(String newInput) {
-        commandBar.setText(newInput);
-        commandBar.end();
-    }
-	
-	private void search(){
-		// Handle TextField text changes.
-//		commandBar.textProperty().addListener((observable, oldValue, newValue) -> {
-//			try {
-//				mainApp.handleSearch(oldValue, newValue);
-//			} catch (Exception e) {
-//				e.printStackTrace();
-//			}
-//		});
-		
+	private void search() {
+
 		commandBar.textProperty().addListener(new ChangeListener<Object>() {
 			@Override
-			public void changed(ObservableValue<?> observable,
-					Object oldValue, Object newValue) {
-			Platform.runLater(() -> {
-				try {
-//					System.out.println("old value: " + oldValue);
-//					System.out.println("new value: " + newValue);
-					mainApp.trySearch((String)oldValue, (String)newValue);
-					mainApp.showColourCommand((String)oldValue, (String)newValue);
-				} catch (Exception e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				} 	
-			});
-	   	}
+			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
+				Platform.runLater(() -> {
+					try {
+						mainApp.trySearch((String) oldValue, (String) newValue);
+						mainApp.showColourCommand((String) oldValue, (String) newValue);
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				});
+			}
 		});
 
 	}
-	
-	public void getFocus (){
+
+	public void getFocus() {
 		commandBar.requestFocus();
 		commandBar.positionCaret(0);
 		commandBar.selectAll();
 	}
 
 	public void setText(String taskname) {
-		// TODO Auto-generated method stub
-		commandBar.setText( taskname );
+		commandBar.setText(taskname);
 		commandBar.requestFocus();
 	}
-	
-	public void setBgColour(String colour){
+
+	public void setBgColour(String colour) {
 		commandBar.getStyleClass().add(colour);
 	}
-	
-	
+
+	public void setFeedback(String feedbackText, Color color) {
+		FadeTransition fadeIn = startFadeIn(feedback, FADE_IN_TIME);
+		FadeTransition fadeOut = startFadeOut(feedback, FADE_OUT_TIME);
+		feedback.setTextFill(color);
+		feedbackTimeline.stop();
+		feedbackTimeline = startTimeline(feedbackText, fadeIn, fadeOut);
+		feedbackTimeline.play();
+	}
+
+	private FadeTransition startFadeIn(Node node, int duration) {
+		FadeTransition fadeIn = new FadeTransition(new Duration(duration));
+		fadeIn.setNode(node);
+		fadeIn.setToValue(1);
+		return fadeIn;
+	}
+
+	private FadeTransition startFadeOut(Node node, int duration) {
+		FadeTransition fadeOut = new FadeTransition(new Duration(duration));
+		fadeOut.setNode(node);
+		fadeOut.setToValue(0);
+		return fadeOut;
+	}
+
+	private Timeline startTimeline(String feedbackText, FadeTransition fadeIn, FadeTransition fadeOut) {
+		return new Timeline(new KeyFrame(new Duration(1), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				setFeedbackLabel(feedbackText);
+				fadeIn.play();
+			}
+		}), new KeyFrame(Duration.seconds(FEEDBACK_DISPLAY), new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent event) {
+				fadeOut.play();
+			}
+		}));
+	}
+
+	private void setFeedbackLabel(String feedbackText) {
+		feedback.setOpacity(0);
+		feedback.setText(feedbackText);
+	}
 
 }
