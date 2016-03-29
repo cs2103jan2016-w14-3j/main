@@ -58,7 +58,7 @@ public class Logic {
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
-		//System.out.println(command.getType() + "hwllo");
+		//System.out.println(command.getType() + "hello");
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
@@ -117,19 +117,19 @@ public class Logic {
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_FLOATING)){
 			//System.out.println("clear pending");
 			storageController.clearFloatingTasks();
-			result = storageController.displayFloatingTasks();
+			result = storageController.displayPendingTasks();
 		}
 		
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)){
 			//System.out.println("clear pending");
 			storageController.clearUpcomingTasks();
-			result = storageController.displayUpcomingTasks();
+			result = storageController.displayPendingTasks();
 		}
 		
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_OVERDUE)){
 			//System.out.println("clear pending");
 			storageController.clearOverdueTasks();
-			result = storageController.displayOverdueTasks();
+			result = storageController.displayPendingTasks();
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)){
@@ -266,20 +266,9 @@ public class Logic {
 	public void delete(Task task) throws Exception {
 		storageController.deletePendingTask(task);
 	}
-	public ArrayList<Task> displayAll()throws Exception{
-		ArrayList<Task> result = storageController.displayPendingTasks();
-		return result;
-	}
+	
 	public ArrayList<Task> displayPending()throws Exception{
-		ArrayList<Task> result = storageController.displayUpcomingTasks();
-		return result;
-	}
-	public ArrayList<Task> displayFloating()throws Exception{
-		ArrayList<Task> result = storageController.displayFloatingTasks();
-		return result;
-	}
-	public ArrayList<Task> displayOverdue()throws Exception{
-		ArrayList<Task> result = storageController.displayOverdueTasks();
+		ArrayList<Task> result = storageController.displayPendingTasks();
 		return result;
 	}
 
@@ -321,18 +310,18 @@ public class Logic {
 	}
 	
 
-	public ArrayList<Task> handleSearchPending(String oldValue, String newValue, String taskStatus) throws Exception {
+	public ArrayList<Task> handleSearchPending(String oldValue, String newValue) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);
-		searchResult = storageController.searchMatchPending(newValue,taskStatus);	
+		searchResult = storageController.searchMatchPending(newValue);	
 		return searchResult;
 	}
 
 	
-	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue, String taskStatus) throws Exception {
+	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);
-		searchResultCompleted = storageController.searchMatchCompleted(newValue,taskStatus);	
+		searchResultCompleted = storageController.searchMatchCompleted(newValue);	
 		return searchResultCompleted;
 	}
 	

@@ -34,18 +34,6 @@ public class StorageController {
 		return pendingTemp.displayTemp();
 	}
 	
-	public ArrayList<Task> displayUpcomingTasks() {
-		return pendingTemp.displayUpcoming();
-	}
-	
-	public ArrayList<Task> displayFloatingTasks() {
-		return pendingTemp.displayFloating();
-	}
-	
-	public ArrayList<Task> displayOverdueTasks() {
-		return pendingTemp.displayOverdue();
-	}
-	
 	public ArrayList<Task> displayCompletedTasks() {
 		return completedTemp.displayTemp();
 	}
@@ -176,12 +164,12 @@ public class StorageController {
 		}
 	}
 	
-	public ArrayList<Task> searchMatchPending(String newValue, String taskStatus) {
-		return pendingTemp.searchMatch(newValue, taskStatus);
+	public ArrayList<Task> searchMatchPending(String newValue) {
+		return pendingTemp.searchMatch(newValue);
 	}
 	
-	public ArrayList<Task> searchMatchCompleted(String newValue, String taskStatus) {
-		return completedTemp.searchMatch(newValue, taskStatus);
+	public ArrayList<Task> searchMatchCompleted(String newValue) {
+		return completedTemp.searchMatch(newValue);
 	}
 	
 	public void moveToLocation(String path) {
