@@ -10,14 +10,71 @@
 
 <fx:root prefHeight="558.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <StackPane prefHeight="150.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+      <StackPane prefHeight="495.0" prefWidth="601.0" BorderPane.alignment="CENTER">
          <children>
-            <TabPane fx:id="tabPane" prefHeight="558.0" prefWidth="558.0" tabClosingPolicy="UNAVAILABLE">
-              <tabs>
-                <Tab id="upcomingTab" fx:id="upcomingTab" text="Pending Tasks" />
-                <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
-              </tabs>
-            </TabPane>
+            <AnchorPane prefHeight="415.0" prefWidth="601.0">
+               <children>
+                  <TabPane fx:id="tabPane" prefHeight="531.0" prefWidth="568.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab id="allTab" fx:id="allTab" text="All Tasks" />
+                        <Tab fx:id="floatingTab" text="Floating Tasks" />
+                      <Tab id="upcomingTab" fx:id="upcomingTab" text="Pending Tasks" />
+                        <Tab fx:id="overdueTab" text="Overdue Tasks" />
+                      <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
+                    </tabs>
+                  </TabPane>
+                  <Circle fill="#ff1f1f" layoutX="108.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="allNotify" layoutX="101.0" layoutY="1.0" prefHeight="20.0" prefWidth="19.0" text="00" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fill="#ff1f1f" layoutX="220.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="floatingNotify" layoutX="212.0" layoutY="1.0" prefHeight="20.0" prefWidth="19.0" text="00" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fill="#ff1f1f" layoutX="327.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="pendingNotify" layoutX="319.0" layoutY="-1.0" prefHeight="23.0" prefWidth="17.0" text="00" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fill="#ff1f1f" layoutX="438.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="overdueNotify" layoutX="431.0" prefHeight="22.0" prefWidth="21.0" text="00" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fill="#ff1f1f" layoutX="547.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="completeNotify" layoutX="539.0" layoutY="-1.0" prefHeight="23.0" prefWidth="18.0" text="00" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
          </children>
       </StackPane>
    </center>

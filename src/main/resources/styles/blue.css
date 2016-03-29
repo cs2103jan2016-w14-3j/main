@@ -29,18 +29,33 @@
 }
 
 .topBar{
-	-fx-background-color: #3F51BF;
+	-fx-background-color: #2e569f;
 }
 .blueToolBar{
-	-fx-background-color: #4294DE;
+	-fx-background-color: #303F9F;
 }
 
 .blueTopBar{
-	-fx-background-color: #6BA5E7;
+	-fx-background-color: #2e569f;
+}
+.orangeToolBar{
+	-fx-background-color: #F57C00;
+}
+
+.orangeTopBar{
+	-fx-background-color: #FF9800;
+}
+.greenToolBar{
+	-fx-background-color: #388E3C;
+}
+
+.greenTopBar{
+	-fx-background-color: #4CAF50;
 }
 .lblTitle{
 	-fx-font-size:20;
 	-fx-text-fill:white;
+	-fx-font-weight:bold;
 	-fx-font-family:Roboto;
 }
 .minimiseApp {
@@ -80,22 +95,15 @@
 #setting{
 	 -fx-background-color: transparent;
 }
-#tasksDisplay .list-cell { 
-	-fx-background-color:white; 
-}
-.blue{
-	-fx-background-color:#E3F2FD; 
- }
+.list-cell { -fx-background-color: transparent; /* 1 */ }
 
-
-#tasksDisplay .list-cell:selected:focused, .task-cell:filled:selected {
+.list-cell:selected:focused, .task-cell:filled:selected {
   -fx-background-color: #BBDEFB;
+  -fx-font-family:Roboto;
   
 }
-.list-cell{
-	-fx-border-color : 	transparent;
-}
-#tasksDisplay {
+
+#tasksDisplay.list-cell {
 	-fx-background-color: transparent;
 }
 
@@ -117,9 +125,9 @@
 
 .card {
 	-fx-padding:  3 0 0 10 px;
+	-fx-background-color: white;
 	-fx-border-color : transparent;
 }
-
 
 .card .filename {
 	-fx-font-size: 16px;
@@ -128,11 +136,6 @@
 
 .card .date {
 	-fx-font-family:Roboto;
-	-fx-background-color:
-        -fx-focus-color,
-        -fx-control-inner-background,
-        -fx-faint-focus-color,
-        linear-gradient(from 0px 0px to 0px 5px, derive(-fx-control-inner-background, -9%), -fx-control-inner-background);
 }
 
 .card .circle {
@@ -140,14 +143,12 @@
 }
 
 .card .stackpane {
-	-fx-background-color: transparent;
+	-fx-background-color: black;
 }
 
 .card .percentage {
 	-fx-font-size: 14px;
-	-fx-font-weight: bold;
 	-fx-stroke-width: 0;
-	-fx-font-family:Roboto;
 }
 
 .bad{
@@ -171,11 +172,13 @@
 
 .tab-pane
 {
-    -fx-tab-min-width:90px;
+    -fx-tab-min-width:95px;
+    -fx-tab-max-width:95px;
 }
 
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
+    -fx-border-color:#BBDEFB;
 }
 .tab-pane .tab
 {
@@ -189,10 +192,14 @@
    -fx-background-color: #BBDEFB;
    -fx-border-color:transparent;
 }
+.tab:selected:focused, .tab:filled:selected {
+  -fx-background-color: #CCFF90;
+  
+}
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
-    -fx-font-size: 12px;
+    -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-text-fill: #96b946;
     -fx-font-family:Roboto;

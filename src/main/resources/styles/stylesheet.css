@@ -172,7 +172,7 @@
 
 .tab-pane
 {
-    -fx-tab-min-width:90px;
+    -fx-tab-min-width: 50px;
 }
 
 .tab{
@@ -197,7 +197,7 @@
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
-    -fx-font-size: 12px;
+    -fx-font-size: 6px;
     -fx-font-weight: bold;
     -fx-text-fill: #96b946;
     -fx-font-family:Roboto;

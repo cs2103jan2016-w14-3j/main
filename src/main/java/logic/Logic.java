@@ -248,15 +248,24 @@ public class Logic {
 	public void delete(Task task) throws Exception {
 		storageController.deletePendingTask(task);
 	}
-	public ArrayList<Task> displayPending()throws Exception{
-
+	public ArrayList<Task> displayAll()throws Exception{
 		ArrayList<Task> result = storageController.displayPendingTasks();
-
+		return result;
+	}
+	public ArrayList<Task> displayPending()throws Exception{
+		ArrayList<Task> result = storageController.displayUpcoming();
+		return result;
+	}
+	public ArrayList<Task> displayFloating()throws Exception{
+		ArrayList<Task> result = storageController.displayFloating();
+		return result;
+	}
+	public ArrayList<Task> displayOverdue()throws Exception{
+		ArrayList<Task> result = storageController.displayOverdue();
 		return result;
 	}
 
 	public ArrayList<Task> displayComplete()throws Exception{
-
 		ArrayList<Task> result = storageController.displayCompletedTasks();
 		return result;
 	}
@@ -294,17 +303,17 @@ public class Logic {
 	}
 	
 
-	public ArrayList<Task> handleSearchPending(String oldValue, String newValue) throws Exception {
+	public ArrayList<Task> handleSearchPending(String oldValue, String newValue, String taskStatus) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);
-		searchResult = storageController.searchMatchPending(newValue);	
+		searchResult = storageController.searchMatchPending(newValue,taskStatus);	
 		return searchResult;
 	}
 
-	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) throws Exception {
+	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue, String taskStatus) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);
-		searchResultCompleted = storageController.searchMatchCompleted(newValue);	
+		searchResultCompleted = storageController.searchMatchCompleted(newValue,taskStatus);	
 		return searchResultCompleted;
 	}
 	
