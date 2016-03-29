@@ -1,7 +1,10 @@
 package main.java.storage;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 
+import main.java.data.TASK_STATUS;
 import main.java.data.Task;
 
 public class StorageController {
@@ -13,14 +16,12 @@ public class StorageController {
 	private PendingTaskTempStorage pendingTemp;
 	private CompletedTaskTempStorage completedTemp;
 	private PendingTaskPermStorage pendingPerm;
-	private CompletedTaskPermStorage completedPerm;
 	private int lastAction;
 
 	public StorageController() {	
 		pendingTemp = new PendingTaskTempStorage();
 		completedTemp = new CompletedTaskTempStorage();
 		pendingPerm = new PendingTaskPermStorage();
-		completedPerm = new CompletedTaskPermStorage();
 	}
 
 	public void addTask(Task task) {
@@ -105,15 +106,19 @@ public class StorageController {
 
 	public void moveTaskToComplete(Task task) {
 		assert task != null;
+		
+		task.setStatus(TASK_STATUS.COMPLETED);
 		pendingTemp.deleteFromTemp(task);
-		completedTemp.writeToTemp(task);
+		completedTemp.writeToTemp(task);	
 		lastAction = BOTH_TYPE;
 	}
 	
 	public void moveTaskToPending(Task task) {
 		assert task != null;
+		
+		task.setStatus(determineStatus(task.getTime()));
 		completedTemp.deleteFromTemp(task);
-		pendingTemp.writeToTemp(task);
+		pendingTemp.writeToTemp(task);		
 		lastAction = BOTH_TYPE;
 	}
 	
@@ -175,5 +180,19 @@ public class StorageController {
 		
 		Boolean isSuccess = pendingPerm.renameFile(name);
 		return isSuccess;
+	}
+	
+	private TASK_STATUS determineStatus(List<Date> dates) {
+		int size = dates.size();
+		
+		if (size == 0) {
+			return TASK_STATUS.FLOATING;
+		}
+		else if (dates.get(size - 1).before(new Date())) {
+			return TASK_STATUS.OVERDUE;
+		}
+		else {
+			return TASK_STATUS.UPCOMING;
+		}
 	}
 }
