@@ -5,7 +5,8 @@ public enum COMMAND_TYPE {
 	ADD("add"), EDIT("edit"), DELETE("delete"), UNDO("undo"), 
 	REDO("redo"),SORT("sort"), MOVE("move"), SEARCH("search"), 
 	MARK("mark"), UNMARK("unmark"),CLEAR_UPCOMING("clearUpcoming"), 
-	CLEAR_COMPLETE("clearComplete"),REFRESH("refresh"),
+	CLEAR_COMPLETE("clearComplete"),CLEAR_OVERDUE("clearOverdue"), 
+	CLEAR_FLOATING("clearFloating"),CLEAR_ALL("clearAll"),REFRESH("refresh"),
 	SHOW_COMPLETE("show complete"),SHOW_UPCOMING("show upcoming"),
 	SWITCH("switch"), SAVE("save");
 	

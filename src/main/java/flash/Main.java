@@ -165,6 +165,7 @@ public class Main extends Application {
 			int overdueCount = 0;
 			int pendingCount=0;
 			int floatingCount = 0;
+			
 //all
 			allTableControl.clearTask();
 			tabControl.setAllTab(allTableControl);
@@ -192,12 +193,17 @@ public class Main extends Application {
 					
 			lblPending.setText(logic.displayAll().size() + " Pending Tasks");
 		}
+		
 		if (logic.displayComplete().isEmpty()) {
 			//if complete is empty
 			tabControl.setEmptyCompleteTab();
 			lblCompleted.setText(logic.displayComplete().size() + " Completed Task");
 		} else {
+			int completeCount = 0;
 			tabControl.setCompleteTab(completeTableControl);
+			for (Task temp : logic.displayComplete()) {
+				overdueTableControl.addTask(temp,++completeCount);
+			}
 			lblCompleted.setText(logic.displayComplete().size() + " Completed Tasks");
 		}
 		
@@ -562,6 +568,12 @@ public class Main extends Application {
 					userInput = userInput + "Upcoming";
 				} else if (tabControl.getCompleteTab().isSelected()) {
 					userInput = userInput + "Complete";
+				} else if (tabControl.getOverdueTab().isSelected()) {
+					userInput = userInput + "Overdue";
+				} else if (tabControl.getFloatingTab().isSelected()) {
+					userInput = userInput + "Floating";
+				} else if (tabControl.getAllTab().isSelected()) {
+						userInput = userInput + "All";
 				}
 			}
 			try {
@@ -712,7 +724,7 @@ public class Main extends Application {
 	}
 
 	public void populateList(ArrayList<Task> result,TasksTableController tableControl, String taskStatus) {
-		tableControl.clearTask();
+		
 		int count=1;
 		for (Task temp : result) {
 			if(result.size()==1){
@@ -735,37 +747,49 @@ public class Main extends Application {
 
 		// TODO Auto-generated method stub
 		try {
-			if ((tabControl.getAllTab().isSelected()) && isEdit || isDelete || isSearch || isMark) {
+			if ((tabControl.getAllTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
 				searchResult = logic.handleSearchPending(oldValue, newValue,"all");
 				if (isEdit || isDelete || isSearch) {
+					allTableControl.clearTask();
 					populateList(searchResult,allTableControl,"all");
 				}else if(isMark){
+					allTableControl.clearTask();
+					completeTableControl.clearTask();
 					populateList(searchResult,allTableControl,"all");
 					populateList(searchResult,completeTableControl,"all");
 				}
-			}else if ((tabControl.getPendingTab().isSelected()) && isEdit || isDelete || isSearch || isMark ) {
+			}else if ((tabControl.getPendingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark ) {
 				searchResult = logic.handleSearchCompleted(oldValue, newValue, "upcoming");
 				if (isEdit || isDelete || isSearch) {
+					pendingTableControl.clearTask();
 					populateList(searchResult,pendingTableControl, "upcoming");
 				}else if(isMark){
+					pendingTableControl.clearTask();
+					completeTableControl.clearTask();
 					populateList(searchResult,pendingTableControl, "upcoming");
 					populateList(searchResult,completeTableControl, "upcoming");
 				}
 			}
-			else if ((tabControl.getFloatingTab().isSelected()) && isEdit || isDelete || isSearch || isMark ) {
+			else if ((tabControl.getFloatingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
 				searchResult = logic.handleSearchCompleted(oldValue, newValue,"floating");
 				if (isEdit || isDelete || isSearch) {
+					floatingTableControl.clearTask();
 					populateList(searchResult,floatingTableControl,"floating");
 				}else if(isMark){
+					floatingTableControl.clearTask();
+					completeTableControl.clearTask();
 					populateList(searchResult,floatingTableControl,"floating");
 					populateList(searchResult,completeTableControl,"floating");
 				}
 			}
-			else if ((tabControl.getOverdueTab().isSelected()) && isEdit || isDelete || isSearch || isMark ) {
+			else if ((tabControl.getOverdueTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
 				searchResult = logic.handleSearchCompleted(oldValue, newValue,"overdue");
 				if (isEdit || isDelete || isSearch) {
+					overdueTableControl.clearTask();
 					populateList(searchResult,overdueTableControl,"overdue");
 				}else if(isMark){
+					overdueTableControl.clearTask();
+					completeTableControl.clearTask();
 					populateList(searchResult,overdueTableControl,"overdue");
 					populateList(searchResult,completeTableControl,"overdue");
 				}
@@ -773,7 +797,8 @@ public class Main extends Application {
 			else if ((tabControl.getCompleteTab().isSelected()) &&  isDelete || isSearch || isUnmark ) {
 				searchResult = logic.handleSearchCompleted(oldValue,newValue,"completed");
 				if (isDelete || isSearch) {
-					populateList(searchResult,completeTableControl,"overdue");
+					completeTableControl.clearTask();
+					populateList(searchResult,completeTableControl,"completed");
 				}else if(isMark){
 					checkIsTasksEmpty();
 				}

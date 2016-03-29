@@ -108,10 +108,28 @@ public class Logic {
 			result = storageController.displayPendingTasks();
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)){
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_ALL)){
 			//System.out.println("clear pending");
 			storageController.clearPendingTasks();
 			result = storageController.displayPendingTasks();
+		}
+		
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_FLOATING)){
+			//System.out.println("clear pending");
+			storageController.clearFloatingTasks();
+			result = storageController.displayFloatingTasks();
+		}
+		
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)){
+			//System.out.println("clear pending");
+			storageController.clearUpcomingTasks();
+			result = storageController.displayUpcomingTasks();
+		}
+		
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_OVERDUE)){
+			//System.out.println("clear pending");
+			storageController.clearOverdueTasks();
+			result = storageController.displayOverdueTasks();
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)){

@@ -67,9 +67,9 @@
                   <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
                </effect>
             </Rectangle>
-            <Label fx:id="firstLetter" prefHeight="85.0" prefWidth="23.0" text="L">
+            <Label fx:id="firstLetter" prefHeight="72.0" prefWidth="38.0" text="00">
                <font>
-                  <Font size="48.0" />
+                  <Font size="35.0" />
                </font>
             </Label>
          </children>

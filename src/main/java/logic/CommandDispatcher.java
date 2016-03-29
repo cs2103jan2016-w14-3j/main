@@ -48,8 +48,17 @@ public class CommandDispatcher {
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)) {
 
 		}
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_ALL)) {
+           
+		}
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_FLOATING)) {
+
+		}
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)) {
            
+		}
+		else if (command.isCommand(COMMAND_TYPE.CLEAR_OVERDUE)) {
+
 		}
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
 			MoveCommandParser parser = new MoveCommandParser();
@@ -128,6 +137,18 @@ public class CommandDispatcher {
 
 		else if (isCommand(COMMAND_TYPE.CLEAR_UPCOMING, firstWord)) {
 			return COMMAND_TYPE.CLEAR_UPCOMING;
+
+		}
+		else if (isCommand(COMMAND_TYPE.CLEAR_ALL, firstWord)) {
+			return COMMAND_TYPE.CLEAR_ALL;
+
+		}
+		else if (isCommand(COMMAND_TYPE.CLEAR_FLOATING, firstWord)) {
+			return COMMAND_TYPE.CLEAR_FLOATING;
+
+		}
+		else if (isCommand(COMMAND_TYPE.CLEAR_OVERDUE, firstWord)) {
+			return COMMAND_TYPE.CLEAR_OVERDUE;
 
 		}
 		else if (isCommand(COMMAND_TYPE.CLEAR_COMPLETE, firstWord)) {
