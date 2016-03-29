@@ -29,6 +29,7 @@ public class TempStorage {
 	
 	public void resetSearchHistory() {
 		searchHistory.clear();
+		searchHistory.push(taskList);
 		prevSearch = "";
 	}
 
