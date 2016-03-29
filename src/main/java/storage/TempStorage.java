@@ -26,7 +26,7 @@ public class TempStorage {
 	public TempStorage () {
 
 	}
-	
+
 	public void resetSearchHistory() {
 		searchHistory.clear();
 		searchHistory.push(taskList);
@@ -153,14 +153,14 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 	}
-	
+
 	public void saveToLocation(String path) {
-		
+
 		permStorage.saveToLocation(path);
 	}
 
 	private ArrayList<Task> retrieveListFromFile() {
-		
+
 		ArrayList<Task> list = permStorage.readFromFile();
 		return list;
 	}
@@ -176,19 +176,17 @@ public class TempStorage {
 			newValue = newValue.substring(newValue.indexOf(" ") + 1);
 		}
 		//System.out.println(newValue);
-		
+
 		ArrayList<Task> currList;
 		if (newValue.length() < prevSearch.length()) {
 			searchHistory.pop();
-			currList = searchHistory.pop();
+			prevSearch = newValue;
+			return searchHistory.peek();
 		}
 		else {
-			currList = searchHistory.pop();
-			searchHistory.push(currList);
-		}
-		
-		
-		ArrayList<Task> searchResult = new ArrayList<Task>();		
+			currList = searchHistory.peek();
+
+			ArrayList<Task> searchResult = new ArrayList<Task>();		
 			String[] parts = null;
 			int taskNumber = 1;
 			parts = newValue.toLowerCase().split(SPACE);
@@ -198,27 +196,28 @@ public class TempStorage {
 				boolean match = true;
 				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + 
 						task.getTime().toString().replaceAll("SGT", "");;
-				taskNumber++;
-				
-				for (String part : parts) {
-					//String withoutComma = part.substring(0,part.length()-1);
-					if(taskMatch.toLowerCase().contains(part.replaceAll(",", ""))&& part.contains(",")){
-						match = true;
-						break;
-					}
-					if (!taskMatch.toLowerCase().contains(part)) {
-						match = false;
-						break;
-					}
-				}
-				if (match) {
-					searchResult.add(task);
-				}
+						taskNumber++;
+
+						for (String part : parts) {
+							//String withoutComma = part.substring(0,part.length()-1);
+							if(taskMatch.toLowerCase().contains(part.replaceAll(",", ""))&& part.contains(",")){
+								match = true;
+								break;
+							}
+							if (!taskMatch.toLowerCase().contains(part)) {
+								match = false;
+								break;
+							}
+						}
+						if (match) {
+							searchResult.add(task);
+						}
 			}
-		prevSearch = newValue;
-		searchHistory.push(searchResult);
-		System.out.println(searchResult.size());
-		return searchResult;
+			prevSearch = newValue;
+			searchHistory.push(searchResult);
+			//System.out.println(searchHistory.size());
+			return searchResult;
+		}
 
 	}
 }
