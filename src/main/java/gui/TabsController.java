@@ -33,7 +33,7 @@ public class TabsController extends BorderPane {
 	private TabPane tabPane;	
 	
 	@FXML
-	private Tab upcomingTab;
+	private Tab pendingTab;
 	@FXML
 	private Label pendingNotify;	
 	@FXML
@@ -55,8 +55,6 @@ public class TabsController extends BorderPane {
 	
 	@FXML
 	private MenuButton setting;
-    private MenuItem loadFile;
-    private MenuItem exitItem;
     
     @FXML
 	private Button btnNew;
@@ -80,9 +78,6 @@ public class TabsController extends BorderPane {
     
 	protected File file;
 
-	private MenuItem saveFile;
-
-	private MenuItem helpPage;
 	
 	
 	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/TasksTabs.fxml";
@@ -108,13 +103,6 @@ public class TabsController extends BorderPane {
 		lblComplete.setText(text); 
 	}
 	
-	public void setUpcomingTab(Node value){
-//		Image icon = new Image("/main/resources/images/upcomingIcon.fw.png");
-//		ImageView iconView = new ImageView(icon);
-//		upcomingTab.setGraphic(iconView);
-		upcomingTab.setContent(value);
-	}
-	
 	public void setAllTab(Node value){
 		Image icon = new Image("/main/resources/images/upcomingIcon.fw.png");
 		ImageView iconView = new ImageView(icon);
@@ -136,7 +124,7 @@ public class TabsController extends BorderPane {
 		ImageView iconView = new ImageView(icon);
 		//allTab.setGraphic(iconView);
 		pendingNotify.setText("11");
-		upcomingTab.setContent(value);
+		pendingTab.setContent(value);
 	}
 	
 	public void setOverdueTab(Node value){
@@ -188,7 +176,7 @@ public class TabsController extends BorderPane {
 		return completeTab;
 	}
 	public Tab getPendingTab(){
-		return upcomingTab;
+		return pendingTab;
 	}
 	
 	public Tab getOverdueTab(){

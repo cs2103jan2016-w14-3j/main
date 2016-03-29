@@ -58,7 +58,7 @@ public class Logic {
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
-		//System.out.println(command.getType() + "hello");
+		//System.out.println("hello");
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
@@ -127,7 +127,7 @@ public class Logic {
 		}
 		
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_OVERDUE)){
-			//System.out.println("clear pending");
+			System.out.println("clear pending");
 			storageController.clearOverdueTasks();
 			result = storageController.displayPendingTasks();
 		}

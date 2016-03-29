@@ -18,7 +18,7 @@
                     <tabs>
                         <Tab id="allTab" fx:id="allTab" text="All Tasks" />
                         <Tab fx:id="floatingTab" text="Floating Tasks" />
-                      <Tab id="upcomingTab" fx:id="upcomingTab" text="Pending Tasks" />
+                      <Tab id="upcomingTab" fx:id="pendingTab" text="Pending Tasks" />
                         <Tab fx:id="overdueTab" text="Overdue Tasks" />
                       <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
                     </tabs>
