@@ -1,7 +1,10 @@
 package main.java.storage;
 
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Stack;
+import main.java.data.TASK_STATUS;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
@@ -219,5 +222,18 @@ public class TempStorage {
 			return searchResult;
 		}
 
+	}
+	
+	private TASK_STATUS determineStatus(List<Date> dates) {
+		int size = dates.size();
+		if (size == 0) {
+			return TASK_STATUS.FLOATING;
+		}
+		else if (dates.get(size - 1).before(new Date())) {
+			return TASK_STATUS.OVERDUE;
+		}
+		else {
+			return TASK_STATUS.UPCOMING;
+		}
 	}
 }
