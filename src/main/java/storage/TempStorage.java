@@ -1,48 +1,34 @@
 package main.java.storage;
 
 import java.util.ArrayList;
-import java.util.Date;
-import java.util.List;
 import java.util.Stack;
-import main.java.data.TASK_STATUS;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
-
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import main.java.data.Task;
-import main.java.gui.TasksItemController;
 
 public class TempStorage {
 
 	private ArrayList<Task> taskList;
 	private ArrayList<Task> tempList;
-	private Stack< ArrayList<Task> > undoStack;
-	private Stack< ArrayList<Task> > redoStack;
+	private Stack<ArrayList<Task>> undoStack;
+	private Stack<ArrayList<Task>> redoStack;
 	private PermStorage permStorage;
 	private Stack<ArrayList<Task>> searchHistory;
 	private String prevSearch;
 
 	private static final String SPACE = " ";
-	private static final String SPLIT = "\\s+";
 
 	public TempStorage () {
 
-	}
-
-	public void resetSearchHistory() {
-		searchHistory.clear();
-		searchHistory.push(taskList);
-		prevSearch = "";
 	}
 
 	public TempStorage(PermStorage permStorage) {
 		this.permStorage = permStorage;
 		taskList = retrieveListFromFile();
 		tempList = new ArrayList<Task>(taskList);
-		undoStack = new Stack< ArrayList<Task> >();
+		undoStack = new Stack<ArrayList<Task>>();
 		undoStack.push(tempList);
-		redoStack = new Stack< ArrayList<Task> >();
+		redoStack = new Stack<ArrayList<Task>>();
 		searchHistory = new Stack<ArrayList<Task>>();
 		searchHistory.push(taskList);
 		prevSearch = "";
@@ -104,19 +90,6 @@ public class TempStorage {
 		}
 	}
 
-	private int searchTemp(Task task) {
-
-		for(int i=0; i<taskList.size(); i++) {
-			Task thisTask = taskList.get(i);
-			if(thisTask.getTask().equals(task.getTask()) && 
-					thisTask.getTime().equals(task.getTime()) &&
-					thisTask.getPriority().equals(task.getPriority())) {
-				return i;
-			}
-		}
-		return -1;
-	}
-
 	public void sortByTaskName() {
 
 		Collections.sort(taskList, new TaskNameComparator());
@@ -162,6 +135,19 @@ public class TempStorage {
 		permStorage.saveToLocation(path);
 	}
 
+	private int searchTemp(Task task) {
+
+		for(int i=0; i<taskList.size(); i++) {
+			Task thisTask = taskList.get(i);
+			if(thisTask.getTask().equals(task.getTask()) && 
+					thisTask.getTime().equals(task.getTime()) &&
+					thisTask.getPriority().equals(task.getPriority())) {
+				return i;
+			}
+		}
+		return -1;
+	}
+	
 	private ArrayList<Task> retrieveListFromFile() {
 
 		ArrayList<Task> list = permStorage.readFromFile();
@@ -178,7 +164,6 @@ public class TempStorage {
 		else {
 			newValue = newValue.substring(newValue.indexOf(" ") + 1);
 		}
-		//System.out.println(newValue);
 
 		ArrayList<Task> currList;
 		if (newValue.length() < prevSearch.length()) {
@@ -190,9 +175,8 @@ public class TempStorage {
 			currList = searchHistory.peek();
 
 			ArrayList<Task> searchResult = new ArrayList<Task>();		
-			String[] parts = null;
+			String[] parts = newValue.toLowerCase().split(SPACE);
 			int taskNumber = 1;
-			parts = newValue.toLowerCase().split(SPACE);
 			searchResult.clear();
 
 			for (Task task : currList) {
@@ -218,22 +202,14 @@ public class TempStorage {
 			}
 			prevSearch = newValue;
 			searchHistory.push(searchResult);
-			//System.out.println(searchHistory.size());
 			return searchResult;
 		}
+	}
 
+	public void resetSearchHistory() {
+		searchHistory.clear();
+		searchHistory.push(taskList);
+		prevSearch = "";
 	}
 	
-	private TASK_STATUS determineStatus(List<Date> dates) {
-		int size = dates.size();
-		if (size == 0) {
-			return TASK_STATUS.FLOATING;
-		}
-		else if (dates.get(size - 1).before(new Date())) {
-			return TASK_STATUS.OVERDUE;
-		}
-		else {
-			return TASK_STATUS.UPCOMING;
-		}
-	}
 }
