@@ -33,6 +33,7 @@ public class AddCommandParser extends Parser {
 	private static final String OVERDUE_TASK = "overdue";
 	private static final String UPCOMING_TASK = "upcoming";
 	private static final String COMPLETED_TASK = "completed";
+	private static final String FLOATING_TASK = "floating";
 	private static final int FIELD_NOT_EXIST = -1;
 	private static final String PRIORITY_HIGH_ALIAS = "h";
 	private static final String PRIORITY_MEDIUM_ALIAS_1 = "med";
@@ -71,10 +72,11 @@ public class AddCommandParser extends Parser {
 		if (parameters[TASK].isEmpty()) {
 			throw new InvalidInputFormatException("Task name is missing!");
 		}
-		parameters[TIME] = determineTime(commandContent);
+		String timeSegment = determineTimeSegment(commandContent.toLowerCase());
+		parameters[TIME] = determineTime(timeSegment);
 		parameters[PRIORITY] = determinePriority(commandContent);
 		parameters[TASK_TYPE] = determineTaskType(commandContent);
-		parameters[STATUS] = determineStatus(commandContent);
+		parameters[STATUS] = determineStatus(timeSegment);
 
 		return parameters;
 	}
@@ -101,10 +103,10 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	protected String determineTime(String content) {
+	protected String determineTime(String timeSegment) {
 
 
-		String timeSegment = determineTimeSegment(content);
+		//String timeSegment = determineTimeSegment(content);
 
 		List<Date> dates = timeParser.parse(timeSegment);
 		
@@ -183,7 +185,7 @@ public class AddCommandParser extends Parser {
 			return getPriorityInFull(priority);
 		}
 		else {
-			return PRIORITY_LEVEL.LOW.getType();
+			return PRIORITY_LEVEL.NOT_SPECIFIED.getType();
 		}
 	}
 
@@ -279,11 +281,11 @@ public class AddCommandParser extends Parser {
 		return false;
 	}
 
-	protected String determineStatus(String content) {
-		List<Date> dates = timeParser.parse(content);
+	protected String determineStatus(String timeSegment) {
+		List<Date> dates = timeParser.parse(timeSegment);
 		int size = dates.size();
 		if (size == 0) {
-			return UPCOMING_TASK;
+			return FLOATING_TASK;
 		}
 		else if (isOverdue(dates.get(size - 1)) && (!dates.toString().
 				substring(1,11).equals(new Date().toString().substring(0, 10)))) {

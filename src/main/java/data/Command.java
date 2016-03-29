@@ -80,11 +80,14 @@ public class Command {
 	
 	public  static PRIORITY_LEVEL getPriority(String priority) {
 		
-		if (priority.equalsIgnoreCase(PRIORITY_LEVEL.HIGH.getType())) {
+		if (priority.equals(PRIORITY_LEVEL.HIGH.getType())) {
 			return PRIORITY_LEVEL.HIGH;
 		}
-		else if (priority.equalsIgnoreCase(PRIORITY_LEVEL.MEDIUM.getType())) {
+		else if (priority.equals(PRIORITY_LEVEL.MEDIUM.getType())) {
 			return PRIORITY_LEVEL.MEDIUM;
+		}
+		else if (priority.equals(PRIORITY_LEVEL.NOT_SPECIFIED.getType())) {
+			return PRIORITY_LEVEL.NOT_SPECIFIED;
 		}
 		else {
 			return PRIORITY_LEVEL.LOW;
@@ -92,11 +95,14 @@ public class Command {
 	}
 	
 	public static TASK_STATUS getStatus(String status) {
-		if (status.equalsIgnoreCase(TASK_STATUS.OVERDUE.getType())) {
+		if (status.equals(TASK_STATUS.OVERDUE.getType())) {
 			return TASK_STATUS.OVERDUE;
 		}
-		else if (status.equalsIgnoreCase(TASK_STATUS.UPCOMING.getType())) {
+		else if (status.equals(TASK_STATUS.UPCOMING.getType())) {
 			return TASK_STATUS.UPCOMING;
+		}
+		else if (status.equals(TASK_STATUS.FLOATING.getType())) {
+			return TASK_STATUS.FLOATING;
 		}
 		else {
 			return TASK_STATUS.COMPLETED;

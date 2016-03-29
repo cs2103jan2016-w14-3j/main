@@ -1,9 +1,6 @@
 package main.java.logic;
 
-import java.nio.file.Path;
 
-
-import java.nio.file.Paths;
 import java.util.ArrayList;
 import main.java.data.*;
 import main.java.parser.*;
@@ -153,9 +150,9 @@ public class Logic {
 						updated.setType(original.getType());
 						updated.setStatus(original.getStatus());
 					}
-					//if(updated.getPriority().getType().equals(EMPTY_STRING)){
-						//updated.setPriority(original.getPriority());
-					//}
+					if(updated.getPriority()== PRIORITY_LEVEL.NOT_SPECIFIED){
+						updated.setPriority(original.getPriority());
+					}
 					
 					//if (updated.getType().getType().equals(EMPTY_STRING)) {
 						//updated.setType(original.getType());

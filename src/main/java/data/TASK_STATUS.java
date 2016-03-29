@@ -1,7 +1,7 @@
 package main.java.data;
 
 public enum TASK_STATUS {
-	OVERDUE("overdue"), UPCOMING("upcoming"), COMPLETED("completed");
+	OVERDUE("overdue"), UPCOMING("upcoming"), FLOATING("floating"), COMPLETED("completed");
 
 	private final String type;
 

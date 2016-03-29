@@ -139,11 +139,11 @@ public class TasksItemController extends BorderPane {
 				String time;
 				//System.out.println(dates);
 				if (dates.get(0).toString().substring(0, 10).equals(dates.get(1).toString().substring(0, 10))) {
-					time = df2.format(dates.get(0)) + " from " + df1.format(dates.get(0)) 
-					+ " to " + df1.format(dates.get(1));
+					time = df2.format(dates.get(0)) + " " + df1.format(dates.get(0)) 
+					+ " - " + df1.format(dates.get(1));
 				}
 				else {
-					time = "From " + df.format(dates.get(0)) 
+					time = "" + df.format(dates.get(0)) 
 					+ " to " + df.format(dates.get(1));
 				}
 				return time;
