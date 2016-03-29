@@ -169,11 +169,13 @@ public class TempStorage {
 		newValue = newValue.trim();
 		if (!newValue.contains(" ")) {
 			newValue = "";
+			resetSearchHistory();
 			return taskList;
 		}
 		else {
-			newValue = newValue.substring(newValue.indexOf(" "));
+			newValue = newValue.substring(newValue.indexOf(" ") + 1);
 		}
+		//System.out.println(newValue);
 		
 		ArrayList<Task> currList;
 		if (newValue.length() < prevSearch.length()) {
@@ -215,7 +217,7 @@ public class TempStorage {
 			}
 		prevSearch = newValue;
 		searchHistory.push(searchResult);
-		System.out.println(searchHistory.size());
+		System.out.println(searchResult.size());
 		return searchResult;
 
 	}

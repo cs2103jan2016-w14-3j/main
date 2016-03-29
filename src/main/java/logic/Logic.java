@@ -121,7 +121,7 @@ public class Logic {
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.DELETE)) {
-			resetSearchHistory();
+			
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
 					delete(temp);			
@@ -132,7 +132,7 @@ public class Logic {
 
 
 		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
-			resetSearchHistory();
+			
 			ArrayList<Task> finalResult = new ArrayList<Task>(); 
 			transientTask = createTransientTask(command);
 			result = handleEditCommand(transientTask);
@@ -176,7 +176,7 @@ public class Logic {
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.SEARCH)) {
-			resetSearchHistory();
+			
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
@@ -186,7 +186,7 @@ public class Logic {
 			saveToLocation(command.getParameters()[TASK]);
 		}
 		else if (command.isCommand(COMMAND_TYPE.MARK)) {
-			resetSearchHistory();
+			
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
 					//System.out.println("hereeeee");
@@ -197,7 +197,7 @@ public class Logic {
 
 		}
 		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
-			resetSearchHistory();
+			
 			for (Task temp : searchResultCompleted) {
 				if (userInput.equalsIgnoreCase("unmark " + temp.getTask()) || searchResultCompleted.size()==1) {
 					//System.out.println("hereeeee");
@@ -308,7 +308,4 @@ public class Logic {
 		return searchResultCompleted;
 	}
 	
-	public void resetSearchHistory() {
-		storageController.resetSearchHistory();
-	}
 }
