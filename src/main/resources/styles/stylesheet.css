@@ -237,6 +237,7 @@
   -fx-background-color:transparent;
 }
 
+
 .loadButton {
   -fx-graphic: url("/main/resources/images/btnLoad.png");
   -fx-background-color:transparent;

@@ -160,6 +160,7 @@ public class TabsController extends BorderPane {
 		ImageView iconView = new ImageView(icon);
 		completeTab.setContent(iconView);
 	}
+
 	
 	public void setAllNotification(int size){
 		allNotify.setText(String.valueOf(size));

@@ -310,6 +310,7 @@ public class Logic {
 		return searchResult;
 	}
 
+	
 	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue, String taskStatus) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);

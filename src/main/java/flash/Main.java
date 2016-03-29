@@ -252,6 +252,7 @@ public class Main extends Application {
 		});
 	}
 
+	
 	private void showSidebar() {
 
 		// create a sidebar with some content in it.

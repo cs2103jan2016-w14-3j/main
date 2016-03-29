@@ -104,6 +104,7 @@ public class CommandBarController extends BorderPane {
 
 	}
 
+	
 	public void getFocus() {
 		commandBar.requestFocus();
 		commandBar.positionCaret(0);
