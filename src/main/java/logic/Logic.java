@@ -271,15 +271,15 @@ public class Logic {
 		return result;
 	}
 	public ArrayList<Task> displayPending()throws Exception{
-		ArrayList<Task> result = storageController.displayUpcoming();
+		ArrayList<Task> result = storageController.displayUpcomingTasks();
 		return result;
 	}
 	public ArrayList<Task> displayFloating()throws Exception{
-		ArrayList<Task> result = storageController.displayFloating();
+		ArrayList<Task> result = storageController.displayFloatingTasks();
 		return result;
 	}
 	public ArrayList<Task> displayOverdue()throws Exception{
-		ArrayList<Task> result = storageController.displayOverdue();
+		ArrayList<Task> result = storageController.displayOverdueTasks();
 		return result;
 	}
 
