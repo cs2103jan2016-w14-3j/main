@@ -17,12 +17,19 @@ public class TempStorage {
 	private Stack< ArrayList<Task> > undoStack;
 	private Stack< ArrayList<Task> > redoStack;
 	private PermStorage permStorage;
+	private Stack<ArrayList<Task>> searchHistory;
+	private String prevSearch;
 
 	private static final String SPACE = " ";
 	private static final String SPLIT = "\\s+";
 
 	public TempStorage () {
 
+	}
+	
+	public void resetSearchHistory() {
+		searchHistory.clear();
+		prevSearch = "";
 	}
 
 	public TempStorage(PermStorage permStorage) {
@@ -32,6 +39,9 @@ public class TempStorage {
 		undoStack = new Stack< ArrayList<Task> >();
 		undoStack.push(tempList);
 		redoStack = new Stack< ArrayList<Task> >();
+		searchHistory = new Stack<ArrayList<Task>>();
+		searchHistory.push(taskList);
+		prevSearch = "";
 	}
 
 	public void writeToTemp(Task task) {
@@ -149,33 +159,39 @@ public class TempStorage {
 	}
 
 	private ArrayList<Task> retrieveListFromFile() {
+		
 		ArrayList<Task> list = permStorage.readFromFile();
-
 		return list;
 	}
 
 	public ArrayList<Task> searchMatch(String newValue) {
-
-		ArrayList<Task> searchResult = new ArrayList<Task>();
-		String[] fragments = null;
-		fragments = newValue.split(SPLIT);
-
-
-		if(fragments.length == 1){
-			searchResult = taskList;
+		newValue = newValue.trim();
+		if (!newValue.contains(" ")) {
+			newValue = "";
+			return taskList;
 		}
-
-		if (fragments.length > 1) {
-			int i = newValue.indexOf(' ');
-			newValue = newValue.substring(i);
-					
+		else {
+			newValue = newValue.substring(newValue.indexOf(" "));
+		}
+		
+		ArrayList<Task> currList;
+		if (newValue.length() < prevSearch.length()) {
+			searchHistory.pop();
+			currList = searchHistory.pop();
+		}
+		else {
+			currList = searchHistory.pop();
+			searchHistory.push(currList);
+		}
+		
+		
+		ArrayList<Task> searchResult = new ArrayList<Task>();		
 			String[] parts = null;
 			int taskNumber = 1;
-			
 			parts = newValue.toLowerCase().split(SPACE);
 			searchResult.clear();
 
-			for (Task task : taskList) {
+			for (Task task : currList) {
 				boolean match = true;
 				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + 
 						task.getTime().toString().replaceAll("SGT", "");;
@@ -183,7 +199,6 @@ public class TempStorage {
 				
 				for (String part : parts) {
 					//String withoutComma = part.substring(0,part.length()-1);
-					
 					if(taskMatch.toLowerCase().contains(part.replaceAll(",", ""))&& part.contains(",")){
 						match = true;
 						break;
@@ -197,8 +212,9 @@ public class TempStorage {
 					searchResult.add(task);
 				}
 			}
-
-		}
+		prevSearch = newValue;
+		searchHistory.push(searchResult);
+		System.out.println(searchHistory.size());
 		return searchResult;
 
 	}

@@ -22,6 +22,10 @@ public class StorageController {
 		pendingPerm = new PendingTaskPermStorage();
 		completedPerm = new CompletedTaskPermStorage();
 	}
+	
+	public void resetSearchHistory() {
+		pendingTemp.resetSearchHistory();
+	}
 
 	public void addTask(Task task) {
 		assert task != null;

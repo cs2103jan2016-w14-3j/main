@@ -79,7 +79,7 @@ public class CommandDispatcher {
 					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(COMMAND_TYPE.MARK)) {
-
+			
 		}
 		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
 
