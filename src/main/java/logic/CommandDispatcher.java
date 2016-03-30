@@ -211,6 +211,7 @@ public class CommandDispatcher {
 //				return original;
 //			}
 //		}
+		
 		//content is empty
 		if (!original.contains(WHITE_SPACE)) {
 			return EMPTY_STRING;
