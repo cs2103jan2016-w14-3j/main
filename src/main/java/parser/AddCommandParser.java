@@ -39,6 +39,7 @@ public class AddCommandParser extends Parser {
 	private static final String PRIORITY_MEDIUM_ALIAS_1 = "med";
 	private static final String PRIORITY_MEDIUM_ALIAS_2 = "m";
 	private static final String PRIORITY_LOW_ALIAS = "l";
+	
 
 
 	protected PrettyTimeParser timeParser;
