@@ -99,6 +99,9 @@ public class CommandDispatcher {
 		else if (command.isCommand(COMMAND_TYPE.REFRESH)) {
 			
 		}
+		else if (command.isCommand(COMMAND_TYPE.INVALID)){
+			throw new InvalidInputFormatException("Please enter a valid command!");
+		}
 
 	}
 
@@ -179,7 +182,7 @@ public class CommandDispatcher {
 			return COMMAND_TYPE.SWITCH;
 		}
 		else {
-			return COMMAND_TYPE.ADD;
+			return COMMAND_TYPE.INVALID;
 		}
 	}
 
@@ -199,15 +202,15 @@ public class CommandDispatcher {
 	private String retrieveCommandContent(Command command) {
 		assert command != null;
 		String original = command.getOriginal();
-		COMMAND_TYPE commandType = command.getType();
+		//COMMAND_TYPE commandType = command.getType();
 
 		//add command with no add keyword
-		if (commandType == COMMAND_TYPE.ADD) {
-			if (!getFirstKeyword(original).
-					equalsIgnoreCase(COMMAND_TYPE.ADD.getType())){
-				return original;
-			}
-		}
+//		if (commandType == COMMAND_TYPE.ADD) {
+//			if (!getFirstKeyword(original).
+//					equalsIgnoreCase(COMMAND_TYPE.ADD.getType())){
+//				return original;
+//			}
+//		}
 		//content is empty
 		if (!original.contains(WHITE_SPACE)) {
 			return EMPTY_STRING;
