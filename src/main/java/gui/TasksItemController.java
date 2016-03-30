@@ -87,7 +87,7 @@ public class TasksItemController extends BorderPane {
 			e.printStackTrace();
 		}
 
-		firstLetter.setStyle("-fx-font-size: 40px; -font-text-fill:white;");
+		firstLetter.setStyle("-fx-font-size: 38px; -font-text-fill:white;");
         if(count==999){
         	this.filename.setText(" " + task.getTask());
         	firstLetter.setText("1");
@@ -103,15 +103,20 @@ public class TasksItemController extends BorderPane {
 			this.labelDate.setText(showTime(task.getTime()));
 			labelDate.setStyle("-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
 			if(task.getStatus()== TASK_STATUS.OVERDUE){
-				labelDate.setStyle("-fx-text-fill: #F50057;");
-				this.labelDate.setText(" [OVERDUE] "+showTime(task.getTime()));
+				labelDate.setStyle("-fx-text-fill: #F50057;-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
+				this.labelDate.setText("[OVERDUE] "+showTime(task.getTime()));
 				this.banner.setImage(new Image("/main/resources/images/overdue.png"));
 				banner.setFitWidth(70);
 				banner.setPreserveRatio(true);
 			}
 			if(task.getStatus()== TASK_STATUS.COMPLETED){
-				labelDate.setStyle("-fx-text-fill: #76FF03;");
-				this.labelDate.setText(" [COMPLETED] "+showTime(task.getTime()));
+				labelDate.setStyle("-fx-text-fill: green;-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
+				this.labelDate.setText("[COMPLETED] "+showTime(task.getTime()));
+			}
+		}else{
+			if(task.getStatus()== TASK_STATUS.COMPLETED){
+				labelDate.setStyle("-fx-text-fill: green;-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
+				this.labelDate.setText("[COMPLETED] ");
 			}
 		}
 
