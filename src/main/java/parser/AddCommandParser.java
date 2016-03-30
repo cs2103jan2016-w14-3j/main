@@ -374,7 +374,9 @@ public class AddCommandParser extends Parser {
 	protected String formatToStandardCommandContent(String content) {
 		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
 		content = StringUtils.replace(content, TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
+		if (isNecessaryToAddPrepostion(content)) {
 		content = addPrepositionIfApplicable(content);
+		}
 		//System.out.println(content);
 		int time = getStartingIndexOfIdentifier(content);
 		int priority = getStartingIndexOfPriority(content);
@@ -471,6 +473,19 @@ public class AddCommandParser extends Parser {
 				}
 			}
 		}
+	}
+
+
+	private boolean isNecessaryToAddPrepostion(String content) {
+		int index = content.indexOf(TOMORROW_IN_FULL);
+		if (index == -1) {
+			return false;
+		}
+		String front = content.substring(0,index).trim();
+		if (timeParser.parse(front).toString().equals(EMPTY_TIME)) {
+			return true;
+		}
+		return false;
 	}
 
 
