@@ -158,18 +158,19 @@
 }
 
 
-
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0;
 }
 
 .tab-pane
 {
-    -fx-tab-min-width:90px;
+    -fx-tab-min-width:95px;
+    -fx-tab-max-width:95px;
 }
 
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
+    -fx-border-color:#BBDEFB;
 }
 .tab-pane .tab
 {
@@ -190,7 +191,7 @@
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
-    -fx-font-size: 12px;
+    -fx-font-size: 11px;
     -fx-font-weight: bold;
     -fx-text-fill: #96b946;
     -fx-font-family:Roboto;

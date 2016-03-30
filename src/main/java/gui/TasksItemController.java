@@ -57,9 +57,9 @@ public class TasksItemController extends BorderPane {
 
 	private static final String STRING_FILL_STYLE_FORMAT = "-fx-fill: %s";
 
-	private static final String BASE_COLOUR_HIGH = "#FF80AB";
-	private static final String BASE_COLOUR_20 = "#E8803D";
-	private static final String BASE_COLOUR_MED = "#F0C419";
+	private static final String BASE_COLOUR_HIGH = "#F44336";
+	private static final String BASE_COLOUR_DEFAULT = "#BBDEFB";
+	private static final String BASE_COLOUR_MED = "#FFEB3B";
 	private static final String BASE_COLOUR_60 = "#D7E84A";
 	private static final String BASE_COLOUR_LOW = "#00C853";
 
@@ -200,7 +200,7 @@ public class TasksItemController extends BorderPane {
 		} else if (priority.equals("high")) {
 			return BASE_COLOUR_HIGH;
 		} else {
-			return BASE_COLOUR_20;
+			return BASE_COLOUR_DEFAULT;
 		}
 	}
 
