@@ -60,7 +60,22 @@ public class TasksTableController extends BorderPane {
 	private void initialise() {
 		this.items = new ArrayList<TasksItemController>();
 		this.tasksDisplay.setItems(FXCollections.observableList(items));
+	
 		
+	}
+	
+	public void displayModified(){
+		for(int i = 0; i < items.size(); i++){
+			if(items.get(i).getLastModified()){
+			//	System.out.println("isLastModified: " + items.get(i).getLastModified());
+				tasksDisplay.requestFocus();
+				tasksDisplay.scrollTo(i);
+				tasksDisplay.getFocusModel().focus(i);
+				tasksDisplay.getSelectionModel().select(i);
+				items.get(i).setLastModified(false);
+			}
+				
+		}
 	}
 
 	public ListView<TasksItemController> getListView() {

@@ -23,22 +23,22 @@
                       <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
                     </tabs>
                   </TabPane>
-                  <Circle fx:id="circleAll" fill="#ff1f1f" layoutX="108.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                  <Circle fx:id="circleAll" fill="#ff1f1f" layoutX="103.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
                      <effect>
                         <InnerShadow color="WHITE" />
                      </effect>
                   </Circle>
-                  <Label fx:id="allNotify" alignment="CENTER" layoutX="96.0" layoutY="1.0" prefHeight="20.0" prefWidth="22.0" textFill="WHITE">
+                  <Label fx:id="allNotify" alignment="CENTER" layoutX="88.0" layoutY="1.0" prefHeight="20.0" prefWidth="30.0" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>
                   </Label>
-                  <Circle fx:id="circleFloating" fill="#ff1f1f" layoutX="220.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                  <Circle fx:id="circleFloating" fill="#ff1f1f" layoutX="215.0" layoutY="11.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
                      <effect>
                         <InnerShadow color="WHITE" />
                      </effect>
                   </Circle>
-                  <Label fx:id="floatingNotify" alignment="CENTER" layoutX="210.0" layoutY="1.0" prefHeight="20.0" prefWidth="19.0" textFill="WHITE">
+                  <Label fx:id="floatingNotify" alignment="CENTER" layoutX="200.0" layoutY="1.0" prefHeight="20.0" prefWidth="29.0" textFill="WHITE">
                      <font>
                         <Font size="14.0" />
                      </font>

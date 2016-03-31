@@ -66,16 +66,22 @@ public class TasksItemController extends BorderPane {
 	private String taskName;
 
 	private String taskPriority;
+	private Task task;
 
 	private String taskTime;
+	private Boolean isLastModified;
 
 	private TASK_NATURE taskType;
 
 	public TasksItemController(Task task,int count) {
+		this.task = task;
 		this.taskName = task.getTask();
 		this.taskPriority = task.getPriority().getType();
 		this.taskTime = showTime(task.getTime());
 		this.taskType = task.getType();
+		this.isLastModified = task.getLastModified();
+		
+		//System.out.println("islastmodifield: " + isLastModified);
 
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_ITEM_FXML));
 		loader.setController(this);
@@ -184,6 +190,15 @@ public class TasksItemController extends BorderPane {
 
 	public String getTaskTime(){
 		return this.taskTime;
+	}
+	public boolean getLastModified(){
+		return this.isLastModified;
+	}
+	public void setLastModified(Boolean value){
+		this.isLastModified = value;
+		System.out.println("setting to false");
+		this.task.setLastModified(false);
+		System.out.println("taskname: " + this.taskName+ " state: "+ this.task.getLastModified());
 	}
 
 	public void setBgColour(){

@@ -157,6 +157,12 @@ public class Main extends Application {
 	}
 
 	private void checkIsTasksEmpty() throws Exception {
+		boolean isModifiedOverdue = false;
+		boolean isModifiedPending = false;
+		boolean isModifiedFloating = false;
+		boolean isModifiedAll = false;
+		boolean isModifiedComplete = false;
+		
 		if (logic.displayPending().isEmpty()) {
 			//if all pending is empty
 			tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
@@ -174,6 +180,7 @@ public class Main extends Application {
 			int overdueCount = 0;
 			int pendingCount = 0;
 			int floatingCount = 0;		
+			
 
 			allTableControl.clearTask();
 			pendingTableControl.clearTask();
@@ -228,10 +235,19 @@ public class Main extends Application {
 				allTableControl.addTask(temp,++allCount);
 				if(temp.getStatus()==TASK_STATUS.UPCOMING){
 					pendingTableControl.addTask(temp,++pendingCount);
+					if(temp.getLastModified()){
+						isModifiedPending = true;
+					}
 				}else if(temp.getStatus()==TASK_STATUS.FLOATING){
 					floatingTableControl.addTask(temp,++floatingCount);
+					if(temp.getLastModified()){
+						isModifiedFloating = true;
+					}
 				}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
 					overdueTableControl.addTask(temp,++overdueCount);
+					if(temp.getLastModified()){
+						isModifiedOverdue = true;
+					}
 				}							
 			}
 					
@@ -247,9 +263,26 @@ public class Main extends Application {
 			tabControl.setCompleteTab(completeTableControl);
 			for (Task temp : logic.displayComplete()) {
 				completeTableControl.addTask(temp,++completeCount);
+				if(temp.getLastModified()){
+					isModifiedComplete = true;
+				}
 			}
 			tabControl.setCompletedNotification(completeCount);
 		}
+		if(isModifiedFloating){
+			floatingTableControl.displayModified();
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getFloatingTab());
+		}else if(isModifiedOverdue){
+			overdueTableControl.displayModified();
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
+		}if(isModifiedPending){
+			pendingTableControl.displayModified();
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getPendingTab());
+		}if(isModifiedComplete){
+			completeTableControl.displayModified();
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
+		}
+	   barControl.getFocus();
 		
 	}
 
