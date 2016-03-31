@@ -2,6 +2,8 @@ package main.java.logic;
 
 
 import java.util.ArrayList;
+import java.util.Date;
+
 import main.java.data.*;
 import main.java.parser.*;
 import main.java.storage.*;
@@ -325,4 +327,8 @@ public class Logic {
 		return searchResultCompleted;
 	}
 	
+	public void checkOverdue() {
+		
+		storageController.checkOverdue(new Date());
+	}
 }

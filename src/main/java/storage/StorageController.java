@@ -206,6 +206,11 @@ public class StorageController {
 		return isSuccess;
 	}
 	
+	public void checkOverdue(Date date) {
+		
+		pendingTemp.checkOverdue(date);
+	}
+	
 	private TASK_STATUS determineStatus(List<Date> dates) {
 		int size = dates.size();
 		

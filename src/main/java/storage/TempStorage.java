@@ -1,6 +1,7 @@
 package main.java.storage;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.Stack;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
@@ -166,6 +167,16 @@ public class TempStorage {
 	public void saveToLocation(String path) {
 
 		permStorage.saveToLocation(path);
+	}
+	
+	public void checkOverdue(Date date) {
+		
+		for(int i=0; i<taskList.size(); i++) {
+			Task task = taskList.get(i);
+			if(task.getStatus().equals(TASK_STATUS.UPCOMING) && !task.getTime().get(0).before(date)) {
+				taskList.get(i).setStatus(TASK_STATUS.OVERDUE);
+			}
+		}
 	}
 
 	private int searchTemp(Task task) {
