@@ -81,27 +81,36 @@ public class TempStorage {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.UPCOMING)) {
-				deleteFromTemp(task);
+				taskList.remove(i);
+				permStorage.deleteFromFile(i);
 			}
 		}
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 	}
 	
 	public void clearFloating() {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.FLOATING)) {
-				deleteFromTemp(task);
+				taskList.remove(i);
+				permStorage.deleteFromFile(i);
 			}
 		}
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 	}
 	
 	public void clearOverdue() {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.OVERDUE)) {
-				deleteFromTemp(task);
+				taskList.remove(i);
+				permStorage.deleteFromFile(i);
 			}
 		}
+		tempList = new ArrayList<Task>(taskList);
+		undoStack.push(tempList);
 	}
 
 	public void undoPrevious() {
