@@ -47,6 +47,7 @@ public class AddCommandParser extends Parser {
 	public AddCommandParser() {
 		super();
 		timeParser = new PrettyTimeParser();
+		
 	}
 
 

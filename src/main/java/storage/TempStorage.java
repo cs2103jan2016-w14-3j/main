@@ -200,12 +200,13 @@ public class TempStorage {
 	
 	public ArrayList<Task> searchMatch(String newValue) {
 		
-		newValue = newValue.trim();
-		if (!newValue.contains(" ")) {
+		//newValue = newValue.trim();
+		//System.out.println(newValue);
+		if (!newValue.trim().contains(" ")) {
 			newValue = "";
 			
 			searchHistory.clear();
-			searchHistory.push(taskList);
+		    searchHistory.push(taskList);
 			prevSearch = "";
 
 			return taskList;
@@ -216,6 +217,7 @@ public class TempStorage {
 
 		ArrayList<Task> currList;
 		if (newValue.length() < prevSearch.length()) {
+			//System.out.print("true");
 			searchHistory.pop();
 			prevSearch = newValue;
 			return searchHistory.peek();
@@ -230,8 +232,9 @@ public class TempStorage {
 
 			for (Task task : currList) {
 				boolean match = true;
-				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + 
-						task.getTime().toString().replaceAll("SGT", "");;
+//				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + 
+//						task.getTime().toString().replaceAll("SGT", "");;
+				String taskMatch = task.getTask();
 						taskNumber++;
 
 						for (String part : parts) {
@@ -251,6 +254,8 @@ public class TempStorage {
 			}
 			prevSearch = newValue;
 			searchHistory.push(searchResult);
+			//System.out.println("list size: " + searchResult.size());
+			//System.out.println("stack size: " + searchHistory.size());
 			return searchResult;
 		}
 	}
