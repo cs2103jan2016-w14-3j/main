@@ -62,12 +62,12 @@
    <left>
       <StackPane prefHeight="30.0" prefWidth="46.0" BorderPane.alignment="CENTER">
          <children>
-            <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="60.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="44.0">
+            <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="75.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="44.0">
                <effect>
                   <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
                </effect>
             </Rectangle>
-            <Label fx:id="firstLetter" prefHeight="60.0" prefWidth="45.0" text="00" alignment="CENTER">
+            <Label fx:id="firstLetter" prefHeight="72.0" prefWidth="45.0" text="00" alignment="CENTER">
                <font>
                   <Font size="5.0" />
                </font>

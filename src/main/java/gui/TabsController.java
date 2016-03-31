@@ -166,7 +166,7 @@ public class TabsController extends BorderPane {
 		
 	}
 	public void setOverdueNotification(int size){
-		System.out.println("number of overdue task: " + size);
+		//System.out.println("number of overdue task: " + size);
 		if(size==0){
 			circleOverdue.managedProperty().bind(circleOverdue.visibleProperty());
 			circleOverdue.setVisible(false);

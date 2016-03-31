@@ -281,11 +281,11 @@ public class Main extends Application {
 	}
 
 	private void listenForStageInput() {
-		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-			if (key.getCode() == KeyCode.ESCAPE) {
-				primaryStage.setIconified(true);
-			}
-		});
+//		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+//			if (key.getCode() == KeyCode.ESCAPE) {
+//				primaryStage.setIconified(true);
+//			}
+//		});
 		rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -435,7 +435,19 @@ public class Main extends Application {
 		btnHelp.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
+				if(tabControl.getAllTab().isSelected()){
+				   tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getPendingTab().isSelected()){
+					   tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getFloatingTab().isSelected()){
+					   tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getOverdueTab().isSelected()){
+					   tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getCompleteTab().isSelected()){
+					   tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}
+					   
+					   
 			}
 		});
 		
@@ -503,7 +515,15 @@ public class Main extends Application {
 				if (e.getCode() == KeyCode.ENTER) {
 					handleEnterKey(pendingDisplay);
 				} else if (e.getCode() == KeyCode.ESCAPE) {
-					// handleEscKey();
+					try {
+						populatePendingList(logic.displayPending());
+						tabControl.setPendingTab(pendingTableControl);
+						System.out.println("escapppp");
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
 				} else if (e.getCode() == KeyCode.DELETE) {
 					handleDeleteKey(pendingDisplay);
 				}
@@ -518,7 +538,13 @@ public class Main extends Application {
 					System.out.print("enter pressed");
 					handleEnterKey(allDisplay);
 				} else if (e.getCode() == KeyCode.ESCAPE) {
-					// handleEscKey();
+					try {
+						populateAllList(logic.displayPending());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
 				} else if (e.getCode() == KeyCode.DELETE) {
 					handleDeleteKey(allDisplay);
 				}
@@ -532,7 +558,13 @@ public class Main extends Application {
 				if (e.getCode() == KeyCode.ENTER) {
 					handleEnterKey(floatingDisplay);
 				} else if (e.getCode() == KeyCode.ESCAPE) {
-					// handleEscKey();
+					try {
+						populateFloatingList(logic.displayPending());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
 				} else if (e.getCode() == KeyCode.DELETE) {
 					handleDeleteKey(floatingDisplay);
 				}
@@ -546,7 +578,13 @@ public class Main extends Application {
 				if (e.getCode() == KeyCode.ENTER) {
 					handleEnterKey(overdueDisplay);
 				} else if (e.getCode() == KeyCode.ESCAPE) {
-					// handleEscKey();
+					try {
+						populateOverdueList(logic.displayPending());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
 				} else if (e.getCode() == KeyCode.DELETE) {
 					handleDeleteKey(overdueDisplay);
 				}
@@ -560,7 +598,13 @@ public class Main extends Application {
 				if (e.getCode() == KeyCode.ENTER) {
 					handleEnterKey(completeDisplay);
 				} else if (e.getCode() == KeyCode.ESCAPE) {
-					// handleEscKey();
+					try {
+						populateCompleteList(logic.displayComplete());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
 				} else if (e.getCode() == KeyCode.DELETE) {
 					handleDeleteKey(completeDisplay);
 				}
@@ -602,7 +646,7 @@ public class Main extends Application {
 		barControl.updateUserInput("delete " + chosen.getTaskName());
 		barControl.getFocus();
 	}
-
+	
 	private void handleGetPastCommands(KeyEvent event) {
 		assert event != null;
 		String pastCommand = getPastCommandFromHistory(event.getCode());
@@ -639,9 +683,18 @@ public class Main extends Application {
 
 		if (userInput.isEmpty()) {                        
 		}else if (userInput.equalsIgnoreCase("help")) {
-			tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
+			if(tabControl.getAllTab().isSelected()){
+				   tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getPendingTab().isSelected()){
+					   tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getFloatingTab().isSelected()){
+					   tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getOverdueTab().isSelected()){
+					   tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}else if(tabControl.getCompleteTab().isSelected()){
+					   tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
+				}
 			//notification(userInput);
-			historyLog.add(userInput);	
 			setFeedback(commandBarController, "valid", userInput);
 		}else if(userInput.equalsIgnoreCase("theme blue")){
 			changeBlueTheme();
@@ -707,6 +760,7 @@ public class Main extends Application {
 				setFeedback(commandBarController, "valid", userInput);
 			}
 		}
+		historyLog.add(userInput);	
 		isError = false;
 		new CommandBarController();
 		commandBarController.clear();
@@ -860,7 +914,16 @@ public class Main extends Application {
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
 		boolean isMark = fragments[COMMAND_INDEX].equalsIgnoreCase("mark");
 		boolean isUnmark = fragments[COMMAND_INDEX].equalsIgnoreCase("unmark");
-
+        boolean quit = fragments[COMMAND_INDEX].equalsIgnoreCase("q");
+        
+        if(quit){
+        	try {
+				checkIsTasksEmpty();
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+        }
 		// TODO Auto-generated method stub
 		try {
 			if ((tabControl.getAllTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
