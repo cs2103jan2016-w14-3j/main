@@ -147,6 +147,7 @@ public class AddCommandParser extends Parser {
 
 
 	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
+		
 		for (int i = 0; i < dates.size(); i++) {
 			if (isOverdue(dates.get(i))) {
 				Calendar calendar = Calendar.getInstance();
