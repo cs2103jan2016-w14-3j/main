@@ -27,7 +27,7 @@ public class StorageController {
 	public void addTask(Task task) {
 		assert task != null;
 		
-		task.setIsLastModified(true);
+		task.setLastModified(true);
 		pendingTemp.writeToTemp(task);
 		lastAction = PENDING_TASK;
 	}
@@ -44,7 +44,7 @@ public class StorageController {
 		assert taskToEdit != null;
 		assert editedTask != null;
 		
-		editedTask.setIsLastModified(true);
+		editedTask.setLastModified(true);
 		pendingTemp.editToTemp(taskToEdit, editedTask);
 		lastAction = PENDING_TASK;
 	}
@@ -53,7 +53,7 @@ public class StorageController {
 		assert taskToEdit != null;
 		assert editedTask != null;
 		
-		editedTask.setIsLastModified(true);
+		editedTask.setLastModified(true);
 		completedTemp.editToTemp(taskToEdit, editedTask);
 		lastAction = COMPLETED_TASK;
 	}
@@ -129,7 +129,7 @@ public class StorageController {
 	public void moveTaskToComplete(Task task) {
 		assert task != null;
 		
-		task.setIsLastModified(true);
+		task.setLastModified(true);
 		task.setStatus(TASK_STATUS.COMPLETED);
 		pendingTemp.deleteFromTemp(task);
 		completedTemp.writeToTemp(task);	
@@ -139,7 +139,7 @@ public class StorageController {
 	public void moveTaskToPending(Task task) {
 		assert task != null;
 		
-		task.setIsLastModified(true);
+		task.setLastModified(true);
 		task.setStatus(determineStatus(task.getTime()));
 		completedTemp.deleteFromTemp(task);
 		pendingTemp.writeToTemp(task);		
