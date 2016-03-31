@@ -205,7 +205,6 @@ public class CommandDispatcher {
 		//COMMAND_TYPE commandType = command.getType();
 
 		
-		
 		//add command with no add keyword
 //		if (commandType == COMMAND_TYPE.ADD) {
 //			if (!getFirstKeyword(original).

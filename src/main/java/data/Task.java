@@ -10,6 +10,7 @@ public class Task {
 	private TASK_NATURE type;
 	private PRIORITY_LEVEL priority;
 	private TASK_STATUS status;
+	private transient boolean isLastModified;
 	
 	public Task(String task, List<Date> time, PRIORITY_LEVEL priority, 
 			TASK_NATURE type, TASK_STATUS status) {
@@ -18,6 +19,7 @@ public class Task {
 		this.priority = priority;
 		this.type = type;
 		this.status = status;
+		this.isLastModified = false;
 		
 	}
 	
@@ -58,6 +60,13 @@ public class Task {
 	}
 	public TASK_STATUS getStatus() {
 		return status;
+	}
+	
+	public boolean getLastModified() {
+		return this.isLastModified;
+	}
+	public void setLastModified(boolean isLastModified) {
+		this.isLastModified = isLastModified;
 	}
 }
 
