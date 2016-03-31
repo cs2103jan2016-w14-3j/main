@@ -81,8 +81,7 @@ public class TempStorage {
 		for(int i=0; i<taskList.size(); i++) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.UPCOMING)) {
-				taskList.remove(i);
-				permStorage.deleteFromFile(i);
+				deleteFromTemp(task);
 			}
 		}
 	}
@@ -91,8 +90,7 @@ public class TempStorage {
 		for(int i=0; i<taskList.size(); i++) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.FLOATING)) {
-				taskList.remove(i);
-				permStorage.deleteFromFile(i);
+				deleteFromTemp(task);
 			}
 		}
 	}
@@ -101,8 +99,7 @@ public class TempStorage {
 		for(int i=0; i<taskList.size(); i++) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.OVERDUE)) {
-				taskList.remove(i);
-				permStorage.deleteFromFile(i);
+				deleteFromTemp(task);
 			}
 		}
 	}
@@ -169,7 +166,9 @@ public class TempStorage {
 		permStorage.saveToLocation(path);
 	}
 	
-	public void checkOverdue(Date date) {
+	public boolean checkOverdue(Date date) {
+		
+		boolean isAnyOverdue = false;
 		
 		for(int i=0; i<taskList.size(); i++) {
 			Task task = taskList.get(i);
@@ -177,8 +176,10 @@ public class TempStorage {
 				deleteFromTemp(task);
 				task.setStatus(TASK_STATUS.OVERDUE);
 				writeToTemp(task);
+				isAnyOverdue = true;
 			}
 		}
+		return isAnyOverdue;
 	}
 
 	private int searchTemp(Task task) {

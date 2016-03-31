@@ -327,8 +327,8 @@ public class Logic {
 		return searchResultCompleted;
 	}
 	
-	public void checkOverdue() {
+	public boolean checkOverdue() {
 		
-		storageController.checkOverdue(new Date());
+		return storageController.checkOverdue(new Date());
 	}
 }

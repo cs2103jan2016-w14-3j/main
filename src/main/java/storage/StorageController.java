@@ -206,9 +206,9 @@ public class StorageController {
 		return isSuccess;
 	}
 	
-	public void checkOverdue(Date date) {
+	public boolean checkOverdue(Date date) {
 		
-		pendingTemp.checkOverdue(date);
+		return pendingTemp.checkOverdue(date);
 	}
 	
 	private TASK_STATUS determineStatus(List<Date> dates) {
