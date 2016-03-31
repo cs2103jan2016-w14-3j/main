@@ -1035,6 +1035,7 @@ public class Main extends Application {
 		try {
 			if ((tabControl.getAllTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
+//				System.out.println("all tab live search: " + searchResult.size());
 				if (isEdit || isDelete || isSearch) {
 					populateAllList(searchResult);
 				}else if(isMark){
@@ -1043,6 +1044,7 @@ public class Main extends Application {
 				}
 			}else if ((tabControl.getPendingTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark) ) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
+//				System.out.println("pending tab live search: " + searchResult.size());
 				if (isEdit || isDelete || isSearch) {
 					populatePendingList(searchResult);		
 				}else if(isMark){
@@ -1051,6 +1053,7 @@ public class Main extends Application {
 				}
 			}else if ((tabControl.getFloatingTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
+//				System.out.println("floating tab live search: " + searchResult.size());
 				if (isEdit || isDelete || isSearch) {
 					populateFloatingList(searchResult);
 				}else if(isMark){
@@ -1059,6 +1062,7 @@ public class Main extends Application {
 				}
 			}else if ((tabControl.getOverdueTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
+//				System.out.println("overdue tab live search: " + searchResult.size());
 				if (isEdit || isDelete || isSearch) {
 					populateOverdueList(searchResult);
 				}else if(isMark){
@@ -1067,6 +1071,7 @@ public class Main extends Application {
 				}
 			}else if ((tabControl.getCompleteTab().isSelected()) &&  isDelete || isSearch || isUnmark ) {
 				searchResult = logic.handleSearchCompleted(oldValue,newValue);
+//				System.out.println("complete tab live search: " + searchResult.size());
 				if (isDelete || isSearch) {
 					populateCompleteList(searchResult);
 				}else if(isUnmark){

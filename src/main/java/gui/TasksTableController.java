@@ -114,6 +114,7 @@ public class TasksTableController extends BorderPane {
 
 	public void clearTask() {
 		items.clear();
+		tasksDisplay.refresh();
 	}
 	
 	public int getSize(){
