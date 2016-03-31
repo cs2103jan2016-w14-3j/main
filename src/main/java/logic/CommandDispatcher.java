@@ -236,10 +236,10 @@ public class CommandDispatcher {
 			//System.out.println(keyword);
 		}
 		
-		List<Date> date3 = parser.parse("tmr 10pm");
+		List<Date> date3 = parser.parse("mar 32");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
 		
-		System.out.println(new Date());
+		System.out.println(date3);
 		//System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
 	}
 }

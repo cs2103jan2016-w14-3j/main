@@ -58,7 +58,7 @@ public class EditCommandParser extends AddCommandParser {
 		}
 	}
 
-	private String determineTimeForEditCommand(String[] segments) {
+	private String determineTimeForEditCommand(String[] segments) throws InvalidInputFormatException {
 
 		String time_A = determineTime(formatToStandardCommandContent(segments[0].trim())); 
 		String time_B = determineTime(formatToStandardCommandContent(segments[1].trim()));

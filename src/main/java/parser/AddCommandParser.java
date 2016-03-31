@@ -39,7 +39,7 @@ public class AddCommandParser extends Parser {
 	private static final String PRIORITY_MEDIUM_ALIAS_1 = "med";
 	private static final String PRIORITY_MEDIUM_ALIAS_2 = "m";
 	private static final String PRIORITY_LOW_ALIAS = "l";
-	
+
 
 
 	protected PrettyTimeParser timeParser;
@@ -104,25 +104,47 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	protected String determineTime(String timeSegment) {
+	protected String determineTime(String timeSegment) throws InvalidInputFormatException {
 
 
 		//String timeSegment = determineTimeSegment(content);
 
 		List<Date> dates = timeParser.parse(timeSegment);
-		
+
 		if (dates.size() == 0) {
 			return "[]";
 		}
 		else {
-			modifyDateToTomorrowIfExpired(dates);
+			isTimeAmbiguous(dates);
+
 			
+			//modifyDateToTomorrowIfExpired(dates);
+
 			String result = setDefaultTimeIfNotSpecified(timeSegment, dates);
-			
 
 			return result;
 		}
 	}
+
+	private void isTimeAmbiguous(List<Date> dates) throws InvalidInputFormatException {
+		int size = dates.size();
+		if (size > 3) {
+			throw new InvalidInputFormatException("Ambiguous time entered!");
+		}
+		if (size == 3) {
+			if (getDate(dates.get(0)).equals(getDate(dates.get(1))) ||
+					getDate(dates.get(1)).equals(getDate(dates.get(2))) ||
+							getDate(dates.get(0)).equals(getDate(dates.get(2)))) {
+						throw new InvalidInputFormatException("Ambiguous time entered!");
+					}
+		}
+	}
+	
+	private String getDate(Date date) {
+		return date.toString().substring(0, 9);
+	}
+	
+
 
 	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
 		for (int i = 0; i < dates.size(); i++) {
@@ -332,12 +354,12 @@ public class AddCommandParser extends Parser {
 						break;
 					}
 				}
-				
+
 				//there is a valid preposition before "tomorrow"
 				if (isValidTimeIdentifier(segments[index - 1])) {
 					return content;
 				}
-				
+
 				//there is no valid preposition before "tomorrow"
 				else {
 					if (index + 1 <= len && 
@@ -376,7 +398,7 @@ public class AddCommandParser extends Parser {
 		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
 		content = StringUtils.replace(content, TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
 		if (isNecessaryToAddPrepostion(content)) {
-		content = addPrepositionIfApplicable(content);
+			content = addPrepositionIfApplicable(content);
 		}
 		//System.out.println(content);
 		int time = getStartingIndexOfIdentifier(content);
