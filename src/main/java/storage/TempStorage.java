@@ -173,8 +173,10 @@ public class TempStorage {
 		
 		for(int i=0; i<taskList.size(); i++) {
 			Task task = taskList.get(i);
-			if(task.getStatus().equals(TASK_STATUS.UPCOMING) && !task.getTime().get(0).before(date)) {
-				taskList.get(i).setStatus(TASK_STATUS.OVERDUE);
+			if(task.getStatus().equals(TASK_STATUS.UPCOMING) && task.getTime().get(0).before(date)) {
+				deleteFromTemp(task);
+				task.setStatus(TASK_STATUS.OVERDUE);
+				writeToTemp(task);
 			}
 		}
 	}
