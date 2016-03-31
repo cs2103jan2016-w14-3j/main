@@ -39,6 +39,7 @@ public class TempStorage {
 	public void writeToTemp(Task task) {
 
 		taskList.add(task);
+		Collections.sort(taskList, new TimeComparator());
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.writeToFile(task);
@@ -52,6 +53,7 @@ public class TempStorage {
 
 		int indexOfTaskToEdit = searchTemp(taskToEdit);
 		taskList.set(indexOfTaskToEdit, editedTask);
+		Collections.sort(taskList, new TimeComparator());
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.editToFile(indexOfTaskToEdit, editedTask);
