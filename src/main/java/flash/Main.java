@@ -49,7 +49,7 @@ import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
 
 import javafx.scene.paint.Color;
-
+import javafx.scene.paint.Paint;
 import javafx.scene.control.Button;
 import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
@@ -178,13 +178,31 @@ public class Main extends Application {
 	}
 	
 	private void checkOverdue() {
-		logic.checkOverdue();
+		boolean isUpdate = logic.checkOverdue();
+		String taskName=null;
 		try {
 			checkIsTasksEmpty();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		notification("this is working");
+		try {
+			taskName = locateOverdueTask(isUpdate);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		if(taskName!=null){
+		   notification(taskName);
+		}
+	}
+
+	private String locateOverdueTask(Boolean isUpdate) throws Exception {
+		for (Task temp : logic.displayPending()) {
+			if(temp.getStatus()==TASK_STATUS.OVERDUE && isUpdate){
+				return temp.getTask();
+			}
+		}
+		return null;
+		
 	}
 
 	private void checkIsTasksEmpty() throws Exception {
@@ -196,7 +214,7 @@ public class Main extends Application {
 	}
 
 	private void reinitialiseModifiedBoolean() {
-		isModifiedOverdue = false;
+		  isModifiedOverdue = false;
 			isModifiedPending = false;
 			isModifiedFloating = false;
 			isModifiedAll = false;
@@ -1189,13 +1207,15 @@ public class Main extends Application {
 	}
 
 	private void notification(String userInput) {
-		String title = "Successfully ";
+		String title = "Your task has expired ";
 		String message = userInput;
-		NotificationType notification = NotificationType.SUCCESS;
+		NotificationType notification = NotificationType.CUSTOM;
 
 		TrayNotification tray = new TrayNotification();
 		tray.setTitle(title);
 		tray.setMessage(message);
+		tray.setRectangleFill(Paint.valueOf("#D50000"));
+		tray.setImage(new Image("/main/resources/images/overdueNotification.png"));
 		tray.setAnimationType(AnimationType.POPUP);
 		tray.setNotificationType(notification);
 		tray.showAndDismiss(Duration.seconds(2));
