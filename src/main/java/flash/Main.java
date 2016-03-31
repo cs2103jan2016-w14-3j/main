@@ -916,6 +916,7 @@ public class Main extends Application {
 		boolean isUnmark = fragments[COMMAND_INDEX].equalsIgnoreCase("unmark");
         boolean quit = fragments[COMMAND_INDEX].equalsIgnoreCase("q");
         
+        
         if(quit){
         	try {
 				checkIsTasksEmpty();
