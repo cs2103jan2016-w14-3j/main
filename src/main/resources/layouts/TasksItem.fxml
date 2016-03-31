@@ -12,16 +12,16 @@
 <?import javafx.scene.layout.HBox?>
 
 <fx:root fx:id="cardLayout" styleClass="tasksItem" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
-	<center>
-		<StackPane styleClass="cardBg">
-			<children>
+   <center>
+      <StackPane styleClass="cardBg">
+         <children>
             <VBox fx:id="card" prefHeight="70.0" prefWidth="500.0" styleClass="card">
                <children>
                   <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
                         <StackPane prefHeight="39.0" prefWidth="416.0">
                            <children>
-                  							<Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="427.125" StackPane.alignment="CENTER_LEFT">
+                                       <Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="427.125" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font name="Century Gothic" size="7.0" />
                                  </font>
@@ -29,34 +29,39 @@
                            </children>
                         </StackPane>
                         
-                        <ImageView fx:id="banner" fitHeight="50.0" fitWidth="33.0" layoutX="425.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="banner" fitHeight="50.0" fitWidth="33.0" layoutX="446.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
-                  <StackPane alignment="TOP_LEFT" prefHeight="24.0" prefWidth="324.0">
+                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
                      <children>
-                        <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
-                           <font>
-                              <Font name="AR ESSENCE" size="18.0" />
-                           </font>
-                           <effect>
-                              <Glow level="0.4" />
-                           </effect>
-                        </Text>
-                        <Label fx:id="labelDate" textFill="#5c6bc0">
-                           <font>
-                              <Font name="Calibri" size="10.0" />
-                           </font>
-                        </Label>
+                        <StackPane alignment="TOP_LEFT" prefHeight="24.0" prefWidth="324.0">
+                           <children>
+                              <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
+                                 <font>
+                                    <Font name="AR ESSENCE" size="18.0" />
+                                 </font>
+                                 <effect>
+                                    <Glow level="0.4" />
+                                 </effect>
+                              </Text>
+                              <Label fx:id="labelDate" textFill="#5c6bc0">
+                                 <font>
+                                    <Font name="Calibri" size="10.0" />
+                                 </font>
+                              </Label>
+                           </children>
+                        </StackPane>
+                        <ImageView fx:id="imgDate" fitHeight="28.0" fitWidth="52.0" layoutX="366.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
-                  </StackPane>
+                  </AnchorPane>
                </children>
             </VBox>
-			</children>
+         </children>
          <effect>
             <InnerShadow color="#ffffff68" />
          </effect>
-		</StackPane>
-	</center>
+      </StackPane>
+   </center>
    <effect>
       <DropShadow color="#598add" />
    </effect>
@@ -68,7 +73,7 @@
                   <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
                </effect>
             </Rectangle>
-            <Label fx:id="firstLetter" prefHeight="72.0" prefWidth="45.0" text="00" alignment="CENTER">
+            <Label fx:id="firstLetter" alignment="CENTER" prefHeight="72.0" prefWidth="45.0" text="00">
                <font>
                   <Font size="5.0" />
                </font>

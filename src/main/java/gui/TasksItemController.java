@@ -52,6 +52,9 @@ public class TasksItemController extends BorderPane {
 	
 	@FXML
 	private ImageView banner;
+	
+	@FXML
+	private ImageView imgDate;
 
 	private static final String FILE_STATS_ITEM_FXML = "/main/resources/layouts/TasksItem.fxml";
 
@@ -108,12 +111,19 @@ public class TasksItemController extends BorderPane {
 		if(!task.getTime().isEmpty()){
 			this.labelDate.setText(showTime(task.getTime()));
 			labelDate.setStyle("-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
+			//System.out.println(task.getTime());
+			if(isToday(task.getTime())){
+				//System.out.println("success");
+				this.imgDate.setImage(new Image("/main/resources/images/imgToday.png"));
+				imgDate.setFitWidth(60);
+				imgDate.setPreserveRatio(true);
+			}
 			if(task.getStatus()== TASK_STATUS.OVERDUE){
 				labelDate.setStyle("-fx-text-fill: #F50057;-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
 				this.labelDate.setText("[OVERDUE] "+showTime(task.getTime()));
-				this.banner.setImage(new Image("/main/resources/images/overdue.png"));
+				this.banner.setImage(new Image("/main/resources/images/overdue.png"));		
 				banner.setFitWidth(70);
-				banner.setPreserveRatio(true);
+				banner.setPreserveRatio(true);			
 			}
 			if(task.getStatus()== TASK_STATUS.COMPLETED){
 				labelDate.setStyle("-fx-text-fill: green;-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
@@ -131,6 +141,27 @@ public class TasksItemController extends BorderPane {
 				generateColour(task.getPriority().getType())));
 		
 		
+	}
+	private boolean isToday(List<Date> dates) {
+		int size = dates.size();
+		if (size == 0) {
+			return false;
+		}
+		else {
+			Date today = new Date();
+			String todayDate = today.toString().substring(0, 9);
+			if (size == 1) {
+				if (dates.get(0).toString().substring(0,9).equals(todayDate)) {
+					return true;
+				}
+			}
+			else if (size == 2) {
+				if (today.after(dates.get(0)) || today.before(dates.get(1))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 

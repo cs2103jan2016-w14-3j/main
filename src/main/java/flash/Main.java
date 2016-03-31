@@ -4,6 +4,9 @@ import java.io.File;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
+
+import org.ocpsoft.prettytime.shade.net.fortuna.ical4j.model.Date;
 
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -194,6 +197,8 @@ public class Main extends Application {
 		   notification(taskName);
 		}
 	}
+	
+	
 
 	private String locateOverdueTask(Boolean isUpdate) throws Exception {
 		for (Task temp : logic.displayPending()) {
