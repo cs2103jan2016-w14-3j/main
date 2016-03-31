@@ -78,7 +78,7 @@ public class TempStorage {
 	}
 	
 	public void clearUpcoming() {
-		for(int i=0; i<taskList.size(); i++) {
+		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.UPCOMING)) {
 				deleteFromTemp(task);
@@ -87,7 +87,7 @@ public class TempStorage {
 	}
 	
 	public void clearFloating() {
-		for(int i=0; i<taskList.size(); i++) {
+		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.FLOATING)) {
 				deleteFromTemp(task);
@@ -96,7 +96,7 @@ public class TempStorage {
 	}
 	
 	public void clearOverdue() {
-		for(int i=0; i<taskList.size(); i++) {
+		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.OVERDUE)) {
 				deleteFromTemp(task);
