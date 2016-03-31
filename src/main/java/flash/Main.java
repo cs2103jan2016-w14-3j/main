@@ -112,6 +112,11 @@ public class Main extends Application {
 	private int pointer;
 	private boolean isFeedback = false;
 	private boolean isError = false;
+	private boolean isModifiedOverdue = false;
+	private boolean isModifiedPending = false;
+	private boolean isModifiedFloating = false;
+	private boolean isModifiedAll = false;
+	private boolean isModifiedComplete = false;
 	private static double xOffset = 0;
 	private static double yOffset = 0;
 	private Label lblPending = new Label();
@@ -136,7 +141,7 @@ public class Main extends Application {
 		initRootLayout();
 		checkIsTasksEmpty();
 		changeBlueTheme();
-		overdueChecker();
+		overdueTimer();
 //		blurPane = new BlurPane();
 //		blurPane.start(primaryStage);
 	}
@@ -164,127 +169,63 @@ public class Main extends Application {
 		logic = new Logic();
 	}
 	
-	private void overdueChecker(){
+	private void overdueTimer(){
 		Timeline timeline = new Timeline(new KeyFrame(
-		        Duration.millis(100000000),
-		        ae -> notification("hello")));
+		        Duration.millis(30000),
+		        ae -> checkOverdue()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 	}
+	
+	private void checkOverdue() {
+		logic.checkOverdue();
+		try {
+			checkIsTasksEmpty();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		notification("this is working");
+	}
 
 	private void checkIsTasksEmpty() throws Exception {
-		boolean isModifiedOverdue = false;
-		boolean isModifiedPending = false;
-		boolean isModifiedFloating = false;
-		boolean isModifiedAll = false;
-		boolean isModifiedComplete = false;
+		populateAllPendingTasks();
+		populateAllCompleteTasks();
+		switchToModifiedTab();   
+	    reinitialiseModifiedBoolean();
 		
-		if (logic.displayPending().isEmpty()) {
-			//if all pending is empty
-			tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-			tabControl.setAllTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-			tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-			tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-			
-			tabControl.setAllNotification(logic.displayPending().size());
-			tabControl.setPendingNotification(0);
-			tabControl.setOverdueNotification(0);
-			tabControl.setFloatingNotification(0);
-	
-		} else {
-			int allCount = 0;
-			int overdueCount = 0;
-			int pendingCount = 0;
-			int floatingCount = 0;		
-			
+	}
 
-			allTableControl.clearTask();
-			pendingTableControl.clearTask();
-			overdueTableControl.clearTask();
-			floatingTableControl.clearTask();
-			
-			for (Task temp : logic.displayPending()) {
-				if(temp.getStatus()==TASK_STATUS.UPCOMING){
-					++pendingCount;
-				}else if(temp.getStatus()==TASK_STATUS.FLOATING){
-					++floatingCount;
-				}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
-					++overdueCount;
-				}							
-			}
-//			System.out.println("number of pending task: " + pendingCount);
-//			System.out.println("number of floating task: " + floatingCount);
-//			System.out.println("number of overdue task: " + overdueCount);
-			
-			tabControl.setAllTab(allTableControl);
-			if(pendingCount==0){
-				tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-			}else{
-				tabControl.setPendingTab(pendingTableControl);
-			}
-			
-			if(floatingCount==0){
-				tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-			}else{
-				tabControl.setFloatingTab(floatingTableControl);
-			}
-			
-			if(overdueCount==0){
-				tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-			}else{
-				tabControl.setOverdueTab(overdueTableControl);
-			}		
-			
-		//notification
-		
-			tabControl.setAllNotification(logic.displayPending().size());
-			tabControl.setPendingNotification(pendingCount);
-			tabControl.setOverdueNotification(overdueCount);
-			tabControl.setFloatingNotification(floatingCount);
-			
-			allCount = 0;
-			overdueCount = 0;
-			pendingCount = 0;
-			floatingCount = 0;		
-			
-			for (Task temp : logic.displayPending()) {
-				allTableControl.addTask(temp,++allCount);
-				if(temp.getStatus()==TASK_STATUS.UPCOMING){
-					pendingTableControl.addTask(temp,++pendingCount);
-					if(temp.getLastModified()){
-						isModifiedPending = true;
-					}
-				}else if(temp.getStatus()==TASK_STATUS.FLOATING){
-					floatingTableControl.addTask(temp,++floatingCount);
-					if(temp.getLastModified()){
-						isModifiedFloating = true;
-					}
-				}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
-					overdueTableControl.addTask(temp,++overdueCount);
-					if(temp.getLastModified()){
-						isModifiedOverdue = true;
-					}
-				}							
-			}
-					
-		}		
+	private void reinitialiseModifiedBoolean() {
+		isModifiedOverdue = false;
+			isModifiedPending = false;
+			isModifiedFloating = false;
+			isModifiedAll = false;
+		   isModifiedComplete = false;
+	}
+
+	private void populateAllCompleteTasks() throws Exception {
 		if (logic.displayComplete().isEmpty()) {
 			//if complete is empty
 			tabControl.setEmptyCompleteTab();
 			tabControl.setCompletedNotification(logic.displayComplete().size());
-		} else {
-			
-			int completeCount = 0;
-			completeTableControl.clearTask();
-			tabControl.setCompleteTab(completeTableControl);
-			for (Task temp : logic.displayComplete()) {
-				completeTableControl.addTask(temp,++completeCount);
-				if(temp.getLastModified()){
-					isModifiedComplete = true;
-				}
-			}
-			tabControl.setCompletedNotification(completeCount);
+		} else {	
+			setupCompleteTable();
 		}
+	}
+
+	private void populateAllPendingTasks() throws Exception {
+		if (logic.displayPending().isEmpty()) {
+			//if all pending is empty
+			setupNoTasksTabs();
+	
+		} else {
+			// all pending is not empty
+			setupIndividualTabNotification();
+			populateAllTable();					
+		}
+	}
+
+	private void switchToModifiedTab() {
 		if(isModifiedFloating){
 			floatingTableControl.displayModified();
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getFloatingTab());
@@ -299,7 +240,105 @@ public class Main extends Application {
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
 		}
 	   barControl.getFocus();
+	}
+
+	private void setupCompleteTable() throws Exception {
+		int completeCount = 0;
+		completeTableControl.clearTask();
+		tabControl.setCompleteTab(completeTableControl);
+		for (Task temp : logic.displayComplete()) {
+			completeTableControl.addTask(temp,++completeCount);
+			if(temp.getLastModified()){
+				isModifiedComplete = true;
+			}
+		}
+		tabControl.setCompletedNotification(completeCount);
+	}
+
+	private void populateAllTable() throws Exception {
+		int allCount = 0;
+		int overdueCount= 0;
+		int pendingCount = 0;
+		int floatingCount = 0;	
 		
+		for (Task temp : logic.displayPending()) {
+			allTableControl.addTask(temp,++allCount);
+			if(temp.getStatus()==TASK_STATUS.UPCOMING){
+				pendingTableControl.addTask(temp,++pendingCount);
+				if(temp.getLastModified()){
+					isModifiedPending = true;
+				}
+			}else if(temp.getStatus()==TASK_STATUS.FLOATING){
+				floatingTableControl.addTask(temp,++floatingCount);
+				if(temp.getLastModified()){
+					isModifiedFloating = true;
+				}
+			}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
+				overdueTableControl.addTask(temp,++overdueCount);
+				if(temp.getLastModified()){
+					isModifiedOverdue = true;
+				}
+			}							
+		}
+	}
+
+	private void setupIndividualTabNotification() throws Exception {
+		int overdueCount = 0;
+		int pendingCount = 0;
+		int floatingCount = 0;		
+		
+		allTableControl.clearTask();
+		pendingTableControl.clearTask();
+		overdueTableControl.clearTask();
+		floatingTableControl.clearTask();
+		
+		for (Task temp : logic.displayPending()) {
+			if(temp.getStatus()==TASK_STATUS.UPCOMING){
+				++pendingCount;
+			}else if(temp.getStatus()==TASK_STATUS.FLOATING){
+				++floatingCount;
+			}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
+				++overdueCount;
+			}							
+		}
+		
+		tabControl.setAllTab(allTableControl);
+		if(pendingCount==0){
+			tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
+		}else{
+			tabControl.setPendingTab(pendingTableControl);
+		}
+		
+		if(floatingCount==0){
+			tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
+		}else{
+			tabControl.setFloatingTab(floatingTableControl);
+		}
+		
+		if(overdueCount==0){
+			tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
+		}else{
+			tabControl.setOverdueTab(overdueTableControl);
+		}		
+		
+        //notification
+
+		tabControl.setAllNotification(logic.displayPending().size());
+		tabControl.setPendingNotification(pendingCount);
+		tabControl.setOverdueNotification(overdueCount);
+		tabControl.setFloatingNotification(floatingCount);
+	}
+
+	private void setupNoTasksTabs() throws Exception {
+		tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
+		tabControl.setAllTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
+		tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
+		tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
+		
+		tabControl.setAllNotification(logic.displayPending().size());
+		tabControl.setPendingNotification(0);
+		tabControl.setOverdueNotification(0);
+		tabControl.setFloatingNotification(0);
 	}
 
 	/**
@@ -976,7 +1015,7 @@ public class Main extends Application {
         }
 		// TODO Auto-generated method stub
 		try {
-			if ((tabControl.getAllTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
+			if ((tabControl.getAllTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (isEdit || isDelete || isSearch) {
 					populateAllList(searchResult);
@@ -984,7 +1023,7 @@ public class Main extends Application {
 					populateAllList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}else if ((tabControl.getPendingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark ) {
+			}else if ((tabControl.getPendingTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark) ) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (isEdit || isDelete || isSearch) {
 					populatePendingList(searchResult);		
@@ -992,7 +1031,7 @@ public class Main extends Application {
 					populatePendingList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}else if ((tabControl.getFloatingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
+			}else if ((tabControl.getFloatingTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (isEdit || isDelete || isSearch) {
 					populateFloatingList(searchResult);
@@ -1000,7 +1039,7 @@ public class Main extends Application {
 					populateFloatingList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}else if ((tabControl.getOverdueTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
+			}else if ((tabControl.getOverdueTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (isEdit || isDelete || isSearch) {
 					populateOverdueList(searchResult);
