@@ -36,7 +36,7 @@
 }
 
 .blueTopBar{
-	-fx-background-color: #3F51BF;
+	-fx-background-color: #3F51B5;
 }
 .orangeToolBar{
 	-fx-background-color: #F57C00;
@@ -98,11 +98,16 @@
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #F8BBD0;
+  -fx-background-color: #F44336;
   -fx-font-family:Roboto;
   
 }
-
+#tasksDisplay{
+-fx-background-color: linear-gradient(to bottom, #E57373, white);
+}
+#firstLetter{
+	-fx-text-fill: black;
+}
 #tasksDisplay.list-cell {
 	-fx-background-color: transparent;
 }
@@ -124,7 +129,7 @@
 }
 
 .card {
-	-fx-padding:  3 0 0 0 px;
+	-fx-padding:  3 0 0 10 px;
 	-fx-background-color: white;
 	-fx-border-color : transparent;
 }
@@ -187,7 +192,7 @@
 
 .tab-pane .tab:selected
 {
-   -fx-background-color:  #F8BBD0;
+   -fx-background-color:  #E57373;
    -fx-border-color:transparent;
 }
 .tab:selected:focused, .tab:filled:selected {
@@ -199,14 +204,14 @@
     -fx-alignment: CENTER;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: #96b946;
+    -fx-text-fill: #F06292;
     -fx-font-family:Roboto;
 }
 
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
-   -fx-text-fill: #828282;
+   -fx-text-fill: black;
    -fx-font-family:Roboto;
 }
 

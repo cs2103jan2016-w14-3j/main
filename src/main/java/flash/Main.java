@@ -4,6 +4,10 @@ import java.io.File;
 
 import java.io.IOException;
 import java.util.ArrayList;
+
+import javafx.animation.Animation;
+import javafx.animation.KeyFrame;
+import javafx.animation.Timeline;
 import javafx.application.Application;
 import javafx.application.Platform;
 
@@ -28,6 +32,7 @@ import main.java.gui.SideBarController;
 import main.java.gui.TabsController;
 import main.java.gui.TasksItemController;
 import main.java.gui.TasksTableController;
+
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -131,6 +136,9 @@ public class Main extends Application {
 		initRootLayout();
 		checkIsTasksEmpty();
 		changeBlueTheme();
+		overdueChecker();
+//		blurPane = new BlurPane();
+//		blurPane.start(primaryStage);
 	}
 
 	/********************************** Initialisation ***********************************************/
@@ -154,6 +162,14 @@ public class Main extends Application {
 
 	private void initLogic() throws Exception {
 		logic = new Logic();
+	}
+	
+	private void overdueChecker(){
+		Timeline timeline = new Timeline(new KeyFrame(
+		        Duration.millis(100000000),
+		        ae -> notification("hello")));
+		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
 	}
 
 	private void checkIsTasksEmpty() throws Exception {
@@ -968,8 +984,7 @@ public class Main extends Application {
 					populateAllList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}
-			if ((tabControl.getPendingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark ) {
+			}else if ((tabControl.getPendingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark ) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (isEdit || isDelete || isSearch) {
 					populatePendingList(searchResult);		
@@ -977,8 +992,7 @@ public class Main extends Application {
 					populatePendingList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}
-			 if ((tabControl.getFloatingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
+			}else if ((tabControl.getFloatingTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (isEdit || isDelete || isSearch) {
 					populateFloatingList(searchResult);
@@ -986,8 +1000,7 @@ public class Main extends Application {
 					populateFloatingList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}
-			 if ((tabControl.getOverdueTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
+			}else if ((tabControl.getOverdueTab().isSelected()) && isEdit || isDelete || isSearch || isMark || isUnmark) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
 				if (isEdit || isDelete || isSearch) {
 					populateOverdueList(searchResult);
@@ -995,8 +1008,7 @@ public class Main extends Application {
 					populateOverdueList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}
-			if ((tabControl.getCompleteTab().isSelected()) &&  isDelete || isSearch || isUnmark ) {
+			}else if ((tabControl.getCompleteTab().isSelected()) &&  isDelete || isSearch || isUnmark ) {
 				searchResult = logic.handleSearchCompleted(oldValue,newValue);
 				if (isDelete || isSearch) {
 					populateCompleteList(searchResult);
@@ -1137,19 +1149,19 @@ public class Main extends Application {
 		});
 	}
 
-//	private void notification(String userInput) {
-//		String title = "Successfully ";
-//		String message = userInput;
-//		NotificationType notification = NotificationType.SUCCESS;
-//
-//		TrayNotification tray = new TrayNotification();
-//		tray.setTitle(title);
-//		tray.setMessage(message);
-//		tray.setAnimationType(AnimationType.POPUP);
-//		tray.setNotificationType(notification);
-//		tray.showAndDismiss(Duration.seconds(2));
-//
-//	}
+	private void notification(String userInput) {
+		String title = "Successfully ";
+		String message = userInput;
+		NotificationType notification = NotificationType.SUCCESS;
+
+		TrayNotification tray = new TrayNotification();
+		tray.setTitle(title);
+		tray.setMessage(message);
+		tray.setAnimationType(AnimationType.POPUP);
+		tray.setNotificationType(notification);
+		tray.showAndDismiss(Duration.seconds(2));
+
+	}
 
 	private void exit(Button btnExit) {
 		btnExit.setMnemonicParsing(true);

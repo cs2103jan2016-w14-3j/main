@@ -80,23 +80,16 @@
 #setting{
 	 -fx-background-color: transparent;
 }
-#tasksDisplay .list-cell { 
-	-fx-background-color:white; 
-}
-.blue{
-	-fx-background-color:#E3F2FD; 
- }
+.list-cell { -fx-background-color: transparent; /* 1 */ }
 
-
-#tasksDisplay .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #81C784;
+.list-cell:selected:focused, .task-cell:filled:selected {
+  -fx-background-color: #4CAF50;
+  -fx-font-family:Roboto;
   
 }
-.list-cell{
-	-fx-border-color : 	transparent;
-}
-#tasksDisplay {
-	-fx-background-color: #FCE4EC;
+
+#tasksDisplay.list-cell {
+	-fx-background-color: transparent;
 }
 
 /* Hide horizontal scrollbars */
@@ -110,7 +103,12 @@
     -fx-opacity: 0;
     -fx-padding: -7;
 }
-
+#tasksDisplay{
+-fx-background-color: linear-gradient(to bottom, #81C784, white);
+}
+#firstLetter{
+	-fx-text-fill: black;
+}
 .tasksItem {
 	-fx-padding: 2px;
 }
@@ -205,7 +203,7 @@
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
-   -fx-text-fill: #828282;
+   -fx-text-fill: black;
    -fx-font-family:Roboto;
 }
 

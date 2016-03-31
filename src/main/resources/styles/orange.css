@@ -91,7 +91,7 @@
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #FFCC80;
+  -fx-background-color: #F57C00;
   -fx-font-family:Roboto;
   
 }
@@ -111,7 +111,12 @@
     -fx-opacity: 0;
     -fx-padding: -7;
 }
-
+#tasksDisplay{
+-fx-background-color: linear-gradient(to bottom, #FFCC80, white);
+}
+#firstLetter{
+	-fx-text-fill: black;
+}
 .tasksItem {
 	-fx-padding: 2px;
 }
@@ -193,14 +198,14 @@
     -fx-alignment: CENTER;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: #96b946;
+    -fx-text-fill: #FFA726;
     -fx-font-family:Roboto;
 }
 
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
-   -fx-text-fill: #828282;
+   -fx-text-fill: black;
    -fx-font-family:Roboto;
 }
 

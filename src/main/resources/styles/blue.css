@@ -36,7 +36,7 @@
 }
 
 .blueTopBar{
-	-fx-background-color: #2e569f;
+	-fx-background-color: #5C6BC0;
 }
 .orangeToolBar{
 	-fx-background-color: #F57C00;
@@ -98,7 +98,7 @@
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #BBDEFB;
+  -fx-background-color: #303F9F;
   -fx-font-family:Roboto;
   
 }
@@ -118,7 +118,12 @@
     -fx-opacity: 0;
     -fx-padding: -7;
 }
-
+#tasksDisplay{
+-fx-background-color: linear-gradient(to bottom, #BBDEFB, white);
+}
+#firstLetter{
+	-fx-text-fill: black;
+}
 .tasksItem {
 	-fx-padding: 2px;
 }
@@ -143,7 +148,7 @@
 }
 
 .card .stackpane {
-	-fx-background-color: black;
+	-fx-background-color: transparent;
 }
 
 .card .percentage {
@@ -174,11 +179,13 @@
 {
     -fx-tab-min-width:95px;
     -fx-tab-max-width:95px;
+    
 }
 
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
     -fx-border-color:#BBDEFB;
+    -fx-background-color: linear-gradient(to bottom, #BBDEFB, white);
 }
 .tab-pane .tab
 {
@@ -201,14 +208,14 @@
     -fx-alignment: CENTER;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: #96b946;
+    -fx-text-fill: #5C6BC0;
     -fx-font-family:Roboto;
 }
 
 
 .tab:selected .tab-label { 
     -fx-alignment: CENTER;
-   -fx-text-fill: #828282;
+   -fx-text-fill: black;
    -fx-font-family:Roboto;
 }
 
