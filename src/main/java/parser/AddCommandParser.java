@@ -47,15 +47,39 @@ public class AddCommandParser extends Parser {
 	public AddCommandParser() {
 		super();
 		timeParser = new PrettyTimeParser();
-		
+
 	}
 
 
 	public static void main(String[] args)
 	{
 		PrettyTimeParser pars = new PrettyTimeParser();
-		System.out.println(pars.parse("by mon 11:19pm"));
 		AddCommandParser parser = new AddCommandParser();
+		System.out.println(parser.isToday(pars.parse("last fri to next mon")));
+		System.out.println(new Date().toString());
+		//AddCommandParser parser = new AddCommandParser();
+	}
+	
+	private boolean isToday(List<Date> dates) {
+		int size = dates.size();
+		if (size == 0) {
+			return false;
+		}
+		else {
+			Date today = new Date();
+			String todayDate = today.toString().substring(0, 9);
+			if (size == 1) {
+				if (dates.get(0).toString().substring(0,9).equals(todayDate)) {
+					return true;
+				}
+			}
+			else if (size == 2) {
+				if (today.after(dates.get(0)) || today.before(dates.get(1))) {
+					return true;
+				}
+			}
+		}
+		return false;
 	}
 
 
@@ -116,39 +140,39 @@ public class AddCommandParser extends Parser {
 			return "[]";
 		}
 		else {
-			isTimeAmbiguous(dates);
+			isTimeAmbiguous(dates, timeSegment);
 
-			
+
 			//modifyDateToTomorrowIfExpired(dates);
-
-			String result = setDefaultTimeIfNotSpecified(timeSegment, dates);
+			String result = dates.toString();
+			if (!timeSegment.contains("now")) {
+				result = setDefaultTimeIfNotSpecified(timeSegment, dates);
+			}
 
 			return result;
 		}
 	}
 
-	private void isTimeAmbiguous(List<Date> dates) throws InvalidInputFormatException {
+	private void isTimeAmbiguous(List<Date> dates, String timeSegment) throws InvalidInputFormatException {
 		int size = dates.size();
-		if (size > 3) {
+		if (size > 2) {
 			throw new InvalidInputFormatException("Ambiguous time entered!");
 		}
-		if (size == 3) {
-			if (getDate(dates.get(0)).equals(getDate(dates.get(1))) ||
-					getDate(dates.get(1)).equals(getDate(dates.get(2))) ||
-							getDate(dates.get(0)).equals(getDate(dates.get(2)))) {
-						throw new InvalidInputFormatException("Ambiguous time entered!");
-					}
+		if (size == 2) {
+			if (!containsWholeWord(timeSegment, DURATION_FLAG_TO)) {
+				throw new InvalidInputFormatException("Date format not supported!");
+			}
 		}
 	}
-	
+
 	private String getDate(Date date) {
 		return date.toString().substring(0, 9);
 	}
-	
+
 
 
 	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
-		
+
 		for (int i = 0; i < dates.size(); i++) {
 			if (isOverdue(dates.get(i))) {
 				Calendar calendar = Calendar.getInstance();
@@ -160,7 +184,7 @@ public class AddCommandParser extends Parser {
 
 	}
 
-	private String setDefaultTimeIfNotSpecified(String content, List<Date> dates) {
+	private String setDefaultTimeIfNotSpecified(String timeSegment, List<Date> dates) {
 		String parsedTime = dates.toString();
 		String currentSystemTime = new Date().toString();
 		parsedTime = getRoughTime(parsedTime);
@@ -168,7 +192,7 @@ public class AddCommandParser extends Parser {
 
 		if (parsedTime.equals(currentSystemTime)) {
 			String result = timeParser.parse(
-					content + WHITE_SPACE + DEFAULT_TIME).toString();
+					timeSegment + WHITE_SPACE + DEFAULT_TIME).toString();
 			return result;
 		}
 		else {
