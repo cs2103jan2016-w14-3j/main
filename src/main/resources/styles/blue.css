@@ -137,7 +137,7 @@
 .card .filename {
 	-fx-font-size: 18px;
 	-fx-font-weight: bold;
-	
+	-fx-font-family:Roboto;
 }
 
 .card .date {
