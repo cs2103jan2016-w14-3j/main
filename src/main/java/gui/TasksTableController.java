@@ -105,6 +105,7 @@ public class TasksTableController extends BorderPane {
 		tasksDisplay.setItems(subentries);
 	}
 
+	
 	public void controlToList() {
 		int count = 0;
 		tasksDisplay.requestFocus();

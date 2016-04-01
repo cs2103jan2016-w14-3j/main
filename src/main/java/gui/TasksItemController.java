@@ -109,6 +109,7 @@ public class TasksItemController extends BorderPane {
 			filename.setStyle("-fx-fill: #F50057;");
 		}
 
+		
 		if(!task.getTime().isEmpty()){
 			this.labelDate.setText(showTime(task.getTime()));
 			labelDate.setStyle("-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");

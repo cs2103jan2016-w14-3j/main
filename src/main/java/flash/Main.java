@@ -150,6 +150,7 @@ public class Main extends Application {
 //		blurPane.start(primaryStage);
 	}
 
+	
 	/********************************** Initialisation ***********************************************/
 	/***********************************************************************************************/
 	private void initControllers(Main main) {
