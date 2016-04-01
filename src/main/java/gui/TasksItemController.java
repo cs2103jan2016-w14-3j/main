@@ -1,6 +1,7 @@
 package main.java.gui;
 
 import java.io.IOException;
+
 import java.text.SimpleDateFormat;
 
 import javafx.fxml.FXML;
@@ -76,7 +77,7 @@ public class TasksItemController extends BorderPane {
 
 	private TASK_NATURE taskType;
 
-	public TasksItemController(Task task,int count) {
+	public TasksItemController(Task task,int count,String theme) {
 		this.task = task;
 		this.taskName = task.getTask();
 		this.taskPriority = task.getPriority().getType();
@@ -138,7 +139,7 @@ public class TasksItemController extends BorderPane {
 
 		//card.setPadding(Insets.EMPTY);
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT,
-				generateColour(task.getPriority().getType())));
+				generateColour(task.getPriority().getType(),theme)));
 		
 		
 	}
@@ -156,7 +157,7 @@ public class TasksItemController extends BorderPane {
 				}
 			}
 			else if (size == 2) {
-				if (today.after(dates.get(0)) || today.before(dates.get(1))) {
+				if (today.after(dates.get(0)) && today.before(dates.get(1))) {
 					return true;
 				}
 			}
@@ -236,7 +237,7 @@ public class TasksItemController extends BorderPane {
 		card.setStyle("-fx-background-color: green");
 	}
 
-	private String generateColour(String priority) {
+	private String generateColour(String priority,String theme) {
 		if (priority.equals("low")) {
 			return BASE_COLOUR_LOW;
 		} else if (priority.equals("zai")) {
@@ -246,6 +247,15 @@ public class TasksItemController extends BorderPane {
 		} else if (priority.equals("high")) {
 			return BASE_COLOUR_HIGH;
 		} else {
+			if(theme.equals("green")){
+				return "#81C784";
+			}else if(theme.equals("blue")){
+				return BASE_COLOUR_DEFAULT;
+			}else if(theme.equals("orange")){
+				return "#FFCC80";
+			}else if(theme.equals("red")){
+				return "#E57373";
+			}
 			return BASE_COLOUR_DEFAULT;
 		}
 	}

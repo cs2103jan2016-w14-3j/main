@@ -125,6 +125,7 @@ public class Main extends Application {
 	private Label lblPending = new Label();
 	private Label lblCompleted = new Label();
 	private Label lblTitle;
+	private String theme = null;
 
 
 	public static void main(String[] args) {
@@ -142,8 +143,8 @@ public class Main extends Application {
 		initControllers(this);
 		initLogic();
 		initRootLayout();
-		checkIsTasksEmpty();
 		changeBlueTheme();
+		checkIsTasksEmpty();	
 		overdueTimer();
 //		blurPane = new BlurPane();
 //		blurPane.start(primaryStage);
@@ -270,7 +271,7 @@ public class Main extends Application {
 		completeTableControl.clearTask();
 		tabControl.setCompleteTab(completeTableControl);
 		for (Task temp : logic.displayComplete()) {
-			completeTableControl.addTask(temp,++completeCount);
+			completeTableControl.addTask(temp,++completeCount,theme);
 			if(temp.getLastModified()){
 				isModifiedComplete = true;
 			}
@@ -285,19 +286,19 @@ public class Main extends Application {
 		int floatingCount = 0;	
 		
 		for (Task temp : logic.displayPending()) {
-			allTableControl.addTask(temp,++allCount);
+			allTableControl.addTask(temp,++allCount,theme);
 			if(temp.getStatus()==TASK_STATUS.UPCOMING){
-				pendingTableControl.addTask(temp,++pendingCount);
+				pendingTableControl.addTask(temp,++pendingCount,theme);
 				if(temp.getLastModified()){
 					isModifiedPending = true;
 				}
 			}else if(temp.getStatus()==TASK_STATUS.FLOATING){
-				floatingTableControl.addTask(temp,++floatingCount);
+				floatingTableControl.addTask(temp,++floatingCount,theme);
 				if(temp.getLastModified()){
 					isModifiedFloating = true;
 				}
 			}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
-				overdueTableControl.addTask(temp,++overdueCount);
+				overdueTableControl.addTask(temp,++overdueCount,theme);
 				if(temp.getLastModified()){
 					isModifiedOverdue = true;
 				}
@@ -888,6 +889,8 @@ public class Main extends Application {
 		pendingTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
 		completeTableControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
 		tabControl.getStylesheets().add("/main/resources/styles/stylesheet.css");
+		theme = "red";
+		pendingTableControl.setTheme("red");
 	}
 	
 	private void changeGreenTheme() {
@@ -901,6 +904,8 @@ public class Main extends Application {
 		pendingTableControl.getStylesheets().add("/main/resources/styles/green.css");
 		completeTableControl.getStylesheets().add("/main/resources/styles/green.css");
 		tabControl.getStylesheets().add("/main/resources/styles/green.css");
+		theme = "green";
+		pendingTableControl.setTheme("green");
 	}
 	
 	private void changeOrangeTheme() {
@@ -914,6 +919,8 @@ public class Main extends Application {
 		pendingTableControl.getStylesheets().add("/main/resources/styles/orange.css");
 		completeTableControl.getStylesheets().add("/main/resources/styles/orange.css");
 		tabControl.getStylesheets().add("/main/resources/styles/orange.css");
+		theme="orange";
+		pendingTableControl.setTheme("orange");
 	}
 
 	private void changeBlueTheme() {
@@ -927,6 +934,8 @@ public class Main extends Application {
 		pendingTableControl.getStylesheets().add("/main/resources/styles/blue.css");
 		completeTableControl.getStylesheets().add("/main/resources/styles/blue.css");
 		tabControl.getStylesheets().add("/main/resources/styles/blue.css");
+		theme = "blue";
+		pendingTableControl.setTheme("blue");
 	}
 
 	private void setFeedback(CommandBarController commandBarController, String type, String userInput) {
@@ -1101,7 +1110,7 @@ public class Main extends Application {
 //			if(searchResult.size()==1){
 //				count = 999;
 //			}
-			allTableControl.addTask(temp,++count);
+			allTableControl.addTask(temp,++count,theme);
 		}
 		
 	}
@@ -1114,7 +1123,7 @@ public class Main extends Application {
 //				count = 999;
 //			}
 			if(temp.getStatus()==TASK_STATUS.OVERDUE){
-			     overdueTableControl.addTask(temp,++count);
+			     overdueTableControl.addTask(temp,++count,theme);
 			}
 		}	
 	}
@@ -1127,7 +1136,7 @@ public class Main extends Application {
 //				count = 999;
 //			}
 			if(temp.getStatus()==TASK_STATUS.FLOATING){
-			     floatingTableControl.addTask(temp,++count);
+			     floatingTableControl.addTask(temp,++count,theme);
 			}
 		}	
 	}
@@ -1140,7 +1149,7 @@ public class Main extends Application {
 //				count = 999;
 //			}
 			if(temp.getStatus()==TASK_STATUS.COMPLETED){
-		     	completeTableControl.addTask(temp,++count);
+		     	completeTableControl.addTask(temp,++count,theme);
 			}
 		}	
 	}
@@ -1153,7 +1162,7 @@ public class Main extends Application {
 //				count = 999;
 //			}
 			if(temp.getStatus()==TASK_STATUS.UPCOMING){
-			    pendingTableControl.addTask(temp,++count);
+			    pendingTableControl.addTask(temp,++count,theme);
 			}
 		}	
 	}

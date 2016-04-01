@@ -38,6 +38,7 @@ public class TasksTableController extends BorderPane {
 	private static final String HELP_ICON = "/main/resources/images/help.fw.png";
 	private ArrayList<TasksItemController> items;
 	protected String taskname;
+	private String theme;
 	
 
 	public TasksTableController() {
@@ -82,8 +83,8 @@ public class TasksTableController extends BorderPane {
 		return tasksDisplay;
 	}
 
-	public void addTask(Task task, int count) {
-		setTasksItem(task,count);
+	public void addTask(Task task, int count, String theme) {
+		setTasksItem(task,count,theme);
 		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
@@ -95,8 +96,8 @@ public class TasksTableController extends BorderPane {
 	 * @param currentFile
 	 * @param currentNumLines
 	 */
-	private void setTasksItem(Task task,int count) {	
-		items.add(new TasksItemController(task,count));  
+	private void setTasksItem(Task task,int count,String theme) {	
+		items.add(new TasksItemController(task,count,theme));  
 
 	}
 
@@ -119,6 +120,10 @@ public class TasksTableController extends BorderPane {
 	
 	public int getSize(){
 		return items.size();
+	}
+	
+	public void setTheme(String colour){
+		theme = colour;
 	}
 
 
