@@ -528,7 +528,7 @@ public class Main extends Application {
 		final Button btnNew = new Button();
 		btnNew.getStyleClass().add("newButton");
 		btnNew.setPadding(Insets.EMPTY);
-		btnNew.setOnMouseEntered(e-> backgroundChooser(btnNew));
+		backgroundChooser(btnNew);
 		
 
 		final Button btnSave = new Button();
@@ -1237,12 +1237,12 @@ public class Main extends Application {
 	}
 	
 	private void backgroundChooser(Button btnBackground){
+		
 		PopOver bgPopOver = new PopOver();
 	    bgPopOver.setDetachable(false);
 	    bgPopOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
 	   
-	    
-	    
+	   	    
 		GridPane gridPane = new GridPane();
 	    gridPane.setPadding(new Insets(5));
 	    gridPane.setHgap(5);
@@ -1255,6 +1255,7 @@ public class Main extends Application {
 	        public void handle(MouseEvent event) {
 	        
 	        	rootLayout.getStyleClass().add("rootWood");
+	        	bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1277,6 +1278,7 @@ public class Main extends Application {
 	        public void handle(MouseEvent event) {
 	        
 	        	rootLayout.getStyleClass().add("rootCrop");
+	        	bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1291,6 +1293,7 @@ public class Main extends Application {
 	        public void handle(MouseEvent event) {
 	        
 	        	rootLayout.getStyleClass().add("rootTower");
+	        	bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1305,6 +1308,8 @@ public class Main extends Application {
 	        public void handle(MouseEvent event) {
 	        
 	        	rootLayout.getStyleClass().add("rootParis");
+	        	bgPopOver.hide();
+	        	
 	            event.consume();
 	        }
 	   });
@@ -1319,6 +1324,7 @@ public class Main extends Application {
 	        public void handle(MouseEvent event) {
 	        
 	        	rootLayout.getStyleClass().add("rootBalloon");
+	        	bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1333,25 +1339,31 @@ public class Main extends Application {
 	        public void handle(MouseEvent event) {
 	        
 	        	rootLayout.getStyleClass().add("rootBlack");
+	        	bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
 	    bg6.setFitWidth(100);
 		bg6.setPreserveRatio(true);
 	    gridPane.add(bg6,2,1);
-	    
-	    bgPopOver.setContentNode(gridPane);
-	    if (bgPopOver.getScene() != null) {
-	    	bgPopOver.setDetachable(false);
-	    	bgPopOver.setArrowIndent(5);
-	    	bgPopOver.show(btnBackground.getScene().getWindow(),
-	                getPopupPosition(btnBackground).getX(),
-	                getPopupPosition(btnBackground).getY());
-	    }
-	   
-	    
-	    
+	     bgPopOver.setContentNode(gridPane);
+	     
+		btnBackground.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if (bgPopOver.getScene() != null) {
+			    	bgPopOver.setArrowIndent(5);
+			    	bgPopOver.show(btnBackground.getScene().getWindow(),
+			                getPopupPosition(btnBackground).getX(),
+			                getPopupPosition(btnBackground).getY());
+			    }
+				
+			}
+
+		});
+
 	}
+	   
 	
 	private Point2D getPopupPosition(Button node) { 
         Window window = node.getScene().getWindow(); 
