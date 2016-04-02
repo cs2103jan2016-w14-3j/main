@@ -1,6 +1,36 @@
-#root {
+.root {
 	
-	-fx-background-color: white;
+	-fx-background-image: url("/main/resources/images/crop.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootWood{
+		-fx-background-image: url("/main/resources/images/wood.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootTower{
+		-fx-background-image: url("/main/resources/images/tower.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootCrop{
+		-fx-background-image: url("/main/resources/images/crop.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootParis{
+		-fx-background-image: url("/main/resources/images/paris.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootBalloon{
+		-fx-background-image: url("/main/resources/images/balloon.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootBlack{
+		-fx-background-image: url("/main/resources/images/black.jpg");
     -fx-background-size: stretch;
     -fx-border-color:#E3F2FD;
 }
@@ -25,11 +55,11 @@
 	-fx-font-family:Roboto;
 }
 .toolBar{
-	-fx-background-color: #D32F2F;
+	-fx-background-color: rgba(255,0,0,0.3);
 }
 
 .topBar{
-	-fx-background-color: #F44336;
+	-fx-background-color: rgba(255,0,0,0.3);
 }
 .blueToolBar{
 	-fx-background-color: #303F9F;
@@ -75,7 +105,7 @@
   -fx-background-color:transparent;
 }
 .sidePane{
-	-fx-background-color: white;
+	-fx-background-color: rgba(255, 255, 255, 0.3);
 }
 .lblPendingCompleted{
 	-fx-font-size: 8px;
@@ -103,7 +133,7 @@
   
 }
 #tasksDisplay{
--fx-background-color: linear-gradient(to bottom, #E57373, white);
+-fx-background-color: transparent;
 }
 #firstLetter{
 	-fx-text-fill: black;
@@ -179,22 +209,24 @@
 {
     -fx-tab-min-width:95px;
     -fx-tab-max-width:95px;
+    -fx-background-color: transparent;
 }
 
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
     -fx-border-color:#BBDEFB;
+    -fx-background-color: rgba(255,0,0,0.3);
 }
 .tab-pane .tab
 {
     
--fx-background-color: transparent;
+-fx-background-color: rgba(255,0,0,0.3);
 
 }
 
 .tab-pane .tab:selected
 {
-   -fx-background-color:  #E57373;
+   -fx-background-color:  #EF5350;
    -fx-border-color:transparent;
 }
 .tab:selected:focused, .tab:filled:selected {
@@ -206,7 +238,7 @@
     -fx-alignment: CENTER;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: #F06292;
+    -fx-text-fill: black;
     -fx-font-family:Roboto;
 }
 

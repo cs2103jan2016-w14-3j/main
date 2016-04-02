@@ -16,12 +16,15 @@ import javafx.application.Platform;
 
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
+import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.stage.FileChooser;
 import javafx.stage.Stage;
 import javafx.stage.StageStyle;
+import javafx.stage.Window;
 import javafx.util.Duration;
 import main.java.logic.Logic;
 
@@ -45,6 +48,7 @@ import javafx.scene.input.KeyCode;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Pane;
 import javafx.scene.layout.Priority;
@@ -57,9 +61,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-
+import org.controlsfx.control.*;
 
 public class Main extends Application {
+	
+	@FXML
+	private BorderPane root;
 
 	private Stage primaryStage;
 	private BorderPane rootLayout;
@@ -143,7 +150,7 @@ public class Main extends Application {
 		initControllers(this);
 		initLogic();
 		initRootLayout();
-		changeBlueTheme();
+		changeRedTheme();
 		checkIsTasksEmpty();	
 		overdueTimer();
 //		blurPane = new BlurPane();
@@ -378,6 +385,7 @@ public class Main extends Application {
 			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			rootLayout.setPadding(new Insets(0, 0, 0, 0));
+			rootLayout.getStyleClass().add("root");
 			
 			listenForStageInput();
 			showSidebar();
@@ -520,6 +528,8 @@ public class Main extends Application {
 		final Button btnNew = new Button();
 		btnNew.getStyleClass().add("newButton");
 		btnNew.setPadding(Insets.EMPTY);
+		btnNew.setOnMouseEntered(e-> backgroundChooser(btnNew));
+		
 
 		final Button btnSave = new Button();
 		btnSave.getStyleClass().add("saveButton");
@@ -1225,6 +1235,131 @@ public class Main extends Application {
 			}
 		});
 	}
+	
+	private void backgroundChooser(Button btnBackground){
+		PopOver bgPopOver = new PopOver();
+	    bgPopOver.setDetachable(false);
+	    bgPopOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+	   
+	    
+	    
+		GridPane gridPane = new GridPane();
+	    gridPane.setPadding(new Insets(5));
+	    gridPane.setHgap(5);
+	    gridPane.setVgap(5);
+	    
+	    ImageView bg1 = new ImageView(new Image("/main/resources/images/wood.jpg"));
+	    bg1.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	        
+	        	rootLayout.getStyleClass().add("rootWood");
+	            event.consume();
+	        }
+	   });
+	    
+	    bg1.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	            bg1.setStyle("-fx-background-color: black");
+	        }
+	   });
+	    bg1.setFitWidth(100);
+		bg1.setPreserveRatio(true);
+	    gridPane.add(bg1,0,0);
+	    
+	    ImageView bg2 = new ImageView(new Image("/main/resources/images/crop.jpg"));
+	    bg2.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	        
+	        	rootLayout.getStyleClass().add("rootCrop");
+	            event.consume();
+	        }
+	   });
+	    bg2.setFitWidth(100);
+		bg2.setPreserveRatio(true);
+	    gridPane.add(bg2,1,0);
+	    
+	    ImageView bg3 = new ImageView(new Image("/main/resources/images/tower.jpg"));
+	    bg3.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	        
+	        	rootLayout.getStyleClass().add("rootTower");
+	            event.consume();
+	        }
+	   });
+	    bg3.setFitWidth(100);
+		bg3.setPreserveRatio(true);
+	    gridPane.add(bg3,2,0);
+	    
+	    ImageView bg4 = new ImageView(new Image("/main/resources/images/paris.jpg"));
+	    bg4.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	        
+	        	rootLayout.getStyleClass().add("rootParis");
+	            event.consume();
+	        }
+	   });
+	    bg4.setFitWidth(100);
+		bg4.setPreserveRatio(true);
+	    gridPane.add(bg4,0,1);
+	    
+	    ImageView bg5 = new ImageView(new Image("/main/resources/images/balloon.jpg"));
+	    bg5.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	        
+	        	rootLayout.getStyleClass().add("rootBalloon");
+	            event.consume();
+	        }
+	   });
+	    bg5.setFitWidth(100);
+		bg5.setPreserveRatio(true);
+	    gridPane.add(bg5,1,1);
+	    
+	    ImageView bg6 = new ImageView(new Image("/main/resources/images/black.jpg"));
+	    bg6.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+	        @Override
+	        public void handle(MouseEvent event) {
+	        
+	        	rootLayout.getStyleClass().add("rootBlack");
+	            event.consume();
+	        }
+	   });
+	    bg6.setFitWidth(100);
+		bg6.setPreserveRatio(true);
+	    gridPane.add(bg6,2,1);
+	    
+	    bgPopOver.setContentNode(gridPane);
+	    if (bgPopOver.getScene() != null) {
+	    	bgPopOver.setDetachable(false);
+	    	bgPopOver.setArrowIndent(5);
+	    	bgPopOver.show(btnBackground.getScene().getWindow(),
+	                getPopupPosition(btnBackground).getX(),
+	                getPopupPosition(btnBackground).getY());
+	    }
+	   
+	    
+	    
+	}
+	
+	private Point2D getPopupPosition(Button node) { 
+        Window window = node.getScene().getWindow(); 
+        Point2D point = node.localToScene(0, 0); 
+        double x = point.getX() + window.getX() + node.getWidth() + 2; 
+        double y = point.getY() + window.getY(); 
+        return new Point2D(x, y); 
+    } 
 
 	private void notification(String userInput) {
 		String title = "Your task has expired ";

@@ -63,7 +63,7 @@
       </StackPane>
    </center>
    <effect>
-      <DropShadow color="#598add" />
+      <DropShadow color="white" />
    </effect>
    <left>
       <StackPane prefHeight="30.0" prefWidth="46.0" BorderPane.alignment="CENTER">
