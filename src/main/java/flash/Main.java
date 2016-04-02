@@ -385,7 +385,7 @@ public class Main extends Application {
 			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			rootLayout.setPadding(new Insets(0, 0, 0, 0));
-			rootLayout.getStyleClass().add("root");
+			rootLayout.getStyleClass().add(0,"root");
 			
 			listenForStageInput();
 			showSidebar();
@@ -1253,9 +1253,9 @@ public class Main extends Application {
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	        
-	        	rootLayout.getStyleClass().add("rootWood");
-	        	bgPopOver.hide();
+	        	rootLayout.getStyleClass().remove(0);
+	        	rootLayout.getStyleClass().add(0,"rootWood");
+	        	//bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1276,9 +1276,9 @@ public class Main extends Application {
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	        
-	        	rootLayout.getStyleClass().add("rootCrop");
-	        	bgPopOver.hide();
+	        	rootLayout.getStyleClass().remove(0);
+	        	rootLayout.getStyleClass().add(0,"rootCrop");
+	        	//bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1291,9 +1291,9 @@ public class Main extends Application {
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	        
-	        	rootLayout.getStyleClass().add("rootTower");
-	        	bgPopOver.hide();
+	        	rootLayout.getStyleClass().remove(0);
+	        	rootLayout.getStyleClass().add(0,"rootTower");
+	        	//bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1306,9 +1306,9 @@ public class Main extends Application {
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	        
-	        	rootLayout.getStyleClass().add("rootParis");
-	        	bgPopOver.hide();
+	        	rootLayout.getStyleClass().remove(0);
+	        	rootLayout.getStyleClass().add(0,"rootParis");
+	        	//bgPopOver.hide();
 	        	
 	            event.consume();
 	        }
@@ -1322,9 +1322,9 @@ public class Main extends Application {
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	        
-	        	rootLayout.getStyleClass().add("rootBalloon");
-	        	bgPopOver.hide();
+	        	rootLayout.getStyleClass().remove(0);
+	        	rootLayout.getStyleClass().add(0,"rootBalloon");
+	        	//bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
@@ -1337,9 +1337,9 @@ public class Main extends Application {
 
 	        @Override
 	        public void handle(MouseEvent event) {
-	        
-	        	rootLayout.getStyleClass().add("rootBlack");
-	        	bgPopOver.hide();
+	        	rootLayout.getStyleClass().remove(0);
+	        	rootLayout.getStyleClass().add(0,"rootBlack");
+	        	//bgPopOver.hide();
 	            event.consume();
 	        }
 	   });
