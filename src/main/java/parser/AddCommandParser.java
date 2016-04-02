@@ -55,11 +55,12 @@ public class AddCommandParser extends Parser {
 	{
 		PrettyTimeParser pars = new PrettyTimeParser();
 		AddCommandParser parser = new AddCommandParser();
-		System.out.println(parser.isToday(pars.parse("last fri to next mon")));
-		System.out.println(new Date().toString());
+		//System.out.println(parser.isToday(pars.parse("last fri to next mon")));
+		//System.out.println(new Date().toString());
+		System.out.print(parser.formatToStandardCommandContent("this tmr"));
 		//AddCommandParser parser = new AddCommandParser();
 	}
-	
+
 	private boolean isToday(List<Date> dates) {
 		int size = dates.size();
 		if (size == 0) {
@@ -344,27 +345,36 @@ public class AddCommandParser extends Parser {
 			return UPCOMING_TASK;
 		}
 	}
+
 	private String addPrepositionIfApplicable(String content) {
 		//contains keyword "tomorrow"
 		if (content.contains(TOMORROW_IN_FULL)) {
+			
 			//"tomorrow" is the first word
 			if (content.indexOf(TOMORROW_IN_FULL) == 0) {
 				int startIndex = content.indexOf(WHITE_SPACE) + 1;
+				String nextWord = content.substring(startIndex);
+				if (nextWord.indexOf(WHITE_SPACE) != -1) {
+					nextWord = nextWord.substring(0, nextWord.indexOf(WHITE_SPACE));
+				}
 				//there is a valid preposition following "tomorrow"
-				if ((startIndex < content.length() && 
-						(isValidTimeIdentifier(content.substring(
-								startIndex, startIndex + 2)) || isValidTimeIdentifier
-								(content.substring(startIndex, startIndex + 4)) || 
-								isValidTimeIdentifier(content.substring
-										(startIndex, startIndex + 6))))) {
+				if (startIndex < content.length() && 
+						isValidTimeIdentifier(nextWord)) {
+
 					content = content.substring(startIndex);
+					if (timeParser.parse(content).size() == 0) {
+						
+						return EVENT_FLAG_ON + WHITE_SPACE + 
+								TOMORROW_IN_FULL + WHITE_SPACE + content;
+					}
 					int index = content.indexOf(WHITE_SPACE) + 1;
-					content = content.substring(0, index) + TOMORROW_IN_FULL + WHITE_SPACE 
-							+ content.substring(index);
+					content = content.substring(0, index) + TOMORROW_IN_FULL 
+							+ WHITE_SPACE + content.substring(index);
 					return content;
 				}
 				//no preposition after "tomorrow"
 				else {
+
 					content = EVENT_FLAG_ON + WHITE_SPACE + content;
 				}
 			}
@@ -388,7 +398,15 @@ public class AddCommandParser extends Parser {
 
 				//there is no valid preposition before "tomorrow"
 				else {
-					if (index + 1 <= len && 
+					if (index + 1 == len) {
+						String newContent = EMPTY_STRING;
+						for (int i = 0; i < index; i++) {
+							newContent += segments[i] + WHITE_SPACE;
+						}
+						newContent += EVENT_FLAG_ON + WHITE_SPACE + segments[index];
+						return newContent;
+					}
+					if (index + 1 < len && 
 							!isValidTimeIdentifier(segments[index + 1])) {
 						String newContent = EMPTY_STRING;
 						for (int i = 0; i < index; i++) {
@@ -407,12 +425,19 @@ public class AddCommandParser extends Parser {
 						for (int i = 0; i < index; i++) {
 							newContent += segments[i] + WHITE_SPACE;
 						}
-						newContent += segments[index + 1] + WHITE_SPACE + segments[index];
+						String rest = EMPTY_STRING;
 						for (int i = index + 2; i < len; i++) {
-							newContent += WHITE_SPACE + segments[i];
+							rest += WHITE_SPACE + segments[i];
+						}
+						if (timeParser.parse(rest).size() == 0) {
+							newContent += EVENT_FLAG_ON + WHITE_SPACE + segments[index];
+						}
+						else {
+							newContent += segments[index + 1] + 
+									WHITE_SPACE + segments[index];
 						}
 
-						return newContent;
+						return newContent + rest;
 					}
 				}
 			}
