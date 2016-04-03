@@ -211,7 +211,10 @@ public class TempStorage {
 	}
 	
 	public ArrayList<Task> searchMatch(String newValue) {
-		
+		//handle edit
+		if (newValue.contains(",")) {
+			newValue = newValue.substring(0, newValue.indexOf(","));
+		}
 		//newValue = newValue.trim();
 		//System.out.println(newValue);
 		if (!newValue.trim().contains(" ")) {
@@ -237,7 +240,7 @@ public class TempStorage {
 		else {
 			currList = searchHistory.peek();
 
-			ArrayList<Task> searchResult = new ArrayList<Task>();		
+			ArrayList<Task> searchResult = new ArrayList<Task>();	
 			String[] parts = newValue.toLowerCase().split(SPACE);
 			int taskNumber = 1;
 			searchResult.clear();
@@ -251,15 +254,17 @@ public class TempStorage {
 
 						for (String part : parts) {
 							//String withoutComma = part.substring(0,part.length()-1);
-							if(taskMatch.toLowerCase().contains(part.replaceAll(",", ""))&& part.contains(",")){
-								match = true;
-								break;
-							}
+//							if(taskMatch.toLowerCase().contains(part.replaceAll(",", ""))&& part.contains(",")){
+//								System.out.println("here");
+//								match = true;
+//								break;
+//							}
 							if (!taskMatch.toLowerCase().contains(part)) {
 								match = false;
 								break;
 							}
 						}
+						
 						if (match) {
 							searchResult.add(task);
 						}
