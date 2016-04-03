@@ -179,7 +179,7 @@ public class TempStorage {
 		
 		boolean isAnyOverdue = false;
 		
-		for(int i=0; i<taskList.size(); i++) {
+		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TASK_STATUS.UPCOMING) && task.getTime().get(0).before(date)) {
 				deleteFromTemp(task);
