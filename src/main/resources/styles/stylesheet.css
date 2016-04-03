@@ -30,7 +30,7 @@
     -fx-border-color:#E3F2FD;
 }
 .rootBlack{
-		-fx-background-image: url("/main/resources/images/black.jpg");
+		-fx-background-image: url("/main/resources/images/grass.jpg");
     -fx-background-size: stretch;
     -fx-border-color:#E3F2FD;
 }

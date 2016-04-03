@@ -1037,7 +1037,9 @@ public class Main extends Application {
 				commandBarController.setFeedback("Previous command has been undone", Color.GREEN);
 			} else if (userInput.equalsIgnoreCase(REDO_COMMAND)) {
 				commandBarController.setFeedback("Previous Change has been restored", Color.GREEN);
-			} else if (userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)
+			} else if (userInput.equalsIgnoreCase(HELP_COMMAND)) {
+				
+			}else if (userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEARCOMPLETE_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEAROVERDUE_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEARFLOATING_COMMAND)
@@ -1338,7 +1340,7 @@ public class Main extends Application {
 		balloonBg.setPreserveRatio(true);
 		gridPane.add(balloonBg, 1, 1);
 
-		blackBg = new ImageView(new Image("/main/resources/images/black.jpg"));
+		blackBg = new ImageView(new Image("/main/resources/images/grass.jpg"));
 		handleBlackbg();
 		blackBg.setFitWidth(100);
 		blackBg.setPreserveRatio(true);
