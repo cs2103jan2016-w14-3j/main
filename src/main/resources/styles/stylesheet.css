@@ -62,26 +62,28 @@
 	-fx-background-color: rgba(255,0,0,0.3);
 }
 .blueToolBar{
-	-fx-background-color: #303F9F;
+	-fx-background-color: rgba(0,0,255,0.3);
 }
 
 .blueTopBar{
-	-fx-background-color: #3F51B5;
+	-fx-background-color: rgba(0,0,255,0.3);
 }
 .orangeToolBar{
-	-fx-background-color: #F57C00;
+	-fx-background-color: rgba(192,192,192,0.4);
 }
 
 .orangeTopBar{
-	-fx-background-color: #FF9800;
+	-fx-background-color: rgba(192,192,192,0.4);
 }
 .greenToolBar{
-	-fx-background-color: #388E3C;
+	-fx-background-color: rgba(0,255,0,0.3);
 }
 
 .greenTopBar{
-	-fx-background-color: #4CAF50;
+	-fx-background-color: rgba(0,255,0,0.3);
 }
+
+
 .lblTitle{
 	-fx-font-size:20;
 	-fx-text-fill:white;
@@ -215,30 +217,26 @@
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
     -fx-border-color:#BBDEFB;
-    -fx-background-color: rgba(255,0,0,0.3);
+    -fx-background-color: transparent;
 }
 .tab-pane .tab
 {
     
--fx-background-color: rgba(255,0,0,0.3);
+-fx-background-color: transparent;
 
 }
 
 .tab-pane .tab:selected
 {
-   -fx-background-color:  #EF5350;
+   -fx-background-color: rgba(255,0,0,0.3) ;
    -fx-border-color:transparent;
-}
-.tab:selected:focused, .tab:filled:selected {
-  -fx-background-color: #CCFF90;
-  
 }
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: black;
+    -fx-text-fill: #EF5350;
     -fx-font-family:Roboto;
 }
 

@@ -112,7 +112,7 @@
     -fx-padding: -7;
 }
 #tasksDisplay{
--fx-background-color: linear-gradient(to bottom, #FFCC80, white);
+-fx-background-color: transparent;
 }
 #firstLetter{
 	-fx-text-fill: black;
@@ -173,6 +173,7 @@
 {
     -fx-tab-min-width:95px;
     -fx-tab-max-width:95px;
+    -fx-background-color: transparent;
 }
 
 .tab{
@@ -188,7 +189,7 @@
 
 .tab-pane .tab:selected
 {
-   -fx-background-color: #FFCC80;
+   -fx-background-color: rgba(192,192,192,0.8);
    -fx-border-color:transparent;
 }
 .tab:selected:focused, .tab:filled:selected {
@@ -200,7 +201,7 @@
     -fx-alignment: CENTER;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: #FFA726;
+    -fx-text-fill: #616161;
     -fx-font-family:Roboto;
 }
 

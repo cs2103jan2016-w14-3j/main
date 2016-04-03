@@ -44,7 +44,8 @@ import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.KeyCode;
-
+import javafx.scene.input.KeyCodeCombination;
+import javafx.scene.input.KeyCombination;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.BorderPane;
@@ -64,7 +65,7 @@ import javafx.scene.control.ListView;
 import org.controlsfx.control.*;
 
 public class Main extends Application {
-	
+
 	@FXML
 	private BorderPane root;
 
@@ -73,7 +74,7 @@ public class Main extends Application {
 	private HBox hBar;
 	private HBox topBar;
 	private Scene scene;
-	
+
 	private Logic logic;
 	private Task task;
 
@@ -133,7 +134,13 @@ public class Main extends Application {
 	private Label lblCompleted = new Label();
 	private Label lblTitle;
 	private String theme = null;
-
+	private String background = "crop";
+	private ImageView woodBg;
+	private ImageView parisBg;
+	private ImageView blackBg;
+	private ImageView cropBg;
+	private ImageView towerBg;
+	private ImageView balloonBg;
 
 	public static void main(String[] args) {
 		launch(args);
@@ -151,13 +158,12 @@ public class Main extends Application {
 		initLogic();
 		initRootLayout();
 		changeRedTheme();
-		checkIsTasksEmpty();	
+		checkIsTasksEmpty();
 		overdueTimer();
-//		blurPane = new BlurPane();
-//		blurPane.start(primaryStage);
+		// blurPane = new BlurPane();
+		// blurPane.start(primaryStage);
 	}
 
-	
 	/********************************** Initialisation ***********************************************/
 	/***********************************************************************************************/
 	private void initControllers(Main main) {
@@ -166,10 +172,10 @@ public class Main extends Application {
 		overdueTableControl = new TasksTableController();
 		pendingTableControl = new TasksTableController();
 		completeTableControl = new TasksTableController();
-		
+
 		barControl = new CommandBarController(this);
 		tabControl = new TabsController();
-		
+
 		allDisplay = allTableControl.getListView();
 		floatingDisplay = floatingTableControl.getListView();
 		overdueDisplay = overdueTableControl.getListView();
@@ -180,18 +186,16 @@ public class Main extends Application {
 	private void initLogic() throws Exception {
 		logic = new Logic();
 	}
-	
-	private void overdueTimer(){
-		Timeline timeline = new Timeline(new KeyFrame(
-		        Duration.millis(30000),
-		        ae -> checkOverdue()));
+
+	private void overdueTimer() {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30000), ae -> checkOverdue()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 	}
-	
+
 	private void checkOverdue() {
 		boolean isUpdate = logic.checkOverdue();
-		String taskName=null;
+		String taskName = null;
 		try {
 			checkIsTasksEmpty();
 		} catch (Exception e) {
@@ -202,76 +206,76 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		if(taskName!=null){
-		   notification(taskName);
+		if (taskName != null) {
+			notification(taskName);
 		}
 	}
-	
-	
 
 	private String locateOverdueTask(Boolean isUpdate) throws Exception {
 		for (Task temp : logic.displayPending()) {
-			if(temp.getStatus()==TASK_STATUS.OVERDUE && isUpdate){
+			if (temp.getStatus() == TASK_STATUS.OVERDUE && isUpdate) {
 				return temp.getTask();
 			}
 		}
 		return null;
-		
+
 	}
 
 	private void checkIsTasksEmpty() throws Exception {
 		populateAllPendingTasks();
 		populateAllCompleteTasks();
-		switchToModifiedTab();   
-	    reinitialiseModifiedBoolean();
-		
+		switchToModifiedTab();
+		reinitialiseModifiedBoolean();
+
 	}
 
 	private void reinitialiseModifiedBoolean() {
-		  isModifiedOverdue = false;
-			isModifiedPending = false;
-			isModifiedFloating = false;
-			isModifiedAll = false;
-		   isModifiedComplete = false;
+		isModifiedOverdue = false;
+		isModifiedPending = false;
+		isModifiedFloating = false;
+		isModifiedAll = false;
+		isModifiedComplete = false;
 	}
 
 	private void populateAllCompleteTasks() throws Exception {
 		if (logic.displayComplete().isEmpty()) {
-			//if complete is empty
+			// if complete is empty
 			tabControl.setEmptyCompleteTab();
 			tabControl.setCompletedNotification(logic.displayComplete().size());
-		} else {	
+		} else {
 			setupCompleteTable();
 		}
 	}
 
 	private void populateAllPendingTasks() throws Exception {
 		if (logic.displayPending().isEmpty()) {
-			//if all pending is empty
+			// if all pending is empty
 			setupNoTasksTabs();
-	
+
 		} else {
 			// all pending is not empty
 			setupIndividualTabNotification();
-			populateAllTable();					
+			populateAllTable();
 		}
 	}
 
 	private void switchToModifiedTab() {
-		if(isModifiedFloating){
+		if (isModifiedFloating) {
 			floatingTableControl.displayModified();
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getFloatingTab());
-		}else if(isModifiedOverdue){
+		} else if (isModifiedOverdue) {
 			overdueTableControl.displayModified();
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
-		}if(isModifiedPending){
+		}
+		if (isModifiedPending) {
 			pendingTableControl.displayModified();
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getPendingTab());
-		}if(isModifiedComplete){
+		}
+		if (isModifiedComplete) {
 			completeTableControl.displayModified();
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
 		}
-	   barControl.getFocus();
+		barControl.getFocus();
 	}
 
 	private void setupCompleteTable() throws Exception {
@@ -279,8 +283,8 @@ public class Main extends Application {
 		completeTableControl.clearTask();
 		tabControl.setCompleteTab(completeTableControl);
 		for (Task temp : logic.displayComplete()) {
-			completeTableControl.addTask(temp,++completeCount,theme);
-			if(temp.getLastModified()){
+			completeTableControl.addTask(temp, ++completeCount, theme);
+			if (temp.getLastModified()) {
 				isModifiedComplete = true;
 			}
 		}
@@ -289,71 +293,71 @@ public class Main extends Application {
 
 	private void populateAllTable() throws Exception {
 		int allCount = 0;
-		int overdueCount= 0;
+		int overdueCount = 0;
 		int pendingCount = 0;
-		int floatingCount = 0;	
-		
+		int floatingCount = 0;
+
 		for (Task temp : logic.displayPending()) {
-			allTableControl.addTask(temp,++allCount,theme);
-			if(temp.getStatus()==TASK_STATUS.UPCOMING){
-				pendingTableControl.addTask(temp,++pendingCount,theme);
-				if(temp.getLastModified()){
+			allTableControl.addTask(temp, ++allCount, theme);
+			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
+				pendingTableControl.addTask(temp, ++pendingCount, theme);
+				if (temp.getLastModified()) {
 					isModifiedPending = true;
 				}
-			}else if(temp.getStatus()==TASK_STATUS.FLOATING){
-				floatingTableControl.addTask(temp,++floatingCount,theme);
-				if(temp.getLastModified()){
+			} else if (temp.getStatus() == TASK_STATUS.FLOATING) {
+				floatingTableControl.addTask(temp, ++floatingCount, theme);
+				if (temp.getLastModified()) {
 					isModifiedFloating = true;
 				}
-			}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
-				overdueTableControl.addTask(temp,++overdueCount,theme);
-				if(temp.getLastModified()){
+			} else if (temp.getStatus() == TASK_STATUS.OVERDUE) {
+				overdueTableControl.addTask(temp, ++overdueCount, theme);
+				if (temp.getLastModified()) {
 					isModifiedOverdue = true;
 				}
-			}							
+			}
 		}
 	}
 
 	private void setupIndividualTabNotification() throws Exception {
 		int overdueCount = 0;
 		int pendingCount = 0;
-		int floatingCount = 0;		
-		
+		int floatingCount = 0;
+
 		allTableControl.clearTask();
 		pendingTableControl.clearTask();
 		overdueTableControl.clearTask();
 		floatingTableControl.clearTask();
-		
+
 		for (Task temp : logic.displayPending()) {
-			if(temp.getStatus()==TASK_STATUS.UPCOMING){
+			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
 				++pendingCount;
-			}else if(temp.getStatus()==TASK_STATUS.FLOATING){
+			} else if (temp.getStatus() == TASK_STATUS.FLOATING) {
 				++floatingCount;
-			}else if(temp.getStatus()==TASK_STATUS.OVERDUE){
+			} else if (temp.getStatus() == TASK_STATUS.OVERDUE) {
 				++overdueCount;
-			}							
+			}
 		}
-		
+
 		tabControl.setAllTab(allTableControl);
-		if(pendingCount==0){
+		if (pendingCount == 0) {
 			tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-		}else{
+		} else {
 			tabControl.setPendingTab(pendingTableControl);
 		}
-		
-		if(floatingCount==0){
+
+		if (floatingCount == 0) {
 			tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-		}else{
+		} else {
 			tabControl.setFloatingTab(floatingTableControl);
 		}
-		
-		if(overdueCount==0){
+
+		if (overdueCount == 0) {
 			tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-		}else{
+		} else {
 			tabControl.setOverdueTab(overdueTableControl);
-		}		
-		
-        //notification
+		}
+
+		// notification
 
 		tabControl.setAllNotification(logic.displayPending().size());
 		tabControl.setPendingNotification(pendingCount);
@@ -366,7 +370,7 @@ public class Main extends Application {
 		tabControl.setAllTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
 		tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
 		tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/intro.fw.png")));
-		
+
 		tabControl.setAllNotification(logic.displayPending().size());
 		tabControl.setPendingNotification(0);
 		tabControl.setOverdueNotification(0);
@@ -385,8 +389,8 @@ public class Main extends Application {
 			scene = new Scene(rootLayout);
 			primaryStage.setScene(scene);
 			rootLayout.setPadding(new Insets(0, 0, 0, 0));
-			rootLayout.getStyleClass().add(0,"root");
-			
+			rootLayout.getStyleClass().add(0, "root");
+
 			listenForStageInput();
 			showSidebar();
 			showTabs();
@@ -402,11 +406,11 @@ public class Main extends Application {
 	}
 
 	private void listenForStageInput() {
-//		scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-//			if (key.getCode() == KeyCode.ESCAPE) {
-//				primaryStage.setIconified(true);
-//			}
-//		});
+		// scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
+		// if (key.getCode() == KeyCode.ESCAPE) {
+		// primaryStage.setIconified(true);
+		// }
+		// });
 		rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -423,61 +427,59 @@ public class Main extends Application {
 		});
 	}
 
-	
 	private void showSidebar() {
 
 		// create a sidebar with some content in it.
 		final Pane sidePane = createSidebarContent();
 		SideBarController sidebar = new SideBarController(EXPANDED_WIDTH, sidePane);
-		VBox.setVgrow(sidePane, Priority.ALWAYS);	
-		rootLayout.setLeft(sidebar);	
-		sidebar.hideSidebar();	
-		
+		VBox.setVgrow(sidePane, Priority.ALWAYS);
+		rootLayout.setLeft(sidebar);
+		sidebar.hideSidebar();
+
 		createTopBar(sidebar);
 	}
 
 	private void createTopBar(SideBarController sidebar) {
 		HBox toolBar = new HBox();
 		HBox titleBar = new HBox();
-		hBar = new HBox();	
+		hBar = new HBox();
 		topBar = new HBox();
 		HBox leftTopBar = new HBox();
 
 		// title
 		Image icon = new Image("/main/resources/images/flashIcon.png");
 		ImageView flashView = new ImageView(icon);
-		
+
 		Label empty1 = new Label(" ");
-		
+
 		Image imgTitle = new Image("/main/resources/images/title.png");
 		ImageView iconView = new ImageView(imgTitle);
-		
-		titleBar.getChildren().addAll(flashView,empty1,iconView);
+
+		titleBar.getChildren().addAll(flashView, empty1, iconView);
 		titleBar.setAlignment(Pos.CENTER_LEFT);
 		titleBar.setPadding(new Insets(0, 0, 0, 5));
-       
+
 		HBox empty2 = new HBox();
-        empty2.setPadding(new Insets(0, 0, 0, 455));
-//		 2 app control buttons
+		empty2.setPadding(new Insets(0, 0, 0, 455));
+		// 2 app control buttons
 		Button closeApp = new Button();
 		closeApp.getStyleClass().add("closeApp");
 		exit(closeApp);
-    
+
 		Button minimiseApp = new Button();
 		minimiseApp.getStyleClass().add("minimiseApp");
 		minimiseApp.setPadding(new Insets(4, 0, 0, 0));
 		minimise(minimiseApp);
-        
-		toolBar.getChildren().addAll(empty2, minimiseApp,closeApp);
+
+		toolBar.getChildren().addAll(empty2, minimiseApp, closeApp);
 		toolBar.setAlignment(Pos.TOP_RIGHT);
-		
 
 		hBar.getChildren().addAll(titleBar, toolBar);
 		hBar.getStyleClass().add("toolBar");
 
 		// sidebar button
 		lblTitle = new Label("Pending Tasks");
-			
+
 		lblTitle.getStyleClass().add("lblTitle");
 		lblTitle.setPadding(new Insets(0, 0, 5, 10));
 		leftTopBar.getChildren().addAll(sidebar.getControlButton(), lblTitle);
@@ -529,7 +531,6 @@ public class Main extends Application {
 		btnNew.getStyleClass().add("newButton");
 		btnNew.setPadding(Insets.EMPTY);
 		backgroundChooser(btnNew);
-		
 
 		final Button btnSave = new Button();
 		btnSave.getStyleClass().add("saveButton");
@@ -558,22 +559,21 @@ public class Main extends Application {
 		btnHelp.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				if(tabControl.getAllTab().isSelected()){
-				   tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getPendingTab().isSelected()){
-					   tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getFloatingTab().isSelected()){
-					   tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getOverdueTab().isSelected()){
-					   tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getCompleteTab().isSelected()){
-					   tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
+				if (tabControl.getAllTab().isSelected()) {
+					tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
+				} else if (tabControl.getPendingTab().isSelected()) {
+					tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
+				} else if (tabControl.getFloatingTab().isSelected()) {
+					tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
+				} else if (tabControl.getOverdueTab().isSelected()) {
+					tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
+				} else if (tabControl.getCompleteTab().isSelected()) {
+					tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
 				}
-					   
-					   
+
 			}
 		});
-		
+
 	}
 
 	private void showTabs() {
@@ -590,7 +590,7 @@ public class Main extends Application {
 
 	private void showCommandBar() {
 		rootLayout.setBottom(barControl);
-		//barControl.setText("What is your main focus for today?");
+		// barControl.setText("What is your main focus for today?");
 		barControl.getFocus();
 		barControl.setBgColour("med");
 	}
@@ -604,8 +604,8 @@ public class Main extends Application {
 		assert commandBarController != null;
 		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
-			if(!text.equalsIgnoreCase("help")){
-			  checkIsTasksEmpty();
+			if (!text.equalsIgnoreCase("help")) {
+				checkIsTasksEmpty();
 			}
 		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
 			event.consume(); // nullifies the default behavior of UP and DOWN on
@@ -613,24 +613,78 @@ public class Main extends Application {
 			handleGetPastCommands(event);
 		} else if ((event.getCode() == KeyCode.TAB)) {
 			event.consume();
-			if(tabControl.getAllTab().isSelected()){
+			if (tabControl.getAllTab().isSelected()) {
 				allTableControl.controlToList();
-			}else if(tabControl.getPendingTab().isSelected()){
+			} else if (tabControl.getPendingTab().isSelected()) {
 				pendingTableControl.controlToList();
-			}else if(tabControl.getOverdueTab().isSelected()){
+			} else if (tabControl.getOverdueTab().isSelected()) {
 				overdueTableControl.controlToList();
-			}else if(tabControl.getFloatingTab().isSelected()){
+			} else if (tabControl.getFloatingTab().isSelected()) {
 				floatingTableControl.controlToList();
-			}else if(tabControl.getCompleteTab().isSelected()){
+			} else if (tabControl.getCompleteTab().isSelected()) {
 				completeTableControl.controlToList();
 			}
-		
-		}else if ((event.getCode()== KeyCode.F5)){
+
+		} else if ((event.getCode() == KeyCode.F5)) {
 			checkIsTasksEmpty();
 		}
 	}
 
 	private void listenerForTaskList() {
+
+		final KeyCombination keyComb1 = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
+		scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (keyComb1.match(event)) {
+					if(theme.equals("green")){
+						changeBlueTheme();
+					}else if(theme.equals("blue")){
+						changeTransparentTheme();
+					}else if(theme.equals("transparent")){
+						changeRedTheme();
+					}else if(theme.equals("red")){
+						changeGreenTheme();
+					}
+					
+				}
+			}
+		});
+		
+		final KeyCombination keyComb2 = new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN);
+		scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (keyComb2.match(event)) {
+					if(background.equals("paris")){
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootBlack");
+						background = "black";
+					}else if(background.equals("black")){
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootTower");
+						background = "tower";
+					}else if(background.equals("tower")){
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootCrop");
+						background = "crop";
+					}else if(background.equals("crop")){
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootBalloon");
+						background = "balloon";
+					}else if(background.equals("balloon")){
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootWood");
+						background = "wood";
+					}else if(background.equals("wood")){
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootParis");
+						background = "paris";
+				}
+					
+				}
+			}
+		});
 
 		pendingDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
@@ -653,7 +707,7 @@ public class Main extends Application {
 			}
 
 		});
-		
+
 		allDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -674,7 +728,7 @@ public class Main extends Application {
 			}
 
 		});
-		
+
 		floatingDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -694,7 +748,7 @@ public class Main extends Application {
 			}
 
 		});
-		
+
 		overdueDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent e) {
@@ -734,33 +788,31 @@ public class Main extends Application {
 			}
 
 		});
-		
+
 		tabControl.getTabPane().setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
-				if(tabControl.getPendingTab().isSelected()){
+				if (tabControl.getPendingTab().isSelected()) {
 					lblTitle.setText("Pending Tasks");
-				}else if(tabControl.getCompleteTab().isSelected()){
+				} else if (tabControl.getCompleteTab().isSelected()) {
 					lblTitle.setText("Completed Tasks");
-				}else if(tabControl.getOverdueTab().isSelected()){
+				} else if (tabControl.getOverdueTab().isSelected()) {
 					lblTitle.setText("Overdue Tasks");
-				}else if(tabControl.getFloatingTab().isSelected()){
+				} else if (tabControl.getFloatingTab().isSelected()) {
 					lblTitle.setText("Floating Tasks");
-				}else if(tabControl.getAllTab().isSelected()){
+				} else if (tabControl.getAllTab().isSelected()) {
 					lblTitle.setText("All Tasks");
 				}
 			}
 
 		});
-		
-		
 
 	}
 
 	private void handleEnterKey(ListView<TasksItemController> display) {
-		
+
 		TasksItemController chosen = display.getSelectionModel().getSelectedItem();
-		barControl.updateUserInput("edit " + chosen.getTaskName()+", ");
+		barControl.updateUserInput("edit " + chosen.getTaskName() + ", ");
 		barControl.getFocus();
 	}
 
@@ -769,7 +821,7 @@ public class Main extends Application {
 		barControl.updateUserInput("delete " + chosen.getTaskName());
 		barControl.getFocus();
 	}
-	
+
 	private void handleGetPastCommands(KeyEvent event) {
 		assert event != null;
 		String pastCommand = getPastCommandFromHistory(event.getCode());
@@ -804,60 +856,59 @@ public class Main extends Application {
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
 
-		if (userInput.isEmpty()) {                        
-		}else if (userInput.equalsIgnoreCase("help")) {
-			if(tabControl.getAllTab().isSelected()){
-				   tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getPendingTab().isSelected()){
-					   tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getFloatingTab().isSelected()){
-					   tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getOverdueTab().isSelected()){
-					   tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}else if(tabControl.getCompleteTab().isSelected()){
-					   tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}
-			//notification(userInput);
+		if (userInput.isEmpty()) {
+		} else if (userInput.equalsIgnoreCase("help")) {
+			if (tabControl.getAllTab().isSelected()) {
+				tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
+			} else if (tabControl.getPendingTab().isSelected()) {
+				tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
+			} else if (tabControl.getFloatingTab().isSelected()) {
+				tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
+			} else if (tabControl.getOverdueTab().isSelected()) {
+				tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
+			} else if (tabControl.getCompleteTab().isSelected()) {
+				tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
+			}
+			// notification(userInput);
 			setFeedback(commandBarController, "valid", userInput);
-		}else if(userInput.equalsIgnoreCase("theme blue")){
+		} else if (userInput.equalsIgnoreCase("theme blue")) {
 			changeBlueTheme();
 			setFeedback(commandBarController, "valid", userInput);
-		}else if(userInput.equalsIgnoreCase("theme red")){
+		} else if (userInput.equalsIgnoreCase("theme red")) {
 			changeRedTheme();
 			setFeedback(commandBarController, "valid", userInput);
-		}else if(userInput.equalsIgnoreCase("theme orange")){
-			changeOrangeTheme();
+		} else if (userInput.equalsIgnoreCase("theme ")) {
+			changeTransparentTheme();
 			setFeedback(commandBarController, "valid", userInput);
-		}else if(userInput.equalsIgnoreCase("theme green")){
+		} else if (userInput.equalsIgnoreCase("theme green")) {
 			changeGreenTheme();
 			setFeedback(commandBarController, "valid", userInput);
-		}else if(userInput.equalsIgnoreCase("switch")){
-			if(tabControl.getPendingTab().isSelected()){
-			   tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
-			   lblTitle.setText("Overdue Tasks");
-			   setFeedback(commandBarController, "valid", userInput);
-			}else if (tabControl.getOverdueTab().isSelected()){
-			   tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
-			   lblTitle.setText("Completed Tasks");
-			   setFeedback(commandBarController, "valid", userInput);
-			}else if (tabControl.getCompleteTab().isSelected()){
-				   tabControl.getTabPane().getSelectionModel().select(tabControl.getAllTab());
-				   lblTitle.setText("All Tasks");
-				   setFeedback(commandBarController, "valid", userInput);
-			}else if (tabControl.getAllTab().isSelected()){
-			        tabControl.getTabPane().getSelectionModel().select(tabControl.getFloatingTab());
-					 lblTitle.setText("Floating Tasks");
-					  setFeedback(commandBarController, "valid", userInput);
-			}else if (tabControl.getFloatingTab().isSelected()){
-				   tabControl.getTabPane().getSelectionModel().select(tabControl.getPendingTab());
-				   lblTitle.setText("Pending Tasks");
-				   setFeedback(commandBarController, "valid", userInput);
+		} else if (userInput.equalsIgnoreCase("switch")) {
+			if (tabControl.getPendingTab().isSelected()) {
+				tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
+				lblTitle.setText("Overdue Tasks");
+				setFeedback(commandBarController, "valid", userInput);
+			} else if (tabControl.getOverdueTab().isSelected()) {
+				tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
+				lblTitle.setText("Completed Tasks");
+				setFeedback(commandBarController, "valid", userInput);
+			} else if (tabControl.getCompleteTab().isSelected()) {
+				tabControl.getTabPane().getSelectionModel().select(tabControl.getAllTab());
+				lblTitle.setText("All Tasks");
+				setFeedback(commandBarController, "valid", userInput);
+			} else if (tabControl.getAllTab().isSelected()) {
+				tabControl.getTabPane().getSelectionModel().select(tabControl.getFloatingTab());
+				lblTitle.setText("Floating Tasks");
+				setFeedback(commandBarController, "valid", userInput);
+			} else if (tabControl.getFloatingTab().isSelected()) {
+				tabControl.getTabPane().getSelectionModel().select(tabControl.getPendingTab());
+				lblTitle.setText("Pending Tasks");
+				setFeedback(commandBarController, "valid", userInput);
 			}
-		}
-		else {
+		} else {
 			// normal command
 			historyLog.add(userInput);
-            
+
 			if (userInput.equalsIgnoreCase("clear")) {
 				if (tabControl.getPendingTab().isSelected()) {
 					userInput = userInput + "Upcoming";
@@ -883,7 +934,7 @@ public class Main extends Application {
 				setFeedback(commandBarController, "valid", userInput);
 			}
 		}
-		historyLog.add(userInput);	
+		historyLog.add(userInput);
 		isError = false;
 		new CommandBarController();
 		commandBarController.clear();
@@ -903,7 +954,7 @@ public class Main extends Application {
 		theme = "red";
 		pendingTableControl.setTheme("red");
 	}
-	
+
 	private void changeGreenTheme() {
 		topBar.getStyleClass().clear();
 		hBar.getStyleClass().clear();
@@ -918,8 +969,8 @@ public class Main extends Application {
 		theme = "green";
 		pendingTableControl.setTheme("green");
 	}
-	
-	private void changeOrangeTheme() {
+
+	private void changeTransparentTheme() {
 		topBar.getStyleClass().clear();
 		hBar.getStyleClass().clear();
 		topBar.getStyleClass().add("orangeTopBar");
@@ -930,13 +981,13 @@ public class Main extends Application {
 		pendingTableControl.getStylesheets().add("/main/resources/styles/orange.css");
 		completeTableControl.getStylesheets().add("/main/resources/styles/orange.css");
 		tabControl.getStylesheets().add("/main/resources/styles/orange.css");
-		theme="orange";
-		pendingTableControl.setTheme("orange");
+		theme = "transparent";
+		pendingTableControl.setTheme("transparent");
 	}
 
 	private void changeBlueTheme() {
-		topBar.getStyleClass().clear();	    
-		topBar.getStyleClass().add("blueTopBar");		
+		topBar.getStyleClass().clear();
+		topBar.getStyleClass().add("blueTopBar");
 		hBar.getStyleClass().clear();
 		hBar.getStyleClass().add("blueToolBar");
 		pendingTableControl.getStylesheets().clear();
@@ -953,7 +1004,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		int i = 1;
 		isFeedback = true;
-		
+
 		if (userInput.indexOf(' ') != -1) {
 			i = userInput.indexOf(' ');
 			String firstWord = userInput.substring(0, i);
@@ -962,58 +1013,62 @@ public class Main extends Application {
 				commandBarController.setFeedback("Invalid Command" + ": " + subString, Color.RED);
 				return;
 			} else {
-				if(isTasksCommand(firstWord)){
-					if(firstWord.equalsIgnoreCase(DELETE_COMMAND)){
-						commandBarController.setFeedback("Task has been successfully " + firstWord + "d" + ": " + subString,Color.GREEN);
+				if (isTasksCommand(firstWord)) {
+					if (firstWord.equalsIgnoreCase(DELETE_COMMAND)) {
+						commandBarController.setFeedback(
+								"Task has been successfully " + firstWord + "d" + ": " + subString, Color.GREEN);
 					}
-				     commandBarController.setFeedback("Task has been successfully " + firstWord + "ed" + ": " + subString,Color.GREEN);
-				}else if(firstWord.equalsIgnoreCase(SORT_COMMAND)){
-					commandBarController.setFeedback("Task has been successfully " + firstWord + "ed " + "by " + subString,Color.GREEN);
-				}else if(firstWord.equalsIgnoreCase(OPEN_COMMAND)||firstWord.equalsIgnoreCase(SAVE_COMMAND)||firstWord.equalsIgnoreCase(MOVE_COMMAND)){
-					commandBarController.setFeedback("File has been successfully " + firstWord + "ed ",Color.GREEN);
-				}else if(firstWord.equalsIgnoreCase(THEME_COMMAND)){
-					commandBarController.setFeedback(subString +" "+ firstWord + " has been activated",Color.GREEN);
-			    }else{
-			    	commandBarController.setFeedback("Invalid Command", Color.RED);
-			    }
+					commandBarController.setFeedback(
+							"Task has been successfully " + firstWord + "ed" + ": " + subString, Color.GREEN);
+				} else if (firstWord.equalsIgnoreCase(SORT_COMMAND)) {
+					commandBarController.setFeedback(
+							"Task has been successfully " + firstWord + "ed " + "by " + subString, Color.GREEN);
+				} else if (firstWord.equalsIgnoreCase(OPEN_COMMAND) || firstWord.equalsIgnoreCase(SAVE_COMMAND)
+						|| firstWord.equalsIgnoreCase(MOVE_COMMAND)) {
+					commandBarController.setFeedback("File has been successfully " + firstWord + "ed ", Color.GREEN);
+				} else if (firstWord.equalsIgnoreCase(THEME_COMMAND)) {
+					commandBarController.setFeedback(subString + " " + firstWord + " has been activated", Color.GREEN);
+				} else {
+					commandBarController.setFeedback("Invalid Command", Color.RED);
+				}
 			}
 		} else {
-			if(userInput.equalsIgnoreCase(UNDO_COMMAND)){
-				 commandBarController.setFeedback("Previous command has been undone",Color.GREEN);
-			}
-			else if(userInput.equalsIgnoreCase(REDO_COMMAND)){
-				commandBarController.setFeedback("Previous Change has been restored",Color.GREEN);
-			}
-			else if(userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)||userInput.equalsIgnoreCase(CLEARCOMPLETE_COMMAND)
-					||userInput.equalsIgnoreCase(CLEAROVERDUE_COMMAND) ||userInput.equalsIgnoreCase(CLEARFLOATING_COMMAND)
-					||userInput.equalsIgnoreCase(CLEARALL_COMMAND)){
-				commandBarController.setFeedback("All tasks have been cleared",Color.GREEN);
-			}
-			else if(userInput.equalsIgnoreCase(SWITCH_COMMAND)){
-				if(tabControl.getPendingTab().isSelected()){
-					commandBarController.setFeedback("Switched to pending tab",Color.GREEN);
-				}else if(tabControl.getCompleteTab().isSelected()){
-					commandBarController.setFeedback("Switched to completed tab",Color.GREEN);
-		     	}else if(tabControl.getFloatingTab().isSelected()){
-					commandBarController.setFeedback("Switched to floating tab",Color.GREEN);
-		     	}else if(tabControl.getOverdueTab().isSelected()){
-					commandBarController.setFeedback("Switched to overdue tab",Color.GREEN);
-		     	}else if(tabControl.getAllTab().isSelected()){
-					commandBarController.setFeedback("Switched to all tab",Color.GREEN);
-		     	}
-			}else{
+			if (userInput.equalsIgnoreCase(UNDO_COMMAND)) {
+				commandBarController.setFeedback("Previous command has been undone", Color.GREEN);
+			} else if (userInput.equalsIgnoreCase(REDO_COMMAND)) {
+				commandBarController.setFeedback("Previous Change has been restored", Color.GREEN);
+			} else if (userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)
+					|| userInput.equalsIgnoreCase(CLEARCOMPLETE_COMMAND)
+					|| userInput.equalsIgnoreCase(CLEAROVERDUE_COMMAND)
+					|| userInput.equalsIgnoreCase(CLEARFLOATING_COMMAND)
+					|| userInput.equalsIgnoreCase(CLEARALL_COMMAND)) {
+				commandBarController.setFeedback("All tasks have been cleared", Color.GREEN);
+			} else if (userInput.equalsIgnoreCase(SWITCH_COMMAND)) {
+				if (tabControl.getPendingTab().isSelected()) {
+					commandBarController.setFeedback("Switched to pending tab", Color.GREEN);
+				} else if (tabControl.getCompleteTab().isSelected()) {
+					commandBarController.setFeedback("Switched to completed tab", Color.GREEN);
+				} else if (tabControl.getFloatingTab().isSelected()) {
+					commandBarController.setFeedback("Switched to floating tab", Color.GREEN);
+				} else if (tabControl.getOverdueTab().isSelected()) {
+					commandBarController.setFeedback("Switched to overdue tab", Color.GREEN);
+				} else if (tabControl.getAllTab().isSelected()) {
+					commandBarController.setFeedback("Switched to all tab", Color.GREEN);
+				}
+			} else {
 				commandBarController.setFeedback("Invalid Command", Color.RED);
 			}
 		}
 	}
-	
-	private boolean isTasksCommand(String firstWord){
-		if(firstWord.equalsIgnoreCase(MARK_COMMAND)||firstWord.equalsIgnoreCase(UNMARK_COMMAND)||firstWord.equalsIgnoreCase(ADD_COMMAND)
-				||firstWord.equalsIgnoreCase(DELETE_COMMAND)||firstWord.equalsIgnoreCase(EDIT_COMMAND)){
+
+	private boolean isTasksCommand(String firstWord) {
+		if (firstWord.equalsIgnoreCase(MARK_COMMAND) || firstWord.equalsIgnoreCase(UNMARK_COMMAND)
+				|| firstWord.equalsIgnoreCase(ADD_COMMAND) || firstWord.equalsIgnoreCase(DELETE_COMMAND)
+				|| firstWord.equalsIgnoreCase(EDIT_COMMAND)) {
 			return true;
 		}
 		return false;
-		
+
 	}
 
 	// Method that returns the first word
@@ -1035,7 +1090,6 @@ public class Main extends Application {
 		n.getStyleClass().removeAll("bad", "med", "good", "best");
 	}
 
-
 	public void trySearch(String oldValue, String newValue) {
 
 		String[] fragments = null;
@@ -1045,61 +1099,68 @@ public class Main extends Application {
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
 		boolean isMark = fragments[COMMAND_INDEX].equalsIgnoreCase("mark");
 		boolean isUnmark = fragments[COMMAND_INDEX].equalsIgnoreCase("unmark");
-        boolean quit = fragments[COMMAND_INDEX].equalsIgnoreCase("q");
-        
-        
-        if(quit){
-        	try {
+		boolean quit = fragments[COMMAND_INDEX].equalsIgnoreCase("q");
+
+		if (quit) {
+			try {
 				checkIsTasksEmpty();
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-        }
+		}
 		// TODO Auto-generated method stub
 		try {
 			if ((tabControl.getAllTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
-//				System.out.println("all tab live search: " + searchResult.size());
+				// System.out.println("all tab live search: " +
+				// searchResult.size());
 				if (isEdit || isDelete || isSearch) {
 					populateAllList(searchResult);
-				}else if(isMark){
+				} else if (isMark) {
 					populateAllList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}else if ((tabControl.getPendingTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark) ) {
+			} else if ((tabControl.getPendingTab().isSelected())
+					&& (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
-//				System.out.println("pending tab live search: " + searchResult.size());
+				// System.out.println("pending tab live search: " +
+				// searchResult.size());
 				if (isEdit || isDelete || isSearch) {
-					populatePendingList(searchResult);		
-				}else if(isMark){
+					populatePendingList(searchResult);
+				} else if (isMark) {
 					populatePendingList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}else if ((tabControl.getFloatingTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
+			} else if ((tabControl.getFloatingTab().isSelected())
+					&& (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
-//				System.out.println("floating tab live search: " + searchResult.size());
+				// System.out.println("floating tab live search: " +
+				// searchResult.size());
 				if (isEdit || isDelete || isSearch) {
 					populateFloatingList(searchResult);
-				}else if(isMark){
+				} else if (isMark) {
 					populateFloatingList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}else if ((tabControl.getOverdueTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
+			} else if ((tabControl.getOverdueTab().isSelected())
+					&& (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
-//				System.out.println("overdue tab live search: " + searchResult.size());
+				// System.out.println("overdue tab live search: " +
+				// searchResult.size());
 				if (isEdit || isDelete || isSearch) {
 					populateOverdueList(searchResult);
-				}else if(isMark){
+				} else if (isMark) {
 					populateOverdueList(searchResult);
 					populateCompleteList(logic.displayComplete());
 				}
-			}else if ((tabControl.getCompleteTab().isSelected()) &&  isDelete || isSearch || isUnmark ) {
-				searchResult = logic.handleSearchCompleted(oldValue,newValue);
-//				System.out.println("complete tab live search: " + searchResult.size());
+			} else if ((tabControl.getCompleteTab().isSelected()) && isDelete || isSearch || isUnmark) {
+				searchResult = logic.handleSearchCompleted(oldValue, newValue);
+				// System.out.println("complete tab live search: " +
+				// searchResult.size());
 				if (isDelete || isSearch) {
 					populateCompleteList(searchResult);
-				}else if(isUnmark){
+				} else if (isUnmark) {
 					populateCompleteList(searchResult);
 					populateAllList(logic.displayPending());
 					populatePendingList(logic.displayPending());
@@ -1113,69 +1174,69 @@ public class Main extends Application {
 		}
 
 	}
-	
-	public void populateAllList(ArrayList<Task> searchResult) {	
+
+	public void populateAllList(ArrayList<Task> searchResult) {
 		allTableControl.clearTask();
-		int count=0;
+		int count = 0;
 		for (Task temp : searchResult) {
-//			if(searchResult.size()==1){
-//				count = 999;
-//			}
-			allTableControl.addTask(temp,++count,theme);
+			// if(searchResult.size()==1){
+			// count = 999;
+			// }
+			allTableControl.addTask(temp, ++count, theme);
 		}
-		
+
 	}
 
 	private void populateOverdueList(ArrayList<Task> searchResult) {
 		overdueTableControl.clearTask();
-		int count=0;
+		int count = 0;
 		for (Task temp : searchResult) {
-//			if(searchResult.size()==1){
-//				count = 999;
-//			}
-			if(temp.getStatus()==TASK_STATUS.OVERDUE){
-			     overdueTableControl.addTask(temp,++count,theme);
+			// if(searchResult.size()==1){
+			// count = 999;
+			// }
+			if (temp.getStatus() == TASK_STATUS.OVERDUE) {
+				overdueTableControl.addTask(temp, ++count, theme);
 			}
-		}	
+		}
 	}
 
 	private void populateFloatingList(ArrayList<Task> searchResult) {
 		floatingTableControl.clearTask();
-		int count=0;
+		int count = 0;
 		for (Task temp : searchResult) {
-//			if(searchResult.size()==1){
-//				count = 999;
-//			}
-			if(temp.getStatus()==TASK_STATUS.FLOATING){
-			     floatingTableControl.addTask(temp,++count,theme);
+			// if(searchResult.size()==1){
+			// count = 999;
+			// }
+			if (temp.getStatus() == TASK_STATUS.FLOATING) {
+				floatingTableControl.addTask(temp, ++count, theme);
 			}
-		}	
+		}
 	}
 
 	private void populateCompleteList(ArrayList<Task> searchResult) {
 		completeTableControl.clearTask();
-		int count=0;
+		int count = 0;
 		for (Task temp : searchResult) {
-//			if(searchResult.size()==1){
-//				count = 999;
-//			}
-			if(temp.getStatus()==TASK_STATUS.COMPLETED){
-		     	completeTableControl.addTask(temp,++count,theme);
+			// if(searchResult.size()==1){
+			// count = 999;
+			// }
+			if (temp.getStatus() == TASK_STATUS.COMPLETED) {
+				completeTableControl.addTask(temp, ++count, theme);
 			}
-		}	
+		}
 	}
 
 	private void populatePendingList(ArrayList<Task> searchResult) {
 		pendingTableControl.clearTask();
-		int count=0;
+		int count = 0;
 		for (Task temp : searchResult) {
-//			if(searchResult.size()==1){
-//				count = 999;
-//			}
-			if(temp.getStatus()==TASK_STATUS.UPCOMING){
-			    pendingTableControl.addTask(temp,++count,theme);
+			// if(searchResult.size()==1){
+			// count = 999;
+			// }
+			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
+				pendingTableControl.addTask(temp, ++count, theme);
 			}
-		}	
+		}
 	}
 
 	public void showColourCommand(String oldValue, String newValue) {
@@ -1235,143 +1296,162 @@ public class Main extends Application {
 			}
 		});
 	}
-	
-	private void backgroundChooser(Button btnBackground){
-		
+
+	private void backgroundChooser(Button btnBackground) {
+
 		PopOver bgPopOver = new PopOver();
-	    bgPopOver.setDetachable(false);
-	    bgPopOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
-	   
-	   	    
+		bgPopOver.setDetachable(false);
+		bgPopOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
+
 		GridPane gridPane = new GridPane();
-	    gridPane.setPadding(new Insets(5));
-	    gridPane.setHgap(5);
-	    gridPane.setVgap(5);
-	    
-	    ImageView bg1 = new ImageView(new Image("/main/resources/images/wood.jpg"));
-	    bg1.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		gridPane.setPadding(new Insets(5));
+		gridPane.setHgap(5);
+		gridPane.setVgap(5);
 
-	        @Override
-	        public void handle(MouseEvent event) {
-	        	rootLayout.getStyleClass().remove(0);
-	        	rootLayout.getStyleClass().add(0,"rootWood");
-	        	//bgPopOver.hide();
-	            event.consume();
-	        }
-	   });
-	    
-	    bg1.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+		woodBg = new ImageView(new Image("/main/resources/images/wood.jpg"));
+		handleWoodBg();
+		woodBg.setFitWidth(100);
+		woodBg.setPreserveRatio(true);
+		gridPane.add(woodBg, 0, 0);
 
-	        @Override
-	        public void handle(MouseEvent event) {
-	            bg1.setStyle("-fx-background-color: black");
-	        }
-	   });
-	    bg1.setFitWidth(100);
-		bg1.setPreserveRatio(true);
-	    gridPane.add(bg1,0,0);
-	    
-	    ImageView bg2 = new ImageView(new Image("/main/resources/images/crop.jpg"));
-	    bg2.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		cropBg = new ImageView(new Image("/main/resources/images/crop.jpg"));
+		handleCropBg();
+		cropBg.setFitWidth(100);
+		cropBg.setPreserveRatio(true);
+		gridPane.add(cropBg, 1, 0);
 
-	        @Override
-	        public void handle(MouseEvent event) {
-	        	rootLayout.getStyleClass().remove(0);
-	        	rootLayout.getStyleClass().add(0,"rootCrop");
-	        	//bgPopOver.hide();
-	            event.consume();
-	        }
-	   });
-	    bg2.setFitWidth(100);
-		bg2.setPreserveRatio(true);
-	    gridPane.add(bg2,1,0);
-	    
-	    ImageView bg3 = new ImageView(new Image("/main/resources/images/tower.jpg"));
-	    bg3.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		towerBg = new ImageView(new Image("/main/resources/images/tower.jpg"));
+		handleTowerBg();
+		towerBg.setFitWidth(100);
+		towerBg.setPreserveRatio(true);
+		gridPane.add(towerBg, 2, 0);
 
-	        @Override
-	        public void handle(MouseEvent event) {
-	        	rootLayout.getStyleClass().remove(0);
-	        	rootLayout.getStyleClass().add(0,"rootTower");
-	        	//bgPopOver.hide();
-	            event.consume();
-	        }
-	   });
-	    bg3.setFitWidth(100);
-		bg3.setPreserveRatio(true);
-	    gridPane.add(bg3,2,0);
-	    
-	    ImageView bg4 = new ImageView(new Image("/main/resources/images/paris.jpg"));
-	    bg4.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		parisBg = new ImageView(new Image("/main/resources/images/paris.jpg"));
+		handleParisBg();
+		parisBg.setFitWidth(100);
+		parisBg.setPreserveRatio(true);
+		gridPane.add(parisBg, 0, 1);
 
-	        @Override
-	        public void handle(MouseEvent event) {
-	        	rootLayout.getStyleClass().remove(0);
-	        	rootLayout.getStyleClass().add(0,"rootParis");
-	        	//bgPopOver.hide();
-	        	
-	            event.consume();
-	        }
-	   });
-	    bg4.setFitWidth(100);
-		bg4.setPreserveRatio(true);
-	    gridPane.add(bg4,0,1);
-	    
-	    ImageView bg5 = new ImageView(new Image("/main/resources/images/balloon.jpg"));
-	    bg5.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		balloonBg = new ImageView(new Image("/main/resources/images/balloon.jpg"));
+		handleBalloonBg();
+		balloonBg.setFitWidth(100);
+		balloonBg.setPreserveRatio(true);
+		gridPane.add(balloonBg, 1, 1);
 
-	        @Override
-	        public void handle(MouseEvent event) {
-	        	rootLayout.getStyleClass().remove(0);
-	        	rootLayout.getStyleClass().add(0,"rootBalloon");
-	        	//bgPopOver.hide();
-	            event.consume();
-	        }
-	   });
-	    bg5.setFitWidth(100);
-		bg5.setPreserveRatio(true);
-	    gridPane.add(bg5,1,1);
-	    
-	    ImageView bg6 = new ImageView(new Image("/main/resources/images/black.jpg"));
-	    bg6.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+		blackBg = new ImageView(new Image("/main/resources/images/black.jpg"));
+		handleBlackbg();
+		blackBg.setFitWidth(100);
+		blackBg.setPreserveRatio(true);
+		gridPane.add(blackBg, 2, 1);
+		bgPopOver.setContentNode(gridPane);
 
-	        @Override
-	        public void handle(MouseEvent event) {
-	        	rootLayout.getStyleClass().remove(0);
-	        	rootLayout.getStyleClass().add(0,"rootBlack");
-	        	//bgPopOver.hide();
-	            event.consume();
-	        }
-	   });
-	    bg6.setFitWidth(100);
-		bg6.setPreserveRatio(true);
-	    gridPane.add(bg6,2,1);
-	     bgPopOver.setContentNode(gridPane);
-	     
 		btnBackground.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				if (bgPopOver.getScene() != null) {
-			    	bgPopOver.setArrowIndent(5);
-			    	bgPopOver.show(btnBackground.getScene().getWindow(),
-			                getPopupPosition(btnBackground).getX(),
-			                getPopupPosition(btnBackground).getY());
-			    }
-				
+					bgPopOver.setArrowIndent(5);
+					bgPopOver.show(btnBackground.getScene().getWindow(), getPopupPosition(btnBackground).getX(),
+							getPopupPosition(btnBackground).getY());
+				}
+
 			}
 
 		});
 
 	}
-	   
-	
-	private Point2D getPopupPosition(Button node) { 
-        Window window = node.getScene().getWindow(); 
-        Point2D point = node.localToScene(0, 0); 
-        double x = point.getX() + window.getX() + node.getWidth() + 2; 
-        double y = point.getY() + window.getY(); 
-        return new Point2D(x, y); 
-    } 
+
+	private void handleCropBg() {
+		cropBg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				background = "crop";
+				rootLayout.getStyleClass().remove(0);
+				rootLayout.getStyleClass().add(0, "rootCrop");
+				// bgPopOver.hide();
+				event.consume();
+			}
+		});
+	}
+
+	private void handleTowerBg() {
+		towerBg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				background = "tower";
+				rootLayout.getStyleClass().remove(0);
+				rootLayout.getStyleClass().add(0, "rootTower");
+				// bgPopOver.hide();
+				event.consume();
+			}
+		});
+	}
+
+	private void handleParisBg() {
+		parisBg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				background = "paris";
+				rootLayout.getStyleClass().remove(0);
+				rootLayout.getStyleClass().add(0, "rootParis");
+				// bgPopOver.hide();
+
+				event.consume();
+			}
+		});
+	}
+
+	private void handleBalloonBg() {
+		balloonBg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				background = "balloon";
+				rootLayout.getStyleClass().remove(0);
+				rootLayout.getStyleClass().add(0, "rootBalloon");
+				// bgPopOver.hide();
+				event.consume();
+			}
+		});
+	}
+
+	private void handleBlackbg() {
+		blackBg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				background = "black";
+				rootLayout.getStyleClass().remove(0);
+				rootLayout.getStyleClass().add(0, "rootBlack");
+				// bgPopOver.hide();
+				event.consume();
+			}
+		});
+	}
+
+	private void handleWoodBg() {
+		woodBg.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
+
+			@Override
+			public void handle(MouseEvent event) {
+				background = "wood";
+				rootLayout.getStyleClass().remove(0);
+				rootLayout.getStyleClass().add(0, "rootWood");
+				// bgPopOver.hide();
+				event.consume();
+			}
+		});
+	}
+
+	private Point2D getPopupPosition(Button node) {
+		Window window = node.getScene().getWindow();
+		Point2D point = node.localToScene(0, 0);
+		double x = point.getX() + window.getX() + node.getWidth() + 2;
+		double y = point.getY() + window.getY();
+		return new Point2D(x, y);
+	}
 
 	private void notification(String userInput) {
 		String title = "Your task has expired ";
