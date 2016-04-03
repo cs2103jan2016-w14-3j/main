@@ -176,7 +176,6 @@ public class TempStorage {
 	}
 	
 	public boolean checkOverdue(Date date) {
-		
 		boolean isAnyOverdue = false;
 		
 		for(int i=taskList.size()-1; i>=0; i--) {
