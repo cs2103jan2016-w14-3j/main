@@ -180,10 +180,11 @@ public class TempStorage {
 		
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
+			
 			if(task.getStatus().equals(TASK_STATUS.UPCOMING) && task.getTime().get(0).before(date)) {
-				deleteFromTemp(task);
 				task.setStatus(TASK_STATUS.OVERDUE);
-				writeToTemp(task);
+				taskList.set(i, task);
+				permStorage.editToFile(i, task);
 				isAnyOverdue = true;
 			}
 		}
@@ -206,6 +207,7 @@ public class TempStorage {
 	private ArrayList<Task> retrieveListFromFile() {
 
 		ArrayList<Task> list = permStorage.readFromFile();
+		Collections.sort(list, new TimeComparator());
 		return list;
 	}
 	

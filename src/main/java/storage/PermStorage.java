@@ -108,7 +108,6 @@ public class PermStorage {
 	}
 	
 	public void editToFile(int lineNum, Task editedTask) {
-		
 		deleteFromFile(lineNum);
 		writeToFile(editedTask);
 	}
@@ -148,11 +147,13 @@ public class PermStorage {
 		} catch (IOException e) {
 			System.err.println("Error reading from file when deleting.");
 		}
-		clearFile();
 		
+		clearFile();
+
 		for(int i=0; i<tempTaskList.size(); i++) {
 			writeToFile(tempTaskList.get(i));
 		}	
+		
 		reopenStream();
 	}
 	
