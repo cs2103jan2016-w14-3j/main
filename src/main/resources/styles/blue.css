@@ -1,3 +1,39 @@
+.root {
+	
+	-fx-background-image: url("/main/resources/images/crop.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootWood{
+		-fx-background-image: url("/main/resources/images/wood.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootTower{
+		-fx-background-image: url("/main/resources/images/tower.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootCrop{
+		-fx-background-image: url("/main/resources/images/crop.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootParis{
+		-fx-background-image: url("/main/resources/images/paris.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootBalloon{
+		-fx-background-image: url("/main/resources/images/balloon.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
+.rootBlack{
+		-fx-background-image: url("/main/resources/images/black.jpg");
+    -fx-background-size: stretch;
+    -fx-border-color:#E3F2FD;
+}
 @font-face { 
    src: url('Roboto-Regular.ttf');
 }
@@ -26,26 +62,28 @@
 	-fx-background-color: rgba(255,0,0,0.3);
 }
 .blueToolBar{
-	-fx-background-color: rgba(255,0,0,0.3);
+	-fx-background-color: rgba(0,0,255,0.3);
 }
 
 .blueTopBar{
-	-fx-background-color: rgba(255,0,0,0.3);
+	-fx-background-color: rgba(0,0,255,0.3);
 }
 .orangeToolBar{
-	-fx-background-color: #F57C00;
+	-fx-background-color: rgba(192,192,192,0.3);
 }
 
 .orangeTopBar{
-	-fx-background-color: #FF9800;
+	-fx-background-color: rgba(192,192,192,0.3);
 }
 .greenToolBar{
-	-fx-background-color: #388E3C;
+	-fx-background-color: rgba(0,255,0,0.3);
 }
 
 .greenTopBar{
-	-fx-background-color: #4CAF50;
+	-fx-background-color: rgba(0,255,0,0.3);
 }
+
+
 .lblTitle{
 	-fx-font-size:20;
 	-fx-text-fill:white;
@@ -69,7 +107,7 @@
   -fx-background-color:transparent;
 }
 .sidePane{
-	-fx-background-color: white;
+	-fx-background-color: rgba(255, 255, 255, 0.3);
 }
 .lblPendingCompleted{
 	-fx-font-size: 8px;
@@ -92,11 +130,16 @@
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #303F9F;
+  -fx-background-color: rgba(0,0,255,0.3);
   -fx-font-family:Roboto;
   
 }
-
+#tasksDisplay{
+-fx-background-color: transparent;
+}
+#firstLetter{
+	-fx-text-fill: black;
+}
 #tasksDisplay.list-cell {
 	-fx-background-color: transparent;
 }
@@ -112,12 +155,7 @@
     -fx-opacity: 0;
     -fx-padding: -7;
 }
-#tasksDisplay{
--fx-background-color: linear-gradient(to bottom, #BBDEFB, white);
-}
-#firstLetter{
-	-fx-text-fill: black;
-}
+
 .tasksItem {
 	-fx-padding: 2px;
 }
@@ -129,7 +167,7 @@
 }
 
 .card .filename {
-	-fx-font-size: 18px;
+		-fx-font-size: 18px;
 	-fx-font-weight: bold;
 	-fx-font-family:Roboto;
 }
@@ -138,13 +176,13 @@
 	-fx-font-family:Roboto;
 }
 
+
 .card .circle {
 	-fx-fill: white;
 }
 
-
 .card .stackpane {
-	-fx-background-color: transparent;
+	-fx-background-color: black;
 }
 
 .card .percentage {
@@ -165,8 +203,6 @@
 	-fx-background-color: #69F0AE;
 }
 
-
-
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0;
 }
@@ -181,7 +217,7 @@
 .tab{
     -fx-background-insets: 0 1 0 1,0,0;
     -fx-border-color:#BBDEFB;
-    -fx-background-color: linear-gradient(to bottom, #BBDEFB, white);
+    -fx-background-color: transparent;
 }
 .tab-pane .tab
 {
@@ -192,19 +228,15 @@
 
 .tab-pane .tab:selected
 {
-   -fx-background-color: #BBDEFB;
+   -fx-background-color: rgba(0,0,255,0.3) ;
    -fx-border-color:transparent;
-}
-.tab:selected:focused, .tab:filled:selected {
-  -fx-background-color: #CCFF90;
-  
 }
 
 .tab .tab-label { 
     -fx-alignment: CENTER;
     -fx-font-size: 11px;
     -fx-font-weight: bold;
-    -fx-text-fill: #5C6BC0;
+    -fx-text-fill: rgba(0,0,255,0.7);
     -fx-font-family:Roboto;
 }
 
@@ -242,6 +274,7 @@
   -fx-background-color:transparent;
 }
 
+
 .loadButton {
   -fx-graphic: url("/main/resources/images/btnLoad.png");
   -fx-background-color:transparent;
@@ -276,4 +309,3 @@
   -fx-graphic: url("/main/resources/images/btnExitHover.png");
   -fx-background-color:transparent;
 }
-

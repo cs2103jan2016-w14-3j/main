@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.scene.shape.*?>
 <?import javafx.geometry.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.effect.*?>
@@ -16,15 +17,21 @@
          </font></TextField>
    </center>
    <top>
-      <Label fx:id="feedback" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" textFill="#2b7c1b" BorderPane.alignment="CENTER">
-         <padding>
-            <Insets bottom="5.0" />
-         </padding>
-         <font>
-            <Font name="Calibri" size="14.0" />
-         </font>
-         <effect>
-            <Glow level="0.4" />
-         </effect></Label>
+      <StackPane prefHeight="29.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+         <children>
+            <Rectangle fx:id="feedbackBg" arcHeight="5.0" arcWidth="5.0" fill="#ffffff94" height="29.0" stroke="#ffffff00" strokeType="INSIDE" width="570.0" />
+            <Label fx:id="feedback" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" minWidth="570.0" textFill="#2b7c1b">
+               <padding>
+                  <Insets bottom="5.0" />
+               </padding>
+               <font>
+                  <Font name="Calibri" size="14.0" />
+               </font>
+               <effect>
+                  <Glow level="0.4" />
+               </effect>
+            </Label>
+         </children>
+      </StackPane>
    </top>
 </fx:root>

@@ -61,11 +61,11 @@ public class TasksItemController extends BorderPane {
 
 	private static final String STRING_FILL_STYLE_FORMAT = "-fx-fill: %s";
 
-	private static final String BASE_COLOUR_HIGH = "#F44336";
-	private static final String BASE_COLOUR_DEFAULT = "#BBDEFB";
-	private static final String BASE_COLOUR_MED = "#FFEB3B";
+	private static final String BASE_COLOUR_HIGH = "#EF5350";
+	private static final String BASE_COLOUR_DEFAULT = "rgba(0,0,255,0.3)";
+	private static final String BASE_COLOUR_MED = "#FFA726";
 	private static final String BASE_COLOUR_60 = "#D7E84A";
-	private static final String BASE_COLOUR_LOW = "#00C853";
+	private static final String BASE_COLOUR_LOW = "#66BB6A";
 
 	private String taskName;
 
@@ -249,13 +249,13 @@ public class TasksItemController extends BorderPane {
 			return BASE_COLOUR_HIGH;
 		} else {
 			if(theme.equals("green")){
-				return "#81C784";
+				return "rgba(0,255,0,0.3)";
 			}else if(theme.equals("blue")){
 				return BASE_COLOUR_DEFAULT;
-			}else if(theme.equals("orange")){
-				return "#FFCC80";
+			}else if(theme.equals("transparent")){
+				return "rgba(192,192,192,0.3)";
 			}else if(theme.equals("red")){
-				return "#E57373";
+				return "rgba(255,0,0,0.4)";
 			}
 			return BASE_COLOUR_DEFAULT;
 		}

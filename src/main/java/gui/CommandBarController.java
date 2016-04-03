@@ -11,6 +11,7 @@ import javafx.scene.effect.DropShadow;
 import javafx.scene.input.KeyEvent;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Shape;
 import javafx.util.Duration;
 import main.java.flash.Main;
 import javafx.animation.FadeTransition;
@@ -26,6 +27,10 @@ public class CommandBarController extends BorderPane {
 
 	@FXML
 	private Label feedback;
+	
+	@FXML
+	private Shape feedbackBg;
+	
 	@FXML
 	private TextField commandBar;
 
