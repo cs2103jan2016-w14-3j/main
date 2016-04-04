@@ -21,8 +21,6 @@ public class AddCommandParser extends Parser {
 	private static final String DURATION_FLAG_TO = "to";
 	private static final String DEADLINE_TASK = "deadline";
 	private static final String EVENT_TASK = "one-time event";
-	private static final String RECURRING_TASK_EVERY = "recurring";
-	private static final String RECURRING_TASK_ALTERNATE = "alternate";
 	private static final String DURATION_TASK = "duration";
 	private static final String PRIORITY_FLAG = "#";	
 	private static final String EMPTY_TIME = "[]";
@@ -32,7 +30,6 @@ public class AddCommandParser extends Parser {
 	private static final String TOMORROW_IN_SHORT = "tmr";
 	private static final String OVERDUE_TASK = "overdue";
 	private static final String UPCOMING_TASK = "upcoming";
-	private static final String COMPLETED_TASK = "completed";
 	private static final String FLOATING_TASK = "floating";
 	private static final int FIELD_NOT_EXIST = -1;
 	private static final String PRIORITY_HIGH_ALIAS = "h";
@@ -166,24 +163,24 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	private String getDate(Date date) {
-		return date.toString().substring(0, 9);
-	}
+//	private String getDate(Date date) {
+//		return date.toString().substring(0, 9);
+//	}
 
 
 
-	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
-
-		for (int i = 0; i < dates.size(); i++) {
-			if (isOverdue(dates.get(i))) {
-				Calendar calendar = Calendar.getInstance();
-				calendar.setTime(dates.get(i));
-				calendar.add(Calendar.DATE, 1);  // number of days to add
-				dates.set(i,calendar.getTime()); // dt is now the new date
-			}
-		}
-
-	}
+//	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
+//
+//		for (int i = 0; i < dates.size(); i++) {
+//			if (isOverdue(dates.get(i))) {
+//				Calendar calendar = Calendar.getInstance();
+//				calendar.setTime(dates.get(i));
+//				calendar.add(Calendar.DATE, 1);  // number of days to add
+//				dates.set(i,calendar.getTime()); // dt is now the new date
+//			}
+//		}
+//
+//	}
 
 	private String setDefaultTimeIfNotSpecified(String timeSegment, List<Date> dates) {
 		String parsedTime = dates.toString();

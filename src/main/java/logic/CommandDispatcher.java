@@ -50,6 +50,11 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		else if (command.isCommand(COMMAND_TYPE.DELETE_COMPLETE)) {
+			DeleteCommandParser parser = new DeleteCommandParser();
+			command.setParameters(parser.determineParameters
+					(command.getContent()));
+		}
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
 			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
@@ -90,6 +95,9 @@ public class CommandDispatcher {
 
 		else if (isCommand(COMMAND_TYPE.DELETE, firstWord)) {
 			return COMMAND_TYPE.DELETE;
+		}
+		else if (isCommand(COMMAND_TYPE.DELETE_COMPLETE, firstWord)) {
+			return COMMAND_TYPE.DELETE_COMPLETE;
 		}
 
 		else if (isCommand(COMMAND_TYPE.SEARCH, firstWord)) {

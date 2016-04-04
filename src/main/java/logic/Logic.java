@@ -154,6 +154,10 @@ public class Logic {
 				}			
 			}
 		}
+		
+		else if (command.isCommand(COMMAND_TYPE.DELETE_COMPLETE)) {
+			
+		}
 
 
 		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
