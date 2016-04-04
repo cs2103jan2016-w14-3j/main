@@ -1033,7 +1033,7 @@ public class Main extends Application {
 					               e.printStackTrace();
 					            }
 					      }else if (tabControl.getCompleteTab().isSelected()) {
-					    	  System.out.println("heerrr");
+					    	 
 					    	  if(numberToChange>completeResult.size()){
 				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
 				            		historyLog.add(userInput);
@@ -1089,12 +1089,18 @@ public class Main extends Application {
 //					}
 //			
 //			}
-			if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
-				fragments[COMMAND_INDEX]="deleteComplete";
-				userInput = fragments[COMMAND_INDEX] + " " + fragments[1];
-			}
+			
 
 			if(numberToChange == -1){
+				if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
+					fragments[COMMAND_INDEX]="deleteComplete";
+					String deleteComplete = "deleteComplete ";
+					for(int i = 1; i<fragments.length; i++ ){
+					      deleteComplete+=fragments[i];
+					}
+					userInput = deleteComplete;
+					System.out.println(userInput);
+				}
 			  try {
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 			   } catch (Exception e) {
