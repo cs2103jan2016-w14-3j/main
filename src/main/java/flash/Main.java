@@ -1483,7 +1483,7 @@ public class Main extends Application {
 	private void notification(String userInput) {
 		//String title = "Your task has expired ";
 		String message = userInput;
-		String title = "You have " + userInput +" task(s) overdue.";
+		String title = "You have " + userInput +" new task(s) overdue.";
 		NotificationType notification = NotificationType.CUSTOM;
 
 		TrayNotification tray = new TrayNotification();
