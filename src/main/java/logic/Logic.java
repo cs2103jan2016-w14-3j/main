@@ -177,14 +177,6 @@ public class Logic {
 					if(updated.getPriority()== PRIORITY_LEVEL.NOT_SPECIFIED){
 						updated.setPriority(original.getPriority());
 					}
-					
-					//if (updated.getType().getType().equals(EMPTY_STRING)) {
-						//updated.setType(original.getType());
-					//}
-					
-					//if (updated.getStatus().equals(EMPTY_STRING)) {
-						//updated.setStatus(original.getStatus());
-					//}
 
 					edit(finalResult);
 
@@ -192,13 +184,6 @@ public class Logic {
 				}
 
 			}
-		}
-		else if (command.isCommand(COMMAND_TYPE.REFRESH)) {
-			
-		}
-
-		else if (command.isCommand(COMMAND_TYPE.SEARCH)) {
-			
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
@@ -242,10 +227,6 @@ public class Logic {
 			else if (parameter.equals("priority")) {
 				storageController.sortPendingByPriority();
 			}
-
-			else if (parameter.equals("type")) {
-
-			}
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
@@ -255,9 +236,6 @@ public class Logic {
 		else if (command.isCommand(COMMAND_TYPE.REDO)) {
 			storageController.redo();
 			//System.out.println("UNDO IS HERE !!!!");
-		}
-		else if (command.isCommand(COMMAND_TYPE.SWITCH)) {
-			
 		}
 		
 		return result;

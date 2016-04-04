@@ -20,11 +20,11 @@ public class CommandDispatcher {
 	public Command parseCommand(Command command)throws InvalidInputFormatException {
 		assert command != null;
 		String originalCommand = command.getOriginal();
-		
+
 		if (originalCommand.isEmpty()) {
 			throw new InvalidInputFormatException("Empty command is not allowed!");
 		}
-		
+
 		command.setType(determineCommandType(originalCommand));
 		String commandContent = retrieveCommandContent(command);
 		command.setContent(commandContent);
@@ -45,59 +45,20 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)) {
-
-		}
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_ALL)) {
-           
-		}
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_FLOATING)) {
-
-		}
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)) {
-           
-		}
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_OVERDUE)) {
-
-		}
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
-			MoveCommandParser parser = new MoveCommandParser();
+			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
 		else if (command.isCommand(COMMAND_TYPE.SAVE)) {
-			
-			MoveCommandParser parser = new MoveCommandParser();
+			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
-		}
-		else if (command.isCommand(COMMAND_TYPE.SEARCH)) {
-			SearchCommandParser parser = new SearchCommandParser();
-			command.setParameters(parser.determineParameters
-					(command.getType(),command.getContent()));
-		}
-		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
-
-		}
-		else if (command.isCommand(COMMAND_TYPE.REDO)) {
-
 		}
 		else if (command.isCommand(COMMAND_TYPE.SORT)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
-		}
-		else if (command.isCommand(COMMAND_TYPE.MARK)) {
-			
-		}
-		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
-
-		}
-		else if (command.isCommand(COMMAND_TYPE.SWITCH)) {
-			
-		}
-		else if (command.isCommand(COMMAND_TYPE.REFRESH)) {
-			
 		}
 		else if (command.isCommand(COMMAND_TYPE.INVALID)){
 			throw new InvalidInputFormatException("Please enter a valid command!");
@@ -162,9 +123,6 @@ public class CommandDispatcher {
 			return COMMAND_TYPE.EDIT;
 
 		}
-		else if (isCommand(COMMAND_TYPE.REFRESH, firstWord)) {
-			return COMMAND_TYPE.REFRESH;
-		}
 
 		else if (isCommand(COMMAND_TYPE.UNDO, firstWord)) {
 			return COMMAND_TYPE.UNDO;
@@ -202,17 +160,7 @@ public class CommandDispatcher {
 	private String retrieveCommandContent(Command command) {
 		assert command != null;
 		String original = command.getOriginal();
-		//COMMAND_TYPE commandType = command.getType();
 
-		
-		//add command with no add keyword
-//		if (commandType == COMMAND_TYPE.ADD) {
-//			if (!getFirstKeyword(original).
-//					equalsIgnoreCase(COMMAND_TYPE.ADD.getType())){
-//				return original;
-//			}
-//		}
-		
 		//content is empty
 		if (!original.contains(WHITE_SPACE)) {
 			return EMPTY_STRING;
@@ -229,13 +177,13 @@ public class CommandDispatcher {
 	public static void main(String[] args)
 	{
 		PrettyTimeParser parser = new PrettyTimeParser();
-		
+
 		String keyword = "ClEaR";
 		String newWord = keyword.toLowerCase();
 		if (newWord.equals("clear")) {
 			//System.out.println(keyword);
 		}
-		
+
 		List<Date> date3 = parser.parse("fri 10pm");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
 		System.out.println(date3);
