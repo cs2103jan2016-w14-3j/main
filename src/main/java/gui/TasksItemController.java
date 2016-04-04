@@ -193,7 +193,7 @@ public class TasksItemController extends BorderPane {
 				}
 				return time;
 			}
-			else if (taskType == TASK_NATURE.EVENT){
+			else {
 				String time = "";
 				for (int i = 0; i < dates.size(); i++) {
 					time += df.format(dates.get(i));
@@ -203,14 +203,14 @@ public class TasksItemController extends BorderPane {
 				}
 				return time;
 			}
-			else if (taskType == TASK_NATURE.RECURRING_EVERY){
-				String time = "Every " + df3.format(dates.get(0));
-				return time;
-			}
-			else {
-				String time = "Every alternate " + df3.format(dates.get(0));
-				return time;
-			}
+//			else if (taskType == TASK_NATURE.RECURRING_EVERY){
+//				String time = "Every " + df3.format(dates.get(0));
+//				return time;
+//			}
+//			else {
+//				String time = "Every alternate " + df3.format(dates.get(0));
+//				return time;
+//			}
 		}
 	}
 

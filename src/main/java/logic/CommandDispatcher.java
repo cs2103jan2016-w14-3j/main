@@ -45,6 +45,11 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		else if (command.isCommand(COMMAND_TYPE.DELETE)) {
+			DeleteCommandParser parser = new DeleteCommandParser();
+			command.setParameters(parser.determineParameters
+					(command.getContent()));
+		}
 		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
 			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
@@ -58,10 +63,13 @@ public class CommandDispatcher {
 		else if (command.isCommand(COMMAND_TYPE.SORT)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters
-					(command.getType(),command.getContent()));
+					(command.getContent()));
 		}
 		else if (command.isCommand(COMMAND_TYPE.INVALID)){
 			throw new InvalidInputFormatException("Please enter a valid command!");
+		}
+		else {
+			return;
 		}
 
 	}
@@ -183,10 +191,10 @@ public class CommandDispatcher {
 		if (newWord.equals("clear")) {
 			//System.out.println(keyword);
 		}
-
+		System.out.println(Integer.parseInt("s"));
 		List<Date> date3 = parser.parse("fri 10pm");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
-		System.out.println(date3);
+		//System.out.println(date3);
 		//System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
 	}
 }

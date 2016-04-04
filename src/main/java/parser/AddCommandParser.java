@@ -276,14 +276,14 @@ public class AddCommandParser extends Parser {
 		if (timeIndex == FIELD_NOT_EXIST) {
 			return EVENT_TASK;
 		}
-		else if (isRecurringTask(timeSegment, timeIndex)) {
-			if (timeSegment.contains(RECURRING_TASK_ALTERNATE)) {
-				return RECURRING_TASK_ALTERNATE;
-			}
-			else {
-				return RECURRING_TASK_EVERY;
-			}
-		}
+//		else if (isRecurringTask(timeSegment, timeIndex)) {
+//			if (timeSegment.contains(RECURRING_TASK_ALTERNATE)) {
+//				return RECURRING_TASK_ALTERNATE;
+//			}
+//			else {
+//				return RECURRING_TASK_EVERY;
+//			}
+//		}
 		else if (isDurationTask(timeSegment)) {
 			return DURATION_TASK;
 		}
@@ -299,19 +299,20 @@ public class AddCommandParser extends Parser {
 	}
 
 
-	private boolean isRecurringTask(String timeSegment, int timeIndex) {
-
-
-		List<Date> dates = timeParser.parse(timeSegment);
-		if (dates.size() == 1) {
-			if (containsWholeWord(timeSegment, RECURRING_FLAG_EVERY)) {
-				return true;
-			}
-
-		}
-
-		return false;
-	}
+//	private boolean isRecurringTask(String timeSegment, int timeIndex) {
+//
+//
+//		List<Date> dates = timeParser.parse(timeSegment);
+//		if (dates.size() == 1) {
+//			if (containsWholeWord(timeSegment, RECURRING_FLAG_EVERY)) {
+//				return true;
+//			}
+//
+//		}
+//
+//		return false;
+//	}
+	
 	private boolean containsWholeWord(String content, String keyword) {
 		String[] segments = content.split(WHITE_SPACE);  
 		for (int i = 0; i < segments.length; i++) {

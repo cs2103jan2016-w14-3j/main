@@ -116,12 +116,12 @@ public class Command {
 		else if (type.equals(TASK_NATURE.EVENT.getType())) {
 			return TASK_NATURE.EVENT;
 		}
-		else if (type.equals(TASK_NATURE.RECURRING_EVERY.getType())){
-			return TASK_NATURE.RECURRING_EVERY;
-		}
-		else if (type.equals(TASK_NATURE.RECURRING_ALTERNATE.getType())){
-			return TASK_NATURE.RECURRING_ALTERNATE;
-		}
+//		else if (type.equals(TASK_NATURE.RECURRING_EVERY.getType())){
+//			return TASK_NATURE.RECURRING_EVERY;
+//		}
+//		else if (type.equals(TASK_NATURE.RECURRING_ALTERNATE.getType())){
+//			return TASK_NATURE.RECURRING_ALTERNATE;
+//		}
 		else {
 			return TASK_NATURE.DURATION;
 		}

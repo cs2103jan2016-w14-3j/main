@@ -2,8 +2,7 @@ package main.java.data;
 
 public enum TASK_NATURE {
 	
-	DEADLINE("deadline"), EVENT("one-time event"), RECURRING_EVERY("recurring"),
-	RECURRING_ALTERNATE("alternate"), DURATION("duration");
+	DEADLINE("deadline"), EVENT("one-time event"),DURATION("duration");
 
 	private final String type;
 

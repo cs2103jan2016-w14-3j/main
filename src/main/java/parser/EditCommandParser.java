@@ -19,8 +19,8 @@ public class EditCommandParser extends AddCommandParser {
 		assert commandContent != null;
 		//assert 1==2;
 		checkAndHandleInvalidCommand(commandContent);
-		String[] parameters = new String[5];
 		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
+		String[] parameters = new String[5];
 		parameters[TASK] = determineTaskForEditCommand(segments);
 		parameters[TIME] = determineTimeForEditCommand(segments);
 		parameters[PRIORITY] = determinePriorityForEditCommand(segments);

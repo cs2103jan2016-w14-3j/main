@@ -8,8 +8,8 @@ public class SortCommandParser extends Parser {
 		super();
 	}
 	
-	public String[] determineParameters(COMMAND_TYPE commandType, String commandContent) throws InvalidInputFormatException {
-		assert commandType != null;
+	public String[] determineParameters(String commandContent) throws InvalidInputFormatException {
+		//assert commandType != null;
 		//assert 1==2;
 		String[] parameters = new String[5];
 		if (commandContent.isEmpty()) {

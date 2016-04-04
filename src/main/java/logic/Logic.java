@@ -60,7 +60,12 @@ public class Logic {
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
-		//System.out.println("hello");
+//		System.out.println("task" + command.getParameters()[TASK]);
+//		System.out.println("time" + command.getParameters()[1]);
+//		System.out.println("priority" + command.getParameters()[2]);
+//		System.out.println("type" + command.getParameters()[3]);
+		System.out.println(retrieveTaskIndex(command));
+		
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
@@ -311,5 +316,34 @@ public class Logic {
 	public ArrayList<Task> checkOverdue() {
 		
 		return storageController.checkOverdue(new Date());
+	}
+	
+	public int retrieveTaskIndex(Command command) {
+		COMMAND_TYPE type = command.getType();
+		String content = command.getContent();
+		if (type == COMMAND_TYPE.DELETE) {
+			try {
+				return Integer.parseInt(content);
+			} catch (NumberFormatException e) {
+				return -1;
+			}
+		}
+		else if (type == COMMAND_TYPE.EDIT) {
+			content = content.substring(0, content.indexOf(","));
+			try {
+				return Integer.parseInt(content);
+			} catch (NumberFormatException e) {
+				return -1;
+			}
+		}
+		else {
+			return -1;
+		}
+	}
+	public static void main(String[] args) {
+		Command command = new Command("delete good");
+		command.setContent("good");
+		Logic l = new Logic();
+		System.out.println(l.retrieveTaskIndex(command));
 	}
 }
