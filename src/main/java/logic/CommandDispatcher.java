@@ -216,7 +216,10 @@ public class CommandDispatcher {
 		if (newWord.equals("clear")) {
 			//System.out.println(keyword);
 		}
-		System.out.println(Integer.parseInt("5.5"));
+		Object date = PRIORITY_LEVEL.HIGH;
+		
+		System.out.println(date.getClass());
+		//System.out.println(Integer.parseInt("5.5"));
 		List<Date> date3 = parser.parse("fri 10pm");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
 		//System.out.println(date3);

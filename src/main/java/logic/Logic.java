@@ -239,10 +239,11 @@ public class Logic {
 				command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
 			
 			boolean isTime = false;
-			Object filter;
+			Date timeFilter;
+			PRIORITY_LEVEL priorityFilter;
 			if (command.getParameters()[TIME] != null) {
 				isTime = true;
-				filter = timeParser.parse(command.getParameters()
+				timeFilter = timeParser.parse(command.getParameters()
 						[TIME]).get(0);
 
 			}
@@ -250,13 +251,13 @@ public class Logic {
 				String priority = command.getParameters()[PRIORITY];
 				
 				if (priority.equals(PRIORITY_LEVEL.HIGH.getType())) {
-					filter = PRIORITY_LEVEL.HIGH;
+					priorityFilter = PRIORITY_LEVEL.HIGH;
 				}
 				else if (priority.equals(PRIORITY_LEVEL.MEDIUM.getType())) {
-					filter = PRIORITY_LEVEL.MEDIUM;
+					priorityFilter = PRIORITY_LEVEL.MEDIUM;
 				}
 				else {
-					filter = PRIORITY_LEVEL.LOW;
+					priorityFilter = PRIORITY_LEVEL.LOW;
 				}
 
 			}
@@ -264,11 +265,11 @@ public class Logic {
 			if (command.isCommand(COMMAND_TYPE.SHOW)) {
 				
 				if (isTime) {
-					filter = (Date) filter;
+					
 				}
 				//filter by priority
 				else {
-					filter = (PRIORITY_LEVEL) filter;
+					
 				}
 				
 			}
@@ -276,18 +277,17 @@ public class Logic {
 			else {
 				
 				if (isTime) {
-					filter = (Date) filter;
+					
 				}
 				
 				else {
-					filter = (PRIORITY_LEVEL) filter;
+					
 				}	
 			}
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.SORT) 
 				|| command.isCommand(COMMAND_TYPE.SORT_COMPLETE)) {
-			System.out.println("sortttttt");
 			String parameter = command.getParameters()[TASK].toLowerCase();
 			if (command.isCommand(COMMAND_TYPE.SORT)) {
 				if (parameter.equals("time")) {
