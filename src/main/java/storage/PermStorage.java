@@ -90,12 +90,6 @@ public class PermStorage {
 		}
 	}
 	
-	public boolean renameFile(String name) {
-		
-		Boolean isSuccess = dirController.renameTaskFile(file, name);
-		return isSuccess;
-	}
-	
 	public void writeToFile(Task task) {
 
 		try {

@@ -175,8 +175,8 @@ public class TempStorage {
 		permStorage.saveToLocation(path);
 	}
 	
-	public boolean checkOverdue(Date date) {
-		boolean isAnyOverdue = false;
+	public ArrayList<Task> checkOverdue(Date date) {
+		ArrayList<Task> overdueList = new ArrayList<Task>();
 		
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
@@ -185,10 +185,10 @@ public class TempStorage {
 				task.setStatus(TASK_STATUS.OVERDUE);
 				taskList.set(i, task);
 				permStorage.editToFile(i, task);
-				isAnyOverdue = true;
+				overdueList.add(task);
 			}
 		}
-		return isAnyOverdue;
+		return overdueList;
 	}
 
 	private int searchTemp(Task task) {

@@ -199,7 +199,7 @@ public class StorageController {
 		pendingTemp.saveToLocation(path);
 	}
 	
-	public boolean checkOverdue(Date date) {
+	public ArrayList<Task> checkOverdue(Date date) {
 		
 		return pendingTemp.checkOverdue(date);
 	}
