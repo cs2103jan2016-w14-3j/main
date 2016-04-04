@@ -106,6 +106,7 @@ public class TabsController extends BorderPane {
 
 	}
 	
+
 	
 	public void setUpcomingLabel(String text){
 		lblUpcoming.setText(text); 

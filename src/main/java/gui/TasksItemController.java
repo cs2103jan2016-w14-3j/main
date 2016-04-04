@@ -163,6 +163,7 @@ public class TasksItemController extends BorderPane {
 				}
 			}
 		}
+		
 		return false;
 	}
 

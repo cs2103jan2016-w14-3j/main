@@ -46,6 +46,7 @@ public class TasksTableController extends BorderPane {
 		loader.setController(this);
 		loader.setRoot(this);
 
+		
 		try {
 			loader.load();
 		} catch (IOException e) {

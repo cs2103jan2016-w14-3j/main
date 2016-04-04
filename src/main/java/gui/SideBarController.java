@@ -33,6 +33,7 @@ public class SideBarController extends VBox {
 	  controlButton.fire();
   }
 
+ 
   
 
   /** creates a sidebar containing a vertical alignment of the given nodes */

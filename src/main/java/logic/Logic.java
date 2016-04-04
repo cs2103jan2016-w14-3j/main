@@ -168,6 +168,7 @@ public class Logic {
 				
 					Task updated = finalResult.get(1);
 			
+					
 					if(updated.getTime().toString().equals("[]")){
 						updated.setTime(original.getTime());
 						updated.setType(original.getType());

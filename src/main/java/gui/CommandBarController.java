@@ -31,6 +31,7 @@ public class CommandBarController extends BorderPane {
 	@FXML
 	private Shape feedbackBg;
 	
+	
 	@FXML
 	private TextField commandBar;
 

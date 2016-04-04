@@ -212,7 +212,7 @@ public class Main extends Application {
 		}
 		}
 	}
-
+\
 	private String locateOverdueTask(Boolean isUpdate) throws Exception {
 		for (Task temp : logic.displayPending()) {
 			if (temp.getStatus() == TASK_STATUS.OVERDUE && isUpdate) {
