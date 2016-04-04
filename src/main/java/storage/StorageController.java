@@ -199,13 +199,6 @@ public class StorageController {
 		pendingTemp.saveToLocation(path);
 	}
 	
-	public Boolean renameFile(String name) {
-		assert name != null;
-		
-		Boolean isSuccess = pendingPerm.renameFile(name);
-		return isSuccess;
-	}
-	
 	public boolean checkOverdue(Date date) {
 		
 		return pendingTemp.checkOverdue(date);
