@@ -237,12 +237,16 @@ public class Logic {
 		}
 		else if (command.isCommand(COMMAND_TYPE.SHOW) ||
 				command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
+			
+			boolean isTime = false;
+			
 			if (command.getParameters()[TIME] != null) {
+				isTime = true;
 				Date filter = timeParser.parse(command.getParameters()
 						[TIME]).get(0);
 
 			}
-			else if (command.getParameters()[PRIORITY] != null) {
+			else {
 				String priority = command.getParameters()[PRIORITY];
 				PRIORITY_LEVEL filter;
 				if (priority.equals(PRIORITY_LEVEL.HIGH.getType())) {
@@ -258,15 +262,32 @@ public class Logic {
 			}
 
 			if (command.isCommand(COMMAND_TYPE.SHOW)) {
-				//fill in
+				if (isTime) {
+					
+				}
+				//filter by priority
+				else {
+					
+				}
+				
 			}
+			//showComplete
 			else {
-				//fill in
+				
+				if (isTime) {
+					
+				}
+				
+				else {
+					
+				}
+				
 			}
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.SORT) 
 				|| command.isCommand(COMMAND_TYPE.SORT_COMPLETE)) {
+			System.out.println("sortttttt");
 			String parameter = command.getParameters()[TASK].toLowerCase();
 			if (command.isCommand(COMMAND_TYPE.SORT)) {
 				if (parameter.equals("time")) {
