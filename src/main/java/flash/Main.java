@@ -533,11 +533,16 @@ public class Main extends Application {
 		btnNew.getStyleClass().add("newButton");
 		btnNew.setPadding(Insets.EMPTY);
 		backgroundChooser(btnNew);
-
+		
 		final Button btnSave = new Button();
 		btnSave.getStyleClass().add("saveButton");
 		btnSave.setPadding(Insets.EMPTY);
-		moveToLocation(btnSave);
+		saveToLocation(btnSave);
+
+		final Button btnMove = new Button();
+		btnMove.getStyleClass().add("moveButton");
+		btnMove.setPadding(Insets.EMPTY);
+		moveToLocation(btnMove);
 
 		final Button btnLoad = new Button();
 		btnLoad.getStyleClass().add("loadButton");
@@ -553,7 +558,7 @@ public class Main extends Application {
 		btnExit.getStyleClass().add("exitButton");
 		btnExit.setPadding(Insets.EMPTY);
 		exit(btnExit);
-		sidePane.getChildren().addAll(profile, btnLoad, btnSave, btnHelp,btnNew,btnExit);
+		sidePane.getChildren().addAll(profile, btnLoad,btnSave, btnMove, btnHelp,btnNew,btnExit);
 		return sidePane;
 	}
 
@@ -1266,13 +1271,29 @@ public class Main extends Application {
 		}
 	}
 
-	public void moveToLocation(Button btnSave) {
+	public void saveToLocation(Button btnSave) {
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 
 				FileChooser fileChooser = new FileChooser();
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("TXT files (*.txt)", "*.txt");
+				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+				fileChooser.getExtensionFilters().add(extFilter);
+				File saveFile = fileChooser.showSaveDialog(null);
+				if (saveFile != null) {
+					logic.saveToLocation(saveFile.getAbsolutePath());
+				}
+			}
+		});
+
+	}
+	public void moveToLocation(Button btnMove) {
+		btnMove.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent arg0) {
+
+				FileChooser fileChooser = new FileChooser();
+				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
 				fileChooser.getExtensionFilters().add(extFilter);
 				File saveFile = fileChooser.showSaveDialog(null);
 				if (saveFile != null) {

@@ -288,10 +288,18 @@
   -fx-background-color:transparent;
 }
 .saveButton {
-  -fx-graphic: url("/main/resources/images/btnSave.png");
+  -fx-graphic: url("/main/resources/images/btnSaveNew.png");
   -fx-background-color:transparent;
 }
 .saveButton:hover {
+  -fx-graphic: url("/main/resources/images/btnSaveNewHover.png");
+  -fx-background-color:transparent;
+}
+.moveButton {
+  -fx-graphic: url("/main/resources/images/btnSave.png");
+  -fx-background-color:transparent;
+}
+.moveButton:hover {
   -fx-graphic: url("/main/resources/images/btnSaveHover.png");
   -fx-background-color:transparent;
 }
