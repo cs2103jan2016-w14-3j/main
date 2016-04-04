@@ -1117,6 +1117,7 @@ public class Main extends Application {
 			  }
 			}
 
+			
 			if (isError == false) {
 				setFeedback(commandBarController, "valid", userInput);
 			}
