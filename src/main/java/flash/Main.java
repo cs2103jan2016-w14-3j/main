@@ -126,6 +126,8 @@ public class Main extends Application {
 	private static final String CLEARALL_COMMAND = "clearAll";
 	private static final int EXPANDED_WIDTH = 84;
 
+	private static final String DELETECOMPLETE_COMMAND = "deleteComplete";
+
 	private int pointer;
 	private int deleteByNumber = -1;
 	private boolean isFeedback = false;
@@ -959,7 +961,11 @@ public class Main extends Application {
 			}
 			
 			String[] fragments = userInput.split(" ");
+			
+		
+			
 			int numberToChange = -1;
+			
 			if (fragments[COMMAND_INDEX].equalsIgnoreCase("delete")) {
 				if(fragments.length>1){
 				  try {
@@ -971,29 +977,70 @@ public class Main extends Application {
 						numberToChange -= 1;
 						 if (tabControl.getAllTab().isSelected()) {
 					            try {
+					            	if(numberToChange>allResult.size()){
+					            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+					            		historyLog.add(userInput);
+					            		isError=false;
+					            		new CommandBarController();
+					            		commandBarController.clear();
+					            		return;
+					            	}
 					               logic.delete(allResult.get(numberToChange));
 					            } catch (Exception e) {
 					               e.printStackTrace();
 					            }
 					     } else if (tabControl.getPendingTab().isSelected()) {
+					    	 if(numberToChange>pendingResult.size()){
+				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+				            		historyLog.add(userInput);
+				            		isError=false;
+				            		new CommandBarController();
+				            		commandBarController.clear();
+				            		return;
+				            	}
 					            try {
 					               logic.delete(pendingResult.get(numberToChange));
 					            } catch (Exception e) {
 					               e.printStackTrace();
 					            }
 					     }else if (tabControl.getFloatingTab().isSelected()) {
+					    	 if(numberToChange>floatingResult.size()){
+				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+				            		historyLog.add(userInput);
+				            		isError=false;
+				            		new CommandBarController();
+				            		commandBarController.clear();
+				            		return;
+				            	}
 					            try {
 					               logic.delete(floatingResult.get(numberToChange));
 					            } catch (Exception e) {
 					               e.printStackTrace();
 					            }
 					      }else if (tabControl.getOverdueTab().isSelected()) {
+					    	  if(numberToChange>overdueResult.size()){
+				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+				            		historyLog.add(userInput);
+				            		isError=false;
+				            		new CommandBarController();
+				            		commandBarController.clear();
+				            		return;
+				            	}
 					            try {
 					               logic.delete(overdueResult.get(numberToChange));
 					            } catch (Exception e) {
 					               e.printStackTrace();
 					            }
 					      }else if (tabControl.getCompleteTab().isSelected()) {
+					    	  System.out.println("heerrr");
+					    	  if(numberToChange>completeResult.size()){
+				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+				            		historyLog.add(userInput);
+				            		isError=false;
+				            		new CommandBarController();
+				            		commandBarController.clear();
+				            		return;
+				            	}
 					            try {
 						               logic.deleteComplete(completeResult.get(numberToChange));
 						            } catch (Exception e) {
@@ -1002,45 +1049,49 @@ public class Main extends Application {
 						      }
 					}
 				}
-			}else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
-					if(fragments.length>1){
-						  try {
-							  numberToChange  = Integer.parseInt(fragments[1]);
-						    } catch (NumberFormatException e) {
-						      numberToChange = -1;
-						  }
-				   }
-					if(numberToChange != -1){
-						numberToChange -= 1;
-						 if (tabControl.getAllTab().isSelected()) {
-					            try {
-					               logic.delete(allResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					     } else if (tabControl.getPendingTab().isSelected()) {
-					            try {
-					               logic.delete(pendingResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					     }else if (tabControl.getFloatingTab().isSelected()) {
-					            try {
-					               logic.delete(floatingResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					      }else if (tabControl.getOverdueTab().isSelected()) {
-					            try {
-					               logic.delete(allResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					      }
-					}
-			
 			}
-			
+//			else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
+//					if(fragments.length>1){
+//						  try {
+//							  numberToChange  = Integer.parseInt(fragments[1]);
+//						    } catch (NumberFormatException e) {
+//						      numberToChange = -1;
+//						  }
+//				   }
+//					if(numberToChange != -1){
+//						numberToChange -= 1;
+//						 if (tabControl.getAllTab().isSelected()) {
+//					            try {
+//					               logic.delete(allResult.get(numberToChange));
+//					            } catch (Exception e) {
+//					               e.printStackTrace();
+//					            }
+//					     } else if (tabControl.getPendingTab().isSelected()) {
+//					            try {
+//					               logic.delete(pendingResult.get(numberToChange));
+//					            } catch (Exception e) {
+//					               e.printStackTrace();
+//					            }
+//					     }else if (tabControl.getFloatingTab().isSelected()) {
+//					            try {
+//					               logic.delete(floatingResult.get(numberToChange));
+//					            } catch (Exception e) {
+//					               e.printStackTrace();
+//					            }
+//					      }else if (tabControl.getOverdueTab().isSelected()) {
+//					            try {
+//					               logic.delete(allResult.get(numberToChange));
+//					            } catch (Exception e) {
+//					               e.printStackTrace();
+//					            }
+//					      }
+//					}
+//			
+//			}
+			if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
+				fragments[COMMAND_INDEX]="deleteComplete";
+				userInput = fragments[COMMAND_INDEX] + " " + fragments[1];
+			}
 
 			if(numberToChange == -1){
 			  try {
@@ -1189,6 +1240,7 @@ public class Main extends Application {
 	private boolean isTasksCommand(String firstWord) {
 		if (firstWord.equalsIgnoreCase(MARK_COMMAND) || firstWord.equalsIgnoreCase(UNMARK_COMMAND)
 				|| firstWord.equalsIgnoreCase(ADD_COMMAND) || firstWord.equalsIgnoreCase(DELETE_COMMAND)
+				|| firstWord.equalsIgnoreCase(DELETECOMPLETE_COMMAND)
 				|| firstWord.equalsIgnoreCase(EDIT_COMMAND)) {
 			return true;
 		}
