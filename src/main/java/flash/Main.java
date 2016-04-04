@@ -31,6 +31,7 @@ import main.java.logic.Logic;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
+import main.java.data.COMMAND_TYPE;
 import main.java.data.TASK_STATUS;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
@@ -89,6 +90,11 @@ public class Main extends Application {
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
 	private ArrayList<Task> searchResult = new ArrayList<Task>();
+	private ArrayList<Task> allResult = new ArrayList<Task>();
+	private ArrayList<Task> pendingResult = new ArrayList<Task>();
+	private ArrayList<Task> floatingResult = new ArrayList<Task>();
+	private ArrayList<Task> overdueResult = new ArrayList<Task>();
+	private ArrayList<Task> completeResult = new ArrayList<Task>();
 	private ListView<TasksItemController> pendingDisplay;
 	private ListView<TasksItemController> completeDisplay;
 	private ListView<TasksItemController> allDisplay;
@@ -121,6 +127,7 @@ public class Main extends Application {
 	private static final int EXPANDED_WIDTH = 84;
 
 	private int pointer;
+	private int deleteByNumber = -1;
 	private boolean isFeedback = false;
 	private boolean isError = false;
 	private boolean isModifiedOverdue = false;
@@ -196,25 +203,25 @@ public class Main extends Application {
 	private void checkOverdue() {
 		ArrayList<Task> overdueList = logic.checkOverdue();
 		String taskName = null;
-		if(!overdueList.isEmpty()){
-		try {
-			checkIsTasksEmpty();
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		try {
-			taskName = locateOverdueTask(overdueList);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		if (taskName != null) {
-			notification(taskName);
-		}
+		if (!overdueList.isEmpty()) {
+			try {
+				checkIsTasksEmpty();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			try {
+				taskName = locateOverdueTask(overdueList);
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+			if (taskName != null) {
+				notification(taskName);
+			}
 		}
 	}
 
 	private String locateOverdueTask(ArrayList<Task> overdueList) throws Exception {
-		
+
 		String taskName = "";
 		taskName += overdueList.size();
 		return taskName;
@@ -281,14 +288,17 @@ public class Main extends Application {
 	private void setupCompleteTable() throws Exception {
 		int completeCount = 0;
 		completeTableControl.clearTask();
+		completeResult.clear();
 		tabControl.setCompleteTab(completeTableControl);
 		for (Task temp : logic.displayComplete()) {
 			completeTableControl.addTask(temp, ++completeCount, theme);
+			completeResult.add(temp);
 			if (temp.getLastModified()) {
 				isModifiedComplete = true;
 			}
 		}
 		tabControl.setCompletedNotification(completeCount);
+		System.out.println("completeresult: " + completeResult.size());
 	}
 
 	private void populateAllTable() throws Exception {
@@ -297,25 +307,40 @@ public class Main extends Application {
 		int pendingCount = 0;
 		int floatingCount = 0;
 
+		allResult.clear();
+		pendingResult.clear();
+		overdueResult.clear();
+		floatingResult.clear();
+
 		for (Task temp : logic.displayPending()) {
 			allTableControl.addTask(temp, ++allCount, theme);
+			allResult.add(temp);
 			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
 				pendingTableControl.addTask(temp, ++pendingCount, theme);
+				pendingResult.add(temp);
 				if (temp.getLastModified()) {
 					isModifiedPending = true;
 				}
 			} else if (temp.getStatus() == TASK_STATUS.FLOATING) {
 				floatingTableControl.addTask(temp, ++floatingCount, theme);
+				floatingResult.add(temp);
 				if (temp.getLastModified()) {
 					isModifiedFloating = true;
 				}
 			} else if (temp.getStatus() == TASK_STATUS.OVERDUE) {
 				overdueTableControl.addTask(temp, ++overdueCount, theme);
+				overdueResult.add(temp);
 				if (temp.getLastModified()) {
 					isModifiedOverdue = true;
 				}
 			}
 		}
+
+		System.out.println("allresult: " + allResult.size());
+		System.out.println("pendingresult: " + pendingResult.size());
+		System.out.println("overdueresult: " + overdueResult.size());
+		System.out.println("floatingresult: " + floatingResult.size());
+
 	}
 
 	private void setupIndividualTabNotification() throws Exception {
@@ -531,7 +556,7 @@ public class Main extends Application {
 		btnNew.getStyleClass().add("newButton");
 		btnNew.setPadding(Insets.EMPTY);
 		backgroundChooser(btnNew);
-		
+
 		final Button btnSave = new Button();
 		btnSave.getStyleClass().add("saveButton");
 		btnSave.setPadding(Insets.EMPTY);
@@ -556,7 +581,7 @@ public class Main extends Application {
 		btnExit.getStyleClass().add("exitButton");
 		btnExit.setPadding(Insets.EMPTY);
 		exit(btnExit);
-		sidePane.getChildren().addAll(profile, btnLoad,btnSave, btnMove, btnHelp,btnNew,btnExit);
+		sidePane.getChildren().addAll(profile, btnLoad, btnSave, btnMove, btnHelp, btnNew, btnExit);
 		return sidePane;
 	}
 
@@ -642,13 +667,13 @@ public class Main extends Application {
 			@Override
 			public void handle(KeyEvent event) {
 				if (keyComb1.match(event)) {
-					if(theme.equals("green")){
+					if (theme.equals("green")) {
 						changeBlueTheme();
-					}else if(theme.equals("blue")){
+					} else if (theme.equals("blue")) {
 						changeTransparentTheme();
-					}else if(theme.equals("transparent")){
+					} else if (theme.equals("transparent")) {
 						changeRedTheme();
-					}else if(theme.equals("red")){
+					} else if (theme.equals("red")) {
 						changeGreenTheme();
 					}
 					try {
@@ -660,38 +685,38 @@ public class Main extends Application {
 				}
 			}
 		});
-		
+
 		final KeyCombination keyComb2 = new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN);
 		scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
 			@Override
 			public void handle(KeyEvent event) {
 				if (keyComb2.match(event)) {
-					if(background.equals("paris")){
+					if (background.equals("paris")) {
 						rootLayout.getStyleClass().remove(0);
 						rootLayout.getStyleClass().add(0, "rootBlack");
 						background = "black";
-					}else if(background.equals("black")){
+					} else if (background.equals("black")) {
 						rootLayout.getStyleClass().remove(0);
 						rootLayout.getStyleClass().add(0, "rootTower");
 						background = "tower";
-					}else if(background.equals("tower")){
+					} else if (background.equals("tower")) {
 						rootLayout.getStyleClass().remove(0);
 						rootLayout.getStyleClass().add(0, "rootCrop");
 						background = "crop";
-					}else if(background.equals("crop")){
+					} else if (background.equals("crop")) {
 						rootLayout.getStyleClass().remove(0);
 						rootLayout.getStyleClass().add(0, "rootBalloon");
 						background = "balloon";
-					}else if(background.equals("balloon")){
+					} else if (background.equals("balloon")) {
 						rootLayout.getStyleClass().remove(0);
 						rootLayout.getStyleClass().add(0, "rootWood");
 						background = "wood";
-					}else if(background.equals("wood")){
+					} else if (background.equals("wood")) {
 						rootLayout.getStyleClass().remove(0);
 						rootLayout.getStyleClass().add(0, "rootParis");
 						background = "paris";
-				}
-					
+					}
+
 				}
 			}
 		});
@@ -932,12 +957,99 @@ public class Main extends Application {
 					userInput = userInput + "All";
 				}
 			}
-			try {
+			
+			String[] fragments = userInput.split(" ");
+			int numberToChange = -1;
+			if (fragments[COMMAND_INDEX].equalsIgnoreCase("delete")) {
+				if(fragments.length>1){
+				  try {
+					  numberToChange  = Integer.parseInt(fragments[1]);
+				    } catch (NumberFormatException e) {
+					   numberToChange = -1;
+				  }
+				  if(numberToChange != -1){
+						numberToChange -= 1;
+						 if (tabControl.getAllTab().isSelected()) {
+					            try {
+					               logic.delete(allResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					     } else if (tabControl.getPendingTab().isSelected()) {
+					            try {
+					               logic.delete(pendingResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					     }else if (tabControl.getFloatingTab().isSelected()) {
+					            try {
+					               logic.delete(floatingResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					      }else if (tabControl.getOverdueTab().isSelected()) {
+					            try {
+					               logic.delete(overdueResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					      }else if (tabControl.getCompleteTab().isSelected()) {
+					            try {
+						               logic.deleteComplete(completeResult.get(numberToChange));
+						            } catch (Exception e) {
+						               e.printStackTrace();
+						            }
+						      }
+					}
+				}
+			}else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
+					if(fragments.length>1){
+						  try {
+							  numberToChange  = Integer.parseInt(fragments[1]);
+						    } catch (NumberFormatException e) {
+						      numberToChange = -1;
+						  }
+				   }
+					if(numberToChange != -1){
+						numberToChange -= 1;
+						 if (tabControl.getAllTab().isSelected()) {
+					            try {
+					               logic.delete(allResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					     } else if (tabControl.getPendingTab().isSelected()) {
+					            try {
+					               logic.delete(pendingResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					     }else if (tabControl.getFloatingTab().isSelected()) {
+					            try {
+					               logic.delete(floatingResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					      }else if (tabControl.getOverdueTab().isSelected()) {
+					            try {
+					               logic.delete(allResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					      }
+					}
+			
+			}
+			
+
+			if(numberToChange == -1){
+			  try {
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-			} catch (Exception e) {
+			   } catch (Exception e) {
 				isError = true;
 				setFeedback(commandBarController, "error", e.toString());
 				System.out.println(e.toString());
+			  }
 			}
 
 			if (isError == false) {
@@ -945,9 +1057,10 @@ public class Main extends Application {
 			}
 		}
 		historyLog.add(userInput);
-		isError = false;
+		isError=false;
 		new CommandBarController();
 		commandBarController.clear();
+
 	}
 
 	private void changeRedTheme() {
@@ -1048,8 +1161,8 @@ public class Main extends Application {
 			} else if (userInput.equalsIgnoreCase(REDO_COMMAND)) {
 				commandBarController.setFeedback("Previous Change has been restored", Color.BLACK);
 			} else if (userInput.equalsIgnoreCase(HELP_COMMAND)) {
-				
-			}else if (userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)
+
+			} else if (userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEARCOMPLETE_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEAROVERDUE_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEARFLOATING_COMMAND)
@@ -1113,6 +1226,18 @@ public class Main extends Application {
 		boolean isUnmark = fragments[COMMAND_INDEX].equalsIgnoreCase("unmark");
 		boolean quit = fragments[COMMAND_INDEX].equalsIgnoreCase("q");
 
+		deleteByNumber = -1;
+		if (fragments.length > 1) {
+			try {
+				deleteByNumber = Integer.parseInt(fragments[1]);
+			} catch (NumberFormatException e) {
+				deleteByNumber = -1;
+			}
+		}
+		if (deleteByNumber != -1) {
+			return;
+		}
+
 		if (quit) {
 			try {
 				checkIsTasksEmpty();
@@ -1125,7 +1250,8 @@ public class Main extends Application {
 		try {
 			if ((tabControl.getAllTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
-//				 System.out.println("all tab live search: "+ searchResult.get(0).getTask());
+				// System.out.println("all tab live search: "+
+				// searchResult.get(0).getTask());
 				if (isEdit || isDelete || isSearch) {
 					populateAllList(searchResult);
 				} else if (isMark) {
@@ -1188,64 +1314,59 @@ public class Main extends Application {
 
 	public void populateAllList(ArrayList<Task> searchResult) {
 		allTableControl.clearTask();
+		allResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			// if(searchResult.size()==1){
-			// count = 999;
-			// }
 			allTableControl.addTask(temp, ++count, theme);
+			allResult.add(temp);
 		}
 
 	}
 
 	private void populateOverdueList(ArrayList<Task> searchResult) {
 		overdueTableControl.clearTask();
+		overdueResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			// if(searchResult.size()==1){
-			// count = 999;
-			// }
 			if (temp.getStatus() == TASK_STATUS.OVERDUE) {
 				overdueTableControl.addTask(temp, ++count, theme);
+				overdueResult.add(temp);
 			}
 		}
 	}
 
 	private void populateFloatingList(ArrayList<Task> searchResult) {
 		floatingTableControl.clearTask();
+		floatingResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			// if(searchResult.size()==1){
-			// count = 999;
-			// }
 			if (temp.getStatus() == TASK_STATUS.FLOATING) {
 				floatingTableControl.addTask(temp, ++count, theme);
+				floatingResult.add(temp);
 			}
 		}
 	}
 
 	private void populateCompleteList(ArrayList<Task> searchResult) {
 		completeTableControl.clearTask();
+		completeResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			// if(searchResult.size()==1){
-			// count = 999;
-			// }
 			if (temp.getStatus() == TASK_STATUS.COMPLETED) {
 				completeTableControl.addTask(temp, ++count, theme);
+				completeResult.add(temp);
 			}
 		}
 	}
 
 	private void populatePendingList(ArrayList<Task> searchResult) {
 		pendingTableControl.clearTask();
+		pendingResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			// if(searchResult.size()==1){
-			// count = 999;
-			// }
 			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
 				pendingTableControl.addTask(temp, ++count, theme);
+				pendingResult.add(temp);
 			}
 		}
 	}
@@ -1275,7 +1396,8 @@ public class Main extends Application {
 			public void handle(ActionEvent arg0) {
 
 				FileChooser fileChooser = new FileChooser();
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)",
+						"*.txt");
 				fileChooser.getExtensionFilters().add(extFilter);
 				File saveFile = fileChooser.showSaveDialog(null);
 				if (saveFile != null) {
@@ -1285,13 +1407,15 @@ public class Main extends Application {
 		});
 
 	}
+
 	public void moveToLocation(Button btnMove) {
 		btnMove.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
 
 				FileChooser fileChooser = new FileChooser();
-				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)", "*.txt");
+				FileChooser.ExtensionFilter extFilter = new FileChooser.ExtensionFilter("Text Documents (*.txt)",
+						"*.txt");
 				fileChooser.getExtensionFilters().add(extFilter);
 				File saveFile = fileChooser.showSaveDialog(null);
 				if (saveFile != null) {
@@ -1481,9 +1605,9 @@ public class Main extends Application {
 	}
 
 	private void notification(String userInput) {
-		//String title = "Your task has expired ";
+		// String title = "Your task has expired ";
 		String message = userInput;
-		String title = "You have " + userInput +" new task(s) overdue.";
+		String title = "You have " + userInput + " new task(s) overdue.";
 		NotificationType notification = NotificationType.CUSTOM;
 
 		TrayNotification tray = new TrayNotification();
