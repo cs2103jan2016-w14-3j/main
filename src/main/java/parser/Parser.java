@@ -26,8 +26,7 @@ public abstract class Parser {
 		if (commandType != COMMAND_TYPE.CLEAR_COMPLETE && 
 				commandType != COMMAND_TYPE.CLEAR_UPCOMING && 
 				commandType != COMMAND_TYPE.UNDO &&
-				commandType != COMMAND_TYPE.REDO && 
-				commandType != COMMAND_TYPE.REFRESH ) {
+				commandType != COMMAND_TYPE.REDO) {
 			if (commandContent.isEmpty()) {
 				throw new InvalidInputFormatException("This command requires parameter!");
 			}

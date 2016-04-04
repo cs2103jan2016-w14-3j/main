@@ -70,6 +70,11 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		else if (command.isCommand(COMMAND_TYPE.SHOW)) {
+			ShowCommandParser parser = new ShowCommandParser();
+			command.setParameters(parser.determineParameters
+					(command.getContent()));
+		}
 		else if (command.isCommand(COMMAND_TYPE.INVALID)){
 			throw new InvalidInputFormatException("Please enter a valid command!");
 		}
@@ -155,6 +160,9 @@ public class CommandDispatcher {
 		else if (isCommand(COMMAND_TYPE.SWITCH, firstWord)) {
 			return COMMAND_TYPE.SWITCH;
 		}
+		else if (isCommand(COMMAND_TYPE.SHOW, firstWord)) {
+			return COMMAND_TYPE.SHOW;
+		}
 		else {
 			return COMMAND_TYPE.INVALID;
 		}
@@ -199,7 +207,7 @@ public class CommandDispatcher {
 		if (newWord.equals("clear")) {
 			//System.out.println(keyword);
 		}
-		System.out.println(Integer.parseInt("s"));
+		System.out.println(Integer.parseInt("5.5"));
 		List<Date> date3 = parser.parse("fri 10pm");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
 		//System.out.println(date3);

@@ -6,7 +6,7 @@ public enum COMMAND_TYPE {
 	REDO("redo"),SORT("sort"), MOVE("move"), SEARCH("search"), 
 	MARK("mark"), UNMARK("unmark"),CLEAR_UPCOMING("clearUpcoming"), 
 	CLEAR_COMPLETE("clearComplete"),CLEAR_OVERDUE("clearOverdue"), 
-	CLEAR_FLOATING("clearFloating"),CLEAR_ALL("clearAll"),REFRESH("refresh"),
+	CLEAR_FLOATING("clearFloating"),CLEAR_ALL("clearAll"),SHOW("show"),
 	SWITCH("switch"), SAVE("save"), INVALID("invalid");
 	
 	private final String type; 

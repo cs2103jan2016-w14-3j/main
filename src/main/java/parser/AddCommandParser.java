@@ -163,12 +163,6 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-//	private String getDate(Date date) {
-//		return date.toString().substring(0, 9);
-//	}
-
-
-
 //	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
 //
 //		for (int i = 0; i < dates.size(); i++) {

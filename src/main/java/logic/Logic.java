@@ -24,11 +24,13 @@ public class Logic {
 	private static final String SWITCH_COMMAND = "switch";
 	private static final String REDO_COMMAND = "redo";
 	private static final String THEME_COMMAND = "theme";
-	private static final String REFRESH_COMMAND = "refresh";
+	private static final String SHOW_COMMAND = "show";
 	private static final String EMPTY_STRING = "";
 	
 
 	private static final int TASK = 0;
+	private static final int TIME = 1;
+	
 
 	private static Task task;
 	private static TransientTask transientTask;
@@ -148,7 +150,8 @@ public class Logic {
 		else if (command.isCommand(COMMAND_TYPE.DELETE)) {
 			
 			for (Task temp : searchResult) {
-				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
+				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) 
+						|| searchResult.size()==1) {
 					delete(temp);			
 					break;
 				}			
@@ -156,8 +159,9 @@ public class Logic {
 		}
 		
 		else if (command.isCommand(COMMAND_TYPE.DELETE_COMPLETE)) {
-			for (Task temp : searchResult) {
-				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
+			for (Task temp : searchResultCompleted) {
+				if (userInput.equalsIgnoreCase("deleteComplete " + temp.getTask())
+						|| searchResultCompleted.size()==1) {
 					deleteComplete(temp);			
 					break;
 				}			
@@ -225,6 +229,14 @@ public class Logic {
 					storageController.moveTaskToPending(temp);			
 					break;
 				}			
+			}
+		}
+		else if (command.isCommand(COMMAND_TYPE.SHOW)) {
+			if (command.getParameters()[TIME] != null) {
+				
+			}
+			else if (command.getParameters()[TASK] != null) {
+				
 			}
 		}
 
@@ -303,7 +315,7 @@ public class Logic {
 				commandWord.equals(SORT_COMMAND)||commandWord.equals(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equals(CLEAR_COMMAND)||commandWord.equals(UNDO_COMMAND)||commandWord.equals(HELP_COMMAND)||
 				commandWord.equals(MARK_COMMAND)||commandWord.equals(REDO_COMMAND) || commandWord.equals(SWITCH_COMMAND)|| 
-				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND))
+				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND) || commandWord.equals(SHOW_COMMAND))
 			return true;
 		return false;
 
