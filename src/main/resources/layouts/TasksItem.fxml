@@ -15,11 +15,11 @@
    <center>
       <StackPane styleClass="cardBg">
          <children>
-            <VBox fx:id="card" prefHeight="70.0" prefWidth="500.0" styleClass="card">
+            <VBox fx:id="card" prefHeight="53.0" prefWidth="500.0" styleClass="card">
                <children>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="25.0" prefWidth="500.0">
                      <children>
-                        <StackPane prefHeight="39.0" prefWidth="416.0">
+                        <StackPane prefHeight="28.0" prefWidth="428.0">
                            <children>
                                        <Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="427.125" StackPane.alignment="CENTER_LEFT">
                                  <font>
@@ -29,12 +29,12 @@
                            </children>
                         </StackPane>
                         
-                        <ImageView fx:id="banner" fitHeight="50.0" fitWidth="33.0" layoutX="446.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="banner" fitHeight="35.0" fitWidth="29.0" layoutX="446.0" layoutY="-7.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
-                  <AnchorPane prefHeight="200.0" prefWidth="200.0">
+                  <AnchorPane prefHeight="16.0" prefWidth="500.0">
                      <children>
-                        <StackPane alignment="TOP_LEFT" prefHeight="24.0" prefWidth="324.0">
+                        <StackPane alignment="TOP_LEFT" prefHeight="17.0" prefWidth="324.0">
                            <children>
                               <Text fx:id="date" fill="#1743f2" stroke="WHITE" strokeType="OUTSIDE" strokeWidth="0.0">
                                  <font>
@@ -51,7 +51,7 @@
                               </Label>
                            </children>
                         </StackPane>
-                        <ImageView fx:id="imgDate" fitHeight="28.0" fitWidth="52.0" layoutX="366.0" layoutY="-17.0" pickOnBounds="true" preserveRatio="true" />
+                        <ImageView fx:id="imgDate" fitHeight="28.0" fitWidth="52.0" layoutX="376.0" layoutY="-14.0" pickOnBounds="true" preserveRatio="true" />
                      </children>
                   </AnchorPane>
                </children>
@@ -68,12 +68,12 @@
    <left>
       <StackPane prefHeight="30.0" prefWidth="46.0" BorderPane.alignment="CENTER">
          <children>
-            <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="75.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="44.0">
+            <Rectangle fx:id="priorityColor" fill="DODGERBLUE" height="56.0" stroke="TRANSPARENT" strokeType="INSIDE" styleClass="circle" width="44.0">
                <effect>
                   <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
                </effect>
             </Rectangle>
-            <Label fx:id="firstLetter" alignment="CENTER" prefHeight="72.0" prefWidth="45.0" text="00">
+            <Label fx:id="firstLetter" alignment="CENTER" prefHeight="94.0" prefWidth="45.0" text="00">
                <font>
                   <Font size="5.0" />
                </font>

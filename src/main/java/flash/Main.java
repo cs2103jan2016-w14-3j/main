@@ -196,6 +196,7 @@ public class Main extends Application {
 	private void checkOverdue() {
 		boolean isUpdate = logic.checkOverdue();
 		String taskName = null;
+		if(isUpdate){
 		try {
 			checkIsTasksEmpty();
 		} catch (Exception e) {
@@ -208,6 +209,7 @@ public class Main extends Application {
 		}
 		if (taskName != null) {
 			notification(taskName);
+		}
 		}
 	}
 
@@ -551,7 +553,7 @@ public class Main extends Application {
 		btnExit.getStyleClass().add("exitButton");
 		btnExit.setPadding(Insets.EMPTY);
 		exit(btnExit);
-		sidePane.getChildren().addAll(profile, btnNew, btnLoad, btnSave, btnHelp, btnExit);
+		sidePane.getChildren().addAll(profile, btnLoad, btnSave, btnHelp,btnNew,btnExit);
 		return sidePane;
 	}
 
@@ -646,7 +648,12 @@ public class Main extends Application {
 					}else if(theme.equals("red")){
 						changeGreenTheme();
 					}
-					
+					try {
+						checkIsTasksEmpty();
+					} catch (Exception e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
 				}
 			}
 		});
@@ -1115,8 +1122,7 @@ public class Main extends Application {
 		try {
 			if ((tabControl.getAllTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
 				searchResult = logic.handleSearchPending(oldValue, newValue);
-				// System.out.println("all tab live search: " +
-				// searchResult.size());
+//				 System.out.println("all tab live search: "+ searchResult.get(0).getTask());
 				if (isEdit || isDelete || isSearch) {
 					populateAllList(searchResult);
 				} else if (isMark) {

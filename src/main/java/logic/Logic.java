@@ -159,14 +159,15 @@ public class Logic {
 			String sub = userInput.substring(5, userInput.indexOf(","));
 			
 			for (Task temp : searchResult) {
-				if (sub.equals(temp.getTask())) {				
+				System.out.println("here"+temp.getTask());
+				if (temp.getTask().contains(sub)) {				
 					finalResult.add(temp);	  
 					finalResult.add(result.get(1));
 					
 					Task original = finalResult.get(0);
-					
+				
 					Task updated = finalResult.get(1);
-					
+			
 					if(updated.getTime().toString().equals("[]")){
 						updated.setTime(original.getTime());
 						updated.setType(original.getType());

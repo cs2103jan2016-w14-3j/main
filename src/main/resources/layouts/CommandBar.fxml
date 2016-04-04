@@ -11,27 +11,30 @@
 
 <fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
    <center>
-      <TextField fx:id="commandBar" onKeyPressed="#onKeyPress" prefHeight="17.0" prefWidth="224.0" promptText="Enter Command">
-         <font>
-            <Font name="Century Gothic" size="18.0" />
-         </font></TextField>
-   </center>
-   <top>
-      <StackPane prefHeight="29.0" prefWidth="500.0" BorderPane.alignment="CENTER">
+      <VBox fx:id="commandVbox" prefHeight="9.0" prefWidth="570.0" BorderPane.alignment="CENTER">
          <children>
-            <Rectangle fx:id="feedbackBg" arcHeight="5.0" arcWidth="5.0" fill="#ffffff94" height="29.0" stroke="#ffffff00" strokeType="INSIDE" width="570.0" />
-            <Label fx:id="feedback" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" minWidth="570.0" textFill="#2b7c1b">
-               <padding>
-                  <Insets bottom="5.0" />
-               </padding>
+            <StackPane prefHeight="29.0" prefWidth="500.0">
+               <children>
+                  <Rectangle fx:id="feedbackBg" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="29.0" stroke="#ffffff00" strokeType="INSIDE" width="570.0" />
+                  <Label fx:id="feedback" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" minWidth="570.0" textFill="#2b7c1b">
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                     <effect>
+                        <Glow level="0.4" />
+                     </effect>
+                  </Label>
+               </children>
+            </StackPane>
+            <TextField fx:id="commandBar" onKeyPressed="#onKeyPress" prefHeight="17.0" prefWidth="224.0" promptText="Enter Command">
                <font>
-                  <Font name="Calibri" size="14.0" />
+                  <Font name="Century Gothic" size="18.0" />
                </font>
-               <effect>
-                  <Glow level="0.4" />
-               </effect>
-            </Label>
+            </TextField>
          </children>
-      </StackPane>
-   </top>
+      </VBox>
+   </center>
 </fx:root>
