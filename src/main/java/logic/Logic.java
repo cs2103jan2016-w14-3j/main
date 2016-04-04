@@ -275,7 +275,7 @@ public class Logic {
 			}
 			//showComplete
 			else {
-				
+				System.out.println("hereeeeee");
 				if (isTime) {
 					result = storageController.showAllCompletedByDate(timeFilter);
 				}
