@@ -28,12 +28,12 @@ public class Logic {
 	private static final String THEME_COMMAND = "theme";
 	private static final String SHOW_COMMAND = "show";
 	private static final String EMPTY_STRING = "";
-	
+
 
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
-	
+
 
 	private static Task task;
 	private static TransientTask transientTask;
@@ -66,12 +66,12 @@ public class Logic {
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
-//		System.out.println("task" + command.getParameters()[TASK]);
-//		System.out.println("time" + command.getParameters()[1]);
-//		System.out.println("priority" + command.getParameters()[2]);
-//		System.out.println("type" + command.getParameters()[3]);
+		//		System.out.println("task" + command.getParameters()[TASK]);
+		//		System.out.println("time" + command.getParameters()[1]);
+		//		System.out.println("priority" + command.getParameters()[2]);
+		//		System.out.println("type" + command.getParameters()[3]);
 		System.out.println(retrieveTaskIndex(command));
-		
+
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
@@ -111,7 +111,7 @@ public class Logic {
 	private ArrayList<Task> executeTask(Command command, ArrayList<Task> taskOptions,String userInput) throws NumberFormatException, Exception {
 
 		ArrayList<Task> result = new ArrayList<Task>();
-		
+
 		if (command.isCommand(COMMAND_TYPE.ADD)) {
 
 			task = createTask(command);
@@ -126,19 +126,19 @@ public class Logic {
 			storageController.clearPendingTasks();
 			result = storageController.displayPendingTasks();
 		}
-		
+
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_FLOATING)){
 			//System.out.println("clear pending");
 			storageController.clearFloatingTasks();
 			result = storageController.displayPendingTasks();
 		}
-		
+
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)){
 			//System.out.println("clear pending");
 			storageController.clearUpcomingTasks();
 			result = storageController.displayPendingTasks();
 		}
-		
+
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_OVERDUE)){
 			System.out.println("clear pending");
 			storageController.clearOverdueTasks();
@@ -152,7 +152,7 @@ public class Logic {
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.DELETE)) {
-			
+
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) 
 						|| searchResult.size()==1) {
@@ -161,7 +161,7 @@ public class Logic {
 				}			
 			}
 		}
-		
+
 		else if (command.isCommand(COMMAND_TYPE.DELETE_COMPLETE)) {
 			for (Task temp : searchResultCompleted) {
 				if (userInput.equalsIgnoreCase("deleteComplete " + temp.getTask())
@@ -174,23 +174,23 @@ public class Logic {
 
 
 		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
-			
+
 			ArrayList<Task> finalResult = new ArrayList<Task>(); 
 			transientTask = createTransientTask(command);
 			result = handleEditCommand(transientTask);
 			String sub = userInput.substring(5, userInput.indexOf(","));
-			
+
 			for (Task temp : searchResult) {
 				System.out.println("here"+temp.getTask());
 				if (temp.getTask().contains(sub)) {				
 					finalResult.add(temp);	  
 					finalResult.add(result.get(1));
-					
+
 					Task original = finalResult.get(0);
-				
+
 					Task updated = finalResult.get(1);
-			
-					
+
+
 					if(updated.getTime().toString().equals("[]")){
 						updated.setTime(original.getTime());
 						updated.setType(original.getType());
@@ -215,7 +215,7 @@ public class Logic {
 			saveToLocation(command.getParameters()[TASK]);
 		}
 		else if (command.isCommand(COMMAND_TYPE.MARK)) {
-			
+
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
 					//System.out.println("hereeeee");
@@ -226,7 +226,7 @@ public class Logic {
 
 		}
 		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
-			
+
 			for (Task temp : searchResultCompleted) {
 				if (userInput.equalsIgnoreCase("unmark " + temp.getTask()) || searchResultCompleted.size()==1) {
 					//System.out.println("hereeeee");
@@ -235,11 +235,12 @@ public class Logic {
 				}			
 			}
 		}
-		else if (command.isCommand(COMMAND_TYPE.SHOW)) {
+		else if (command.isCommand(COMMAND_TYPE.SHOW) ||
+				command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
 			if (command.getParameters()[TIME] != null) {
 				Date filter = timeParser.parse(command.getParameters()
 						[TIME]).get(0);
-				
+
 			}
 			else if (command.getParameters()[PRIORITY] != null) {
 				String priority = command.getParameters()[PRIORITY];
@@ -253,48 +254,72 @@ public class Logic {
 				else {
 					filter = PRIORITY_LEVEL.LOW;
 				}
+
+			}
+
+			if (command.isCommand(COMMAND_TYPE.SHOW)) {
+				//fill in
+			}
+			else {
+				//fill in
 			}
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.SORT)) {
+		else if (command.isCommand(COMMAND_TYPE.SORT) 
+				|| command.isCommand(COMMAND_TYPE.SORT_COMPLETE)) {
 			String parameter = command.getParameters()[TASK].toLowerCase();
-			if (parameter.equals("time")) {
-				storageController.sortPendingByTime();
-			}
+			if (command.isCommand(COMMAND_TYPE.SORT)) {
+				if (parameter.equals("time")) {
+					storageController.sortPendingByTime();
+				}
 
-			else if (parameter.equals("name")) {
-				storageController.sortPendingByTaskName();
-			}
+				else if (parameter.equals("name")) {
+					storageController.sortPendingByTaskName();
+				}
 
-			else if (parameter.equals("priority")) {
-				storageController.sortPendingByPriority();
+				else if (parameter.equals("priority")) {
+					storageController.sortPendingByPriority();
+				}
+			}
+			else {
+				if (parameter.equals("time")) {
+					storageController.sortCompletedByTime();
+				}
+
+				else if (parameter.equals("name")) {
+					storageController.sortCompletedByTaskName();
+				}
+
+				else if (parameter.equals("priority")) {
+					storageController.sortCompletedByPriority();
+				} 
 			}
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
 			storageController.undo();
 		}
-		
+
 		else if (command.isCommand(COMMAND_TYPE.REDO)) {
 			storageController.redo();
 			//System.out.println("UNDO IS HERE !!!!");
 		}
-		
+
 		return result;
 	}
-	
+
 	private TransientTask createTransientTask(Command command) {
 		return command.createTransientTask();
 	}
-	
+
 	public void deleteComplete(Task task) throws Exception {
 		storageController.deleteCompletedTask(task);
 	}
-	
+
 	public void delete(Task task) throws Exception {
 		storageController.deletePendingTask(task);
 	}
-	
+
 	public ArrayList<Task> displayPending()throws Exception{
 		ArrayList<Task> result = storageController.displayPendingTasks();
 		return result;
@@ -314,7 +339,7 @@ public class Logic {
 		//System.out.println("logic hereeee save file name "+ filename);
 		storageController.moveToLocation(path);
 	}
-	
+
 	public void loadFilename(String filename){	
 		//System.out.println("logic hereeee load file name "+ filename);
 		storageController.loadFromFile(filename);
@@ -336,7 +361,7 @@ public class Logic {
 		return false;
 
 	}
-	
+
 
 	public ArrayList<Task> handleSearchPending(String oldValue, String newValue) throws Exception {
 		//System.out.println("new val: " + newValue);
@@ -345,20 +370,20 @@ public class Logic {
 		return searchResult;
 	}
 
-	
+
 	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) throws Exception {
 		//System.out.println("new val: " + newValue);
 		//System.out.println("old val: " + oldValue);
 		searchResultCompleted = storageController.searchMatchCompleted(newValue);	
 		return searchResultCompleted;
 	}
-	
-	
+
+
 	public ArrayList<Task> checkOverdue() {
-		
+
 		return storageController.checkOverdue(new Date());
 	}
-	
+
 	public int retrieveTaskIndex(Command command) {
 		COMMAND_TYPE type = command.getType();
 		String content = command.getContent();

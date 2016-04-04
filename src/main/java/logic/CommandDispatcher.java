@@ -65,16 +65,19 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.SORT)) {
+		else if (command.isCommand(COMMAND_TYPE.SORT)
+				|| command.isCommand(COMMAND_TYPE.SORT_COMPLETE)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.SHOW)) {
+		else if (command.isCommand(COMMAND_TYPE.SHOW) 
+				|| command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
 			ShowCommandParser parser = new ShowCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+	
 		else if (command.isCommand(COMMAND_TYPE.INVALID)){
 			throw new InvalidInputFormatException("Please enter a valid command!");
 		}
@@ -119,6 +122,9 @@ public class CommandDispatcher {
 		else if (isCommand(COMMAND_TYPE.SORT, firstWord)) {
 			return COMMAND_TYPE.SORT;
 		}
+		else if (isCommand(COMMAND_TYPE.SORT_COMPLETE, firstWord)) {
+			return COMMAND_TYPE.SORT_COMPLETE;
+		}
 
 		else if (isCommand(COMMAND_TYPE.CLEAR_UPCOMING, firstWord)) {
 			return COMMAND_TYPE.CLEAR_UPCOMING;
@@ -161,6 +167,9 @@ public class CommandDispatcher {
 			return COMMAND_TYPE.SWITCH;
 		}
 		else if (isCommand(COMMAND_TYPE.SHOW, firstWord)) {
+			return COMMAND_TYPE.SHOW;
+		}
+		else if (isCommand(COMMAND_TYPE.SHOW_COMPLETE, firstWord)) {
 			return COMMAND_TYPE.SHOW;
 		}
 		else {
