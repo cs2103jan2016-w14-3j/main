@@ -156,7 +156,12 @@ public class Logic {
 		}
 		
 		else if (command.isCommand(COMMAND_TYPE.DELETE_COMPLETE)) {
-			
+			for (Task temp : searchResult) {
+				if (userInput.equalsIgnoreCase("delete " + temp.getTask()) || searchResult.size()==1) {
+					deleteComplete(temp);			
+					break;
+				}			
+			}
 		}
 
 
@@ -254,6 +259,10 @@ public class Logic {
 		return command.createTransientTask();
 	}
 	
+	public void deleteComplete(Task task) throws Exception {
+		storageController.deleteCompletedTask(task);
+	}
+	
 	public void delete(Task task) throws Exception {
 		storageController.deletePendingTask(task);
 	}
@@ -294,7 +303,7 @@ public class Logic {
 				commandWord.equals(SORT_COMMAND)||commandWord.equals(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equals(CLEAR_COMMAND)||commandWord.equals(UNDO_COMMAND)||commandWord.equals(HELP_COMMAND)||
 				commandWord.equals(MARK_COMMAND)||commandWord.equals(REDO_COMMAND) || commandWord.equals(SWITCH_COMMAND)|| 
-				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND) || commandWord.equals(REFRESH_COMMAND))
+				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND))
 			return true;
 		return false;
 
