@@ -194,16 +194,16 @@ public class Main extends Application {
 	}
 
 	private void checkOverdue() {
-		boolean isUpdate = logic.checkOverdue();
+		ArrayList<Task> overdueList = logic.checkOverdue();
 		String taskName = null;
-		if(isUpdate){
+		if(!overdueList.isEmpty()){
 		try {
 			checkIsTasksEmpty();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 		try {
-			taskName = locateOverdueTask(isUpdate);
+			taskName = locateOverdueTask(overdueList);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -213,13 +213,11 @@ public class Main extends Application {
 		}
 	}
 
-	private String locateOverdueTask(Boolean isUpdate) throws Exception {
-		for (Task temp : logic.displayPending()) {
-			if (temp.getStatus() == TASK_STATUS.OVERDUE && isUpdate) {
-				return temp.getTask();
-			}
-		}
-		return null;
+	private String locateOverdueTask(ArrayList<Task> overdueList) throws Exception {
+		
+		String taskName = "";
+		taskName += overdueList.size();
+		return taskName;
 
 	}
 
@@ -1028,27 +1026,27 @@ public class Main extends Application {
 				if (isTasksCommand(firstWord)) {
 					if (firstWord.equalsIgnoreCase(DELETE_COMMAND)) {
 						commandBarController.setFeedback(
-								"Task has been successfully " + firstWord + "d" + ": " + subString, Color.GREEN);
+								"Task has been successfully " + firstWord + "d" + ": " + subString, Color.BLACK);
 					}
 					commandBarController.setFeedback(
-							"Task has been successfully " + firstWord + "ed" + ": " + subString, Color.GREEN);
+							"Task has been successfully " + firstWord + "ed" + ": " + subString, Color.BLACK);
 				} else if (firstWord.equalsIgnoreCase(SORT_COMMAND)) {
 					commandBarController.setFeedback(
-							"Task has been successfully " + firstWord + "ed " + "by " + subString, Color.GREEN);
+							"Task has been successfully " + firstWord + "ed " + "by " + subString, Color.BLACK);
 				} else if (firstWord.equalsIgnoreCase(OPEN_COMMAND) || firstWord.equalsIgnoreCase(SAVE_COMMAND)
 						|| firstWord.equalsIgnoreCase(MOVE_COMMAND)) {
-					commandBarController.setFeedback("File has been successfully " + firstWord + "ed ", Color.GREEN);
+					commandBarController.setFeedback("File has been successfully " + firstWord + "ed ", Color.BLACK);
 				} else if (firstWord.equalsIgnoreCase(THEME_COMMAND)) {
-					commandBarController.setFeedback(subString + " " + firstWord + " has been activated", Color.GREEN);
+					commandBarController.setFeedback(subString + " " + firstWord + " has been activated", Color.BLACK);
 				} else {
 					commandBarController.setFeedback("Invalid Command", Color.RED);
 				}
 			}
 		} else {
 			if (userInput.equalsIgnoreCase(UNDO_COMMAND)) {
-				commandBarController.setFeedback("Previous command has been undone", Color.GREEN);
+				commandBarController.setFeedback("Previous command has been undone", Color.BLACK);
 			} else if (userInput.equalsIgnoreCase(REDO_COMMAND)) {
-				commandBarController.setFeedback("Previous Change has been restored", Color.GREEN);
+				commandBarController.setFeedback("Previous Change has been restored", Color.BLACK);
 			} else if (userInput.equalsIgnoreCase(HELP_COMMAND)) {
 				
 			}else if (userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)
@@ -1056,18 +1054,18 @@ public class Main extends Application {
 					|| userInput.equalsIgnoreCase(CLEAROVERDUE_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEARFLOATING_COMMAND)
 					|| userInput.equalsIgnoreCase(CLEARALL_COMMAND)) {
-				commandBarController.setFeedback("All tasks have been cleared", Color.GREEN);
+				commandBarController.setFeedback("All tasks have been cleared", Color.BLACK);
 			} else if (userInput.equalsIgnoreCase(SWITCH_COMMAND)) {
 				if (tabControl.getPendingTab().isSelected()) {
-					commandBarController.setFeedback("Switched to pending tab", Color.GREEN);
+					commandBarController.setFeedback("Switched to pending tab", Color.BLACK);
 				} else if (tabControl.getCompleteTab().isSelected()) {
-					commandBarController.setFeedback("Switched to completed tab", Color.GREEN);
+					commandBarController.setFeedback("Switched to completed tab", Color.BLACK);
 				} else if (tabControl.getFloatingTab().isSelected()) {
-					commandBarController.setFeedback("Switched to floating tab", Color.GREEN);
+					commandBarController.setFeedback("Switched to floating tab", Color.BLACK);
 				} else if (tabControl.getOverdueTab().isSelected()) {
-					commandBarController.setFeedback("Switched to overdue tab", Color.GREEN);
+					commandBarController.setFeedback("Switched to overdue tab", Color.BLACK);
 				} else if (tabControl.getAllTab().isSelected()) {
-					commandBarController.setFeedback("Switched to all tab", Color.GREEN);
+					commandBarController.setFeedback("Switched to all tab", Color.BLACK);
 				}
 			} else {
 				commandBarController.setFeedback("Invalid Command", Color.RED);
@@ -1483,13 +1481,14 @@ public class Main extends Application {
 	}
 
 	private void notification(String userInput) {
-		String title = "Your task has expired ";
+		//String title = "Your task has expired ";
 		String message = userInput;
+		String title = "You have " + userInput +" task(s) overdue.";
 		NotificationType notification = NotificationType.CUSTOM;
 
 		TrayNotification tray = new TrayNotification();
 		tray.setTitle(title);
-		tray.setMessage(message);
+		tray.setMessage("Switch to overdue tab to learn more.");
 		tray.setRectangleFill(Paint.valueOf("#D50000"));
 		tray.setImage(new Image("/main/resources/images/overdueNotification.png"));
 		tray.setAnimationType(AnimationType.POPUP);
