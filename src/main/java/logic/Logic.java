@@ -239,8 +239,8 @@ public class Logic {
 				command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
 			
 			boolean isTime = false;
-			Date timeFilter;
-			PRIORITY_LEVEL priorityFilter;
+			Date timeFilter = null;
+			PRIORITY_LEVEL priorityFilter = null;
 			if (command.getParameters()[TIME] != null) {
 				isTime = true;
 				timeFilter = timeParser.parse(command.getParameters()
@@ -265,11 +265,11 @@ public class Logic {
 			if (command.isCommand(COMMAND_TYPE.SHOW)) {
 				
 				if (isTime) {
-					
+					storageController.showAllPendingByDate(timeFilter);
 				}
 				//filter by priority
 				else {
-					
+					storageController.showAllPendingByPriority(priorityFilter);
 				}
 				
 			}
@@ -277,11 +277,11 @@ public class Logic {
 			else {
 				
 				if (isTime) {
-					
+					storageController.showAllCompletedByDate(timeFilter);
 				}
 				
 				else {
-					
+					storageController.showAllCompletedByPriority(priorityFilter);
 				}	
 			}
 		}

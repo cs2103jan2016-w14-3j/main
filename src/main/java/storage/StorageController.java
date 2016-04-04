@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import main.java.data.PRIORITY_LEVEL;
 import main.java.data.TASK_STATUS;
 import main.java.data.Task;
 
@@ -170,6 +171,22 @@ public class StorageController {
 			pendingTemp.redoPrevious();
 			completedTemp.redoPrevious();
 		}
+	}
+	
+	public ArrayList<Task> showAllPendingByDate(Date date) {
+		return pendingTemp.showAllByDate(date);
+	}
+	
+	public ArrayList<Task> showAllPendingByPriority(PRIORITY_LEVEL priority) {
+		return pendingTemp.showAllByPriority(priority);
+	}
+	
+	public ArrayList<Task> showAllCompletedByDate(Date date) {
+		return completedTemp.showAllByDate(date);
+	}
+	
+	public ArrayList<Task> showAllCompletedByPriority(PRIORITY_LEVEL priority) {
+		return completedTemp.showAllByPriority(priority);
 	}
 	
 	public ArrayList<Task> searchMatchPending(String newValue) {

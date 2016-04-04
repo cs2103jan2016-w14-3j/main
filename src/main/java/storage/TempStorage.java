@@ -6,6 +6,7 @@ import java.util.Stack;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
+import main.java.data.PRIORITY_LEVEL;
 import main.java.data.TASK_STATUS;
 import main.java.data.Task;
 
@@ -189,6 +190,40 @@ public class TempStorage {
 			}
 		}
 		return overdueList;
+	}
+	
+	public ArrayList<Task> showAllByDate(Date date) {
+		ArrayList<Task> searchResults = new ArrayList<Task>();
+		String dateString = date.toString().substring(0, 9);
+		
+		for(int i=0; i<taskList.size(); i++) {
+			Task task = taskList.get(i);
+			
+			if(task.getTime().size() == 1) {
+				if(task.getTime().get(0).toString().substring(0, 9).equals(dateString)) {
+					searchResults.add(task);
+				}
+			}
+			else if(task.getTime().size() == 2) {
+				if(date.after(task.getTime().get(0)) && date.before(task.getTime().get(1))) {
+					searchResults.add(task);
+				}
+			}
+		}
+		return searchResults;
+	}
+	
+	public ArrayList<Task> showAllByPriority(PRIORITY_LEVEL priority) {
+		ArrayList<Task> searchResults = new ArrayList<Task>();
+		
+		for(int i=0; i<taskList.size(); i++) {
+			Task task = taskList.get(i);
+			
+			if(task.getPriority().equals(priority)) {
+				searchResults.add(task);
+			}
+		}
+		return searchResults;
 	}
 
 	private int searchTemp(Task task) {
