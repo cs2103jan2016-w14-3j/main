@@ -39,15 +39,15 @@ public class ShowCommandParser extends Parser {
 			parameters[TIME] = dates.toString();
 		}
 		else if (commandContent.equals("h") || commandContent.equals("high")) {
-			parameters[TASK] = PRIORITY_LEVEL.HIGH.getType();
+			parameters[PRIORITY] = PRIORITY_LEVEL.HIGH.getType();
 			
 		}
 		else if (commandContent.equals("med") || commandContent.equals("m") 
 				|| commandContent.equals("medium")) {
-			parameters[TASK] = PRIORITY_LEVEL.MEDIUM.getType();
+			parameters[PRIORITY] = PRIORITY_LEVEL.MEDIUM.getType();
 		}
 		else if (commandContent.equals("low") || commandContent.equals("l")) {
-			parameters[TASK] = PRIORITY_LEVEL.LOW.getType();
+			parameters[PRIORITY] = PRIORITY_LEVEL.LOW.getType();
 		}
 		else {
 			throw new InvalidInputFormatException("Please choose a valid filer!");

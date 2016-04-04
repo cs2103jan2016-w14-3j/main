@@ -4,6 +4,8 @@ package main.java.logic;
 import java.util.ArrayList;
 import java.util.Date;
 
+import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+
 import main.java.data.*;
 import main.java.parser.*;
 import main.java.storage.*;
@@ -30,6 +32,7 @@ public class Logic {
 
 	private static final int TASK = 0;
 	private static final int TIME = 1;
+	private static final int PRIORITY = 2;
 	
 
 	private static Task task;
@@ -37,6 +40,7 @@ public class Logic {
 	private static StorageController storageController;
 	private ArrayList<Task> searchResult;
 	private ArrayList<Task> searchResultCompleted;
+	private static PrettyTimeParser timeParser = new PrettyTimeParser();
 
 	public Logic() {
 		try {
@@ -233,10 +237,22 @@ public class Logic {
 		}
 		else if (command.isCommand(COMMAND_TYPE.SHOW)) {
 			if (command.getParameters()[TIME] != null) {
+				Date filter = timeParser.parse(command.getParameters()
+						[TIME]).get(0);
 				
 			}
-			else if (command.getParameters()[TASK] != null) {
-				
+			else if (command.getParameters()[PRIORITY] != null) {
+				String priority = command.getParameters()[PRIORITY];
+				PRIORITY_LEVEL filter;
+				if (priority.equals(PRIORITY_LEVEL.HIGH.getType())) {
+					filter = PRIORITY_LEVEL.HIGH;
+				}
+				else if (priority.equals(PRIORITY_LEVEL.MEDIUM.getType())) {
+					filter = PRIORITY_LEVEL.MEDIUM;
+				}
+				else {
+					filter = PRIORITY_LEVEL.LOW;
+				}
 			}
 		}
 
