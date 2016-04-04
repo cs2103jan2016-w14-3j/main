@@ -31,6 +31,7 @@ public class ShowCommandParser extends Parser {
 	private void setShowFiterIfApplicable(String[] parameters, String commandContent) throws InvalidInputFormatException {
 		//System.out.println("haha");
 		commandContent = commandContent.toLowerCase();
+		commandContent = commandContent.replaceAll("tmr", "tomorrow");
 		PrettyTimeParser timeParser = new PrettyTimeParser();
 		List<Date> dates = timeParser.parse(commandContent);
 		//System.out.println("size is: " + dates.size());
@@ -50,7 +51,7 @@ public class ShowCommandParser extends Parser {
 			parameters[PRIORITY] = PRIORITY_LEVEL.LOW.getType();
 		}
 		else {
-			throw new InvalidInputFormatException("Please choose a valid filer!");
+			throw new InvalidInputFormatException("Please choose a valid filter!");
 		}
 		
 	}
