@@ -307,7 +307,7 @@ public class Logic {
 		return searchResultCompleted;
 	}
 	
-	public boolean checkOverdue() {
+	public ArrayList<Task> checkOverdue() {
 		
 		return storageController.checkOverdue(new Date());
 	}
