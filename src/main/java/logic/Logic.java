@@ -239,16 +239,16 @@ public class Logic {
 				command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
 			
 			boolean isTime = false;
-			
+			Object filter;
 			if (command.getParameters()[TIME] != null) {
 				isTime = true;
-				Date filter = timeParser.parse(command.getParameters()
+				filter = timeParser.parse(command.getParameters()
 						[TIME]).get(0);
 
 			}
 			else {
 				String priority = command.getParameters()[PRIORITY];
-				PRIORITY_LEVEL filter;
+				
 				if (priority.equals(PRIORITY_LEVEL.HIGH.getType())) {
 					filter = PRIORITY_LEVEL.HIGH;
 				}
@@ -262,12 +262,13 @@ public class Logic {
 			}
 
 			if (command.isCommand(COMMAND_TYPE.SHOW)) {
+				
 				if (isTime) {
-					
+					filter = (Date) filter;
 				}
 				//filter by priority
 				else {
-					
+					filter = (PRIORITY_LEVEL) filter;
 				}
 				
 			}
@@ -275,13 +276,12 @@ public class Logic {
 			else {
 				
 				if (isTime) {
-					
+					filter = (Date) filter;
 				}
 				
 				else {
-					
-				}
-				
+					filter = (PRIORITY_LEVEL) filter;
+				}	
 			}
 		}
 
