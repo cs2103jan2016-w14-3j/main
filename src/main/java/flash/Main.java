@@ -63,6 +63,8 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.control.TextField;
+
 import org.controlsfx.control.*;
 
 public class Main extends Application {
@@ -1033,7 +1035,7 @@ public class Main extends Application {
 					               e.printStackTrace();
 					            }
 					      }else if (tabControl.getCompleteTab().isSelected()) {
-					    	 
+					    	  System.out.println("heerrr");
 					    	  if(numberToChange>completeResult.size()){
 				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
 				            		historyLog.add(userInput);
@@ -1089,24 +1091,47 @@ public class Main extends Application {
 //					}
 //			
 //			}
-			
+			if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
+				fragments[COMMAND_INDEX]="deleteComplete";
+				String deleteComplete = "deleteComplete ";
+				for(int i = 1; i<fragments.length; i++ ){
+				      deleteComplete+=fragments[i];
+				}
+				userInput = deleteComplete;
+				System.out.println(userInput);
+			}else if(fragments[COMMAND_INDEX].equalsIgnoreCase("show") && tabControl.getCompleteTab().isSelected()){
+				fragments[COMMAND_INDEX]="showComplete";
+				String showComplete = "showComplete ";
+				for(int i = 1; i<fragments.length; i++ ){
+				      showComplete+=fragments[i];
+				}
+				userInput = showComplete;
+				System.out.println(userInput);
+			}
 
 			if(numberToChange == -1){
-				if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
-					fragments[COMMAND_INDEX]="deleteComplete";
-					String deleteComplete = "deleteComplete ";
-					for(int i = 1; i<fragments.length; i++ ){
-					      deleteComplete+=fragments[i];
-					}
-					userInput = deleteComplete;
-					System.out.println(userInput);
-				}
 			  try {
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 			   } catch (Exception e) {
 				isError = true;
 				setFeedback(commandBarController, "error", e.toString());
 				System.out.println(e.toString());
+			  }
+			  if(fragments[COMMAND_INDEX].equalsIgnoreCase("show")||fragments[COMMAND_INDEX].equalsIgnoreCase("showComplete")){
+				  PopOver bgPopOver = new PopOver();
+			      bgPopOver.setDetachable(false);
+			      bgPopOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_LEFT);
+			      bgPopOver.setArrowIndent(5);
+			      int count = 0;
+			      TasksTableController popOverTableControl = new TasksTableController();
+			      for (Task temp : result) {
+			            popOverTableControl.addTask(temp, ++count, theme);
+			            System.out.println(count +": "+ temp.getTask());
+			      }
+			      
+			      bgPopOver.setContentNode(popOverTableControl);
+			      bgPopOver.show(commandBarController.getCommandBar().getScene().getWindow(), getPopupPosition(commandBarController.getCommandBar()).getX(),
+			                     getPopupPosition(commandBarController.getCommandBar()).getY());
 			  }
 			}
 
@@ -1662,6 +1687,15 @@ public class Main extends Application {
 		double y = point.getY() + window.getY();
 		return new Point2D(x, y);
 	}
+	   private Point2D getPopupPosition(TextField node) {
+		      Window window = node.getScene().getWindow();
+		      Point2D point = node.localToScene(0, 0);
+		      double x = point.getX() + window.getX() + node.getWidth() + 2;
+		      double y = point.getY() + window.getY();
+		      return new Point2D(x, y);
+		   }
+	
+	
 
 	private void notification(String userInput) {
 		// String title = "Your task has expired ";
