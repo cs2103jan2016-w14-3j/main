@@ -170,7 +170,7 @@ public class CommandDispatcher {
 			return COMMAND_TYPE.SHOW;
 		}
 		else if (isCommand(COMMAND_TYPE.SHOW_COMPLETE, firstWord)) {
-			return COMMAND_TYPE.SHOW;
+			return COMMAND_TYPE.SHOW_COMPLETE;
 		}
 		else {
 			return COMMAND_TYPE.INVALID;
