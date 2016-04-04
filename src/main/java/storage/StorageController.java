@@ -16,13 +16,11 @@ public class StorageController {
 	
 	private PendingTaskTempStorage pendingTemp;
 	private CompletedTaskTempStorage completedTemp;
-	private PendingTaskPermStorage pendingPerm;
 	private int lastAction;
 
 	public StorageController() {	
 		pendingTemp = new PendingTaskTempStorage();
 		completedTemp = new CompletedTaskTempStorage();
-		pendingPerm = new PendingTaskPermStorage();
 	}
 
 	public void addTask(Task task) {

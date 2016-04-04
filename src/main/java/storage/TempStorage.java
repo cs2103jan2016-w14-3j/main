@@ -19,6 +19,7 @@ public class TempStorage {
 	private PermStorage permStorage;
 	private Stack<ArrayList<Task>> searchHistory;
 	private String prevSearch;
+	private boolean isPreviousUndo;
 
 	private static final String SPACE = " ";
 
@@ -45,6 +46,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.writeToFile(task);
+		isPreviousUndo = false;
 	}
 
 	public ArrayList<Task> displayTemp() {
@@ -59,6 +61,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.editToFile(indexOfTaskToEdit, editedTask);
+		isPreviousUndo = false;
 	}
 
 	public void deleteFromTemp(Task task) {
@@ -68,6 +71,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.deleteFromFile(indexOfTaskToDelete);
+		isPreviousUndo = false;
 	}
 
 	public void clearTemp() {
@@ -76,6 +80,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.clearFile();
+		isPreviousUndo = false;
 	}
 	
 	public void clearUpcoming() {
@@ -88,6 +93,7 @@ public class TempStorage {
 		}
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
+		isPreviousUndo = false;
 	}
 	
 	public void clearFloating() {
@@ -100,6 +106,7 @@ public class TempStorage {
 		}
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
+		isPreviousUndo = false;
 	}
 	
 	public void clearOverdue() {
@@ -112,6 +119,7 @@ public class TempStorage {
 		}
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
+		isPreviousUndo = false;
 	}
 
 	public void undoPrevious() {
@@ -120,10 +128,14 @@ public class TempStorage {
 			redoStack.push(currentState);
 			taskList = new ArrayList<Task>(undoStack.peek());
 			permStorage.copyAllToFile(taskList);
+			isPreviousUndo = true;
 		}
 	}
 
 	public void redoPrevious() {
+		if(isPreviousUndo == false) {
+			redoStack.clear();
+		}
 		if(redoStack.size() != 0) {
 			ArrayList<Task> currentState = redoStack.pop();
 			undoStack.push(currentState);
@@ -138,6 +150,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.copyAllToFile((taskList));
+		isPreviousUndo = false;
 	}
 
 	public void sortByTime() {
@@ -146,6 +159,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.copyAllToFile((taskList));
+		isPreviousUndo = false;
 	}
 
 	public void sortByPriority() {
@@ -154,6 +168,7 @@ public class TempStorage {
 		tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
 		permStorage.copyAllToFile((taskList));
+		isPreviousUndo = false;
 	}
 
 	public void moveToLocation(String path) {
