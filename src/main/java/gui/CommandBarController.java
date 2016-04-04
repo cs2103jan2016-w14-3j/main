@@ -86,6 +86,11 @@ public class CommandBarController extends BorderPane {
 	public TextField getCommandBar() {
 		return commandBar;
 	}
+	
+	public Label getLblFeedback(){
+		return feedback;
+	}
+	
 
 	public void updateUserInput(String newInput) {
 		commandBar.setText(newInput);

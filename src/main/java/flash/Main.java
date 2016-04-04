@@ -130,6 +130,9 @@ public class Main extends Application {
 
 	private static final String DELETECOMPLETE_COMMAND = "deleteComplete";
 
+	private static final String SHOW_COMMAND = "show";
+	private static final String SHOWCOMPLETE_COMMAND = "showComplete";
+
 	
 	private int pointer;
 	private int deleteByNumber = -1;
@@ -1053,44 +1056,33 @@ public class Main extends Application {
 					}
 				}
 			}
-//			else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
-//					if(fragments.length>1){
-//						  try {
-//							  numberToChange  = Integer.parseInt(fragments[1]);
-//						    } catch (NumberFormatException e) {
-//						      numberToChange = -1;
-//						  }
-//				   }
-//					if(numberToChange != -1){
-//						numberToChange -= 1;
-//						 if (tabControl.getAllTab().isSelected()) {
-//					            try {
-//					               logic.delete(allResult.get(numberToChange));
-//					            } catch (Exception e) {
-//					               e.printStackTrace();
-//					            }
-//					     } else if (tabControl.getPendingTab().isSelected()) {
-//					            try {
-//					               logic.delete(pendingResult.get(numberToChange));
-//					            } catch (Exception e) {
-//					               e.printStackTrace();
-//					            }
-//					     }else if (tabControl.getFloatingTab().isSelected()) {
-//					            try {
-//					               logic.delete(floatingResult.get(numberToChange));
-//					            } catch (Exception e) {
-//					               e.printStackTrace();
-//					            }
-//					      }else if (tabControl.getOverdueTab().isSelected()) {
-//					            try {
-//					               logic.delete(allResult.get(numberToChange));
-//					            } catch (Exception e) {
-//					               e.printStackTrace();
-//					            }
-//					      }
-//					}
-//			
-//			}
+			else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
+					if(fragments.length>1){
+						  try {
+//							  System.out.println("alltab number: " + fragments[1]);
+							  numberToChange  = Integer.parseInt(fragments[1].substring(0, fragments[1].indexOf(',')));
+						    } catch (NumberFormatException e) {
+						      numberToChange = -1;
+						  }
+				   }
+					if(numberToChange != -1){
+						numberToChange -= 1;
+						String update = userInput.substring(userInput.indexOf(',') + 1).trim();
+						 if (tabControl.getAllTab().isSelected()) {
+					              userInput = "edit "+ allResult.get(numberToChange).getTask()+", "+ update;
+					    
+					     } else if (tabControl.getPendingTab().isSelected()) {
+					    	 userInput = "edit "+ pendingResult.get(numberToChange).getTask()+", "+ update;
+					     }else if (tabControl.getFloatingTab().isSelected()) {
+					    	 userInput = "edit "+ floatingResult.get(numberToChange).getTask()+", "+ update;
+					      }else if (tabControl.getOverdueTab().isSelected()) {
+					    	  userInput = "edit "+ overdueResult.get(numberToChange).getTask()+", "+ update;
+					         }
+					      
+					}
+					numberToChange = -1;
+			
+			}
 			if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
 				fragments[COMMAND_INDEX]="deleteComplete";
 				String deleteComplete = "deleteComplete ";
@@ -1109,8 +1101,9 @@ public class Main extends Application {
 				System.out.println(userInput);
 			}
 
-			if(numberToChange == -1){
+			if(numberToChange == -1 ){
 			  try {
+				   System.out.println("alltab: " + userInput);
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 			   } catch (Exception e) {
 				isError = true;
@@ -1118,20 +1111,9 @@ public class Main extends Application {
 				System.out.println(e.toString());
 			  }
 			  if(fragments[COMMAND_INDEX].equalsIgnoreCase("show")||fragments[COMMAND_INDEX].equalsIgnoreCase("showComplete")){
-				  PopOver bgPopOver = new PopOver();
-			      bgPopOver.setDetachable(false);
-			      bgPopOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_LEFT);
-			      bgPopOver.setArrowIndent(5);
-			      int count = 0;
-			      TasksTableController popOverTableControl = new TasksTableController();
-			      for (Task temp : result) {
-			            popOverTableControl.addTask(temp, ++count, theme);
-			            System.out.println(count +": "+ temp.getTask());
-			      }
-			      
-			      bgPopOver.setContentNode(popOverTableControl);
-			      bgPopOver.show(commandBarController.getCommandBar().getScene().getWindow(), getPopupPosition(commandBarController.getCommandBar()).getX(),
-			                     getPopupPosition(commandBarController.getCommandBar()).getY());
+				  if(result.size()!=0){
+				      popOverForShow(commandBarController);
+				  }
 			  }
 			}
 
@@ -1144,6 +1126,24 @@ public class Main extends Application {
 		new CommandBarController();
 		commandBarController.clear();
 
+	}
+
+	private void popOverForShow(CommandBarController commandBarController) {
+		PopOver bgPopOver = new PopOver();
+		  bgPopOver.setDetachable(true);
+		  bgPopOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_LEFT);
+		  bgPopOver.setArrowIndent(5);
+		  int count = 0;
+		  TasksTableController popOverTableControl = new TasksTableController();
+		  popOverTableControl.clearTask();
+		  for (Task temp : result) {
+		        popOverTableControl.addTask(temp, ++count, theme);
+		        System.out.println(count +": "+ temp.getTask());
+		  }
+		  
+		  bgPopOver.setContentNode(popOverTableControl);
+		  bgPopOver.show(commandBarController.getLblFeedback().getScene().getWindow(), getPopupPosition(commandBarController.getLblFeedback()).getX(),
+		                 getPopupPosition(commandBarController.getLblFeedback()).getY());
 	}
 
 	private void changeRedTheme() {
@@ -1220,12 +1220,15 @@ public class Main extends Application {
 				return;
 			} else {
 				if (isTasksCommand(firstWord)) {
-					if (firstWord.equalsIgnoreCase(DELETE_COMMAND)) {
+					if (firstWord.equalsIgnoreCase(DELETE_COMMAND)||firstWord.equalsIgnoreCase(DELETECOMPLETE_COMMAND)) {
 						commandBarController.setFeedback(
 								"Task has been successfully " + firstWord + "d" + ": " + subString, Color.BLACK);
 					}
 					commandBarController.setFeedback(
 							"Task has been successfully " + firstWord + "ed" + ": " + subString, Color.BLACK);
+				}else if (firstWord.equalsIgnoreCase(SHOW_COMMAND)||firstWord.equalsIgnoreCase(SHOWCOMPLETE_COMMAND)) {
+						commandBarController.setFeedback(
+								"Task has been successfully " + firstWord + "n ", Color.BLACK);
 				} else if (firstWord.equalsIgnoreCase(SORT_COMMAND)) {
 					commandBarController.setFeedback(
 							"Task has been successfully " + firstWord + "ed " + "by " + subString, Color.BLACK);
@@ -1273,7 +1276,8 @@ public class Main extends Application {
 		if (firstWord.equalsIgnoreCase(MARK_COMMAND) || firstWord.equalsIgnoreCase(UNMARK_COMMAND)
 				|| firstWord.equalsIgnoreCase(ADD_COMMAND) || firstWord.equalsIgnoreCase(DELETE_COMMAND)
 				|| firstWord.equalsIgnoreCase(DELETECOMPLETE_COMMAND)
-				|| firstWord.equalsIgnoreCase(EDIT_COMMAND)) {
+				|| firstWord.equalsIgnoreCase(EDIT_COMMAND)|| firstWord.equalsIgnoreCase(SHOW_COMMAND)
+				|| firstWord.equalsIgnoreCase(SHOWCOMPLETE_COMMAND)) {
 			return true;
 		}
 		return false;
@@ -1313,7 +1317,7 @@ public class Main extends Application {
 		deleteByNumber = -1;
 		if (fragments.length > 1) {
 			try {
-				deleteByNumber = Integer.parseInt(fragments[1]);
+				deleteByNumber = Integer.parseInt(fragments[1].substring(0, 1));
 			} catch (NumberFormatException e) {
 				deleteByNumber = -1;
 			}
@@ -1687,10 +1691,10 @@ public class Main extends Application {
 		double y = point.getY() + window.getY();
 		return new Point2D(x, y);
 	}
-	   private Point2D getPopupPosition(TextField node) {
+	   private Point2D getPopupPosition(Label node) {
 		      Window window = node.getScene().getWindow();
 		      Point2D point = node.localToScene(0, 0);
-		      double x = point.getX() + window.getX() + node.getWidth() + 2;
+		      double x = point.getX() + window.getX()+ node.getWidth();
 		      double y = point.getY() + window.getY();
 		      return new Point2D(x, y);
 		   }
