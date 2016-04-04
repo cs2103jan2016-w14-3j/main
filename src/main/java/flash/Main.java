@@ -128,6 +128,7 @@ public class Main extends Application {
 
 	private static final String DELETECOMPLETE_COMMAND = "deleteComplete";
 
+	
 	private int pointer;
 	private int deleteByNumber = -1;
 	private boolean isFeedback = false;
