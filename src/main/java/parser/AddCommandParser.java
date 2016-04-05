@@ -266,6 +266,7 @@ public class AddCommandParser extends Parser {
 		String timeSegment = determineTimeSegment(content).toLowerCase();
 		if (timeIndex == FIELD_NOT_EXIST) {
 			return EVENT_TASK;
+		}
 		else if (isDurationTask(timeSegment)) {
 			return DURATION_TASK;
 		}
@@ -691,6 +692,9 @@ public class AddCommandParser extends Parser {
 		for (int i = 0; i < size; i++) {
 			list.add(pq.poll());
 		}
+
+
+
 		//no time
 		if (list.size() == 0) {
 			return FIELD_NOT_EXIST;
