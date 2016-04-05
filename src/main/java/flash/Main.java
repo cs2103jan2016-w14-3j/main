@@ -79,14 +79,13 @@ public class Main extends Application {
 	private Scene scene;
 
 	private Logic logic;
-	private Task task;
 
 	private TasksTableController allTableControl;
 	private TasksTableController floatingTableControl;
 	private TasksTableController pendingTableControl;
 	private TasksTableController completeTableControl;
 	private TasksTableController overdueTableControl;
-
+    private SideBarController sidebar;
 	private CommandBarController barControl;
 	private TabsController tabControl;
 	private ArrayList<String> historyLog;
@@ -306,7 +305,7 @@ public class Main extends Application {
 			}
 		}
 		tabControl.setCompletedNotification(completeCount);
-		System.out.println("completeresult: " + completeResult.size());
+	//	System.out.println("completeresult: " + completeResult.size());
 	}
 
 	private void populateAllTable() throws Exception {
@@ -344,10 +343,10 @@ public class Main extends Application {
 			}
 		}
 
-		System.out.println("allresult: " + allResult.size());
-		System.out.println("pendingresult: " + pendingResult.size());
-		System.out.println("overdueresult: " + overdueResult.size());
-		System.out.println("floatingresult: " + floatingResult.size());
+//		System.out.println("allresult: " + allResult.size());
+//		System.out.println("pendingresult: " + pendingResult.size());
+//		System.out.println("overdueresult: " + overdueResult.size());
+//		System.out.println("floatingresult: " + floatingResult.size());
 
 	}
 
@@ -439,11 +438,7 @@ public class Main extends Application {
 	}
 
 	private void listenForStageInput() {
-		// scene.addEventHandler(KeyEvent.KEY_PRESSED, (key) -> {
-		// if (key.getCode() == KeyCode.ESCAPE) {
-		// primaryStage.setIconified(true);
-		// }
-		// });
+
 		rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent event) {
@@ -464,7 +459,7 @@ public class Main extends Application {
 
 		// create a sidebar with some content in it.
 		final Pane sidePane = createSidebarContent();
-		SideBarController sidebar = new SideBarController(EXPANDED_WIDTH, sidePane);
+		sidebar = new SideBarController(EXPANDED_WIDTH, sidePane);
 		VBox.setVgrow(sidePane, Priority.ALWAYS);
 		rootLayout.setLeft(sidebar);
 		sidebar.hideSidebar();
@@ -597,18 +592,8 @@ public class Main extends Application {
 		btnHelp.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
-				if (tabControl.getAllTab().isSelected()) {
-					tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
-				} else if (tabControl.getPendingTab().isSelected()) {
-					tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
-				} else if (tabControl.getFloatingTab().isSelected()) {
-					tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
-				} else if (tabControl.getOverdueTab().isSelected()) {
-					tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
-				} else if (tabControl.getCompleteTab().isSelected()) {
-					tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
-				}
-
+				popOverForHelp();
+                sidebar.hideSidebar();
 			}
 		});
 
@@ -738,7 +723,7 @@ public class Main extends Application {
 					try {
 						populatePendingList(logic.displayPending());
 						tabControl.setPendingTab(pendingTableControl);
-						System.out.println("escapppp");
+						//System.out.println("escapppp");
 					} catch (Exception e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -755,7 +740,7 @@ public class Main extends Application {
 			@Override
 			public void handle(KeyEvent e) {
 				if (e.getCode() == KeyCode.ENTER) {
-					System.out.print("enter pressed");
+				//	System.out.print("enter pressed");
 					handleEnterKey(allDisplay);
 				} else if (e.getCode() == KeyCode.ESCAPE) {
 					try {
@@ -900,21 +885,14 @@ public class Main extends Application {
 		assert commandBarController != null;
 
 		if (userInput.isEmpty()) {
-		} else if (userInput.equalsIgnoreCase("help")) {
-			if (tabControl.getAllTab().isSelected()) {
-				tabControl.setAllTab(new ImageView(new Image("/main/resources/images/help.png")));
-			} else if (tabControl.getPendingTab().isSelected()) {
-				tabControl.setPendingTab(new ImageView(new Image("/main/resources/images/help.png")));
-			} else if (tabControl.getFloatingTab().isSelected()) {
-				tabControl.setFloatingTab(new ImageView(new Image("/main/resources/images/help.png")));
-			} else if (tabControl.getOverdueTab().isSelected()) {
-				tabControl.setOverdueTab(new ImageView(new Image("/main/resources/images/help.png")));
-			} else if (tabControl.getCompleteTab().isSelected()) {
-				tabControl.setCompleteTab(new ImageView(new Image("/main/resources/images/help.png")));
-			}
-			// notification(userInput);
+			
+		}
+        //UI related command
+		else if (userInput.equalsIgnoreCase("help")) {
+			popOverForHelp();
 			setFeedback(commandBarController, "valid", userInput);
-		} else if (userInput.equalsIgnoreCase("theme blue")) {
+		} 
+		if (userInput.equalsIgnoreCase("theme blue")) {
 			changeBlueTheme();
 			setFeedback(commandBarController, "valid", userInput);
 		} else if (userInput.equalsIgnoreCase("theme red")) {
@@ -927,359 +905,314 @@ public class Main extends Application {
 			changeGreenTheme();
 			setFeedback(commandBarController, "valid", userInput);
 		} else if (userInput.equalsIgnoreCase("switch")) {
-			if (tabControl.getPendingTab().isSelected()) {
-				tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
-				lblTitle.setText("Overdue Tasks");
-				setFeedback(commandBarController, "valid", userInput);
-			} else if (tabControl.getOverdueTab().isSelected()) {
-				tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
-				lblTitle.setText("Completed Tasks");
-				setFeedback(commandBarController, "valid", userInput);
-			} else if (tabControl.getCompleteTab().isSelected()) {
-				tabControl.getTabPane().getSelectionModel().select(tabControl.getAllTab());
-				lblTitle.setText("All Tasks");
-				setFeedback(commandBarController, "valid", userInput);
-			} else if (tabControl.getAllTab().isSelected()) {
-				tabControl.getTabPane().getSelectionModel().select(tabControl.getFloatingTab());
-				lblTitle.setText("Floating Tasks");
-				setFeedback(commandBarController, "valid", userInput);
-			} else if (tabControl.getFloatingTab().isSelected()) {
-				tabControl.getTabPane().getSelectionModel().select(tabControl.getPendingTab());
-				lblTitle.setText("Pending Tasks");
-				setFeedback(commandBarController, "valid", userInput);
-			}
+			handleSwitchCommand(commandBarController, userInput);
 		} else {
-			// normal command
-			historyLog.add(userInput);
-
+			// Non- UI related command
 			if (userInput.equalsIgnoreCase("clear")) {
-				if (tabControl.getPendingTab().isSelected()) {
-					userInput = userInput + "Upcoming";
-				} else if (tabControl.getCompleteTab().isSelected()) {
-					userInput = userInput + "Complete";
-				} else if (tabControl.getOverdueTab().isSelected()) {
-					userInput = userInput + "Overdue";
-				} else if (tabControl.getFloatingTab().isSelected()) {
-					userInput = userInput + "Floating";
-				} else if (tabControl.getAllTab().isSelected()) {
-					userInput = userInput + "All";
-				}
+				userInput = handleClearByTab(userInput);
 			}
 			
-			String[] fragments = userInput.split(" ");
-			
-		
-			
+			String[] fragments = userInput.split(" ");		
 			int numberToChange = -1;
-			//handle delete by number
-			if (fragments[COMMAND_INDEX].equalsIgnoreCase("delete")) {
-				if(fragments.length>1){
-				  try {
-					  numberToChange  = Integer.parseInt(fragments[1]);
-				    } catch (NumberFormatException e) {
-					   numberToChange = -1;
-				  }
-				  if(numberToChange != -1){
-						numberToChange -= 1;
-						 if (tabControl.getAllTab().isSelected()) {
-					            try {
-					            	if(numberToChange>allResult.size()){
-					            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-					            		historyLog.add(userInput);
-					            		isError=false;
-					            		new CommandBarController();
-					            		commandBarController.clear();
-					            		return;
-					            	}
-					               logic.delete(allResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					     } else if (tabControl.getPendingTab().isSelected()) {
-					    	 if(numberToChange>pendingResult.size()){
-				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-				            		historyLog.add(userInput);
-				            		isError=false;
-				            		new CommandBarController();
-				            		commandBarController.clear();
-				            		return;
-				            	}
-					            try {
-					               logic.delete(pendingResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					     }else if (tabControl.getFloatingTab().isSelected()) {
-					    	 if(numberToChange>floatingResult.size()){
-				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-				            		historyLog.add(userInput);
-				            		isError=false;
-				            		new CommandBarController();
-				            		commandBarController.clear();
-				            		return;
-				            	}
-					            try {
-					               logic.delete(floatingResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					      }else if (tabControl.getOverdueTab().isSelected()) {
-					    	  if(numberToChange>overdueResult.size()){
-				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-				            		historyLog.add(userInput);
-				            		isError=false;
-				            		new CommandBarController();
-				            		commandBarController.clear();
-				            		return;
-				            	}
-					            try {
-					               logic.delete(overdueResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					      }else if (tabControl.getCompleteTab().isSelected()) {
-					    	  System.out.println("heerrr");
-					    	  if(numberToChange>completeResult.size()){
-				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-				            		historyLog.add(userInput);
-				            		isError=false;
-				            		new CommandBarController();
-				            		commandBarController.clear();
-				            		return;
-				            	}
-					            try {
-						               logic.deleteComplete(completeResult.get(numberToChange));
-						            } catch (Exception e) {
-						               e.printStackTrace();
-						            }
-						      }
-					}
-				}
-			}
-			//handle mark by number
-			if (fragments[COMMAND_INDEX].equalsIgnoreCase("mark")) {
-				if(fragments.length>1){
-				  try {
-					  numberToChange  = Integer.parseInt(fragments[1]);
-				    } catch (NumberFormatException e) {
-					   numberToChange = -1;
-				  }
-				  if(numberToChange != -1){
-						numberToChange -= 1;
-						 if (tabControl.getAllTab().isSelected()) {
-					            try {
-					            	if(numberToChange>allResult.size()){
-					            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-					            		historyLog.add(userInput);
-					            		isError=false;
-					            		new CommandBarController();
-					            		commandBarController.clear();
-					            		return;
-					            	}
-					               logic.mark(allResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					     } else if (tabControl.getPendingTab().isSelected()) {
-					    	 if(numberToChange>pendingResult.size()){
-				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-				            		historyLog.add(userInput);
-				            		isError=false;
-				            		new CommandBarController();
-				            		commandBarController.clear();
-				            		return;
-				            	}
-					            try {
-					               logic.mark(pendingResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					     }else if (tabControl.getFloatingTab().isSelected()) {
-					    	 if(numberToChange>floatingResult.size()){
-				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-				            		historyLog.add(userInput);
-				            		isError=false;
-				            		new CommandBarController();
-				            		commandBarController.clear();
-				            		return;
-				            	}
-					            try {
-					               logic.mark(floatingResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					      }else if (tabControl.getOverdueTab().isSelected()) {
-					    	  if(numberToChange>overdueResult.size()){
-				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-				            		historyLog.add(userInput);
-				            		isError=false;
-				            		new CommandBarController();
-				            		commandBarController.clear();
-				            		return;
-				            	}
-					            try {
-					               logic.mark(overdueResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					      }else{
-			            		setFeedback(commandBarController, "error", "Command not allowed." );
-			            		historyLog.add(userInput);
-			            		isError=false;
-			            		new CommandBarController();
-			            		commandBarController.clear();
-			            		return;
-					      }
-					}
-				}
-			}
-			//handle unmark by number
-			if (fragments[COMMAND_INDEX].equalsIgnoreCase("unmark")) {
-				if(fragments.length>1){
-				  try {
-					  numberToChange  = Integer.parseInt(fragments[1]);
-				    } catch (NumberFormatException e) {
-					   numberToChange = -1;
-				  }
-				  if(numberToChange != -1){
-						numberToChange -= 1;
-						 if (tabControl.getCompleteTab().isSelected()) {
-					            try {
-					            	if(numberToChange>completeResult.size()){
-					            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
-					            		historyLog.add(userInput);
-					            		isError=false;
-					            		new CommandBarController();
-					            		commandBarController.clear();
-					            		return;
-					            	}
-					               logic.unmark(completeResult.get(numberToChange));
-					            } catch (Exception e) {
-					               e.printStackTrace();
-					            }
-					     }else{
-			            		setFeedback(commandBarController, "error", "Command not allowed." );
-			            		historyLog.add(userInput);
-			            		isError=false;
-			            		new CommandBarController();
-			            		commandBarController.clear();
-			            		return;
-					     }
-					}
-				}
-			}
-			//handle edit command by number
-			else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
-					if(fragments.length>1){
-						  try {
-//							  System.out.println("alltab number: " + fragments[1]);
-							  numberToChange  = Integer.parseInt(fragments[1].substring(0, fragments[1].indexOf(',')));
-						    } catch (NumberFormatException e) {
-						      numberToChange = -1;
-						  }
-				   }
-					if(numberToChange != -1){
-						numberToChange -= 1;
-						String update = userInput.substring(userInput.indexOf(',') + 1).trim();
-						 if (tabControl.getAllTab().isSelected()) {
-					              userInput = "edit "+ allResult.get(numberToChange).getTask()+", "+ update;
-					    
-					     } else if (tabControl.getPendingTab().isSelected()) {
-					    	 userInput = "edit "+ pendingResult.get(numberToChange).getTask()+", "+ update;
-					     }else if (tabControl.getFloatingTab().isSelected()) {
-					    	 userInput = "edit "+ floatingResult.get(numberToChange).getTask()+", "+ update;
-					      }else if (tabControl.getOverdueTab().isSelected()) {
-					    	  userInput = "edit "+ overdueResult.get(numberToChange).getTask()+", "+ update;
-					         }
-					      
-					}
-					numberToChange = -1;
-			
-			}
+			 if(fragments.length>1){
+	              try {
+	                 numberToChange  = Integer.parseInt(fragments[1]);
+	                } catch (NumberFormatException e) {
+	                  numberToChange = -1;
+	              }
+	        // if the user delete/edit/mark/unmark by number
+	           if(numberToChange != -1){
+	               numberToChange -= 1;
+	              if (fragments[COMMAND_INDEX].equalsIgnoreCase("delete")){
+	            	  handleDeleteByNumber(commandBarController, numberToChange);       
+	              }else if (fragments[COMMAND_INDEX].equalsIgnoreCase("mark")) {
+	            	  handleMarkByNumber(commandBarController, numberToChange);        
+	              }else if (fragments[COMMAND_INDEX].equalsIgnoreCase("unmark")) {
+	            	  handleUnmarkByNumber(commandBarController, numberToChange);          	  
+	              }if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
+	            	  userInput = handleEditByNumber(userInput, numberToChange);
+	              }              
+	           }
+			 }
+				
 			// delete from complete tab
 			if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
-				fragments[COMMAND_INDEX]="deleteComplete";
-				String deleteComplete = "deleteComplete ";
-				for(int i = 1; i<fragments.length; i++ ){
-				      deleteComplete+=fragments[i];
-				}
-				userInput = deleteComplete;
-				System.out.println(userInput);
+				userInput = appendDeleteComplete(fragments);
 				//show from complete tab
 			}else if(fragments[COMMAND_INDEX].equalsIgnoreCase("show") && tabControl.getCompleteTab().isSelected()){
-				fragments[COMMAND_INDEX]="showComplete";
-				String showComplete = "showComplete ";
-				for(int i = 1; i<fragments.length; i++ ){
-				      showComplete+=fragments[i];
-				}
-				userInput = showComplete;
-				System.out.println(userInput);
-				//edit by partial match
+				userInput = appendShowComplete(fragments);		
+				//sort from complete tab
 			}else if(fragments[COMMAND_INDEX].equalsIgnoreCase("sort") && tabControl.getCompleteTab().isSelected()){
-				fragments[COMMAND_INDEX]="sortComplete";
-				String showComplete = "sortComplete ";
-				for(int i = 1; i<fragments.length; i++ ){
-				      showComplete+=fragments[i];
-				}
-				userInput = showComplete;
-				System.out.println(userInput);
+				userInput = appendSortComplete(fragments);
 				//edit by partial match
 			}else if(fragments[COMMAND_INDEX].equalsIgnoreCase("edit")){
-			String update = userInput.substring(userInput.indexOf(',') + 1).trim();
-			 if (tabControl.getAllTab().isSelected()) {
-		              userInput = "edit "+ allResult.get(0).getTask()+", "+ update;
-		     } else if (tabControl.getPendingTab().isSelected()) {
-		    	 userInput = "edit "+ pendingResult.get(0).getTask()+", "+ update;
-		     }else if (tabControl.getFloatingTab().isSelected()) {
-		    	 userInput = "edit "+ floatingResult.get(0).getTask()+", "+ update;
-		      }else if (tabControl.getOverdueTab().isSelected()) {
-		    	  userInput = "edit "+ overdueResult.get(0).getTask()+", "+ update;
-		         }
+			    userInput = handleEditByPartialMatching(userInput);
 			}
+			// if the user delete/edit/mark/unmark by task matching
 			if(numberToChange == -1 ){
 			  try {
-				   System.out.println("alltab: " + userInput);
 				result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 			   } catch (Exception e) {
-				isError = true;
-				setFeedback(commandBarController, "error", e.toString());
-				System.out.println(e.toString());
+				 isError = true;
+				 setFeedback(commandBarController, "error", e.toString());
 			  }
 			  if(fragments[COMMAND_INDEX].equalsIgnoreCase("show")||fragments[COMMAND_INDEX].equalsIgnoreCase("showComplete")){
 				  if(result.size()!=0){
-				      popOverForShow(commandBarController);
+				      popOverForShow(commandBarController,fragments[1]);
 				  }
 			  }
-			}
-
-			
-			if (isError == false) {
-				setFeedback(commandBarController, "valid", userInput);
-			}
+			}						
 		}
+		
+		if (isError == false) {
+			setFeedback(commandBarController, "valid", userInput);
+		}
+		
 		historyLog.add(userInput);
 		isError=false;
 		new CommandBarController();
 		commandBarController.clear();
+		
 
 	}
 
-	private void popOverForShow(CommandBarController commandBarController) {
+	private String handleEditByPartialMatching(String userInput) {
+		String update = userInput.substring(userInput.indexOf(',') + 1).trim();
+		 if (tabControl.getAllTab().isSelected()) {
+		          userInput = "edit "+ allResult.get(0).getTask()+", "+ update;
+		 } else if (tabControl.getPendingTab().isSelected()) {
+			 userInput = "edit "+ pendingResult.get(0).getTask()+", "+ update;
+		 }else if (tabControl.getFloatingTab().isSelected()) {
+			 userInput = "edit "+ floatingResult.get(0).getTask()+", "+ update;
+		  }else if (tabControl.getOverdueTab().isSelected()) {
+			  userInput = "edit "+ overdueResult.get(0).getTask()+", "+ update;
+		     }
+		return userInput;
+	}
+
+	private String appendSortComplete(String[] fragments) {
+		String userInput;
+		fragments[COMMAND_INDEX]="sortComplete";
+		String showComplete = "sortComplete ";
+		for(int i = 1; i<fragments.length; i++ ){
+		      showComplete+=fragments[i];
+		}
+		userInput = showComplete;
+		return userInput;
+	}
+
+	private String appendShowComplete(String[] fragments) {
+		String userInput;
+		fragments[COMMAND_INDEX]="showComplete";
+		String showComplete = "showComplete ";
+		for(int i = 1; i<fragments.length; i++ ){
+		      showComplete+=fragments[i];
+		}
+		userInput = showComplete;
+		return userInput;
+	}
+
+	private String appendDeleteComplete(String[] fragments) {
+		String userInput;
+		fragments[COMMAND_INDEX]="deleteComplete";
+		String deleteComplete = "deleteComplete ";
+		for(int i = 1; i<fragments.length; i++ ){
+		      deleteComplete+=fragments[i];
+		}
+		userInput = deleteComplete;
+		return userInput;
+	}
+
+	private String handleEditByNumber(String userInput, int numberToChange) {
+		String update = userInput.substring(userInput.indexOf(',') + 1).trim();
+		   if (tabControl.getAllTab().isSelected()) {
+		             userInput = "edit "+ allResult.get(numberToChange).getTask()+", "+ update;
+		   
+		    } else if (tabControl.getPendingTab().isSelected()) {
+		      userInput = "edit "+ pendingResult.get(numberToChange).getTask()+", "+ update;
+		    }else if (tabControl.getFloatingTab().isSelected()) {
+		      userInput = "edit "+ floatingResult.get(numberToChange).getTask()+", "+ update;
+		     }else if (tabControl.getOverdueTab().isSelected()) {
+		       userInput = "edit "+ overdueResult.get(numberToChange).getTask()+", "+ update;
+		        }
+		return userInput;
+	}
+
+	private void handleUnmarkByNumber(CommandBarController commandBarController, int numberToChange) {
+		if (tabControl.getCompleteTab().isSelected()) {
+		      try {
+		         if(numberToChange>completeResult.size()){
+		            setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		         }
+		         logic.unmark(completeResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+               }else{
+		      setFeedback(commandBarController, "error", "Command not allowed." );
+               }
+		numberToChange -= 1;
+	}
+
+	private void handleMarkByNumber(CommandBarController commandBarController, int numberToChange) {
+		if (tabControl.getAllTab().isSelected()) {
+		      try {
+		         if(numberToChange>allResult.size()){
+		            setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		         }
+		         logic.mark(allResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+               } else if (tabControl.getPendingTab().isSelected()) {
+		 if(numberToChange>pendingResult.size()){
+		         setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		      }
+		      try {
+		         logic.mark(pendingResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+               }else if (tabControl.getFloatingTab().isSelected()) {
+		 if(numberToChange>floatingResult.size()){
+		         setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		      }
+		      try {
+		         logic.mark(floatingResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+		}else if (tabControl.getOverdueTab().isSelected()) {
+		  if(numberToChange>overdueResult.size()){
+		         setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		      }
+		      try {
+		         logic.mark(overdueResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+		}else{
+		      setFeedback(commandBarController, "error", "Command not allowed." );
+		}
+		numberToChange -= 1;
+	}
+
+	private void handleDeleteByNumber(CommandBarController commandBarController, int numberToChange) {
+		if (tabControl.getAllTab().isSelected()) {
+		      try {
+		         if(numberToChange>allResult.size()){
+		            setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		         }
+		         logic.delete(allResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+		} else if (tabControl.getPendingTab().isSelected()) {
+		 if(numberToChange>pendingResult.size()){
+		         setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		      }
+		      try {
+		         logic.delete(pendingResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+       }else if (tabControl.getFloatingTab().isSelected()) {
+		 if(numberToChange>floatingResult.size()){
+		         setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		      }
+		      try {
+		         logic.delete(floatingResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+		}else if (tabControl.getOverdueTab().isSelected()) {
+		  if(numberToChange>overdueResult.size()){
+		         setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		      }
+		      try {
+		         logic.delete(overdueResult.get(numberToChange));
+		      } catch (Exception e) {
+		         e.printStackTrace();
+		      }
+		}else if (tabControl.getCompleteTab().isSelected()) {
+		  if(numberToChange>completeResult.size()){
+		         setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+		      }
+		      try {
+		            logic.deleteComplete(completeResult.get(numberToChange));
+		         } catch (Exception e) {
+		            e.printStackTrace();
+		         }
+		 }
+		numberToChange -= 1;
+	}
+
+	private String handleClearByTab(String userInput) {
+		if (tabControl.getPendingTab().isSelected()) {
+			userInput = userInput + "Upcoming";
+		} else if (tabControl.getCompleteTab().isSelected()) {
+			userInput = userInput + "Complete";
+		} else if (tabControl.getOverdueTab().isSelected()) {
+			userInput = userInput + "Overdue";
+		} else if (tabControl.getFloatingTab().isSelected()) {
+			userInput = userInput + "Floating";
+		} else if (tabControl.getAllTab().isSelected()) {
+			userInput = userInput + "All";
+		}
+		return userInput;
+	}
+
+	private void handleSwitchCommand(CommandBarController commandBarController, String userInput) {
+		if (tabControl.getPendingTab().isSelected()) {
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
+			lblTitle.setText("Overdue Tasks");
+			setFeedback(commandBarController, "valid", userInput);
+		} else if (tabControl.getOverdueTab().isSelected()) {
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getCompleteTab());
+			lblTitle.setText("Completed Tasks");
+			setFeedback(commandBarController, "valid", userInput);
+		} else if (tabControl.getCompleteTab().isSelected()) {
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getAllTab());
+			lblTitle.setText("All Tasks");
+			setFeedback(commandBarController, "valid", userInput);
+		} else if (tabControl.getAllTab().isSelected()) {
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getFloatingTab());
+			lblTitle.setText("Floating Tasks");
+			setFeedback(commandBarController, "valid", userInput);
+		} else if (tabControl.getFloatingTab().isSelected()) {
+			tabControl.getTabPane().getSelectionModel().select(tabControl.getPendingTab());
+			lblTitle.setText("Pending Tasks");
+			setFeedback(commandBarController, "valid", userInput);
+		}
+	}
+
+	private void popOverForShow(CommandBarController commandBarController,String title) {
 		PopOver bgPopOver = new PopOver();
 		  bgPopOver.setDetachable(true);
-		  bgPopOver.setArrowLocation(PopOver.ArrowLocation.BOTTOM_LEFT);
+		  bgPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
 		  bgPopOver.setArrowIndent(5);
 		  int count = 0;
 		  TasksTableController popOverTableControl = new TasksTableController();
 		  popOverTableControl.clearTask();
 		  for (Task temp : result) {
 		        popOverTableControl.addTask(temp, ++count, theme);
-		        System.out.println(count +": "+ temp.getTask());
 		  }
-		  
-		  bgPopOver.setContentNode(popOverTableControl);
-		  bgPopOver.show(commandBarController.getLblFeedback().getScene().getWindow(), getPopupPosition(commandBarController.getLblFeedback()).getX(),
-		                 getPopupPosition(commandBarController.getLblFeedback()).getY());
+		  VBox vbox = new VBox();
+		  Label lblTitle = new Label(title);
+		  lblTitle.getStyleClass().add("showTitle");
+		  vbox.getChildren().addAll(lblTitle,popOverTableControl);
+		  vbox.setAlignment(Pos.CENTER);
+		  bgPopOver.setContentNode(vbox);
+		  bgPopOver.show(tabControl.getScene().getWindow());
+	}
+	
+	private void popOverForHelp() {
+		PopOver bgPopOver = new PopOver();
+		  bgPopOver.setDetachable(true);
+		  bgPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+		  bgPopOver.setArrowIndent(5);
+		  bgPopOver.setContentNode( new ImageView(new Image("/main/resources/images/help.png")));
+		  bgPopOver.show(tabControl.getScene().getWindow());
 	}
 
 	private void changeRedTheme() {
@@ -1627,6 +1560,7 @@ public class Main extends Application {
 				if (saveFile != null) {
 					logic.saveToLocation(saveFile.getAbsolutePath());
 				}
+				sidebar.hideSidebar();
 			}
 		});
 
@@ -1645,6 +1579,7 @@ public class Main extends Application {
 				if (saveFile != null) {
 					logic.moveToLocation(saveFile.getAbsolutePath());
 				}
+				sidebar.hideSidebar();
 			}
 		});
 
@@ -1668,6 +1603,7 @@ public class Main extends Application {
 						e.printStackTrace();
 					}
 				}
+				sidebar.hideSidebar();
 			}
 		});
 	}
@@ -1720,7 +1656,7 @@ public class Main extends Application {
 		gridPane.add(blackBg, 2, 1);
 		bgPopOver.setContentNode(gridPane);
 
-		btnBackground.addEventHandler(MouseEvent.MOUSE_ENTERED, new EventHandler<MouseEvent>() {
+		btnBackground.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent e) {
 				if (bgPopOver.getScene() != null) {
@@ -1745,6 +1681,7 @@ public class Main extends Application {
 				rootLayout.getStyleClass().add(0, "rootCrop");
 				// bgPopOver.hide();
 				event.consume();
+				sidebar.hideSidebar();
 			}
 		});
 	}
@@ -1759,6 +1696,7 @@ public class Main extends Application {
 				rootLayout.getStyleClass().add(0, "rootTower");
 				// bgPopOver.hide();
 				event.consume();
+				sidebar.hideSidebar();
 			}
 		});
 	}
@@ -1774,6 +1712,7 @@ public class Main extends Application {
 				// bgPopOver.hide();
 
 				event.consume();
+				sidebar.hideSidebar();
 			}
 		});
 	}
@@ -1788,6 +1727,7 @@ public class Main extends Application {
 				rootLayout.getStyleClass().add(0, "rootBalloon");
 				// bgPopOver.hide();
 				event.consume();
+				sidebar.hideSidebar();
 			}
 		});
 	}
@@ -1802,6 +1742,7 @@ public class Main extends Application {
 				rootLayout.getStyleClass().add(0, "rootBlack");
 				// bgPopOver.hide();
 				event.consume();
+				sidebar.hideSidebar();
 			}
 		});
 	}
@@ -1816,6 +1757,7 @@ public class Main extends Application {
 				rootLayout.getStyleClass().add(0, "rootWood");
 				// bgPopOver.hide();
 				event.consume();
+				sidebar.hideSidebar();
 			}
 		});
 	}

@@ -206,6 +206,11 @@
 .best{
 	-fx-background-color: #69F0AE;
 }
+.showTitle{
+	-fx-font-size:20px;
+	-fx-font-weight:bold;
+	 -fx-alignment: CENTER;
+}
 
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0;

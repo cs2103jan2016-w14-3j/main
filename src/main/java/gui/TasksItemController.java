@@ -230,9 +230,9 @@ public class TasksItemController extends BorderPane {
 	}
 	public void setLastModified(Boolean value){
 		this.isLastModified = value;
-		System.out.println("setting to false");
+	//	System.out.println("setting to false");
 		this.task.setLastModified(false);
-		System.out.println("taskname: " + this.taskName+ " state: "+ this.task.getLastModified());
+	//	System.out.println("taskname: " + this.taskName+ " state: "+ this.task.getLastModified());
 	}
 
 	public void setBgColour(){

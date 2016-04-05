@@ -33,9 +33,6 @@ public class SideBarController extends VBox {
 	  controlButton.fire();
   }
 
- 
-  
-
   /** creates a sidebar containing a vertical alignment of the given nodes */
   public SideBarController(final double expandedWidth, Node... nodes) {
 
@@ -91,11 +88,11 @@ public class SideBarController extends VBox {
         if (showSidebar.statusProperty().get() == Animation.Status.STOPPED && hideSidebar.statusProperty().get() == Animation.Status.STOPPED) {
           if (isVisible()) {
             hideSidebar.play();
-            System.out.println("hide");
+          //  System.out.println("hide");
           } else {
             setVisible(true);
             showSidebar.play();
-            System.out.println("show");
+          //  System.out.println("show");
           }
         }
         
