@@ -266,15 +266,6 @@ public class AddCommandParser extends Parser {
 		String timeSegment = determineTimeSegment(content).toLowerCase();
 		if (timeIndex == FIELD_NOT_EXIST) {
 			return EVENT_TASK;
-		}
-//		else if (isRecurringTask(timeSegment, timeIndex)) {
-//			if (timeSegment.contains(RECURRING_TASK_ALTERNATE)) {
-//				return RECURRING_TASK_ALTERNATE;
-//			}
-//			else {
-//				return RECURRING_TASK_EVERY;
-//			}
-//		}
 		else if (isDurationTask(timeSegment)) {
 			return DURATION_TASK;
 		}
@@ -288,21 +279,6 @@ public class AddCommandParser extends Parser {
 			return EVENT_TASK;
 		}
 	}
-
-
-//	private boolean isRecurringTask(String timeSegment, int timeIndex) {
-//
-//
-//		List<Date> dates = timeParser.parse(timeSegment);
-//		if (dates.size() == 1) {
-//			if (containsWholeWord(timeSegment, RECURRING_FLAG_EVERY)) {
-//				return true;
-//			}
-//
-//		}
-//
-//		return false;
-//	}
 	
 	private boolean containsWholeWord(String content, String keyword) {
 		String[] segments = content.split(WHITE_SPACE);  
@@ -317,7 +293,6 @@ public class AddCommandParser extends Parser {
 		if (timeParser.parse(timeSegment).size() == 2 &&
 				(containsWholeWord(timeSegment, DURATION_FLAG_FROM)
 						|| containsWholeWord(timeSegment, DURATION_FLAG_TO))) {
-			//System.out.println("HERE");
 			return true;
 		}
 		return false;
@@ -716,9 +691,6 @@ public class AddCommandParser extends Parser {
 		for (int i = 0; i < size; i++) {
 			list.add(pq.poll());
 		}
-
-
-
 		//no time
 		if (list.size() == 0) {
 			return FIELD_NOT_EXIST;
@@ -798,7 +770,6 @@ public class AddCommandParser extends Parser {
 	}
 
 	private boolean isOverdue(Date time) {
-		//System.out.println(new Date());
 		return time.before(new Date());
 	}
 

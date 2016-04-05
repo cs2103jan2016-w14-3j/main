@@ -75,8 +75,6 @@ public class Logic {
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
 
-		//quitOnExitCommand(command);
-
 		return result;
 
 	}
@@ -122,19 +120,16 @@ public class Logic {
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_ALL)){
-			//System.out.println("clear pending");
 			storageController.clearPendingTasks();
 			result = storageController.displayPendingTasks();
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_FLOATING)){
-			//System.out.println("clear pending");
 			storageController.clearFloatingTasks();
 			result = storageController.displayPendingTasks();
 		}
 
 		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)){
-			//System.out.println("clear pending");
 			storageController.clearUpcomingTasks();
 			result = storageController.displayPendingTasks();
 		}
@@ -218,7 +213,6 @@ public class Logic {
 
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
-					//System.out.println("hereeeee");
 					mark(temp);			
 					break;
 				}			
@@ -229,12 +223,12 @@ public class Logic {
 
 			for (Task temp : searchResultCompleted) {
 				if (userInput.equalsIgnoreCase("unmark " + temp.getTask()) || searchResultCompleted.size()==1) {
-					//System.out.println("hereeeee");
 					unmark(temp);			
 					break;
 				}			
 			}
 		}
+		
 		else if (command.isCommand(COMMAND_TYPE.SHOW) ||
 				command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
 			
@@ -247,6 +241,7 @@ public class Logic {
 						[TIME]).get(0);
 
 			}
+			
 			else {
 				String priority = command.getParameters()[PRIORITY];
 				
@@ -275,7 +270,7 @@ public class Logic {
 			}
 			//showComplete
 			else {
-				System.out.println("hereeeeee");
+				
 				if (isTime) {
 					result = storageController.showAllCompletedByDate(timeFilter);
 				}
@@ -302,7 +297,7 @@ public class Logic {
 					storageController.sortPendingByPriority();
 				}
 			}
-			else {
+			else if (command.isCommand(COMMAND_TYPE.SORT_COMPLETE)) {
 				if (parameter.equals("time")) {
 					storageController.sortCompletedByTime();
 				}
@@ -366,12 +361,12 @@ public class Logic {
 	}
 
 	public void moveToLocation(String path){	
-		//System.out.println("logic hereeee save file name "+ filename);
+		
 		storageController.moveToLocation(path);
 	}
 
 	public void loadFilename(String filename){	
-		//System.out.println("logic hereeee load file name "+ filename);
+		
 		storageController.loadFromFile(filename);
 	}
 

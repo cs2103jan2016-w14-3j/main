@@ -20,9 +20,7 @@ public abstract class Parser {
 			throws InvalidInputFormatException {
 		assert commandType != null;
 		assert commandContent != null;
-		//assert 1==2;
-		//System.out.println(commandType);
-		//System.out.println(commandContent + "haha");
+		
 		if (commandType != COMMAND_TYPE.CLEAR_COMPLETE && 
 				commandType != COMMAND_TYPE.CLEAR_UPCOMING && 
 				commandType != COMMAND_TYPE.UNDO &&

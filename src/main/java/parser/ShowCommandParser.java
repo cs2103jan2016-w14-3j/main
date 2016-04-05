@@ -34,7 +34,6 @@ public class ShowCommandParser extends Parser {
 		commandContent = commandContent.replaceAll("tmr", "tomorrow");
 		PrettyTimeParser timeParser = new PrettyTimeParser();
 		List<Date> dates = timeParser.parse(commandContent);
-		//System.out.println("size is: " + dates.size());
 		
 		if (dates.size() == 1) {
 			parameters[TIME] = dates.toString();
