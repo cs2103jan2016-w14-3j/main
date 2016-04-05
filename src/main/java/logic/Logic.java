@@ -219,7 +219,7 @@ public class Logic {
 			for (Task temp : searchResult) {
 				if (userInput.equalsIgnoreCase("mark " + temp.getTask()) || searchResult.size()==1) {
 					//System.out.println("hereeeee");
-					storageController.moveTaskToComplete(temp);			
+					mark(temp);			
 					break;
 				}			
 			}
@@ -230,7 +230,7 @@ public class Logic {
 			for (Task temp : searchResultCompleted) {
 				if (userInput.equalsIgnoreCase("unmark " + temp.getTask()) || searchResultCompleted.size()==1) {
 					//System.out.println("hereeeee");
-					storageController.moveTaskToPending(temp);			
+					unmark(temp);			
 					break;
 				}			
 			}
@@ -340,6 +340,15 @@ public class Logic {
 	public void delete(Task task) throws Exception {
 		storageController.deletePendingTask(task);
 	}
+	
+	public void mark(Task task) throws Exception {
+		storageController.moveTaskToComplete(task);	
+	}
+
+	public void unmark(Task task) throws Exception {
+		storageController.moveTaskToPending(task);
+	}
+	
 
 	public ArrayList<Task> displayPending()throws Exception{
 		ArrayList<Task> result = storageController.displayPendingTasks();
