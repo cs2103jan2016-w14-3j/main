@@ -971,7 +971,7 @@ public class Main extends Application {
 		
 			
 			int numberToChange = -1;
-			
+			//handle delete by number
 			if (fragments[COMMAND_INDEX].equalsIgnoreCase("delete")) {
 				if(fragments.length>1){
 				  try {
@@ -1056,6 +1056,119 @@ public class Main extends Application {
 					}
 				}
 			}
+			//handle mark by number
+			if (fragments[COMMAND_INDEX].equalsIgnoreCase("mark")) {
+				if(fragments.length>1){
+				  try {
+					  numberToChange  = Integer.parseInt(fragments[1]);
+				    } catch (NumberFormatException e) {
+					   numberToChange = -1;
+				  }
+				  if(numberToChange != -1){
+						numberToChange -= 1;
+						 if (tabControl.getAllTab().isSelected()) {
+					            try {
+					            	if(numberToChange>allResult.size()){
+					            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+					            		historyLog.add(userInput);
+					            		isError=false;
+					            		new CommandBarController();
+					            		commandBarController.clear();
+					            		return;
+					            	}
+					               logic.mark(allResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					     } else if (tabControl.getPendingTab().isSelected()) {
+					    	 if(numberToChange>pendingResult.size()){
+				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+				            		historyLog.add(userInput);
+				            		isError=false;
+				            		new CommandBarController();
+				            		commandBarController.clear();
+				            		return;
+				            	}
+					            try {
+					               logic.mark(pendingResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					     }else if (tabControl.getFloatingTab().isSelected()) {
+					    	 if(numberToChange>floatingResult.size()){
+				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+				            		historyLog.add(userInput);
+				            		isError=false;
+				            		new CommandBarController();
+				            		commandBarController.clear();
+				            		return;
+				            	}
+					            try {
+					               logic.mark(floatingResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					      }else if (tabControl.getOverdueTab().isSelected()) {
+					    	  if(numberToChange>overdueResult.size()){
+				            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+				            		historyLog.add(userInput);
+				            		isError=false;
+				            		new CommandBarController();
+				            		commandBarController.clear();
+				            		return;
+				            	}
+					            try {
+					               logic.mark(overdueResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					      }else{
+			            		setFeedback(commandBarController, "error", "Command not allowed." );
+			            		historyLog.add(userInput);
+			            		isError=false;
+			            		new CommandBarController();
+			            		commandBarController.clear();
+			            		return;
+					      }
+					}
+				}
+			}
+			//handle unmark by number
+			if (fragments[COMMAND_INDEX].equalsIgnoreCase("unmark")) {
+				if(fragments.length>1){
+				  try {
+					  numberToChange  = Integer.parseInt(fragments[1]);
+				    } catch (NumberFormatException e) {
+					   numberToChange = -1;
+				  }
+				  if(numberToChange != -1){
+						numberToChange -= 1;
+						 if (tabControl.getCompleteTab().isSelected()) {
+					            try {
+					            	if(numberToChange>completeResult.size()){
+					            		setFeedback(commandBarController, "error", "Number has exceeded tasks limit." );
+					            		historyLog.add(userInput);
+					            		isError=false;
+					            		new CommandBarController();
+					            		commandBarController.clear();
+					            		return;
+					            	}
+					               logic.unmark(completeResult.get(numberToChange));
+					            } catch (Exception e) {
+					               e.printStackTrace();
+					            }
+					     }else{
+			            		setFeedback(commandBarController, "error", "Command not allowed." );
+			            		historyLog.add(userInput);
+			            		isError=false;
+			            		new CommandBarController();
+			            		commandBarController.clear();
+			            		return;
+					     }
+					}
+				}
+			}
+			//handle edit command by number
 			else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
 					if(fragments.length>1){
 						  try {
@@ -1083,6 +1196,7 @@ public class Main extends Application {
 					numberToChange = -1;
 			
 			}
+			// delete from complete tab
 			if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()){
 				fragments[COMMAND_INDEX]="deleteComplete";
 				String deleteComplete = "deleteComplete ";
@@ -1091,6 +1205,7 @@ public class Main extends Application {
 				}
 				userInput = deleteComplete;
 				System.out.println(userInput);
+				//show from complete tab
 			}else if(fragments[COMMAND_INDEX].equalsIgnoreCase("show") && tabControl.getCompleteTab().isSelected()){
 				fragments[COMMAND_INDEX]="showComplete";
 				String showComplete = "showComplete ";
@@ -1099,8 +1214,28 @@ public class Main extends Application {
 				}
 				userInput = showComplete;
 				System.out.println(userInput);
+				//edit by partial match
+			}else if(fragments[COMMAND_INDEX].equalsIgnoreCase("sort") && tabControl.getCompleteTab().isSelected()){
+				fragments[COMMAND_INDEX]="sortComplete";
+				String showComplete = "sortComplete ";
+				for(int i = 1; i<fragments.length; i++ ){
+				      showComplete+=fragments[i];
+				}
+				userInput = showComplete;
+				System.out.println(userInput);
+				//edit by partial match
+			}else if(fragments[COMMAND_INDEX].equalsIgnoreCase("edit")){
+			String update = userInput.substring(userInput.indexOf(',') + 1).trim();
+			 if (tabControl.getAllTab().isSelected()) {
+		              userInput = "edit "+ allResult.get(0).getTask()+", "+ update;
+		     } else if (tabControl.getPendingTab().isSelected()) {
+		    	 userInput = "edit "+ pendingResult.get(0).getTask()+", "+ update;
+		     }else if (tabControl.getFloatingTab().isSelected()) {
+		    	 userInput = "edit "+ floatingResult.get(0).getTask()+", "+ update;
+		      }else if (tabControl.getOverdueTab().isSelected()) {
+		    	  userInput = "edit "+ overdueResult.get(0).getTask()+", "+ update;
+		         }
 			}
-
 			if(numberToChange == -1 ){
 			  try {
 				   System.out.println("alltab: " + userInput);
