@@ -1,3 +1,4 @@
+/* @@author Zhang Xunda */
 package main.java.gui;
 
 import java.io.IOException;
@@ -130,6 +131,8 @@ public class CommandBarController extends BorderPane {
 	public void setBgColour(String colour) {
 		commandBar.getStyleClass().add(colour);
 	}
+	
+	/* @@author Zhang Xunda */
 
 	public void setFeedback(String feedbackText, Color color) {
 		FadeTransition fadeIn = startFadeIn(feedback, FADE_IN_TIME);
@@ -168,10 +171,11 @@ public class CommandBarController extends BorderPane {
 			}
 		}));
 	}
-
+	/* @@author Zhang Xunda */
 	private void setFeedbackLabel(String feedbackText) {
 		feedback.setOpacity(0);
 		feedback.setText(feedbackText);
 	}
 
 }
+/* @@author Zhang Xunda */

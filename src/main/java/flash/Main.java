@@ -65,6 +65,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.control.TextField;
 
+import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.*;
 
 public class Main extends Application {
@@ -102,9 +103,10 @@ public class Main extends Application {
 	private ListView<TasksItemController> floatingDisplay;
 	private ListView<TasksItemController> overdueDisplay;
 
-	private static final String EMPTY_STRING = "";
-	private static final String SPLIT = "\\s+";
+	private static final int EXPANDED_WIDTH = 84;
 	private static final int COMMAND_INDEX = 0;
+	private static final String EMPTY_STRING = "";
+	private static final String SPLIT = "\\s+";	
 	private static final String ADD_COMMAND = "add";
 	private static final String DELETE_COMMAND = "delete";
 	private static final String SEARCH_COMMAND = "search";
@@ -125,14 +127,11 @@ public class Main extends Application {
 	private static final String CLEAROVERDUE_COMMAND = "clearOverdue";
 	private static final String CLEARFLOATING_COMMAND = "clearFloating";
 	private static final String CLEARALL_COMMAND = "clearAll";
-	private static final int EXPANDED_WIDTH = 84;
-
 	private static final String DELETECOMPLETE_COMMAND = "deleteComplete";
-
 	private static final String SHOW_COMMAND = "show";
 	private static final String SHOWCOMPLETE_COMMAND = "showComplete";
 
-	
+	private PopOver bgPopOver;
 	private int pointer;
 	private int deleteByNumber = -1;
 	private boolean isFeedback = false;
@@ -140,7 +139,6 @@ public class Main extends Application {
 	private boolean isModifiedOverdue = false;
 	private boolean isModifiedPending = false;
 	private boolean isModifiedFloating = false;
-	private boolean isModifiedAll = false;
 	private boolean isModifiedComplete = false;
 	private static double xOffset = 0;
 	private static double yOffset = 0;
@@ -247,7 +245,6 @@ public class Main extends Application {
 		isModifiedOverdue = false;
 		isModifiedPending = false;
 		isModifiedFloating = false;
-		isModifiedAll = false;
 		isModifiedComplete = false;
 	}
 
@@ -541,7 +538,7 @@ public class Main extends Application {
 		sidePane.getStyleClass().add("sidePane");
 
 		VBox profile = new VBox();
-		Image icon = new Image("/main/resources/images/profilePhoto.png");
+		Image icon = new Image("/main/resources/images/flashpoint.png");
 		ImageView iconView = new ImageView(icon);
 		iconView.setFitWidth(70);
 		iconView.setPreserveRatio(true);
@@ -1187,7 +1184,7 @@ public class Main extends Application {
 	}
 
 	private void popOverForShow(CommandBarController commandBarController,String title) {
-		PopOver bgPopOver = new PopOver();
+		  PopOver bgPopOver = new PopOver();
 		  bgPopOver.setDetachable(true);
 		  bgPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
 		  bgPopOver.setArrowIndent(5);
@@ -1207,12 +1204,12 @@ public class Main extends Application {
 	}
 	
 	private void popOverForHelp() {
-		PopOver bgPopOver = new PopOver();
-		  bgPopOver.setDetachable(true);
-		  bgPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
-		  bgPopOver.setArrowIndent(5);
-		  bgPopOver.setContentNode( new ImageView(new Image("/main/resources/images/help.png")));
-		  bgPopOver.show(tabControl.getScene().getWindow());
+		PopOver helpPopOver = new PopOver();
+		  helpPopOver.setDetachable(true);
+		  helpPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
+		  helpPopOver.setArrowIndent(5);
+		  helpPopOver.setContentNode( new ImageView(new Image("/main/resources/images/help.png")));
+		  helpPopOver.show(tabControl.getScene().getWindow());
 	}
 
 	private void changeRedTheme() {
@@ -1376,6 +1373,9 @@ public class Main extends Application {
 
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
+		if(StringUtils.isBlank(newValue)){
+			return;
+		}
 		boolean isEdit = fragments[COMMAND_INDEX].equalsIgnoreCase("edit");
 		boolean isDelete = fragments[COMMAND_INDEX].equalsIgnoreCase("delete");
 		boolean isSearch = fragments[COMMAND_INDEX].equalsIgnoreCase("search");
@@ -1468,6 +1468,28 @@ public class Main extends Application {
 		}
 
 	}
+	
+	public void showColourCommand(String oldValue, String newValue) {
+		// TODO Auto-generated method stub
+		if(StringUtils.isBlank(oldValue)){
+			return;
+		}
+		String[] fragments = null;
+		fragments = newValue.split(SPLIT);
+
+		if (isFeedback || newValue.equals(EMPTY_STRING)) {
+			removeAllStyle(barControl.getCommandBar());
+			barControl.setBgColour("med");
+		}
+
+		if (logic.isCommand(fragments[COMMAND_INDEX])) {
+			removeAllStyle(barControl.getCommandBar());
+			barControl.setBgColour("best");
+		} else if (!logic.isCommand(fragments[COMMAND_INDEX]) && !newValue.equals(EMPTY_STRING)) {
+			removeAllStyle(barControl.getCommandBar());
+			barControl.setBgColour("bad");
+		}
+	}
 
 	public void populateAllList(ArrayList<Task> searchResult) {
 		allTableControl.clearTask();
@@ -1528,24 +1550,7 @@ public class Main extends Application {
 		}
 	}
 
-	public void showColourCommand(String oldValue, String newValue) {
-		// TODO Auto-generated method stub
-		String[] fragments = null;
-		fragments = newValue.split(SPLIT);
-
-		if (isFeedback || newValue.equals(EMPTY_STRING)) {
-			removeAllStyle(barControl.getCommandBar());
-			barControl.setBgColour("med");
-		}
-
-		if (logic.isCommand(fragments[COMMAND_INDEX])) {
-			removeAllStyle(barControl.getCommandBar());
-			barControl.setBgColour("best");
-		} else if (!logic.isCommand(fragments[COMMAND_INDEX]) && !newValue.equals(EMPTY_STRING)) {
-			removeAllStyle(barControl.getCommandBar());
-			barControl.setBgColour("bad");
-		}
-	}
+	
 
 	public void saveToLocation(Button btnSave) {
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
@@ -1610,7 +1615,7 @@ public class Main extends Application {
 
 	private void backgroundChooser(Button btnBackground) {
 
-		PopOver bgPopOver = new PopOver();
+		bgPopOver = new PopOver();
 		bgPopOver.setDetachable(false);
 		bgPopOver.setArrowLocation(PopOver.ArrowLocation.LEFT_TOP);
 
@@ -1682,6 +1687,7 @@ public class Main extends Application {
 				// bgPopOver.hide();
 				event.consume();
 				sidebar.hideSidebar();
+				bgPopOver.hide();
 			}
 		});
 	}
@@ -1697,6 +1703,7 @@ public class Main extends Application {
 				// bgPopOver.hide();
 				event.consume();
 				sidebar.hideSidebar();
+				bgPopOver.hide();
 			}
 		});
 	}
@@ -1713,6 +1720,7 @@ public class Main extends Application {
 
 				event.consume();
 				sidebar.hideSidebar();
+				bgPopOver.hide();
 			}
 		});
 	}
@@ -1728,6 +1736,7 @@ public class Main extends Application {
 				// bgPopOver.hide();
 				event.consume();
 				sidebar.hideSidebar();
+				bgPopOver.hide();
 			}
 		});
 	}
@@ -1743,6 +1752,7 @@ public class Main extends Application {
 				// bgPopOver.hide();
 				event.consume();
 				sidebar.hideSidebar();
+				bgPopOver.hide();
 			}
 		});
 	}
@@ -1758,6 +1768,7 @@ public class Main extends Application {
 				// bgPopOver.hide();
 				event.consume();
 				sidebar.hideSidebar();
+				bgPopOver.hide();
 			}
 		});
 	}

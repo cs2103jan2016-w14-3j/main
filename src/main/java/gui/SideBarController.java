@@ -1,3 +1,4 @@
+/* @@author Zhang Xunda */
 package main.java.gui;
 
 import javafx.animation.Animation;
@@ -101,3 +102,4 @@ public class SideBarController extends VBox {
 
   }
 }
+/* @@author Zhang Xunda */

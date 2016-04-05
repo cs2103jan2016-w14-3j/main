@@ -1,3 +1,4 @@
+/* @@author Zhang Xunda */
 package main.java.gui;
 
 import java.io.IOException;
@@ -144,6 +145,7 @@ public class TasksItemController extends BorderPane {
 		
 		
 	}
+	/* @@author Zhang Xunda */
 	private boolean isToday(List<Date> dates) {
 		int size = dates.size();
 		if (size == 0) {
@@ -213,7 +215,7 @@ public class TasksItemController extends BorderPane {
 //			}
 		}
 	}
-
+	/* @@author Zhang Xunda */
 	public String getTaskName(){
 		return this.taskName;
 	}
@@ -263,3 +265,4 @@ public class TasksItemController extends BorderPane {
 	}
 
 }
+/* @@author Zhang Xunda */
