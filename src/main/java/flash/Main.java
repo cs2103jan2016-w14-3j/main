@@ -73,13 +73,12 @@ public class Main extends Application {
 
 	@FXML
 	private BorderPane root;
-
+	
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 	private HBox hBar;
 	private HBox topBar;
 	private Scene scene;
-
 	private Logic logic;
 
 	private TasksTableController allTableControl;
@@ -90,6 +89,7 @@ public class Main extends Application {
 	private SideBarController sidebar;
 	private CommandBarController barControl;
 	private TabsController tabControl;
+	
 	private ArrayList<String> historyLog;
 	private ArrayList<Task> result;
 	private ArrayList<Task> searchResult = new ArrayList<Task>();
@@ -162,7 +162,6 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) throws Exception {
 		this.primaryStage = primaryStage;
-		this.primaryStage.setTitle("Flashpoint");
 		this.primaryStage.initStyle(StageStyle.TRANSPARENT);
 		this.primaryStage.getIcons().add(new Image("/main/resources/images/cache.png"));
 		this.primaryStage.setHeight(670);
@@ -173,12 +172,11 @@ public class Main extends Application {
 		changeRedTheme();
 		checkIsTasksEmpty();
 		overdueTimer();
-		// blurPane = new BlurPane();
-		// blurPane.start(primaryStage);
 	}
 
 	/********************************** Initialisation ***********************************************/
 	/***********************************************************************************************/
+	
 	private void initControllers(Main main) {
 		allTableControl = new TasksTableController();
 		floatingTableControl = new TasksTableController();
@@ -199,13 +197,43 @@ public class Main extends Application {
 	private void initLogic() throws Exception {
 		logic = new Logic();
 	}
+	
+	/**
+	 * Initialises the RootLayout that will contain all other JavaFX components.
+	 */
+	private void initRootLayout() {
 
-	private void overdueTimer() {
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30000), ae -> checkOverdue()));
-		timeline.setCycleCount(Animation.INDEFINITE);
-		timeline.play();
+		try {
+			// load root layout from fxml file
+			FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/resources/layouts/RootLayout.fxml"));
+			rootLayout = loader.load();
+			scene = new Scene(rootLayout);
+			primaryStage.setScene(scene);
+			rootLayout.setPadding(new Insets(0, 0, 0, 0));
+			rootLayout.getStyleClass().add(0, "root");
+
+			listenForStageInput();
+			showSidebar();
+			showTabs();
+			showCommandBar();
+			showTasks();
+			initLog();
+			listenerForTaskList();
+			primaryStage.show();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
+	
+	private void checkIsTasksEmpty() throws Exception {
+		populateAllPendingTasks();
+		populateAllCompleteTasks();
+		switchToModifiedTab();
+		reinitialiseModifiedBoolean();
 
+	}
+	
 	private void checkOverdue() {
 		ArrayList<Task> overdueList = logic.checkOverdue();
 		String taskName = null;
@@ -225,22 +253,51 @@ public class Main extends Application {
 			}
 		}
 	}
+	
+	
+	/****** Allows dragging of the windows **********/
+	
+	private void listenForStageInput() {
+
+		rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				xOffset = primaryStage.getX() - event.getScreenX();
+				yOffset = primaryStage.getY() - event.getScreenY();
+			}
+		});
+		rootLayout.setOnMouseDragged(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent event) {
+				primaryStage.setX(event.getScreenX() + xOffset);
+				primaryStage.setY(event.getScreenY() + yOffset);
+			}
+		});
+	}
+	
+	private void showSidebar() {
+
+		// create a sidebar with some content in it.
+		final Pane sidePane = createSidebarContent();
+		sidebar = new SideBarController(EXPANDED_WIDTH, sidePane);
+		VBox.setVgrow(sidePane, Priority.ALWAYS);
+		rootLayout.setLeft(sidebar);
+		sidebar.hideSidebar();
+		createTopBar(sidebar);
+	}
+
+	private void overdueTimer() {
+		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30000), ae -> checkOverdue()));
+		timeline.setCycleCount(Animation.INDEFINITE);
+		timeline.play();
+	}
 
 	private String locateOverdueTask(ArrayList<Task> overdueList) throws Exception {
-
 		String taskName = "";
 		taskName += overdueList.size();
 		return taskName;
-
 	}
 
-	private void checkIsTasksEmpty() throws Exception {
-		populateAllPendingTasks();
-		populateAllCompleteTasks();
-		switchToModifiedTab();
-		reinitialiseModifiedBoolean();
-
-	}
 
 	private void reinitialiseModifiedBoolean() {
 		isModifiedOverdue = false;
@@ -407,63 +464,11 @@ public class Main extends Application {
 		tabControl.setFloatingNotification(0);
 	}
 
-	/**
-	 * Initialises the RootLayout that will contain all other JavaFX components.
-	 */
-	private void initRootLayout() {
+	
 
-		try {
-			// load root layout from fxml file
-			FXMLLoader loader = new FXMLLoader(getClass().getResource("/main/resources/layouts/RootLayout.fxml"));
-			rootLayout = loader.load();
-			scene = new Scene(rootLayout);
-			primaryStage.setScene(scene);
-			rootLayout.setPadding(new Insets(0, 0, 0, 0));
-			rootLayout.getStyleClass().add(0, "root");
+	
 
-			listenForStageInput();
-			showSidebar();
-			showTabs();
-			showCommandBar();
-			showTasks();
-			initLog();
-			listenerForTaskList();
-			primaryStage.show();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-	}
-
-	private void listenForStageInput() {
-
-		rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				xOffset = primaryStage.getX() - event.getScreenX();
-				yOffset = primaryStage.getY() - event.getScreenY();
-			}
-		});
-		rootLayout.setOnMouseDragged(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent event) {
-				primaryStage.setX(event.getScreenX() + xOffset);
-				primaryStage.setY(event.getScreenY() + yOffset);
-			}
-		});
-	}
-
-	private void showSidebar() {
-
-		// create a sidebar with some content in it.
-		final Pane sidePane = createSidebarContent();
-		sidebar = new SideBarController(EXPANDED_WIDTH, sidePane);
-		VBox.setVgrow(sidePane, Priority.ALWAYS);
-		rootLayout.setLeft(sidebar);
-		sidebar.hideSidebar();
-
-		createTopBar(sidebar);
-	}
+	
 
 	private void createTopBar(SideBarController sidebar) {
 		HBox toolBar = new HBox();
@@ -521,16 +526,7 @@ public class Main extends Application {
 		rootLayout.setTop(vTop);
 	}
 
-	private void minimise(Button minimiseApp) {
-		minimiseApp.setOnAction(new EventHandler<ActionEvent>() {
-
-			public void handle(ActionEvent event) {
-				Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-				// is stage minimizable into task bar. (true | false)
-				stage.setIconified(true);
-			}
-		});
-	}
+	
 
 	private VBox createSidebarContent() {// create some content to put in the
 											// sidebar.
@@ -629,8 +625,7 @@ public class Main extends Application {
 				checkIsTasksEmpty();
 			}
 		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
-			event.consume(); // nullifies the default behavior of UP and DOWN on
-			// a TextArea
+			event.consume(); 
 			handleGetPastCommands(event);
 		} else if ((event.getCode() == KeyCode.TAB)) {
 			event.consume();
@@ -653,187 +648,18 @@ public class Main extends Application {
 
 	private void listenerForTaskList() {
 
-		final KeyCombination keyComb1 = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
-		scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (keyComb1.match(event)) {
-					if (theme.equals("green")) {
-						changeBlueTheme();
-					} else if (theme.equals("blue")) {
-						changeTransparentTheme();
-					} else if (theme.equals("transparent")) {
-						changeRedTheme();
-					} else if (theme.equals("red")) {
-						changeGreenTheme();
-					}
-					try {
-						checkIsTasksEmpty();
-					} catch (Exception e) {
-						// TODO Auto-generated catch block
-						e.printStackTrace();
-					}
-				}
-			}
-		});
-
-		final KeyCombination keyComb2 = new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN);
-		scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent event) {
-				if (keyComb2.match(event)) {
-					if (background.equals("paris")) {
-						rootLayout.getStyleClass().remove(0);
-						rootLayout.getStyleClass().add(0, "rootBlack");
-						background = "black";
-					} else if (background.equals("black")) {
-						rootLayout.getStyleClass().remove(0);
-						rootLayout.getStyleClass().add(0, "rootTower");
-						background = "tower";
-					} else if (background.equals("tower")) {
-						rootLayout.getStyleClass().remove(0);
-						rootLayout.getStyleClass().add(0, "rootCrop");
-						background = "crop";
-					} else if (background.equals("crop")) {
-						rootLayout.getStyleClass().remove(0);
-						rootLayout.getStyleClass().add(0, "rootBalloon");
-						background = "balloon";
-					} else if (background.equals("balloon")) {
-						rootLayout.getStyleClass().remove(0);
-						rootLayout.getStyleClass().add(0, "rootWood");
-						background = "wood";
-					} else if (background.equals("wood")) {
-						rootLayout.getStyleClass().remove(0);
-						rootLayout.getStyleClass().add(0, "rootParis");
-						background = "paris";
-					}
-
-				}
-			}
-		});
-
-		pendingDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				if (e.getCode() == KeyCode.ENTER) {
-					handleEnterKey(pendingDisplay);
-				} else if (e.getCode() == KeyCode.ESCAPE) {
-					try {
-						populatePendingList(logic.displayPending());
-						tabControl.setPendingTab(pendingTableControl);
-						// System.out.println("escapppp");
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					barControl.getFocus();
-				} else if (e.getCode() == KeyCode.DELETE) {
-					handleDeleteKey(pendingDisplay);
-				}
-			}
-
-		});
-
-		allDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				if (e.getCode() == KeyCode.ENTER) {
-					// System.out.print("enter pressed");
-					handleEnterKey(allDisplay);
-				} else if (e.getCode() == KeyCode.ESCAPE) {
-					try {
-						populateAllList(logic.displayPending());
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					barControl.getFocus();
-				} else if (e.getCode() == KeyCode.DELETE) {
-					handleDeleteKey(allDisplay);
-				}
-			}
-
-		});
-
-		floatingDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				if (e.getCode() == KeyCode.ENTER) {
-					handleEnterKey(floatingDisplay);
-				} else if (e.getCode() == KeyCode.ESCAPE) {
-					try {
-						populateFloatingList(logic.displayPending());
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					barControl.getFocus();
-				} else if (e.getCode() == KeyCode.DELETE) {
-					handleDeleteKey(floatingDisplay);
-				}
-			}
-
-		});
-
-		overdueDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				if (e.getCode() == KeyCode.ENTER) {
-					handleEnterKey(overdueDisplay);
-				} else if (e.getCode() == KeyCode.ESCAPE) {
-					try {
-						populateOverdueList(logic.displayPending());
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					barControl.getFocus();
-				} else if (e.getCode() == KeyCode.DELETE) {
-					handleDeleteKey(overdueDisplay);
-				}
-			}
-
-		});
-
-		completeDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
-			@Override
-			public void handle(KeyEvent e) {
-				if (e.getCode() == KeyCode.ENTER) {
-					handleEnterKey(completeDisplay);
-				} else if (e.getCode() == KeyCode.ESCAPE) {
-					try {
-						populateCompleteList(logic.displayComplete());
-					} catch (Exception e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
-					}
-					barControl.getFocus();
-				} else if (e.getCode() == KeyCode.DELETE) {
-					handleDeleteKey(completeDisplay);
-				}
-			}
-
-		});
-
-		tabControl.getTabPane().setOnMousePressed(new EventHandler<MouseEvent>() {
-			@Override
-			public void handle(MouseEvent e) {
-				if (tabControl.getPendingTab().isSelected()) {
-					lblTitle.setText("Pending Tasks");
-				} else if (tabControl.getCompleteTab().isSelected()) {
-					lblTitle.setText("Completed Tasks");
-				} else if (tabControl.getOverdueTab().isSelected()) {
-					lblTitle.setText("Overdue Tasks");
-				} else if (tabControl.getFloatingTab().isSelected()) {
-					lblTitle.setText("Floating Tasks");
-				} else if (tabControl.getAllTab().isSelected()) {
-					lblTitle.setText("All Tasks");
-				}
-			}
-
-		});
+		listenerForThemeChange();
+		listenerForBackgroundChange();
+		listenerForPendingDisplay();
+		listenerForAllDisplay();
+		listenerForFloatingDisplay();
+		listenerForOverdueDisplay();
+		listenerForCompleteDisplay();
+		listenerForTabControl();
 
 	}
+
+	
 
 	private void handleEnterKey(ListView<TasksItemController> display) {
 
@@ -886,7 +712,7 @@ public class Main extends Application {
 
 		}
 		// UI related command
-		else if (userInput.equalsIgnoreCase("help")) {
+		else if (userInput.equalsIgnoreCase(HELP_COMMAND)) {
 			popOverForHelp();
 			setFeedback(commandBarController, "valid", userInput);
 		}
@@ -948,7 +774,10 @@ public class Main extends Application {
 				userInput = handleEditByPartialMatching(userInput);
 			}
 			// if the user delete/edit/mark/unmark by task matching
-			if (numberToChange == -1) {
+			if( fragments[COMMAND_INDEX].equalsIgnoreCase("add")){
+				numberToChange = -1;
+			}
+			if (numberToChange == -1 ) {
 				try {
 					result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
 				} catch (Exception e) {
@@ -1286,7 +1115,7 @@ public class Main extends Application {
 			if (type.equals("error")) {
 				commandBarController.setFeedback("Invalid Command" + ": " + subString, Color.RED);
 				return;
-			} else {
+			} else if(type.equals("valid")){
 				if (isTasksCommand(firstWord)) {
 					if (firstWord.equalsIgnoreCase(DELETE_COMMAND)
 							|| firstWord.equalsIgnoreCase(DELETECOMPLETE_COMMAND)) {
@@ -1345,7 +1174,8 @@ public class Main extends Application {
 		if (firstWord.equalsIgnoreCase(MARK_COMMAND) || firstWord.equalsIgnoreCase(UNMARK_COMMAND)
 				|| firstWord.equalsIgnoreCase(ADD_COMMAND) || firstWord.equalsIgnoreCase(DELETE_COMMAND)
 				|| firstWord.equalsIgnoreCase(DELETECOMPLETE_COMMAND) || firstWord.equalsIgnoreCase(EDIT_COMMAND)
-				|| firstWord.equalsIgnoreCase(SHOW_COMMAND) || firstWord.equalsIgnoreCase(SHOWCOMPLETE_COMMAND)) {
+				|| firstWord.equalsIgnoreCase(SHOW_COMMAND) || firstWord.equalsIgnoreCase(SHOWCOMPLETE_COMMAND)
+				|| firstWord.equalsIgnoreCase(HELP_COMMAND)) {
 			return true;
 		}
 		return false;
@@ -1393,7 +1223,7 @@ public class Main extends Application {
 				deleteByNumber = -1;
 			}
 		}
-		if (deleteByNumber != -1) {
+		if (deleteByNumber != -1 ) {
 			return;
 		}
 
@@ -1612,6 +1442,199 @@ public class Main extends Application {
 			}
 		});
 	}
+		
+	/************************************ Various listener for hotkeys **********************************************/
+	
+	private void listenerForTabControl() {
+		tabControl.getTabPane().setOnMousePressed(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent e) {
+				if (tabControl.getPendingTab().isSelected()) {
+					lblTitle.setText("Pending Tasks");
+				} else if (tabControl.getCompleteTab().isSelected()) {
+					lblTitle.setText("Completed Tasks");
+				} else if (tabControl.getOverdueTab().isSelected()) {
+					lblTitle.setText("Overdue Tasks");
+				} else if (tabControl.getFloatingTab().isSelected()) {
+					lblTitle.setText("Floating Tasks");
+				} else if (tabControl.getAllTab().isSelected()) {
+					lblTitle.setText("All Tasks");
+				}
+			}
+
+		});
+	}
+
+	private void listenerForCompleteDisplay() {
+		completeDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				if (e.getCode() == KeyCode.ENTER) {
+					handleEnterKey(completeDisplay);
+				} else if (e.getCode() == KeyCode.ESCAPE) {
+					try {
+						populateCompleteList(logic.displayComplete());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
+				} else if (e.getCode() == KeyCode.DELETE) {
+					handleDeleteKey(completeDisplay);
+				}
+			}
+
+		});
+	}
+
+	private void listenerForOverdueDisplay() {
+		overdueDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				if (e.getCode() == KeyCode.ENTER) {
+					handleEnterKey(overdueDisplay);
+				} else if (e.getCode() == KeyCode.ESCAPE) {
+					try {
+						populateOverdueList(logic.displayPending());
+					} catch (Exception e1) {
+						// TODO Auto-generated catch block
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
+				} else if (e.getCode() == KeyCode.DELETE) {
+					handleDeleteKey(overdueDisplay);
+				}
+			}
+
+		});
+	}
+
+	private void listenerForFloatingDisplay() {
+		floatingDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				if (e.getCode() == KeyCode.ENTER) {
+					handleEnterKey(floatingDisplay);
+				} else if (e.getCode() == KeyCode.ESCAPE) {
+					try {
+						populateFloatingList(logic.displayPending());
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
+				} else if (e.getCode() == KeyCode.DELETE) {
+					handleDeleteKey(floatingDisplay);
+				}
+			}
+
+		});
+	}
+
+	private void listenerForAllDisplay() {
+		allDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				if (e.getCode() == KeyCode.ENTER) {
+					handleEnterKey(allDisplay);
+				} else if (e.getCode() == KeyCode.ESCAPE) {
+					try {
+						populateAllList(logic.displayPending());
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
+				} else if (e.getCode() == KeyCode.DELETE) {
+					handleDeleteKey(allDisplay);
+				}
+			}
+
+		});
+	}
+
+	private void listenerForPendingDisplay() {
+		pendingDisplay.setOnKeyPressed(new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent e) {
+				if (e.getCode() == KeyCode.ENTER) {
+					handleEnterKey(pendingDisplay);
+				} else if (e.getCode() == KeyCode.ESCAPE) {
+					try {
+						populatePendingList(logic.displayPending());
+						tabControl.setPendingTab(pendingTableControl);
+					} catch (Exception e1) {
+						e1.printStackTrace();
+					}
+					barControl.getFocus();
+				} else if (e.getCode() == KeyCode.DELETE) {
+					handleDeleteKey(pendingDisplay);
+				}
+			}
+
+		});
+	}
+
+	private void listenerForBackgroundChange() {
+		final KeyCombination keyComb2 = new KeyCodeCombination(KeyCode.B, KeyCombination.CONTROL_DOWN);
+		scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (keyComb2.match(event)) {
+					if (background.equals("paris")) {
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootBlack");
+						background = "black";
+					} else if (background.equals("black")) {
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootTower");
+						background = "tower";
+					} else if (background.equals("tower")) {
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootCrop");
+						background = "crop";
+					} else if (background.equals("crop")) {
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootBalloon");
+						background = "balloon";
+					} else if (background.equals("balloon")) {
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootWood");
+						background = "wood";
+					} else if (background.equals("wood")) {
+						rootLayout.getStyleClass().remove(0);
+						rootLayout.getStyleClass().add(0, "rootParis");
+						background = "paris";
+					}
+
+				}
+			}
+		});
+	}
+
+	private void listenerForThemeChange() {
+		final KeyCombination keyComb1 = new KeyCodeCombination(KeyCode.T, KeyCombination.CONTROL_DOWN);
+		scene.addEventHandler(KeyEvent.KEY_RELEASED, new EventHandler<KeyEvent>() {
+			@Override
+			public void handle(KeyEvent event) {
+				if (keyComb1.match(event)) {
+					if (theme.equals("green")) {
+						changeBlueTheme();
+					} else if (theme.equals("blue")) {
+						changeTransparentTheme();
+					} else if (theme.equals("transparent")) {
+						changeRedTheme();
+					} else if (theme.equals("red")) {
+						changeGreenTheme();
+					}
+					try {
+						checkIsTasksEmpty();
+					} catch (Exception e) {
+						e.printStackTrace();
+					}
+				}
+			}
+		});
+	}
+	/************************************ END OF LISTENER**********************************************/
 
 	private void backgroundChooser(Button btnBackground) {
 
@@ -1797,6 +1820,15 @@ public class Main extends Application {
 		tray.setNotificationType(notification);
 		tray.showAndDismiss(Duration.seconds(2));
 
+	}
+	
+	private void minimise(Button minimiseApp) {
+		minimiseApp.setOnAction(new EventHandler<ActionEvent>() {
+			public void handle(ActionEvent event) {
+				Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+				stage.setIconified(true);
+			}
+		});
 	}
 
 	private void exit(Button btnExit) {
