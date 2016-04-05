@@ -223,6 +223,10 @@ public class CommandDispatcher {
 		List<Date> date3 = parser.parse("fri 10pm");
 		//SimpleDateFormat df = new SimpleDateFormat("E, d MMM hh:mma");
 		//System.out.println(date3);
-		//System.out.println(parser.parse("[Wed MAR 16 13:10:19 SGT 2016]"));
+		//System.out.println(parser.parse("add task by 4 june 2017"));
+		String time = "Sat Jun 10 08:00:00 SGT 2017";
+		time = time.substring(0, 9) + WHITE_SPACE + 
+				time.substring(24, 28) + time.substring(10, 23);
+		System.out.println("output time: " + time);
 	}
 }

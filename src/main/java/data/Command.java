@@ -17,6 +17,7 @@ public class Command {
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
 	private static final int STATUS = 4;
+	private static final String WHITE_SPACE = " ";
 
 
 	public Command(String command) {
@@ -136,12 +137,18 @@ public class Command {
 		String[] segments = time.split(", ");
 		List<Date> result = new ArrayList<Date>();
 		for (int i = 0; i < segments.length; i++) {
-			result.add(parser.parse(segments[i]).get(0));
+			result.add(parser.parse(format(segments[i])).get(0));
 		}
 		
 		return result;
 	}
 
+
+	private static String format(String time) {
+		time = time.substring(0, 10) + WHITE_SPACE + 
+				time.substring(24, 28) + time.substring(10, 23);
+		return time;
+	}
 
 	public boolean isCommand(COMMAND_TYPE type) {
 		return type ==(this.getType());

@@ -66,11 +66,12 @@ public class Logic {
 		CommandDispatcher dispatcher = new CommandDispatcher();
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
+		
 		//		System.out.println("task" + command.getParameters()[TASK]);
-		//		System.out.println("time" + command.getParameters()[1]);
+		//System.out.println("time" + command.getParameters()[1]);
 		//		System.out.println("priority" + command.getParameters()[2]);
 		//		System.out.println("type" + command.getParameters()[3]);
-		System.out.println(retrieveTaskIndex(command));
+		//System.out.println(retrieveTaskIndex(command));
 
 
 		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
@@ -113,6 +114,7 @@ public class Logic {
 		if (command.isCommand(COMMAND_TYPE.ADD)) {
 
 			task = createTask(command);
+			//System.out.println(task.getTime());
 			if (!task.getTask().equals(EMPTY_STRING)) {
 				handleAddCommand(task);
 			}
