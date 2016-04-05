@@ -1,3 +1,4 @@
+/* @@author A0127481E */
 package main.java.logic;
 
 import static org.junit.Assert.*;
@@ -64,3 +65,4 @@ public class TestCommandDispatcher {
 	
 
 }
+/* @@author A0127481E */

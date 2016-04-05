@@ -1,4 +1,4 @@
-/* @@author Zhang Xunda */
+/* @@author A0124078H */
 package main.java.gui;
 
 import java.io.IOException;
@@ -28,11 +28,10 @@ public class CommandBarController extends BorderPane {
 
 	@FXML
 	private Label feedback;
-	
+
 	@FXML
 	private Shape feedbackBg;
-	
-	
+
 	@FXML
 	private TextField commandBar;
 
@@ -87,11 +86,10 @@ public class CommandBarController extends BorderPane {
 	public TextField getCommandBar() {
 		return commandBar;
 	}
-	
-	public Label getLblFeedback(){
+
+	public Label getLblFeedback() {
 		return feedback;
 	}
-	
 
 	public void updateUserInput(String newInput) {
 		commandBar.setText(newInput);
@@ -116,7 +114,6 @@ public class CommandBarController extends BorderPane {
 
 	}
 
-	
 	public void getFocus() {
 		commandBar.requestFocus();
 		commandBar.positionCaret(0);
@@ -131,8 +128,8 @@ public class CommandBarController extends BorderPane {
 	public void setBgColour(String colour) {
 		commandBar.getStyleClass().add(colour);
 	}
-	
-	/* @@author Zhang Xunda */
+
+	/* @@author A0124078H */
 
 	public void setFeedback(String feedbackText, Color color) {
 		FadeTransition fadeIn = startFadeIn(feedback, FADE_IN_TIME);
@@ -171,11 +168,12 @@ public class CommandBarController extends BorderPane {
 			}
 		}));
 	}
-	/* @@author Zhang Xunda */
+
+	/* @@author A0124078H */
 	private void setFeedbackLabel(String feedbackText) {
 		feedback.setOpacity(0);
 		feedback.setText(feedbackText);
 	}
 
 }
-/* @@author Zhang Xunda */
+/* @@author A0124078H */

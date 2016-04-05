@@ -1,3 +1,4 @@
+/* @@author A0124078H */
 .root {
 	
 	-fx-background-image: url("/main/resources/images/crop.jpg");
@@ -310,3 +311,4 @@
   -fx-graphic: url("/main/resources/images/btnExitHover.png");
   -fx-background-color:transparent;
 }
+/* @@author A0124078H */

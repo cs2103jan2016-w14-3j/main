@@ -1,3 +1,4 @@
+/* @@author A0127481E */
 package main.java.parser;
 import main.java.data.*;
 public abstract class Parser {
@@ -39,4 +40,4 @@ public abstract class Parser {
 
 }
 
-
+/* @@author A0127481E */

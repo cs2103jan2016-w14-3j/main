@@ -1,3 +1,4 @@
+/* @@author A0127481E */
 package main.java.logic;
 
 
@@ -230,3 +231,4 @@ public class CommandDispatcher {
 		System.out.println("output time: " + time);
 	}
 }
+/* @@author A0127481E */
