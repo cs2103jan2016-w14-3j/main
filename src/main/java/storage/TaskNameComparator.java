@@ -1,3 +1,4 @@
+//@@author A0125084L
 package main.java.storage;
 
 import java.util.Comparator;
@@ -12,3 +13,4 @@ public class TaskNameComparator implements Comparator<Task>{
 		return task1.getTask().compareToIgnoreCase(task2.getTask());
 	}
 }
+//@@author A0125084L

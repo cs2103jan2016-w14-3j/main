@@ -1,3 +1,4 @@
+//@@author A0125084L
 package main.java.storage;
 
 public class CompletedTaskTempStorage extends TempStorage{
@@ -6,3 +7,4 @@ public class CompletedTaskTempStorage extends TempStorage{
 		super(new CompletedTaskPermStorage());
 	}
 }
+//@@author A0125084L
