@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import main.java.data.PRIORITY_LEVEL;
+import main.java.data.TASK_NATURE;
 import main.java.data.TASK_STATUS;
 import main.java.data.Task;
 
@@ -128,20 +129,26 @@ public class StorageController {
 	public void moveTaskToComplete(Task task) {
 		assert task != null;
 		
-		task.setLastModified(true);
-		task.setStatus(TASK_STATUS.COMPLETED);
 		pendingTemp.deleteFromTemp(task);
-		completedTemp.writeToTemp(task);	
+		
+		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
+				task.getType(), TASK_STATUS.COMPLETED);
+		
+		taskCopy.setLastModified(true);	
+		completedTemp.writeToTemp(taskCopy);	
 		lastAction = BOTH_TYPE;
 	}
 	
 	public void moveTaskToPending(Task task) {
 		assert task != null;
 		
-		task.setLastModified(true);
-		task.setStatus(determineStatus(task.getTime()));
 		completedTemp.deleteFromTemp(task);
-		pendingTemp.writeToTemp(task);		
+		
+		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
+				task.getType(), determineStatus(task.getTime()));
+		
+		taskCopy.setLastModified(true);
+		pendingTemp.writeToTemp(taskCopy);		
 		lastAction = BOTH_TYPE;
 	}
 	
