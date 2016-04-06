@@ -30,7 +30,7 @@ public class TempStorage {
 	public TempStorage(PermStorage permStorage) {
 		this.permStorage = permStorage;
 		undoStack = new Stack<ArrayList<Task>>();
-		taskList = retrieveListFromFile();
+		taskList = new ArrayList<Task>(retrieveListFromFile());
 		ArrayList<Task> tempList = new ArrayList<Task>(taskList);	
 		undoStack.push(tempList);
 		redoStack = new Stack<ArrayList<Task>>();
@@ -41,11 +41,14 @@ public class TempStorage {
 
 	public void writeToTemp(Task task) {
 
-		taskList.add(task);
+		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
+				task.getType(), task.getStatus());
+		
+		taskList.add(taskCopy);
 		Collections.sort(taskList, new TimeComparator());
 		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
-		permStorage.writeToFile(task);
+		permStorage.writeToFile(taskCopy);
 		isPreviousUndo = false;
 	}
 
@@ -56,11 +59,15 @@ public class TempStorage {
 	public void editToTemp(Task taskToEdit, Task editedTask) {
 
 		int indexOfTaskToEdit = searchTemp(taskToEdit);
-		taskList.set(indexOfTaskToEdit, editedTask);
+		
+		Task editedTaskCopy = new Task(editedTask.getTask(), editedTask.getTime(), editedTask.getPriority(), 
+				editedTask.getType(), editedTask.getStatus());
+		
+		taskList.set(indexOfTaskToEdit, editedTaskCopy);
 		Collections.sort(taskList, new TimeComparator());
 		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
-		permStorage.editToFile(indexOfTaskToEdit, editedTask);
+		permStorage.editToFile(indexOfTaskToEdit, editedTaskCopy);
 		isPreviousUndo = false;
 	}
 
@@ -180,7 +187,7 @@ public class TempStorage {
 
 		permStorage.loadFromFile(path);
 		taskList.clear();
-		taskList = retrieveListFromFile();
+		taskList = new ArrayList<Task>(retrieveListFromFile());
 		undoStack.clear();
 		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
 		undoStack.push(tempList);
