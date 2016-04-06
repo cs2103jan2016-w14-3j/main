@@ -44,6 +44,7 @@ public class TempStorage {
 		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
 				task.getType(), task.getStatus());
 		
+		taskCopy.setLastModified(true);
 		taskList.add(taskCopy);
 		Collections.sort(taskList, new TimeComparator());
 		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
@@ -63,6 +64,7 @@ public class TempStorage {
 		Task editedTaskCopy = new Task(editedTask.getTask(), editedTask.getTime(), editedTask.getPriority(), 
 				editedTask.getType(), editedTask.getStatus());
 		
+		editedTaskCopy.setLastModified(true);
 		taskList.set(indexOfTaskToEdit, editedTaskCopy);
 		Collections.sort(taskList, new TimeComparator());
 		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
