@@ -109,6 +109,7 @@ public class PermStorage {
 	
 	public ArrayList<Task> readFromFile() {
 		String lineRead;
+		taskList.clear();
 		
 		try {
 			while((lineRead = bufferedReader.readLine()) != null) {
