@@ -128,12 +128,13 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	protected String determineTime(String timeSegment) throws InvalidInputFormatException {
+	protected String determineTime(String content) throws InvalidInputFormatException {
 
 
-		//String timeSegment = determineTimeSegment(content);
+		String timeSegment = determineTimeSegment(content);
 
 		List<Date> dates = timeParser.parse(timeSegment);
+		
 
 		if (dates.size() == 0) {
 			return "[]";

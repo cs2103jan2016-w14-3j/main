@@ -23,7 +23,9 @@ public class EditCommandParser extends AddCommandParser {
 		String[] segments = commandContent.split(EDIT_COMMAND_SEPARATOR);
 		String[] parameters = new String[5];
 		parameters[TASK] = determineTaskForEditCommand(segments);
+		//System.out.println(parameters[TASK]);
 		parameters[TIME] = determineTimeForEditCommand(segments);
+		//System.out.println(parameters[TIME]);
 		parameters[PRIORITY] = determinePriorityForEditCommand(segments);
 		parameters[TASK_TYPE] = determineTaskTypeForEditCommand(segments);
 		parameters[STATUS] = determineStatusForEditCommand(segments);
@@ -60,10 +62,10 @@ public class EditCommandParser extends AddCommandParser {
 	}
 
 	private String determineTimeForEditCommand(String[] segments) throws InvalidInputFormatException {
-
+		
 		String time_A = determineTime(formatToStandardCommandContent(segments[0].trim())); 
 		String time_B = determineTime(formatToStandardCommandContent(segments[1].trim()));
-
+		
 		return time_A + EDIT_TASK_SEPARATOR + time_B;
 
 	}
@@ -111,6 +113,7 @@ public class EditCommandParser extends AddCommandParser {
 		String time = task.getTime().replaceAll(" , ", "%");
 		time_A = time.split("%")[0].trim();
 		time_B = time.split("%")[1].trim();
+		//System.out.println(time_B);
 
 		priority_A = task.getPriority().split(EDIT_COMMAND_SEPARATOR)[0].trim();
 		priority_B = task.getPriority().split(EDIT_COMMAND_SEPARATOR)[1].trim();

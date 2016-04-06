@@ -139,7 +139,6 @@ public class Command {
 		for (int i = 0; i < segments.length; i++) {
 			result.add(parser.parse(format(segments[i])).get(0));
 		}
-		
 		return result;
 	}
 
