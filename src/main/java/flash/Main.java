@@ -147,7 +147,7 @@ public class Main extends Application {
 	private Label lblCompleted = new Label();
 	private Label lblTitle;
 	private String theme = null;
-	private String background = "crop";
+	private String background = "paris";
 	private ImageView woodBg;
 	private ImageView parisBg;
 	private ImageView blackBg;
@@ -608,6 +608,8 @@ public class Main extends Application {
 			handleEnterPress(commandBarController, text);
 			if (!text.equalsIgnoreCase("help")) {
 				checkIsTasksEmpty();
+			}else{
+				commandBarController.setFeedback("Help Shown", Color.BLACK);
 			}
 		} else if ((event.getCode() == KeyCode.UP || event.getCode() == KeyCode.DOWN) && !historyLog.isEmpty()) {
 			event.consume();
@@ -1122,6 +1124,7 @@ public class Main extends Application {
 		   } else if (userInput.equalsIgnoreCase(REDO_COMMAND)) {
 			commandBarController.setFeedback("Previous Change has been restored", Color.BLACK);
 		   } else if (userInput.equalsIgnoreCase(HELP_COMMAND)) {
+			   commandBarController.setFeedback("Help shown", Color.BLACK);
 		   } else if (userInput.equalsIgnoreCase(CLEARUPCOMING_COMMAND)
 				|| userInput.equalsIgnoreCase(CLEARCOMPLETE_COMMAND)
 				|| userInput.equalsIgnoreCase(CLEAROVERDUE_COMMAND)

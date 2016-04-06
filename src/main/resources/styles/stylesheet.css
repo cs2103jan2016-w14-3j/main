@@ -1,7 +1,7 @@
 /* @@author A0124078H */
 .root {
 	
-	-fx-background-image: url("/main/resources/images/crop.jpg");
+	-fx-background-image: url("/main/resources/images/paris.jpg");
     -fx-background-size: stretch;
     -fx-border-color:#E3F2FD;
 }
