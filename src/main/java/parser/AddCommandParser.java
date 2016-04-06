@@ -158,9 +158,11 @@ public class AddCommandParser extends Parser {
 	private String determineTimeSegment(String content) {
 		int timeIndex = getStartingIndexOfIdentifier(content);
 		int priorityIndex = getStartingIndexOfPriority(content);
-		String timeSegment = EMPTY_STRING;
-
-		if (priorityIndex == FIELD_NOT_EXIST) {
+		String timeSegment;
+		if (timeIndex == -1) {
+			timeSegment = EMPTY_STRING;
+		}
+		else if (priorityIndex == FIELD_NOT_EXIST) {
 			timeSegment = content.substring(timeIndex);
 		}
 		else {
@@ -260,7 +262,7 @@ public class AddCommandParser extends Parser {
 		return false;
 	}
 	private boolean isDurationTask(String timeSegment) {
-		System.out.println(timeSegment);
+		//System.out.println(timeSegment);
 		if (timeParser.parse(timeSegment).size() == 2 &&
 				(containsWholeWord(timeSegment, DURATION_FLAG_FROM)
 						|| containsWholeWord(timeSegment, DURATION_FLAG_TO))) {
