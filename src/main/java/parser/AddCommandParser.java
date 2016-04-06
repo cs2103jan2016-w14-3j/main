@@ -17,7 +17,6 @@ public class AddCommandParser extends Parser {
 	private static final String DEADLINE_FLAG_BEFORE = "before";
 	private static final String EVENT_FLAG_ON = "on";
 	private static final String EVENT_FLAG_AT = "at";
-	private static final String RECURRING_FLAG_EVERY = "every";
 	private static final String DURATION_FLAG_FROM = "from";
 	private static final String DURATION_FLAG_TO = "to";
 	private static final String DEADLINE_TASK = "deadline";
@@ -29,6 +28,8 @@ public class AddCommandParser extends Parser {
 	private static final String DEFAULT_TIME = "8am";
 	private static final String TOMORROW_IN_FULL = "tomorrow";
 	private static final String TOMORROW_IN_SHORT = "tmr";
+	private static final String NOW = "now";
+	private static final String TODAY = "today";
 	private static final String OVERDUE_TASK = "overdue";
 	private static final String UPCOMING_TASK = "upcoming";
 	private static final String FLOATING_TASK = "floating";
@@ -47,41 +48,6 @@ public class AddCommandParser extends Parser {
 		timeParser = new PrettyTimeParser();
 
 	}
-
-
-	public static void main(String[] args)
-	{
-		PrettyTimeParser pars = new PrettyTimeParser();
-		AddCommandParser parser = new AddCommandParser();
-		//System.out.println(parser.isToday(pars.parse("last fri to next mon")));
-		//System.out.println(new Date().toString());
-		System.out.print(parser.formatToStandardCommandContent("this tmr"));
-		//AddCommandParser parser = new AddCommandParser();
-	}
-
-	private boolean isToday(List<Date> dates) {
-		int size = dates.size();
-		if (size == 0) {
-			return false;
-		}
-		else {
-			Date today = new Date();
-			String todayDate = today.toString().substring(0, 9);
-			if (size == 1) {
-				if (dates.get(0).toString().substring(0,9).equals(todayDate)) {
-					return true;
-				}
-			}
-			else if (size == 2) {
-				if (today.after(dates.get(0)) || today.before(dates.get(1))) {
-					return true;
-				}
-			}
-		}
-		return false;
-	}
-
-
 
 	public String[] determineParameters(String commandContent) 
 			throws InvalidInputFormatException {
@@ -132,9 +98,10 @@ public class AddCommandParser extends Parser {
 
 
 		String timeSegment = determineTimeSegment(content);
-
+		//System.out.println(timeSegment);
 		List<Date> dates = timeParser.parse(timeSegment);
-		
+		//System.out.println(dates);
+
 
 		if (dates.size() == 0) {
 			return "[]";
@@ -145,10 +112,10 @@ public class AddCommandParser extends Parser {
 
 			//modifyDateToTomorrowIfExpired(dates);
 			String result = dates.toString();
+			System.out.println(result);
 			if (!timeSegment.contains("now")) {
 				result = setDefaultTimeIfNotSpecified(timeSegment, dates);
 			}
-
 			return result;
 		}
 	}
@@ -164,19 +131,6 @@ public class AddCommandParser extends Parser {
 			}
 		}
 	}
-
-//	private void modifyDateToTomorrowIfExpired(List<Date> dates) {
-//
-//		for (int i = 0; i < dates.size(); i++) {
-//			if (isOverdue(dates.get(i))) {
-//				Calendar calendar = Calendar.getInstance();
-//				calendar.setTime(dates.get(i));
-//				calendar.add(Calendar.DATE, 1);  // number of days to add
-//				dates.set(i,calendar.getTime()); // dt is now the new date
-//			}
-//		}
-//
-//	}
 
 	private String setDefaultTimeIfNotSpecified(String timeSegment, List<Date> dates) {
 		String parsedTime = dates.toString();
@@ -204,25 +158,37 @@ public class AddCommandParser extends Parser {
 	private String determineTimeSegment(String content) {
 		int timeIndex = getStartingIndexOfIdentifier(content);
 		int priorityIndex = getStartingIndexOfPriority(content);
-		if (timeIndex == FIELD_NOT_EXIST) {
-			return EMPTY_STRING;
-		}
+		String timeSegment = EMPTY_STRING;
 
-		else if (priorityIndex == FIELD_NOT_EXIST) {
-			return content.substring(timeIndex);
+		if (priorityIndex == FIELD_NOT_EXIST) {
+			timeSegment = content.substring(timeIndex);
 		}
 		else {
-			return content.substring(timeIndex, priorityIndex - 1);
+			timeSegment = content.substring(timeIndex, priorityIndex - 1);
 		}
+		timeSegment = formatTimeSegment(timeSegment);
+		return timeSegment;
+	}
+
+	private String formatTimeSegment(String timeSegment) {
+		if (containsWholeWord(timeSegment, EVENT_FLAG_ON) && 
+				containsWholeWord(timeSegment, DURATION_FLAG_FROM )){
+			timeSegment = timeSegment.replaceAll(DURATION_FLAG_FROM, 
+					EMPTY_STRING);
+			timeSegment = removeTrailingSpaces(timeSegment);
+		}
+		return timeSegment;
 	}
 
 	protected String determinePriority(String content) throws InvalidInputFormatException {
 
 		if (content.contains(PRIORITY_FLAG)) {
-			String priority = content.substring(content.indexOf(PRIORITY_FLAG) + 1).trim();
+			String priority = content.substring(content.indexOf
+					(PRIORITY_FLAG) + 1).trim();
 			priority = priority.toLowerCase();
 			if (!isValidPriority(priority)) {
-				throw new InvalidInputFormatException("Please enter a valid priority level");
+				throw new InvalidInputFormatException
+				("Please enter a valid priority level");
 			}
 
 			return getPriorityInFull(priority);
@@ -275,14 +241,15 @@ public class AddCommandParser extends Parser {
 		else {
 			if (content.substring(timeIndex, timeIndex + 2).equalsIgnoreCase
 					(DEADLINE_FLAG_BY)|| content.substring(timeIndex, 
-							timeIndex + 6).equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
+							timeIndex + 6).equalsIgnoreCase
+					(DEADLINE_FLAG_BEFORE)) {
 				return DEADLINE_TASK;
 			}
 
 			return EVENT_TASK;
 		}
 	}
-	
+
 	private boolean containsWholeWord(String content, String keyword) {
 		String[] segments = content.split(WHITE_SPACE);  
 		for (int i = 0; i < segments.length; i++) {
@@ -293,6 +260,7 @@ public class AddCommandParser extends Parser {
 		return false;
 	}
 	private boolean isDurationTask(String timeSegment) {
+		System.out.println(timeSegment);
 		if (timeParser.parse(timeSegment).size() == 2 &&
 				(containsWholeWord(timeSegment, DURATION_FLAG_FROM)
 						|| containsWholeWord(timeSegment, DURATION_FLAG_TO))) {
@@ -316,16 +284,17 @@ public class AddCommandParser extends Parser {
 		}
 	}
 
-	private String addPrepositionIfApplicable(String content) {
+	private String addPrepositionIfApplicable(String content, String timePhrase) {
 		//contains keyword "tomorrow"
-		if (content.contains(TOMORROW_IN_FULL)) {
-			
+		if (content.contains(timePhrase)) {
+
 			//"tomorrow" is the first word
-			if (content.indexOf(TOMORROW_IN_FULL) == 0) {
+			if (content.indexOf(timePhrase) == 0) {
 				int startIndex = content.indexOf(WHITE_SPACE) + 1;
 				String nextWord = content.substring(startIndex);
 				if (nextWord.indexOf(WHITE_SPACE) != -1) {
-					nextWord = nextWord.substring(0, nextWord.indexOf(WHITE_SPACE));
+					nextWord = nextWord.substring(0, 
+							nextWord.indexOf(WHITE_SPACE));
 				}
 				//there is a valid preposition following "tomorrow"
 				if (startIndex < content.length() && 
@@ -333,12 +302,12 @@ public class AddCommandParser extends Parser {
 
 					content = content.substring(startIndex);
 					if (timeParser.parse(content).size() == 0) {
-						
+
 						return EVENT_FLAG_ON + WHITE_SPACE + 
-								TOMORROW_IN_FULL + WHITE_SPACE + content;
+								timePhrase + WHITE_SPACE + content;
 					}
 					int index = content.indexOf(WHITE_SPACE) + 1;
-					content = content.substring(0, index) + TOMORROW_IN_FULL 
+					content = content.substring(0, index) + timePhrase 
 							+ WHITE_SPACE + content.substring(index);
 					return content;
 				}
@@ -355,7 +324,7 @@ public class AddCommandParser extends Parser {
 				int len = segments.length;
 				int index = 0;
 				for (int i = 0; i < len; i++) {
-					if (segments[i].equals(TOMORROW_IN_FULL)) {
+					if (segments[i].equals(timePhrase)) {
 						index = i;
 						break;
 					}
@@ -416,11 +385,7 @@ public class AddCommandParser extends Parser {
 	}
 
 	protected String formatToStandardCommandContent(String content) {
-		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
-		content = StringUtils.replace(content, TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
-		if (isNecessaryToAddPrepostion(content)) {
-			content = addPrepositionIfApplicable(content);
-		}
+		content = preFormat(content);
 		//System.out.println(content);
 		int time = getStartingIndexOfIdentifier(content);
 		int priority = getStartingIndexOfPriority(content);
@@ -520,11 +485,42 @@ public class AddCommandParser extends Parser {
 	}
 
 
-	private boolean isNecessaryToAddPrepostion(String content) {
-		int index = content.indexOf(TOMORROW_IN_FULL);
+	private String preFormat(String content) {
+		content = removeTrailingSpaces(content);
+		content = handleTimeWithoutPreposition(content);
+		return content;
+	}
+
+
+
+	private String handleTimeWithoutPreposition(String content) {
+		content = content.replaceAll(TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
+		if (isNecessaryToAddPrepostion(content, NOW)) {
+			content = addPrepositionIfApplicable(content, NOW);
+		}
+		if (isNecessaryToAddPrepostion(content, TODAY)) {
+			content = addPrepositionIfApplicable(content, TODAY);
+		}
+		if (isNecessaryToAddPrepostion(content, TOMORROW_IN_FULL)) {
+			content = addPrepositionIfApplicable(content, TOMORROW_IN_FULL);
+		}
+		return content;
+	}
+
+	private String removeTrailingSpaces(String content) {
+		content = content.replaceAll(EXTRA_WHITE_SPACES, WHITE_SPACE).trim();
+		return content;
+	}
+
+	private boolean isNecessaryToAddPrepostion(String content, String timePhrase) {
+		if (containsWholeWord(content, "\"" + timePhrase + "\"")) {
+			return false;
+		}
+		int index = content.indexOf(timePhrase);
 		if (index == -1) {
 			return false;
 		}
+
 		String front = content.substring(0,index).trim();
 		if (timeParser.parse(front).toString().equals(EMPTY_TIME)) {
 			return true;
@@ -764,9 +760,6 @@ public class AddCommandParser extends Parser {
 			return true;
 		}
 		else if (word.equals(EVENT_FLAG_ON)) {
-			return true;
-		}
-		else if (word.equals(RECURRING_FLAG_EVERY)) {
 			return true;
 		}
 		else if (word.equals(DURATION_FLAG_FROM)) {
