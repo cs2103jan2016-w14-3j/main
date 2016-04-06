@@ -208,8 +208,9 @@ public class TempStorage {
 			
 			if(task.getStatus().equals(TASK_STATUS.UPCOMING) && task.getTime().get(0).before(date)) {
 				task.setStatus(TASK_STATUS.OVERDUE);
-				taskList.set(i, task);
 				permStorage.editToFile(i, task);
+				taskList.remove(i);
+				taskList.add(task);
 				overdueList.add(task);
 			}
 		}
