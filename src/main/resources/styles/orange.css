@@ -92,7 +92,7 @@
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
-  -fx-background-color: #F57C00;
+  -fx-background-color: rgba(192,192,192,0.8);
   -fx-font-family:Roboto;
   
 }
@@ -193,10 +193,6 @@
 {
    -fx-background-color: rgba(192,192,192,0.8);
    -fx-border-color:transparent;
-}
-.tab:selected:focused, .tab:filled:selected {
-  -fx-background-color: #CCFF90;
-  
 }
 
 .tab .tab-label { 

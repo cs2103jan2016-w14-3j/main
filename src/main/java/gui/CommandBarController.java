@@ -173,6 +173,7 @@ public class CommandBarController extends BorderPane {
 	private void setFeedbackLabel(String feedbackText) {
 		feedback.setOpacity(0);
 		feedback.setText(feedbackText);
+		feedback.setStyle("-fx-font-weight: bold;");
 	}
 
 }
