@@ -694,6 +694,7 @@ public class Main extends Application {
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
 		commandByNumber = false;
+		boolean editByNumber = false;
 		pointer = historyLog.size();
 		
 		if (StringUtils.isBlank(userInput)) {
@@ -729,14 +730,23 @@ public class Main extends Application {
 			int numberToChange = -1;
 			//check if the user enter a number after command key word
 			if (fragments.length > 1) {
+				
+				System.out.println("fragmentss "+ fragments[0]);
+				if(fragments[COMMAND_INDEX].equalsIgnoreCase("edit")){
+					fragments[1]= fragments[1].substring(0,fragments[1].indexOf(','));		
+				}
+				System.out.println("fragmentss "+ fragments[1]);
 				try {
 					numberToChange = Integer.parseInt(fragments[1]);
 					commandByNumber = true;
 				} catch (NumberFormatException e) {
 					commandByNumber = false;
 				}
+				
+				System.out.println("before "+ numberToChange);
 				// if the user delete/edit/mark/unmark by number
 				if (commandByNumber) {
+					System.out.println("after" + numberToChange);
 					numberToChange -= 1;
 					if(fragments[COMMAND_INDEX].equalsIgnoreCase("delete")||fragments[COMMAND_INDEX].equalsIgnoreCase("edit")
 							||fragments[COMMAND_INDEX].equalsIgnoreCase("mark")||fragments[COMMAND_INDEX].equalsIgnoreCase("unmark")){
@@ -745,6 +755,7 @@ public class Main extends Application {
 					 //edit still goes through logic.handleusercommand
 					if(fragments[COMMAND_INDEX].equalsIgnoreCase("edit")){
 						commandByNumber = false;
+						editByNumber = true;
 					}
 				}
 			}
@@ -762,7 +773,9 @@ public class Main extends Application {
 				userInput = appendSortComplete(fragments);
 				// edit by partial match
 			} else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
-				userInput = handleEditByPartialMatching(userInput);
+				if(editByNumber==false){
+				   userInput = handleEditByPartialMatching(userInput);
+				}
 			}
 			
 			// if the user delete/edit/mark/unmark by task matching
@@ -924,9 +937,11 @@ public class Main extends Application {
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase("unmark")) {
 			invalidCommandUnderTab(commandBarController);
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase("edit")) {
-			String update = userInput.substring(userInput.indexOf(',') + 1).trim();			
+			String update = userInput.substring(userInput.indexOf(',') + 1).trim();		
+			System.out.println("hereasadasd "+  numberToChange);
 		    userInput = "edit " + allResult.get(numberToChange).getTask() + ", " + update;
 		}
+		System.out.println("userinput "+  userInput);
 		return userInput;
 	}
 
