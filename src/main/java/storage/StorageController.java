@@ -1,6 +1,7 @@
 //@@author A0125084L
 package main.java.storage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -203,7 +204,7 @@ public class StorageController {
 		return completedTemp.searchMatch(newValue);
 	}
 	
-	public void moveToLocation(String path) {
+	public void moveToLocation(String path) throws IOException {
 		assert path != null;
 		
 		pendingTemp.moveToLocation(path);
@@ -216,7 +217,7 @@ public class StorageController {
 		pendingTemp.loadFromFile(path);
 	}
 	
-	public void saveToLocation(String path) {
+	public void saveToLocation(String path) throws IOException {
 		assert path != null;
 		
 		pendingTemp.saveToLocation(path);

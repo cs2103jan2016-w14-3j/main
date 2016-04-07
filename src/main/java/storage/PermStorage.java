@@ -61,16 +61,12 @@ public class PermStorage {
 		}
 	}
 
-	public void moveToLocation(String path) {
+	public void moveToLocation(String path) throws IOException {
 		
 		File newFile = new File(path);
-		try {
-			Files.copy(file.toPath(), newFile.toPath());
-			file = newFile;
-			reopenStream();
-		} catch (IOException e) {
-			System.err.println("Cannot move to location");
-		}
+		Files.copy(file.toPath(), newFile.toPath());
+		file = newFile;
+		reopenStream();
 		dirController.moveToLocation(path);
 	}
 	
@@ -81,14 +77,10 @@ public class PermStorage {
 		dirController.loadFromFile(path);
 	}
 	
-	public void saveToLocation(String path) {
+	public void saveToLocation(String path) throws IOException {
 		
 		File newFile = new File(path);
-		try {
-			Files.copy(file.toPath(), newFile.toPath());
-		} catch (IOException e) {
-			System.err.println("Cannot save to location");
-		}
+		Files.copy(file.toPath(), newFile.toPath());
 	}
 	
 	public void writeToFile(Task task) {

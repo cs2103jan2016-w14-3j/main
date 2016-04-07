@@ -1,6 +1,7 @@
 //@@author A0125084L
 package main.java.storage;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.Stack;
@@ -180,7 +181,7 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
-	public void moveToLocation(String path) {
+	public void moveToLocation(String path) throws IOException {
 
 		permStorage.moveToLocation(path);
 	}
@@ -195,7 +196,7 @@ public class TempStorage {
 		undoStack.push(tempList);
 	}
 
-	public void saveToLocation(String path) {
+	public void saveToLocation(String path) throws IOException {
 
 		permStorage.saveToLocation(path);
 	}

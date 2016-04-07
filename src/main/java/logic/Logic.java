@@ -2,6 +2,7 @@
 package main.java.logic;
 
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -363,7 +364,7 @@ public class Logic {
 		storageController.editPendingTask(result.get(0), result.get(1));
 	}
 
-	public void moveToLocation(String path){	
+	public void moveToLocation(String path) throws IOException{	
 		
 		storageController.moveToLocation(path);
 	}
@@ -373,7 +374,7 @@ public class Logic {
 		storageController.loadFromFile(filename);
 	}
 
-	public void saveToLocation(String path) {
+	public void saveToLocation(String path) throws IOException {
 		storageController.saveToLocation(path);
 	}
 
