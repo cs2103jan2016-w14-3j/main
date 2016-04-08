@@ -364,7 +364,7 @@ public class Logic {
 		storageController.editPendingTask(result.get(0), result.get(1));
 	}
 
-	public void moveToLocation(String path) throws IOException{	
+	public void moveToLocation(String path) throws Exception{	
 		
 		storageController.moveToLocation(path);
 	}
@@ -374,7 +374,7 @@ public class Logic {
 		storageController.loadFromFile(filename);
 	}
 
-	public void saveToLocation(String path) throws IOException {
+	public void saveToLocation(String path) throws Exception {
 		storageController.saveToLocation(path);
 	}
 
