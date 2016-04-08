@@ -3,97 +3,49 @@ package main.java.gui;
 
 import java.io.File;
 import java.io.IOException;
-
-
-
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.MenuButton;
-import javafx.scene.control.MenuItem;
 import javafx.scene.control.Tab;
 import javafx.scene.control.TabPane;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
-import javafx.scene.input.KeyCode;
-import javafx.scene.input.KeyCodeCombination;
-import javafx.scene.input.KeyCombination;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.shape.Shape;
-import javafx.stage.FileChooser;
-import javafx.application.Platform;
-import javafx.event.ActionEvent;
-import javafx.event.EventHandler;
-
 
 public class TabsController extends BorderPane {
-	
-	@FXML
-	private TabPane tabPane;	
-	
-	@FXML
-	private Tab pendingTab;
-	@FXML
-	private Label pendingNotify;	
-	@FXML
-	private Tab allTab;	
-	@FXML
-	private Label allNotify;
-	@FXML
-	private Tab floatingTab;	
-	@FXML
-	private Label floatingNotify;
-	@FXML
-	private Tab overdueTab;	
-	@FXML
-	private Label overdueNotify;	
-	@FXML
-	private Tab completeTab;
-	@FXML
-	private Label completeNotify;	
-	
-	@FXML
-	private MenuButton setting;
-    
-    @FXML
-	private Button btnNew;
-    @FXML
-	private Button btnLoad;
-    @FXML
-	private Button btnSave;
-    @FXML
-	private Button btnHelp;
-    @FXML
-	private Button btnSetting;
-    @FXML
-	private Button btnExit;
-    
-    @FXML
-	private Shape circleAll;
-    @FXML
-   	private Shape circlePending;
-    @FXML
-   	private Shape circleOverdue;
-    @FXML
-   	private Shape circleFloating;
-    @FXML
-   	private Shape circleComplete;
-    
-    
-    @FXML
-	private Label lblUpcoming;
-    @FXML
-	private Label lblComplete;
-    
-    
+
+	@FXML private TabPane tabPane;
+	@FXML private Tab allTab;
+	@FXML private Tab pendingTab;
+	@FXML private Tab floatingTab;
+	@FXML private Tab overdueTab;
+	@FXML private Tab completeTab;
+	@FXML private Label allNotify;
+	@FXML private Label pendingNotify;
+	@FXML private Label floatingNotify;
+	@FXML private Label overdueNotify;
+	@FXML private Label completeNotify;
+	@FXML private MenuButton setting;
+	@FXML private Button btnNew;
+	@FXML private Button btnLoad;
+	@FXML private Button btnSave;
+	@FXML private Button btnHelp;
+	@FXML private Button btnSetting;
+	@FXML private Button btnExit;
+	@FXML private Shape circleAll;
+	@FXML private Shape circlePending;
+	@FXML private Shape circleOverdue;
+	@FXML private Shape circleFloating;
+	@FXML private Shape circleComplete;
+
 	protected File file;
 
-	
-	
 	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/TasksTabs.fxml";
+	private static final String COMPLETE_IMAGE = "/main/resources/images/complete.png";
 
 	public TabsController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(COMMAND_BAR_LAYOUT_FXML));
@@ -106,126 +58,117 @@ public class TabsController extends BorderPane {
 		}
 
 	}
-	
 
-	
-	public void setUpcomingLabel(String text){
-		lblUpcoming.setText(text); 
-	}
-	
-	public void setCompleteLabel(String text){
-		lblComplete.setText(text); 
-	}
-	
-	public void setAllTab(Node value){
+	public void setAllTab(Node value) {
 		allTab.setContent(value);
 	}
-	
-	public void setFloatingTab(Node value){
+
+	public void setFloatingTab(Node value) {
 		floatingTab.setContent(value);
 	}
-	
-	public void setPendingTab(Node value){
+
+	public void setPendingTab(Node value) {
 		pendingTab.setContent(value);
 	}
-	
-	public void setOverdueTab(Node value){
+
+	public void setOverdueTab(Node value) {
 		overdueTab.setContent(value);
 	}
-	
-	public void setCompleteTab(Node value){
+
+	public void setCompleteTab(Node value) {
 		completeTab.setContent(value);
 	}
-	
-	public void setEmptyCompleteTab(){
-		Image icon = new Image("/main/resources/images/complete.png");
+
+	public void setEmptyCompleteTab() {
+		Image icon = new Image(COMPLETE_IMAGE);
 		ImageView iconView = new ImageView(icon);
 		completeTab.setContent(iconView);
 	}
 
-	
-	public void setAllNotification(int size){
-		if(size==0){
+	public void setAllNotification(int size) {
+		if (size == 0) {
 			circleAll.managedProperty().bind(circleAll.visibleProperty());
 			circleAll.setVisible(false);
 			allNotify.setText("");
-		}else{
+		} else {
 			allNotify.setText(String.valueOf(size));
 			circleAll.managedProperty().bind(circleAll.visibleProperty());
 			circleAll.setVisible(true);
-		}	
+		}
 	}
-	public void setPendingNotification(int size){
-		if(size==0){
+
+	public void setPendingNotification(int size) {
+		if (size == 0) {
 			circlePending.managedProperty().bind(circlePending.visibleProperty());
 			circlePending.setVisible(false);
 			pendingNotify.setText("");
-		}else{
+		} else {
 			pendingNotify.setText(String.valueOf(size));
 			circlePending.managedProperty().bind(circlePending.visibleProperty());
 			circlePending.setVisible(true);
 		}
-		
+
 	}
-	public void setOverdueNotification(int size){
-		//System.out.println("number of overdue task: " + size);
-		if(size==0){
+
+	public void setOverdueNotification(int size) {
+		if (size == 0) {
 			circleOverdue.managedProperty().bind(circleOverdue.visibleProperty());
 			circleOverdue.setVisible(false);
 			overdueNotify.setText("");
-		}else{
+		} else {
 			overdueNotify.setText(String.valueOf(size));
 			circleOverdue.managedProperty().bind(circleOverdue.visibleProperty());
 			circleOverdue.setVisible(true);
 		}
-		
+
 	}
-	public void setFloatingNotification(int size){
-		if(size==0){
+
+	public void setFloatingNotification(int size) {
+		if (size == 0) {
 			circleFloating.managedProperty().bind(circleFloating.visibleProperty());
 			circleFloating.setVisible(false);
 			floatingNotify.setText("");
-		}else{
+		} else {
 			floatingNotify.setText(String.valueOf(size));
 			circleFloating.managedProperty().bind(circleFloating.visibleProperty());
 			circleFloating.setVisible(true);
 		}
-		
+
 	}
-	public void setCompletedNotification(int size){
-		if(size==0){
+
+	public void setCompletedNotification(int size) {
+		if (size == 0) {
 			circleComplete.managedProperty().bind(circleComplete.visibleProperty());
 			circleComplete.setVisible(false);
 			completeNotify.setText("");
-		}else{
+		} else {
 			completeNotify.setText(String.valueOf(size));
 			circleComplete.managedProperty().bind(circleComplete.visibleProperty());
 			circleComplete.setVisible(true);
-		}		
+		}
 	}
-	
-	
-	
-	public Tab getAllTab(){
+
+	public Tab getAllTab() {
 		return allTab;
 	}
-	
-	public Tab getFloatingTab(){
+
+	public Tab getFloatingTab() {
 		return floatingTab;
 	}
-	public Tab getPendingTab(){
+
+	public Tab getPendingTab() {
 		return pendingTab;
 	}
-	
-	public Tab getOverdueTab(){
+
+	public Tab getOverdueTab() {
 		return overdueTab;
 	}
-	
-	public Tab getCompleteTab(){
+
+	public Tab getCompleteTab() {
 		return completeTab;
 	}
-	
-	public TabPane getTabPane(){
+
+	public TabPane getTabPane() {
 		return tabPane;
 	}
 

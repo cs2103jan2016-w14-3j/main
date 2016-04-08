@@ -759,8 +759,7 @@ public class Main extends Application {
 					}
 				}
 			}
-            
-			
+            		
 			
 			// delete from complete tab
 			if (fragments[COMMAND_INDEX].equalsIgnoreCase("delete") && tabControl.getCompleteTab().isSelected()) {
@@ -1423,7 +1422,11 @@ public class Main extends Application {
 				fileChooser.getExtensionFilters().add(extFilter);
 				File saveFile = fileChooser.showSaveDialog(null);
 				if (saveFile != null) {
-					logic.saveToLocation(saveFile.getAbsolutePath());
+					try {
+						logic.saveToLocation(saveFile.getAbsolutePath());
+					} catch (IOException e) {
+						setFeedback(barControl, "error", "file path not recognised");
+					}
 				}
 				sidebar.hideSidebar();
 			}
@@ -1442,7 +1445,11 @@ public class Main extends Application {
 				fileChooser.getExtensionFilters().add(extFilter);
 				File saveFile = fileChooser.showSaveDialog(null);
 				if (saveFile != null) {
-					logic.moveToLocation(saveFile.getAbsolutePath());
+					try {
+						logic.moveToLocation(saveFile.getAbsolutePath());
+					} catch (IOException e) {
+                         setFeedback(barControl, "error", "file path not recognised");
+					}
 				}
 				sidebar.hideSidebar();
 			}

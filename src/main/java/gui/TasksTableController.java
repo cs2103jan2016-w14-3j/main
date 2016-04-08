@@ -12,7 +12,6 @@ import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 
-
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Label;
@@ -29,55 +28,47 @@ public class TasksTableController extends BorderPane {
 	@FXML
 	private ListView<TasksItemController> tasksDisplay;
 
-	@FXML
-	private Label title;
-	
-	@FXML
-    private ImageView helpImage;
-
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/TasksTable.fxml";
-	private static final String HELP_ICON = "/main/resources/images/help.fw.png";
+	private static final String RED_THEME = "red";
 	private ArrayList<TasksItemController> items;
 	protected String taskname;
 	private String theme;
-	
 
 	public TasksTableController() {
 		FXMLLoader loader = new FXMLLoader(getClass().getResource(FILE_STATS_FXML));
 		loader.setController(this);
 		loader.setRoot(this);
 
-		
 		try {
 			loader.load();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-	
-		initialise();
-		setColour("red");
-	}
-	
 
+		initialise();
+		setColour(RED_THEME);
+	}
 
 	private void initialise() {
 		this.items = new ArrayList<TasksItemController>();
 		this.tasksDisplay.setItems(FXCollections.observableList(items));
-	
-		
 	}
-	
-	public void displayModified(){
-		for(int i = 0; i < items.size(); i++){
-			if(items.get(i).getLastModified()){
-			//	System.out.println("isLastModified: " + items.get(i).getLastModified());
+
+	/**
+	 * Get focus to the latest task change done by user. The task will be
+	 * highlighted in the display
+	 **/
+
+	public void displayModified() {
+		for (int i = 0; i < items.size(); i++) {
+			if (items.get(i).getLastModified()) {
 				tasksDisplay.requestFocus();
 				tasksDisplay.scrollTo(i);
 				tasksDisplay.getFocusModel().focus(i);
 				tasksDisplay.getSelectionModel().select(i);
 				items.get(i).setLastModified(false);
 			}
-				
+
 		}
 	}
 
@@ -86,28 +77,20 @@ public class TasksTableController extends BorderPane {
 	}
 
 	public void addTask(Task task, int count, String theme) {
-		setTasksItem(task,count,theme);
+		setTasksItem(task, count, theme);
 		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
-	/**
-	 * Each TaskItems displayed as a row in this custom view.
-	 * 
-	 * @param count
-	 * 
-	 * @param currentFile
-	 * @param currentNumLines
-	 */
-	private void setTasksItem(Task task,int count,String theme) {	
-		items.add(new TasksItemController(task,count,theme));  
+	/** Each TaskItems displayed as a row in this custom view. */
 
+	private void setTasksItem(Task task, int count, String theme) {
+		items.add(new TasksItemController(task, count, theme));
 	}
 
 	public void setItems(ObservableList<TasksItemController> subentries) {
 		tasksDisplay.setItems(subentries);
 	}
 
-	
 	public void controlToList() {
 		int count = 0;
 		tasksDisplay.requestFocus();
@@ -120,23 +103,18 @@ public class TasksTableController extends BorderPane {
 		items.clear();
 		tasksDisplay.refresh();
 	}
-	
-	public int getSize(){
+
+	public int getSize() {
 		return items.size();
 	}
-	
-	public void setTheme(String colour){
+
+	public void setTheme(String colour) {
 		theme = colour;
 	}
 
-
-
 	public void setColour(String colour) {
-		// TODO Auto-generated method stub
 		tasksDisplay.getStylesheets().add("/main/resources/styles/stylesheet.css");
 	}
-	
-	
 
 }
 /* @@author A0124078H */

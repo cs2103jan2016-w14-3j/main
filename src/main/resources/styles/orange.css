@@ -15,80 +15,13 @@
 	-fx-font-family:Roboto;
 }
 
-#emptyTable {
-	-fx-padding: 10px;
-	 -fx-background-color: rgba(255, 255, 255, 0.6);
-}
 #title {
 	-fx-padding: 10px;
 	-fx-font-size: 24px;
 	-fx-font-weight: bold;
 	-fx-font-family:Roboto;
 }
-.toolBar{
-	-fx-background-color: #D32F2F;
-}
 
-.topBar{
-	-fx-background-color: #F44336;
-}
-.blueToolBar{
-	-fx-background-color: #303F9F;
-}
-
-.blueTopBar{
-	-fx-background-color: #3F51BF;
-}
-
-.orangeToolBar{
-	-fx-background-color: #F57C00;
-}
-
-.orangeTopBar{
-	-fx-background-color: #FF9800;
-}
-.lblTitle{
-	-fx-font-size:20;
-	-fx-text-fill:white;
-	-fx-font-family:Roboto;
-}
-.minimiseApp {
-  -fx-graphic: url("/main/resources/images/minimiseApp.png");
-  -fx-background-color:transparent;
-}
-.minimiseApp:hover {
-  -fx-graphic: url("/main/resources/images/minimiseAppHover.png");
-  -fx-background-color:transparent;
-}
-.closeApp {
-  -fx-graphic: url("/main/resources/images/closeApp.png");
-  -fx-background-color:transparent;
-}
-.closeApp:hover {
-  -fx-graphic: url("/main/resources/images/closeAppHover.png");
-  -fx-background-color:transparent;
-}
-.sidePane{
-	-fx-background-color: white;
-}
-.lblPendingCompleted{
-	-fx-font-size: 8px;
-}
-.default-commandBar{
-	-fx-background-color: #FFF3E0;
-}
-#lblUpcoming{
-	-fx-background-color: rgba(255, 255, 255, 0.6);
-	-fx-font-family:Roboto;
-}
-#lblComplete{
-	-fx-background-color: rgba(255, 255, 255, 0.6);
-	-fx-font-family:Roboto;
-}
-
-#setting{
-	 -fx-background-color: transparent;
-}
 .list-cell { -fx-background-color: transparent; /* 1 */ }
 
 .list-cell:selected:focused, .task-cell:filled:selected {
@@ -134,8 +67,6 @@
 	-fx-font-family:Roboto;
 }
 
-
-
 .card .date {
 	-fx-font-family:Roboto;
 }
@@ -153,26 +84,11 @@
 	-fx-stroke-width: 0;
 }
 
-.bad{
-	-fx-background-color: #FF80AB;
-}
-.med{
-	-fx-background-color: #FFF3E0;
-}
-.good{
-	-fx-background-color: orange;
-}
-.best{
-	-fx-background-color: #69F0AE;
-}
-
-
 .tab-pane .tab-header-area .tab-header-background {
     -fx-opacity: 0;
 }
 
-.tab-pane
-{
+.tab-pane{
     -fx-tab-min-width:95px;
     -fx-tab-max-width:95px;
     -fx-background-color: transparent;
@@ -182,15 +98,11 @@
     -fx-background-insets: 0 1 0 1,0,0;
     -fx-border-color:#BBDEFB;
 }
-.tab-pane .tab
-{
-    
+.tab-pane .tab{   
 -fx-background-color: transparent;
-
 }
 
-.tab-pane .tab:selected
-{
+.tab-pane .tab:selected{
    -fx-background-color: rgba(192,192,192,0.8);
    -fx-border-color:transparent;
 }
@@ -210,65 +122,5 @@
    -fx-font-family:Roboto;
 }
 
-.sideButton {
-  -fx-graphic: url("/main/resources/images/sidebuttonIcon.png");
-  -fx-background-color:transparent;
-}
-.sideButton:hover {
-  -fx-graphic: url("/main/resources/images/sidebuttonIcon1.png");
-  -fx-background-color:transparent;
-}
 
-.sideButton1 {
-  -fx-graphic: url("/main/resources/images/sidebuttonIcon1.png");
-  -fx-background-color:transparent;
-}
-.sideButton1:hover {
-  -fx-graphic: url("/main/resources/images/sidebuttonIcon.png");
-  -fx-background-color:transparent;
-}
-
-.newButton {
-  -fx-graphic: url("/main/resources/images/btnNew.png");
-  -fx-background-color:transparent;
-}
-.newButton:hover {
-  -fx-graphic: url("/main/resources/images/btnNewHover.png");
-  -fx-background-color:transparent;
-}
-
-.loadButton {
-  -fx-graphic: url("/main/resources/images/btnLoad.png");
-  -fx-background-color:transparent;
-}
-.loadButton:hover {
-  -fx-graphic: url("/main/resources/images/btnLoadHover.png");
-  -fx-background-color:transparent;
-}
-.saveButton {
-  -fx-graphic: url("/main/resources/images/btnSave.png");
-  -fx-background-color:transparent;
-}
-.saveButton:hover {
-  -fx-graphic: url("/main/resources/images/btnSaveHover.png");
-  -fx-background-color:transparent;
-}
-
-.helpButton {
-  -fx-graphic: url("/main/resources/images/btnHelp.png");
-  -fx-background-color:transparent;
-}
-.helpButton:hover {
-  -fx-graphic: url("/main/resources/images/btnHelpHover.png");
-  -fx-background-color:transparent;
-}
-
-.exitButton {
-  -fx-graphic: url("/main/resources/images/btnExit.png");
-  -fx-background-color:transparent;
-}
-.exitButton:hover {
-  -fx-graphic: url("/main/resources/images/btnExitHover.png");
-  -fx-background-color:transparent;
-}
 /* @@author A0124078H */

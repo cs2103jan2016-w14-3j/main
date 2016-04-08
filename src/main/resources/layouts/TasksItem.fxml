@@ -22,7 +22,7 @@
                      <children>
                         <StackPane prefHeight="28.0" prefWidth="428.0">
                            <children>
-                                       <Text fx:id="filename" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="427.125" StackPane.alignment="CENTER_LEFT">
+                                       <Text fx:id="taskname" strokeWidth="0.0" styleClass="filename" text="taskname let me seeeeeeeee" wrappingWidth="427.125" StackPane.alignment="CENTER_LEFT">
                                  <font>
                                     <Font name="Century Gothic" size="7.0" />
                                  </font>
@@ -74,7 +74,7 @@
                   <InnerShadow color="#ffffff8a" height="0.0" radius="5.955" width="25.82" />
                </effect>
             </Rectangle>
-            <Label fx:id="firstLetter" alignment="CENTER" prefHeight="94.0" prefWidth="45.0" text="00">
+            <Label fx:id="lblIndex" alignment="CENTER" prefHeight="94.0" prefWidth="45.0" text="00">
                <font>
                   <Font size="5.0" />
                </font>

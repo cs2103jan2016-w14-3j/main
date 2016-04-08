@@ -26,15 +26,9 @@ import javafx.event.EventHandler;
 
 public class CommandBarController extends BorderPane {
 
-	@FXML
-	private Label feedback;
-
-	@FXML
-	private Shape feedbackBg;
-
-	@FXML
-	private TextField commandBar;
-
+	@FXML private Label feedback;
+	@FXML private Shape feedbackBg;
+	@FXML private TextField commandBar;
 	private Main mainApp;
 	private Timeline feedbackTimeline;
 	private static final String COMMAND_BAR_LAYOUT_FXML = "/main/resources/layouts/CommandBar.fxml";
@@ -51,7 +45,6 @@ public class CommandBarController extends BorderPane {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-
 		search();
 		this.mainApp = mainApp;
 		commandBar.getStyleClass().add("default-commandBar");
@@ -128,6 +121,12 @@ public class CommandBarController extends BorderPane {
 	public void setBgColour(String colour) {
 		commandBar.getStyleClass().add(colour);
 	}
+	
+	private void setFeedbackLabel(String feedbackText) {
+		feedback.setOpacity(0);
+		feedback.setText(feedbackText);
+		feedback.setStyle("-fx-font-weight: bold;");
+	}
 
 	/* @@author A0124078H */
 
@@ -169,12 +168,4 @@ public class CommandBarController extends BorderPane {
 		}));
 	}
 
-	/* @@author A0124078H */
-	private void setFeedbackLabel(String feedbackText) {
-		feedback.setOpacity(0);
-		feedback.setText(feedbackText);
-		feedback.setStyle("-fx-font-weight: bold;");
-	}
-
 }
-/* @@author A0124078H */
