@@ -1416,7 +1416,7 @@ public class Main extends Application {
 				if (saveFile != null) {
 					try {
 						logic.saveToLocation(saveFile.getAbsolutePath());
-					} catch (IOException e) {
+					} catch (Exception e) {
 						setFeedback(barControl, "error", "file path not recognised");
 					}
 				}
@@ -1439,7 +1439,7 @@ public class Main extends Application {
 				if (saveFile != null) {
 					try {
 						logic.moveToLocation(saveFile.getAbsolutePath());
-					} catch (IOException e) {
+					} catch (Exception e) {
                          setFeedback(barControl, "error", "file path not recognised");
 					}
 				}

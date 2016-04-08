@@ -217,7 +217,7 @@ public class StorageController {
 		pendingTemp.loadFromFile(path);
 	}
 	
-	public void saveToLocation(String path) throws IOException {
+	public void saveToLocation(String path) throws Exception {
 		assert path != null;
 		
 		pendingTemp.saveToLocation(path);
