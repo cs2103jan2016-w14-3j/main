@@ -82,7 +82,7 @@ public class PermStorage {
 		if(!path.endsWith(".txt") && !path.endsWith("/")) {
 			path = path.concat(".txt");
 		}
-		else if(!path.endsWith("/")) {
+		else if(path.endsWith("/")) {
 			throw new Exception("No file name entered");
 		}
 		File newFile = new File(path);
