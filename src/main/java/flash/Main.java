@@ -5,10 +5,6 @@ import java.io.File;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.List;
-
-import org.ocpsoft.prettytime.shade.net.fortuna.ical4j.model.Date;
-
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
 import javafx.animation.Timeline;
@@ -32,7 +28,6 @@ import main.java.logic.Logic;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
-import main.java.data.COMMAND_TYPE;
 import main.java.data.TASK_STATUS;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
@@ -61,11 +56,8 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.scene.paint.Paint;
 import javafx.scene.control.Button;
-import javafx.scene.control.Cell;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.TextField;
-
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.*;
 
@@ -1854,8 +1846,6 @@ public class Main extends Application {
 	}
 
 	private void notification(String userInput) {
-		// String title = "Your task has expired ";
-		String message = userInput;
 		String title = "You have " + userInput + " new task(s) overdue.";
 		NotificationType notification = NotificationType.CUSTOM;
 

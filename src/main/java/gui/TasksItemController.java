@@ -169,7 +169,7 @@ public class TasksItemController extends BorderPane {
 		SimpleDateFormat df = new SimpleDateFormat("EEEE dd MMM hh:mma");
 		SimpleDateFormat df1 = new SimpleDateFormat("hh:mma");
 		SimpleDateFormat df2 = new SimpleDateFormat("EEEE dd MMM");
-		SimpleDateFormat df3 = new SimpleDateFormat("EEEE");
+		//SimpleDateFormat df3 = new SimpleDateFormat("EEEE");
 		if (dates.size() == 0) {
 			return "No specified time";
 		} else {

@@ -196,7 +196,7 @@ public class TempStorage {
 		undoStack.push(tempList);
 	}
 
-	public void saveToLocation(String path) throws IOException {
+	public void saveToLocation(String path) throws Exception {
 
 		permStorage.saveToLocation(path);
 	}
