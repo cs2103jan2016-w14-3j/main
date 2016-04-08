@@ -47,7 +47,7 @@ public class EditCommandParser extends AddCommandParser {
 		}
 	}
 
-	private String determineTaskForEditCommand(String[] segments) {
+	private String determineTaskForEditCommand(String[] segments) throws InvalidInputFormatException {
 
 		String task_A = determineTask(formatToStandardCommandContent(segments[0].trim())); 
 		String task_B = determineTask(formatToStandardCommandContent(segments[1].trim()));
