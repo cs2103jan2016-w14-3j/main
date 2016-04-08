@@ -724,7 +724,7 @@ public class Main extends Application {
 			if (fragments.length > 1) {
 				
 				System.out.println("fragmentss "+ fragments[0]);
-				if(fragments[COMMAND_INDEX].equalsIgnoreCase("edit")){
+				if(fragments[COMMAND_INDEX].equalsIgnoreCase("edit")&&fragments[1].contains(",")){
 					fragments[1]= fragments[1].substring(0,fragments[1].indexOf(','));		
 				}
 				System.out.println("fragmentss "+ fragments[1]);

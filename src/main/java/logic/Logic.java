@@ -18,6 +18,8 @@ public class Logic {
 	private static final String DELETE_COMMAND = "delete";
 	private static final String SEARCH_COMMAND = "search";
 	private static final String CHANGE_DIRECTORY_COMMAND = "move";
+	private static final String OPEN_COMMAND = "open";
+	private static final String SAVE_COMMAND = "save";
 	private static final String SORT_COMMAND = "sort";
 	private static final String EDIT_COMMAND = "edit";
 	private static final String UNDO_COMMAND = "undo";
@@ -385,7 +387,8 @@ public class Logic {
 				commandWord.equals(SORT_COMMAND)||commandWord.equals(CHANGE_DIRECTORY_COMMAND)||
 				commandWord.equals(CLEAR_COMMAND)||commandWord.equals(UNDO_COMMAND)||commandWord.equals(HELP_COMMAND)||
 				commandWord.equals(MARK_COMMAND)||commandWord.equals(REDO_COMMAND) || commandWord.equals(SWITCH_COMMAND)|| 
-				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND) || commandWord.equals(SHOW_COMMAND))
+				commandWord.equals(UNMARK_COMMAND)||commandWord.equals(THEME_COMMAND) || commandWord.equals(SHOW_COMMAND)
+				|| commandWord.equals(SAVE_COMMAND)|| commandWord.equals(OPEN_COMMAND))
 			return true;
 		return false;
 
