@@ -22,7 +22,6 @@ public class Command {
 
 	public Command(String command) {
 		this.original = command.trim();
-		//this.commandParameters = new String[4];
 	}
 
 	public Command(String original, CommandType commandType, String commandContent,
@@ -84,27 +83,34 @@ public class Command {
 		if (priority.equals(PriorityLevel.HIGH.getType())) {
 			return PriorityLevel.HIGH;
 		}
+		
 		else if (priority.equals(PriorityLevel.MEDIUM.getType())) {
 			return PriorityLevel.MEDIUM;
 		}
+		
 		else if (priority.equals(PriorityLevel.NOT_SPECIFIED.getType())) {
 			return PriorityLevel.NOT_SPECIFIED;
 		}
+		
 		else {
 			return PriorityLevel.LOW;
 		}
 	}
 	
 	public static TaskStatus getStatus(String status) {
+		
 		if (status.equals(TaskStatus.OVERDUE.getType())) {
 			return TaskStatus.OVERDUE;
 		}
+		
 		else if (status.equals(TaskStatus.UPCOMING.getType())) {
 			return TaskStatus.UPCOMING;
 		}
+		
 		else if (status.equals(TaskStatus.FLOATING.getType())) {
 			return TaskStatus.FLOATING;
 		}
+		
 		else {
 			return TaskStatus.COMPLETED;
 		}
@@ -114,15 +120,11 @@ public class Command {
 		if (type.equals(TaskType.DEADLINE.getType())) {
 			return TaskType.DEADLINE;
 		}
+		
 		else if (type.equals(TaskType.EVENT.getType())) {
 			return TaskType.EVENT;
 		}
-//		else if (type.equals(TaskType.RECURRING_EVERY.getType())){
-//			return TaskType.RECURRING_EVERY;
-//		}
-//		else if (type.equals(TaskType.RECURRING_ALTERNATE.getType())){
-//			return TaskType.RECURRING_ALTERNATE;
-//		}
+		
 		else {
 			return TaskType.DURATION;
 		}
@@ -130,15 +132,21 @@ public class Command {
 	
 	
 	public static List<Date> getTime(String time) {
+		//time is not specified
 		if (time.equals("[]")) {
 			return parser.parse(time);
 		}
+		
+		//format time to facilitate manipulation
 		time = time.substring(1, time.length() - 1);
 		String[] segments = time.split(", ");
+		
+		//add formatted time into the result list
 		List<Date> result = new ArrayList<Date>();
 		for (int i = 0; i < segments.length; i++) {
 			result.add(parser.parse(format(segments[i])).get(0));
 		}
+		
 		return result;
 	}
 
@@ -146,6 +154,7 @@ public class Command {
 	private static String format(String time) {
 		time = time.substring(0, 10) + WHITE_SPACE + 
 				time.substring(24, 28) + time.substring(10, 23);
+		
 		return time;
 	}
 
