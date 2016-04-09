@@ -38,6 +38,9 @@ public class PermStorage {
 		taskList = new ArrayList<Task>();
 	}
 	
+	/*
+	 * 
+	 */
 	public void moveToLocation(String path) throws IOException {
 		File newFile = new File(path);
 		Files.copy(file.toPath(), newFile.toPath());

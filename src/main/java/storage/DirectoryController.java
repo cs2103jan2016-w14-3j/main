@@ -45,7 +45,6 @@ public class DirectoryController {
 	 * Creates a file to store the path of the save file
 	 */
 	private void initialiseFileDir(String taskFileName, String dirFileName) {
-
 		dirFile = new File(dirFileName);
 
 		if(!dirFile.exists()) {

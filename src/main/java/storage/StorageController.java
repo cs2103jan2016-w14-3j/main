@@ -28,6 +28,9 @@ public class StorageController {
 		completedTemp = new CompletedTaskTempStorage();
 	}
 
+	/*
+	 * 
+	 */
 	public void addTask(Task task) {
 		assert task != null;
 		

@@ -38,6 +38,9 @@ public class TempStorage {
 		prevSearch = "";
 	}
 
+	/*
+	 * 
+	 */
 	public void writeToTemp(Task task) {
 
 		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
