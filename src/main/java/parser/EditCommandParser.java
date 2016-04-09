@@ -48,6 +48,7 @@ public class EditCommandParser extends AddCommandParser {
 
 	private void checkAndHandleInvalidCommand(String commandContent) 
 			throws InvalidInputFormatException {
+		assert commandContent != null;
 		
 		//empty command is not allowed
 		if (commandContent.isEmpty()) {
