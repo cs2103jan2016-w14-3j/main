@@ -177,6 +177,7 @@ public class Main extends Application {
 		changeRedTheme();
 		checkIsTasksEmpty();
 		overdueTimer();
+		appLog.getLogger().info("Start logging.....");
 	}
 
 	/********************************** Initialisation ***********************************************/
@@ -747,7 +748,6 @@ public class Main extends Application {
 					commandByNumber = true;
 				} catch (NumberFormatException e) {
 					commandByNumber = false;
-					appLog.getLogger().info("Not using command by index: " + e );
 				}			
 				// if the user delete/edit/mark/unmark by number
 				if (commandByNumber) {
@@ -1260,7 +1260,6 @@ public class Main extends Application {
 				commandByNumbers = true;
 			} catch (NumberFormatException e) {
 				commandByNumbers = false;
-				appLog.getLogger().warning("Not using command by index: " + e );
 			}
 		}
 		// if not command by number, live search, else if it is command by number, stop live search		

@@ -16,7 +16,7 @@ public class CustomFormatter extends Formatter{
 		stringBuilder.append(record.getMessage());
 		stringBuilder.append(" [");
 		stringBuilder.append(new Date(record.getMillis()));
-		stringBuilder.append("]\n");
+		stringBuilder.append("]\r\n");
 		
 		return stringBuilder.toString();
 	}
