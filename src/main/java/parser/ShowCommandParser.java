@@ -6,7 +6,7 @@ import java.util.List;
 
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
-import main.java.data.PRIORITY_LEVEL;
+import main.java.data.PriorityLevel;
 
 public class ShowCommandParser {
 	
@@ -42,16 +42,16 @@ public class ShowCommandParser {
 			parameters[TIME] = dates.toString();
 		}
 		else if (commandContent.equals("h") || commandContent.equals("high")) {
-			parameters[PRIORITY] = PRIORITY_LEVEL.HIGH.getType();
+			parameters[PRIORITY] = PriorityLevel.HIGH.getType();
 			
 		}
 		else if (commandContent.equals("med") || commandContent.equals("m") 
 				|| commandContent.equals("medium")) {
-			parameters[PRIORITY] = PRIORITY_LEVEL.MEDIUM.getType();
+			parameters[PRIORITY] = PriorityLevel.MEDIUM.getType();
 		}
 		
 		else if (commandContent.equals("low") || commandContent.equals("l")) {
-			parameters[PRIORITY] = PRIORITY_LEVEL.LOW.getType();
+			parameters[PRIORITY] = PriorityLevel.LOW.getType();
 		}
 		
 		else {

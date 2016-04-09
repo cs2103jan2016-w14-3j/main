@@ -8,8 +8,8 @@ import java.util.List;
 import java.util.PriorityQueue;
 import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
-import main.java.data.PRIORITY_LEVEL;
-import main.java.data.TASK_NATURE;
+import main.java.data.PriorityLevel;
+import main.java.data.TaskType;
 
 public class AddCommandParser {
 
@@ -267,15 +267,15 @@ public class AddCommandParser {
 
 		//priority is not specified
 		else {
-			return PRIORITY_LEVEL.NOT_SPECIFIED.getType();
+			return PriorityLevel.NOT_SPECIFIED.getType();
 		}
 	}
 
 	private boolean isValidPriority(String priority) {
 
-		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) 
-				|| priority.equals(PRIORITY_LEVEL.MEDIUM.getType()) 
-				|| priority.equals(PRIORITY_LEVEL.LOW.getType()) 
+		if (priority.equals(PriorityLevel.HIGH.getType()) 
+				|| priority.equals(PriorityLevel.MEDIUM.getType()) 
+				|| priority.equals(PriorityLevel.LOW.getType()) 
 				|| priority.equals(PRIORITY_HIGH_ALIAS) 
 				|| priority.equals(PRIORITY_MEDIUM_ALIAS_1) 
 				|| priority.equals(PRIORITY_MEDIUM_ALIAS_2) 
@@ -290,20 +290,20 @@ public class AddCommandParser {
 
 	private String getPriorityInFull(String priority) {
 
-		if (priority.equals(PRIORITY_LEVEL.HIGH.getType()) 
+		if (priority.equals(PriorityLevel.HIGH.getType()) 
 				|| priority.equals(PRIORITY_HIGH_ALIAS)) {
-			priority = PRIORITY_LEVEL.HIGH.getType();
+			priority = PriorityLevel.HIGH.getType();
 		}
 
-		else if (priority.equals(PRIORITY_LEVEL.MEDIUM.getType()) 
+		else if (priority.equals(PriorityLevel.MEDIUM.getType()) 
 				|| priority.equals(PRIORITY_MEDIUM_ALIAS_1) 
 				|| priority.equals(PRIORITY_MEDIUM_ALIAS_2)) {
-			priority = PRIORITY_LEVEL.MEDIUM.getType();
+			priority = PriorityLevel.MEDIUM.getType();
 		}
 
-		else if (priority.equals(PRIORITY_LEVEL.LOW.getType()) ||
+		else if (priority.equals(PriorityLevel.LOW.getType()) ||
 				priority.equals(PRIORITY_LOW_ALIAS)) {
-			priority = PRIORITY_LEVEL.LOW.getType();
+			priority = PriorityLevel.LOW.getType();
 		}
 
 		return priority;
@@ -315,12 +315,12 @@ public class AddCommandParser {
 
 		//time is not specified
 		if (timeIndex == FIELD_NOT_EXIST) {
-			return TASK_NATURE.EVENT.getType();
+			return TaskType.EVENT.getType();
 		}
 
 		//time is in the format "from... to..."
 		else if (isDurationTask(timeSegment)) {
-			return TASK_NATURE.DURATION.getType();
+			return TaskType.DURATION.getType();
 		}
 
 		//time is specified by a single date with no duration
@@ -329,12 +329,12 @@ public class AddCommandParser {
 			if (formattdCommandContent.substring(timeIndex, timeIndex + 2)
 					.equalsIgnoreCase(DEADLINE_FLAG_BY)|| formattdCommandContent.substring(
 							timeIndex, timeIndex + 6).equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
-				return TASK_NATURE.DEADLINE.getType();
+				return TaskType.DEADLINE.getType();
 			}
 
 			//time is specified by any other allowed prepositions or phrases
 			else {
-				return TASK_NATURE.EVENT.getType();
+				return TaskType.EVENT.getType();
 			}
 		}
 	}

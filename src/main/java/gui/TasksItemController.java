@@ -14,8 +14,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
-import main.java.data.TASK_NATURE;
-import main.java.data.TASK_STATUS;
+import main.java.data.TaskType;
+import main.java.data.TaskStatus;
 import main.java.data.Task;
 import java.util.Date;
 import java.util.List;
@@ -49,7 +49,7 @@ public class TasksItemController extends BorderPane {
 	private Task task;
 	private String taskTime;
 	private Boolean isLastModified;
-	private TASK_NATURE taskType;
+	private TaskType taskType;
 
 	public TasksItemController(Task task, int count, String theme) {
 		this.task = task;
@@ -88,14 +88,14 @@ public class TasksItemController extends BorderPane {
 			if (isToday(task.getTime())) {
 				setUpTodayTask();
 			}
-			if (task.getStatus() == TASK_STATUS.OVERDUE) {
+			if (task.getStatus() == TaskStatus.OVERDUE) {
 				setUpOverdueTask(task);
 			}
-			if (task.getStatus() == TASK_STATUS.COMPLETED) {
+			if (task.getStatus() == TaskStatus.COMPLETED) {
 				setUpCompleteTaskWithTime(task);
 			}
 		} else {
-			if (task.getStatus() == TASK_STATUS.COMPLETED) {
+			if (task.getStatus() == TaskStatus.COMPLETED) {
 				setUpCompleteTaskNoTime();
 			}
 		}
@@ -136,7 +136,7 @@ public class TasksItemController extends BorderPane {
 			this.taskname.setText(" " + task.getTask());
 			lblIndex.setText(String.valueOf(count));
 		}
-		if (task.getStatus() == TASK_STATUS.OVERDUE) {
+		if (task.getStatus() == TaskStatus.OVERDUE) {
 			taskname.setStyle("-fx-fill: #F50057;");
 		}
 	}
@@ -173,9 +173,9 @@ public class TasksItemController extends BorderPane {
 		if (dates.size() == 0) {
 			return "No specified time";
 		} else {
-			if (taskType == TASK_NATURE.DEADLINE) {
+			if (taskType == TaskType.DEADLINE) {
 				return "Due: " + df.format(dates.get(0));
-			} else if (taskType == TASK_NATURE.DURATION) {
+			} else if (taskType == TaskType.DURATION) {
 				String time;
 				// System.out.println(dates);
 				if (dates.get(0).toString().substring(0, 10).equals(dates.get(1).toString().substring(0, 10))) {
@@ -194,14 +194,6 @@ public class TasksItemController extends BorderPane {
 				}
 				return time;
 			}
-			// else if (taskType == TASK_NATURE.RECURRING_EVERY){
-			// String time = "Every " + df3.format(dates.get(0));
-			// return time;
-			// }
-			// else {
-			// String time = "Every alternate " + df3.format(dates.get(0));
-			// return time;
-			// }
 			
 			
 			

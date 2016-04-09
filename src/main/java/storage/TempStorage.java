@@ -8,8 +8,8 @@ import java.util.Stack;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
-import main.java.data.PRIORITY_LEVEL;
-import main.java.data.TASK_STATUS;
+import main.java.data.PriorityLevel;
+import main.java.data.TaskStatus;
 import main.java.data.Task;
 
 public class TempStorage {
@@ -95,7 +95,7 @@ public class TempStorage {
 	public void clearUpcoming() {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
-			if(task.getStatus().equals(TASK_STATUS.UPCOMING)) {
+			if(task.getStatus().equals(TaskStatus.UPCOMING)) {
 				taskList.remove(i);
 				permStorage.deleteFromFile(i);
 			}
@@ -108,7 +108,7 @@ public class TempStorage {
 	public void clearFloating() {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
-			if(task.getStatus().equals(TASK_STATUS.FLOATING)) {
+			if(task.getStatus().equals(TaskStatus.FLOATING)) {
 				taskList.remove(i);
 				permStorage.deleteFromFile(i);
 			}
@@ -121,7 +121,7 @@ public class TempStorage {
 	public void clearOverdue() {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
-			if(task.getStatus().equals(TASK_STATUS.OVERDUE)) {
+			if(task.getStatus().equals(TaskStatus.OVERDUE)) {
 				taskList.remove(i);
 				permStorage.deleteFromFile(i);
 			}
@@ -205,8 +205,8 @@ public class TempStorage {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			
-			if(task.getStatus().equals(TASK_STATUS.UPCOMING) && task.getTime().get(0).before(date)) {
-				task.setStatus(TASK_STATUS.OVERDUE);
+			if(task.getStatus().equals(TaskStatus.UPCOMING) && task.getTime().get(0).before(date)) {
+				task.setStatus(TaskStatus.OVERDUE);
 				permStorage.editToFile(i, task);
 				taskList.remove(i);
 				taskList.add(task);
@@ -238,7 +238,7 @@ public class TempStorage {
 		return searchResults;
 	}
 	
-	public ArrayList<Task> showAllByPriority(PRIORITY_LEVEL priority) {
+	public ArrayList<Task> showAllByPriority(PriorityLevel priority) {
 		
 		ArrayList<Task> searchResults = new ArrayList<Task>();
 		

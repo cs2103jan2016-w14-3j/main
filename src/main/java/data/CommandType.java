@@ -1,6 +1,6 @@
 package main.java.data;
 
-public enum COMMAND_TYPE {
+public enum CommandType {
 	
 	ADD("add"), EDIT("edit"), DELETE("delete"), DELETE_COMPLETE("deleteComplete"), UNDO("undo"), 
 	REDO("redo"),SORT("sort"), SORT_COMPLETE("sortComplete"), MOVE("move"), SEARCH("search"), 
@@ -12,7 +12,7 @@ public enum COMMAND_TYPE {
 	
 	private final String type; 
 	
-	COMMAND_TYPE(String type) { 
+	CommandType(String type) { 
 		this.type = type; 
 	}  
 

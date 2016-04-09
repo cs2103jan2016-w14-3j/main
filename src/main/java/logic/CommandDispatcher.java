@@ -2,7 +2,7 @@
 package main.java.logic;
 
 
-import main.java.data.COMMAND_TYPE;
+import main.java.data.CommandType;
 import main.java.data.Command;
 import main.java.parser.AddCommandParser;
 import main.java.parser.DeleteCommandParser;
@@ -39,50 +39,50 @@ public class CommandDispatcher {
 	private void setParameters(Command command)throws InvalidInputFormatException {
 		assert command != null;
 		
-		if (command.isCommand(COMMAND_TYPE.ADD)) {
+		if (command.isCommand(CommandType.ADD)) {
 			AddCommandParser parser = new AddCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
+		else if (command.isCommand(CommandType.EDIT)) {
 			EditCommandParser parser = new EditCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.DELETE)) {
+		else if (command.isCommand(CommandType.DELETE)) {
 			DeleteCommandParser parser = new DeleteCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.DELETE_COMPLETE)) {
+		else if (command.isCommand(CommandType.DELETE_COMPLETE)) {
 			DeleteCommandParser parser = new DeleteCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
+		else if (command.isCommand(CommandType.MOVE)) {
 			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.SAVE)) {
+		else if (command.isCommand(CommandType.SAVE)) {
 			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.SORT)
-				|| command.isCommand(COMMAND_TYPE.SORT_COMPLETE)) {
+		else if (command.isCommand(CommandType.SORT)
+				|| command.isCommand(CommandType.SORT_COMPLETE)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-		else if (command.isCommand(COMMAND_TYPE.SHOW) 
-				|| command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
+		else if (command.isCommand(CommandType.SHOW) 
+				|| command.isCommand(CommandType.SHOW_COMPLETE)) {
 			ShowCommandParser parser = new ShowCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
 	
-		else if (command.isCommand(COMMAND_TYPE.INVALID)){
+		else if (command.isCommand(CommandType.INVALID)){
 			throw new InvalidInputFormatException("Please enter a valid command!");
 		}
 		
@@ -93,103 +93,103 @@ public class CommandDispatcher {
 
 	}
 
-	private COMMAND_TYPE determineCommandType(String originalCommand) {
+	private CommandType determineCommandType(String originalCommand) {
 		assert originalCommand != null;
 		
-		COMMAND_TYPE type = getCommandKeyword(originalCommand);
+		CommandType type = getCommandKeyword(originalCommand);
 		return type;
 	}
 
-	private COMMAND_TYPE getCommandKeyword(String command) {
+	private CommandType getCommandKeyword(String command) {
 		assert command != null;
 		
 		String firstWord = getFirstKeyword(command);
 
-		if (isCommand(COMMAND_TYPE.ADD, firstWord)) {
-			return COMMAND_TYPE.ADD;
+		if (isCommand(CommandType.ADD, firstWord)) {
+			return CommandType.ADD;
 		}
 
-		else if (isCommand(COMMAND_TYPE.DELETE, firstWord)) {
-			return COMMAND_TYPE.DELETE;
+		else if (isCommand(CommandType.DELETE, firstWord)) {
+			return CommandType.DELETE;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.DELETE_COMPLETE, firstWord)) {
-			return COMMAND_TYPE.DELETE_COMPLETE;
+		else if (isCommand(CommandType.DELETE_COMPLETE, firstWord)) {
+			return CommandType.DELETE_COMPLETE;
 		}
 
-		else if (isCommand(COMMAND_TYPE.SEARCH, firstWord)) {
-			return COMMAND_TYPE.SEARCH;
+		else if (isCommand(CommandType.SEARCH, firstWord)) {
+			return CommandType.SEARCH;
 		}
 
-		else if (isCommand(COMMAND_TYPE.MOVE, firstWord)) {
-			return COMMAND_TYPE.MOVE;
+		else if (isCommand(CommandType.MOVE, firstWord)) {
+			return CommandType.MOVE;
 		}
-		else if (isCommand(COMMAND_TYPE.SAVE, firstWord)) {
-			return COMMAND_TYPE.SAVE;
-		}
-
-		else if (isCommand(COMMAND_TYPE.SORT, firstWord)) {
-			return COMMAND_TYPE.SORT;
-		}
-		
-		else if (isCommand(COMMAND_TYPE.SORT_COMPLETE, firstWord)) {
-			return COMMAND_TYPE.SORT_COMPLETE;
+		else if (isCommand(CommandType.SAVE, firstWord)) {
+			return CommandType.SAVE;
 		}
 
-		else if (isCommand(COMMAND_TYPE.CLEAR_UPCOMING, firstWord)) {
-			return COMMAND_TYPE.CLEAR_UPCOMING;
+		else if (isCommand(CommandType.SORT, firstWord)) {
+			return CommandType.SORT;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.CLEAR_ALL, firstWord)) {
-			return COMMAND_TYPE.CLEAR_ALL;
-		}
-		
-		else if (isCommand(COMMAND_TYPE.CLEAR_FLOATING, firstWord)) {
-			return COMMAND_TYPE.CLEAR_FLOATING;
-		}
-		
-		else if (isCommand(COMMAND_TYPE.CLEAR_OVERDUE, firstWord)) {
-			return COMMAND_TYPE.CLEAR_OVERDUE;
-		}
-		
-		else if (isCommand(COMMAND_TYPE.CLEAR_COMPLETE, firstWord)) {
-			return COMMAND_TYPE.CLEAR_COMPLETE;
+		else if (isCommand(CommandType.SORT_COMPLETE, firstWord)) {
+			return CommandType.SORT_COMPLETE;
 		}
 
-		else if (isCommand(COMMAND_TYPE.EDIT, firstWord)) {
-			return COMMAND_TYPE.EDIT;
+		else if (isCommand(CommandType.CLEAR_UPCOMING, firstWord)) {
+			return CommandType.CLEAR_UPCOMING;
+		}
+		
+		else if (isCommand(CommandType.CLEAR_ALL, firstWord)) {
+			return CommandType.CLEAR_ALL;
+		}
+		
+		else if (isCommand(CommandType.CLEAR_FLOATING, firstWord)) {
+			return CommandType.CLEAR_FLOATING;
+		}
+		
+		else if (isCommand(CommandType.CLEAR_OVERDUE, firstWord)) {
+			return CommandType.CLEAR_OVERDUE;
+		}
+		
+		else if (isCommand(CommandType.CLEAR_COMPLETE, firstWord)) {
+			return CommandType.CLEAR_COMPLETE;
 		}
 
-		else if (isCommand(COMMAND_TYPE.UNDO, firstWord)) {
-			return COMMAND_TYPE.UNDO;
+		else if (isCommand(CommandType.EDIT, firstWord)) {
+			return CommandType.EDIT;
+		}
+
+		else if (isCommand(CommandType.UNDO, firstWord)) {
+			return CommandType.UNDO;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.REDO, firstWord)) {
-			return COMMAND_TYPE.REDO;
+		else if (isCommand(CommandType.REDO, firstWord)) {
+			return CommandType.REDO;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.MARK, firstWord)) {
-			return COMMAND_TYPE.MARK;
+		else if (isCommand(CommandType.MARK, firstWord)) {
+			return CommandType.MARK;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.UNMARK, firstWord)) {
-			return COMMAND_TYPE.UNMARK;
+		else if (isCommand(CommandType.UNMARK, firstWord)) {
+			return CommandType.UNMARK;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.SWITCH, firstWord)) {
-			return COMMAND_TYPE.SWITCH;
+		else if (isCommand(CommandType.SWITCH, firstWord)) {
+			return CommandType.SWITCH;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.SHOW, firstWord)) {
-			return COMMAND_TYPE.SHOW;
+		else if (isCommand(CommandType.SHOW, firstWord)) {
+			return CommandType.SHOW;
 		}
 		
-		else if (isCommand(COMMAND_TYPE.SHOW_COMPLETE, firstWord)) {
-			return COMMAND_TYPE.SHOW_COMPLETE;
+		else if (isCommand(CommandType.SHOW_COMPLETE, firstWord)) {
+			return CommandType.SHOW_COMPLETE;
 		}
 		
 		else {
-			return COMMAND_TYPE.INVALID;
+			return CommandType.INVALID;
 		}
 		
 	}
@@ -205,7 +205,7 @@ public class CommandDispatcher {
 		return command.substring(0,command.indexOf(WHITE_SPACE)).trim();
 	}
 
-	private boolean isCommand(COMMAND_TYPE type, String keyword) {
+	private boolean isCommand(CommandType type, String keyword) {
 		assert keyword != null;
 		
 		return type.getType().equalsIgnoreCase(keyword);

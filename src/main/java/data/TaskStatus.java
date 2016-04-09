@@ -1,11 +1,11 @@
 package main.java.data;
 
-public enum TASK_STATUS {
+public enum TaskStatus {
 	OVERDUE("overdue"), UPCOMING("upcoming"), FLOATING("floating"), COMPLETED("completed");
 
 	private final String type;
 
-	TASK_STATUS(String type) {
+	TaskStatus(String type) {
 		this.type = type;
 	}
 

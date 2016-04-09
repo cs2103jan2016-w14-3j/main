@@ -1,7 +1,7 @@
 /* @@author A0127481E */
 package main.java.parser;
 
-import main.java.data.COMMAND_TYPE;
+import main.java.data.CommandType;
 
 public class StorageCommandParser {
 	
@@ -9,7 +9,7 @@ public class StorageCommandParser {
 	
 	public StorageCommandParser() {}
 
-	public String[] determineParameters(COMMAND_TYPE commandType, String commandContent) 
+	public String[] determineParameters(CommandType commandType, String commandContent) 
 			throws InvalidInputFormatException {
 		assert commandType != null;
 		assert commandContent != null;

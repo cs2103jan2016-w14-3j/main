@@ -6,7 +6,7 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.java.data.COMMAND_TYPE;
+import main.java.data.CommandType;
 import main.java.data.Command;
 import main.java.parser.AddCommandParser;
 import main.java.parser.InvalidInputFormatException;
@@ -33,7 +33,7 @@ public class TestCommandDispatcher {
 				(userInput);
 		
 		Command expectedCommand = new Command(userInput, 
-				COMMAND_TYPE.ADD, "on mon 5pm to 8pm go shopping #low", expectedPara);
+				CommandType.ADD, "on mon 5pm to 8pm go shopping #low", expectedPara);
 		
 		
 		assertEquals(expectedCommand.getOriginal(), actualCommand.getOriginal());
@@ -53,7 +53,7 @@ public class TestCommandDispatcher {
 				("on mon 5pm to 8pm go shopping #low");
 		
 		Command expectedCommand = new Command(userInput, 
-				COMMAND_TYPE.ADD, "on mon 5pm to 8pm go shopping #low", expectedPara);
+				CommandType.ADD, "on mon 5pm to 8pm go shopping #low", expectedPara);
 		
 		
 		assertEquals(expectedCommand.getOriginal(), actualCommand.getOriginal());

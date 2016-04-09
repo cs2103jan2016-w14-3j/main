@@ -4,9 +4,9 @@ package main.java.logic;
 import java.util.ArrayList;
 import java.util.Date;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
-import main.java.data.COMMAND_TYPE;
+import main.java.data.CommandType;
 import main.java.data.Command;
-import main.java.data.PRIORITY_LEVEL;
+import main.java.data.PriorityLevel;
 import main.java.data.Task;
 import main.java.data.TransientTask;
 import main.java.parser.EditCommandParser;
@@ -79,80 +79,80 @@ public class Logic {
 
 		ArrayList<Task> result = new ArrayList<Task>();
 
-		if (command.isCommand(COMMAND_TYPE.ADD)) {
+		if (command.isCommand(CommandType.ADD)) {
 			result = handleAddCommand(command);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_ALL)){
+		else if (command.isCommand(CommandType.CLEAR_ALL)){
 			result = handleClearAllCommand();
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_FLOATING)){
+		else if (command.isCommand(CommandType.CLEAR_FLOATING)){
 			result = handleClearFloatingTaskCommand();
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_UPCOMING)){
+		else if (command.isCommand(CommandType.CLEAR_UPCOMING)){
 			result = handleClearUpcomingTaskCommand();
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_OVERDUE)){
+		else if (command.isCommand(CommandType.CLEAR_OVERDUE)){
 			result = handleClearOverdueTaskCommand();
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.CLEAR_COMPLETE)){
+		else if (command.isCommand(CommandType.CLEAR_COMPLETE)){
 			result = handleClearCompleteTaskCommand();
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.DELETE)) {
+		else if (command.isCommand(CommandType.DELETE)) {
 			handleDeleteTaskCommand(userInput);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.DELETE_COMPLETE)) {
+		else if (command.isCommand(CommandType.DELETE_COMPLETE)) {
 			handleDeleteCompleteTaskCommand(userInput);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.EDIT)) {
+		else if (command.isCommand(CommandType.EDIT)) {
 			handleEditCommand(result, userInput, command);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.MOVE)) {
+		else if (command.isCommand(CommandType.MOVE)) {
 			handleMoveCommand(command);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.SAVE)) {
+		else if (command.isCommand(CommandType.SAVE)) {
 			handleSaveCommand(command);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.MARK)) {
+		else if (command.isCommand(CommandType.MARK)) {
 			handleMarkCommand(userInput);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.UNMARK)) {
+		else if (command.isCommand(CommandType.UNMARK)) {
 			handleUnmarkCommand(userInput);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.SHOW)) {
+		else if (command.isCommand(CommandType.SHOW)) {
 			result = handleShowCommand(command);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.SHOW_COMPLETE)) {
+		else if (command.isCommand(CommandType.SHOW_COMPLETE)) {
 			result = handleShowCompleteCommand(command);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.SORT)) {
+		else if (command.isCommand(CommandType.SORT)) {
 			handleSortCommand(command);
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.SORT_COMPLETE)) {
+		else if (command.isCommand(CommandType.SORT_COMPLETE)) {
 			handleSortCompleteCommand(command);
 		}
 
 
-		else if (command.isCommand(COMMAND_TYPE.UNDO)) {
+		else if (command.isCommand(CommandType.UNDO)) {
 			handleUndoCommand();
 		}
 
-		else if (command.isCommand(COMMAND_TYPE.REDO)) {
+		else if (command.isCommand(CommandType.REDO)) {
 			handleRedoCommand();
 		}
 
@@ -212,7 +212,7 @@ public class Logic {
 
 		ArrayList<Task> result;
 		Date timeFilter = null;
-		PRIORITY_LEVEL priorityFilter = null;
+		PriorityLevel priorityFilter = null;
 
 		//filter by time
 		if (command.getParameters()[TIME] != null) {
@@ -247,7 +247,7 @@ public class Logic {
 
 		ArrayList<Task> result;
 		Date timeFilter = null;
-		PRIORITY_LEVEL priorityFilter = null;
+		PriorityLevel priorityFilter = null;
 		boolean isTime = false;
 
 		//filter by time
@@ -277,22 +277,22 @@ public class Logic {
 	}
 
 
-	private PRIORITY_LEVEL determinePriorityFilter(Command command) {
+	private PriorityLevel determinePriorityFilter(Command command) {
 		assert command != null;
 
 		String priority = command.getParameters()[PRIORITY];
-		PRIORITY_LEVEL priorityFilter;
+		PriorityLevel priorityFilter;
 
-		if (priority.equals(PRIORITY_LEVEL.HIGH.getType())) {
-			priorityFilter = PRIORITY_LEVEL.HIGH;
+		if (priority.equals(PriorityLevel.HIGH.getType())) {
+			priorityFilter = PriorityLevel.HIGH;
 		}
 
-		else if (priority.equals(PRIORITY_LEVEL.MEDIUM.getType())) {
-			priorityFilter = PRIORITY_LEVEL.MEDIUM;
+		else if (priority.equals(PriorityLevel.MEDIUM.getType())) {
+			priorityFilter = PriorityLevel.MEDIUM;
 		}
 
 		else {
-			priorityFilter = PRIORITY_LEVEL.LOW;
+			priorityFilter = PriorityLevel.LOW;
 		}
 
 		return priorityFilter;
@@ -386,7 +386,7 @@ public class Logic {
 				}
 
 				//not update priority -> retain the original priority
-				if(updated.getPriority()== PRIORITY_LEVEL.NOT_SPECIFIED){
+				if(updated.getPriority()== PriorityLevel.NOT_SPECIFIED){
 					updated.setPriority(original.getPriority());
 				}
 
@@ -585,11 +585,11 @@ public class Logic {
 	public int retrieveTaskIndex(Command command) {
 		assert command != null;
 
-		COMMAND_TYPE type = command.getType();
+		CommandType type = command.getType();
 		String content = command.getContent();
 
 		//delete by index
-		if (type == COMMAND_TYPE.DELETE) {
+		if (type == CommandType.DELETE) {
 			try {
 				return Integer.parseInt(content);
 			} catch (NumberFormatException e) {
@@ -598,7 +598,7 @@ public class Logic {
 		}
 
 		//edit by index
-		else if (type == COMMAND_TYPE.EDIT) {
+		else if (type == CommandType.EDIT) {
 			content = content.substring(0, content.indexOf(","));
 			try {
 				return Integer.parseInt(content);

@@ -8,7 +8,7 @@ import java.util.List;
 public class Command {
 
 	private String original;
-	private COMMAND_TYPE commandType;
+	private CommandType commandType;
 	private String commandContent;
 	private String[] commandParameters;
 	private static PrettyTimeParser parser = new PrettyTimeParser();
@@ -25,7 +25,7 @@ public class Command {
 		//this.commandParameters = new String[4];
 	}
 
-	public Command(String original, COMMAND_TYPE commandType, String commandContent,
+	public Command(String original, CommandType commandType, String commandContent,
 			String[] commandParameters) {
 		this.original = original;
 		this.commandType = commandType;
@@ -33,7 +33,7 @@ public class Command {
 		this.commandParameters = commandParameters;
 	}
 
-	public COMMAND_TYPE getType() {
+	public CommandType getType() {
 		return this.commandType;
 	}
 
@@ -49,7 +49,7 @@ public class Command {
 		this.commandContent = commandContent;
 	}
 
-	public void setType(COMMAND_TYPE commandType) {
+	public void setType(CommandType commandType) {
 		this.commandType = commandType;
 	}
 
@@ -79,52 +79,52 @@ public class Command {
 		return transientTask;
 	}
 	
-	public  static PRIORITY_LEVEL getPriority(String priority) {
+	public  static PriorityLevel getPriority(String priority) {
 		
-		if (priority.equals(PRIORITY_LEVEL.HIGH.getType())) {
-			return PRIORITY_LEVEL.HIGH;
+		if (priority.equals(PriorityLevel.HIGH.getType())) {
+			return PriorityLevel.HIGH;
 		}
-		else if (priority.equals(PRIORITY_LEVEL.MEDIUM.getType())) {
-			return PRIORITY_LEVEL.MEDIUM;
+		else if (priority.equals(PriorityLevel.MEDIUM.getType())) {
+			return PriorityLevel.MEDIUM;
 		}
-		else if (priority.equals(PRIORITY_LEVEL.NOT_SPECIFIED.getType())) {
-			return PRIORITY_LEVEL.NOT_SPECIFIED;
+		else if (priority.equals(PriorityLevel.NOT_SPECIFIED.getType())) {
+			return PriorityLevel.NOT_SPECIFIED;
 		}
 		else {
-			return PRIORITY_LEVEL.LOW;
+			return PriorityLevel.LOW;
 		}
 	}
 	
-	public static TASK_STATUS getStatus(String status) {
-		if (status.equals(TASK_STATUS.OVERDUE.getType())) {
-			return TASK_STATUS.OVERDUE;
+	public static TaskStatus getStatus(String status) {
+		if (status.equals(TaskStatus.OVERDUE.getType())) {
+			return TaskStatus.OVERDUE;
 		}
-		else if (status.equals(TASK_STATUS.UPCOMING.getType())) {
-			return TASK_STATUS.UPCOMING;
+		else if (status.equals(TaskStatus.UPCOMING.getType())) {
+			return TaskStatus.UPCOMING;
 		}
-		else if (status.equals(TASK_STATUS.FLOATING.getType())) {
-			return TASK_STATUS.FLOATING;
+		else if (status.equals(TaskStatus.FLOATING.getType())) {
+			return TaskStatus.FLOATING;
 		}
 		else {
-			return TASK_STATUS.COMPLETED;
+			return TaskStatus.COMPLETED;
 		}
 	}
 	
-	public static TASK_NATURE getType(String type) {
-		if (type.equals(TASK_NATURE.DEADLINE.getType())) {
-			return TASK_NATURE.DEADLINE;
+	public static TaskType getType(String type) {
+		if (type.equals(TaskType.DEADLINE.getType())) {
+			return TaskType.DEADLINE;
 		}
-		else if (type.equals(TASK_NATURE.EVENT.getType())) {
-			return TASK_NATURE.EVENT;
+		else if (type.equals(TaskType.EVENT.getType())) {
+			return TaskType.EVENT;
 		}
-//		else if (type.equals(TASK_NATURE.RECURRING_EVERY.getType())){
-//			return TASK_NATURE.RECURRING_EVERY;
+//		else if (type.equals(TaskType.RECURRING_EVERY.getType())){
+//			return TaskType.RECURRING_EVERY;
 //		}
-//		else if (type.equals(TASK_NATURE.RECURRING_ALTERNATE.getType())){
-//			return TASK_NATURE.RECURRING_ALTERNATE;
+//		else if (type.equals(TaskType.RECURRING_ALTERNATE.getType())){
+//			return TaskType.RECURRING_ALTERNATE;
 //		}
 		else {
-			return TASK_NATURE.DURATION;
+			return TaskType.DURATION;
 		}
 	}
 	
@@ -149,7 +149,7 @@ public class Command {
 		return time;
 	}
 
-	public boolean isCommand(COMMAND_TYPE type) {
+	public boolean isCommand(CommandType type) {
 		return type ==(this.getType());
 	}
 

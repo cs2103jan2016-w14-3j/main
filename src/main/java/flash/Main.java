@@ -28,7 +28,7 @@ import main.java.logic.Logic;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
-import main.java.data.TASK_STATUS;
+import main.java.data.TaskStatus;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.SideBarController;
@@ -479,19 +479,19 @@ public class Main extends Application {
 		for (Task temp : logic.displayPending()) {
 			allTableControl.addTask(temp, ++allCount, theme);
 			allResult.add(temp);
-			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
+			if (temp.getStatus() == TaskStatus.UPCOMING) {
 				pendingTableControl.addTask(temp, ++pendingCount, theme);
 				pendingResult.add(temp);
 				if (temp.getLastModified()) {
 					isModifiedPending = true;
 				}
-			} else if (temp.getStatus() == TASK_STATUS.FLOATING) {
+			} else if (temp.getStatus() == TaskStatus.FLOATING) {
 				floatingTableControl.addTask(temp, ++floatingCount, theme);
 				floatingResult.add(temp);
 				if (temp.getLastModified()) {
 					isModifiedFloating = true;
 				}
-			} else if (temp.getStatus() == TASK_STATUS.OVERDUE) {
+			} else if (temp.getStatus() == TaskStatus.OVERDUE) {
 				overdueTableControl.addTask(temp, ++overdueCount, theme);
 				overdueResult.add(temp);
 				if (temp.getLastModified()) {
@@ -515,11 +515,11 @@ public class Main extends Application {
 		floatingTableControl.clearTask();
 
 		for (Task temp : logic.displayPending()) {
-			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
+			if (temp.getStatus() == TaskStatus.UPCOMING) {
 				++pendingCount;
-			} else if (temp.getStatus() == TASK_STATUS.FLOATING) {
+			} else if (temp.getStatus() == TaskStatus.FLOATING) {
 				++floatingCount;
-			} else if (temp.getStatus() == TASK_STATUS.OVERDUE) {
+			} else if (temp.getStatus() == TaskStatus.OVERDUE) {
 				++overdueCount;
 			}
 		}
@@ -1498,7 +1498,7 @@ public class Main extends Application {
 		overdueResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			if (temp.getStatus() == TASK_STATUS.OVERDUE) {
+			if (temp.getStatus() == TaskStatus.OVERDUE) {
 				overdueTableControl.addTask(temp, ++count, theme);
 				overdueResult.add(temp);
 			}
@@ -1510,7 +1510,7 @@ public class Main extends Application {
 		floatingResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			if (temp.getStatus() == TASK_STATUS.FLOATING) {
+			if (temp.getStatus() == TaskStatus.FLOATING) {
 				floatingTableControl.addTask(temp, ++count, theme);
 				floatingResult.add(temp);
 			}
@@ -1522,7 +1522,7 @@ public class Main extends Application {
 		completeResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			if (temp.getStatus() == TASK_STATUS.COMPLETED) {
+			if (temp.getStatus() == TaskStatus.COMPLETED) {
 				completeTableControl.addTask(temp, ++count, theme);
 				completeResult.add(temp);
 			}
@@ -1534,7 +1534,7 @@ public class Main extends Application {
 		pendingResult.clear();
 		int count = 0;
 		for (Task temp : searchResult) {
-			if (temp.getStatus() == TASK_STATUS.UPCOMING) {
+			if (temp.getStatus() == TaskStatus.UPCOMING) {
 				pendingTableControl.addTask(temp, ++count, theme);
 				pendingResult.add(temp);
 			}

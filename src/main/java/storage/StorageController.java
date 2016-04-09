@@ -8,9 +8,9 @@ import java.util.Date;
 import java.util.List;
 
 import main.java.Log.EventLog;
-import main.java.data.PRIORITY_LEVEL;
-import main.java.data.TASK_NATURE;
-import main.java.data.TASK_STATUS;
+import main.java.data.PriorityLevel;
+import main.java.data.TaskType;
+import main.java.data.TaskStatus;
 import main.java.data.Task;
 
 public class StorageController {
@@ -137,7 +137,7 @@ public class StorageController {
 		pendingTemp.deleteFromTemp(task);
 		
 		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
-				task.getType(), TASK_STATUS.COMPLETED);
+				task.getType(), TaskStatus.COMPLETED);
 		
 		taskCopy.setLastModified(true);	
 		completedTemp.writeToTemp(taskCopy);	
@@ -187,7 +187,7 @@ public class StorageController {
 		return pendingTemp.showAllByDate(date);
 	}
 	
-	public ArrayList<Task> showAllPendingByPriority(PRIORITY_LEVEL priority) {
+	public ArrayList<Task> showAllPendingByPriority(PriorityLevel priority) {
 		return pendingTemp.showAllByPriority(priority);
 	}
 	
@@ -195,7 +195,7 @@ public class StorageController {
 		return completedTemp.showAllByDate(date);
 	}
 	
-	public ArrayList<Task> showAllCompletedByPriority(PRIORITY_LEVEL priority) {
+	public ArrayList<Task> showAllCompletedByPriority(PriorityLevel priority) {
 		return completedTemp.showAllByPriority(priority);
 	}
 	
@@ -229,17 +229,17 @@ public class StorageController {
 		return pendingTemp.checkOverdue(date);
 	}
 	
-	private TASK_STATUS determineStatus(List<Date> dates) {
+	private TaskStatus determineStatus(List<Date> dates) {
 		int size = dates.size();
 		
 		if (size == 0) {
-			return TASK_STATUS.FLOATING;
+			return TaskStatus.FLOATING;
 		}
 		else if (dates.get(size - 1).before(new Date())) {
-			return TASK_STATUS.OVERDUE;
+			return TaskStatus.OVERDUE;
 		}
 		else {
-			return TASK_STATUS.UPCOMING;
+			return TaskStatus.UPCOMING;
 		}
 	}
 }
