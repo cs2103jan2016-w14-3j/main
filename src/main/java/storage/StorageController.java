@@ -2,11 +2,12 @@
 package main.java.storage;
 
 import java.io.IOException;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Log.EventLog;
+import main.java.Log.EventLog;
 import main.java.data.PRIORITY_LEVEL;
 import main.java.data.TASK_NATURE;
 import main.java.data.TASK_STATUS;
