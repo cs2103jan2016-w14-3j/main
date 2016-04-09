@@ -37,10 +37,10 @@ public class AddCommandParser {
 	private static final String PRIORITY_MEDIUM_ALIAS_2 = "m";
 	private static final String PRIORITY_LOW_ALIAS = "l";
 	private static final String STRING_EMPTY = "";
-	
+
 	protected static final String TIME_SEPARATOR = ":";
 	protected static final String EMPTY_STRING = "";
-	
+
 	protected static final int TASK = 0;
 	protected static final int TIME = 1;
 	protected static final int PRIORITY = 2;
@@ -97,39 +97,48 @@ public class AddCommandParser {
 
 		//no time specified
 		if (timeIndex == FIELD_NOT_EXIST) {
-			int priorityIndex = getStartingIndexOfPriority(formattedCommandContent);
-
-			//no priority specified
-			if (priorityIndex == FIELD_NOT_EXIST) {
-				return formattedCommandContent;      //commandContent is the task
-			}
-
-			//priority is specified
-			else {
-
-				//priority is the first segment -> task is missing
-				if (priorityIndex == 0) {
-					return STRING_EMPTY;
-				}
-
-				//task is present
-				else {
-					return formattedCommandContent.substring(0, priorityIndex - 1);
-				}
-			}
+			return determineTaskWithNoTimeSpecified(formattedCommandContent);
 		}
 
 		//time is specified
 		else {
+			return determineTaskWithTimeSpecified(formattedCommandContent, timeIndex);
+		}
+	}
 
-			//time is the first segment -> task is missing
-			if (timeIndex == 0) {
+	private String determineTaskWithTimeSpecified(String formattedCommandContent, 
+			int timeIndex) {
+		//time is the first segment -> task is missing
+		if (timeIndex == 0) {
+			return STRING_EMPTY;
+		}
+
+		//task is present
+		else {
+			return formattedCommandContent.substring(0, timeIndex - 1);
+		}
+	}
+
+	private String determineTaskWithNoTimeSpecified(String formattedCommandContent) {
+
+		int priorityIndex = getStartingIndexOfPriority(formattedCommandContent);
+
+		//no priority specified
+		if (priorityIndex == FIELD_NOT_EXIST) {
+			return formattedCommandContent;      //commandContent is the task
+		}
+
+		//priority is specified
+		else {
+
+			//priority is the first segment -> task is missing
+			if (priorityIndex == 0) {
 				return STRING_EMPTY;
 			}
 
 			//task is present
 			else {
-				return formattedCommandContent.substring(0, timeIndex - 1);
+				return formattedCommandContent.substring(0, priorityIndex - 1);
 			}
 		}
 	}
@@ -418,7 +427,8 @@ public class AddCommandParser {
 	}
 
 	private String addPrepositionIfApplicable(String commandContent, String timePhrase) {
-		//System.out.println(commandContent);
+		assert commandContent != null;
+		assert timePhrase != null;
 
 		//contains the particular time phrase
 		if (containsWholeWord(commandContent, timePhrase)) {
@@ -994,7 +1004,7 @@ public class AddCommandParser {
 		//a queue to store starting indices of the possible identifiers
 		PriorityQueue<Integer> indexQueue;
 		indexQueue = buildIndexQueue(content);
-		
+
 		//a list to store the indices in reversed order
 		ArrayList<Integer> list;
 		list = buildIndexListInReversedOrder(indexQueue);
@@ -1018,11 +1028,11 @@ public class AddCommandParser {
 		else {
 			return getStartingIndexOfIdentifierWithMoreThanTwoMatches(content, list);
 		}
-		
+
 	}
 
 	private int getStartingIndexOfIdentifierWithMoreThanTwoMatches(String content, ArrayList<Integer> list) {
-		
+
 		for (int i = 0; i < list.size(); i++) {
 
 			//i is not the last index stored
@@ -1051,7 +1061,7 @@ public class AddCommandParser {
 	}
 
 	private int getStartingIndexOfIdentiferWithTwoMatches(String content, ArrayList<Integer> list) {
-		
+
 		//first one is valid
 		if (!timeParser.parse(content.substring(list.get(0), list.get(1)))
 				.toString().equals(TIME_EMPTY)) {
@@ -1071,7 +1081,7 @@ public class AddCommandParser {
 	}
 
 	private int getStartingIndexOfIdentifierWithOneMatch(String content, ArrayList<Integer> list) {
-		
+
 		//it is valid
 		if (!timeParser.parse(content).toString().equals(TIME_EMPTY)) {
 			return list.get(0);
@@ -1085,24 +1095,24 @@ public class AddCommandParser {
 
 	private ArrayList<Integer> buildIndexListInReversedOrder(
 			PriorityQueue<Integer> indexQueue) {
-		
+
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		int size = indexQueue.size();
 		for (int i = 0; i < size; i++) {
 			list.add(indexQueue.poll());
 		}
-		
+
 		return list;
 	}
 
 	private PriorityQueue<Integer> buildIndexQueue(String content) {
-		
+
 		//get the number of words in content
 		String[] segments = content.split(STRING_WHITE_SPACE);
 		int numberOfSpaces = segments.length - 1;
-		
+
 		PriorityQueue<Integer> indexQueue = new PriorityQueue<Integer>();
-		
+
 		//a pointer to move along all words
 		int pointer = 0;
 		for (int i = 1; i <= numberOfSpaces; i++) {
@@ -1116,7 +1126,7 @@ public class AddCommandParser {
 			//move to the next word
 			pointer = index + 1;
 		}
-		
+
 		return indexQueue;
 	}
 
@@ -1133,15 +1143,15 @@ public class AddCommandParser {
 		else if (word.equals(EVENT_FLAG_AT)) {
 			return true;
 		}
-		
+
 		else if (word.equals(EVENT_FLAG_ON)) {
 			return true;
 		}
-		
+
 		else if (word.equals(DURATION_FLAG_FROM)) {
 			return true;
 		}
-		
+
 		else{
 			return false;
 		}
