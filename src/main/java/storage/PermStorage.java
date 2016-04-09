@@ -26,63 +26,37 @@ public class PermStorage {
 	private Gson gson;
 
 	public PermStorage() {
-		
 		initialiseFile(new File("").getAbsolutePath() + "\\Completed Tasks.txt");
 		gson = new Gson();
 		taskList = new ArrayList<Task>();
 	}
 	
 	public PermStorage(DirectoryController dirController) {
-	
 		this.dirController = dirController;
 		initialiseFile(dirController.getTaskFilePath());
 		gson = new Gson();
 		taskList = new ArrayList<Task>();
 	}
 	
-	//create the file and streams
-	private void initialiseFile(String filePath) {
-		
-		file = new File(filePath);
-		
-		try {
-			if(!file.exists()) {
-				file.createNewFile();			
-			}
-		} catch (IOException e) {
-			System.err.println("Cannot create file");
-		}
-		
-		try {
-			bufferedReader = new BufferedReader(new FileReader(file));
-			bufferedWriter = new BufferedWriter(new FileWriter(file, true));
-		} catch (IOException e) {
-			System.err.println("Cannot create file writer");
-		}
-	}
-
 	public void moveToLocation(String path) throws IOException {
-		
 		File newFile = new File(path);
 		Files.copy(file.toPath(), newFile.toPath());
 		file = newFile;
 		reopenStream();
-		dirController.moveToLocation(path);
+		dirController.updateDirectory(path);
 	}
 	
 	public void loadFromFile(String path) {
-		
 		file = new File(path);
 		reopenStream();
-		dirController.loadFromFile(path);
+		dirController.updateDirectory(path);
 	}
 	
 	public void saveToLocation(String path) throws Exception {
 
 		if(!path.endsWith(".txt") && !path.endsWith("/")) {
 			path = path.concat(".txt");
-		}
-		else if(path.endsWith("/")) {
+		} else if(path.endsWith("/")) {
 			throw new Exception("No file name entered");
 		}
 		File newFile = new File(path);
@@ -169,6 +143,27 @@ public class PermStorage {
 		}
 	}
 	
+	//create the file and streams
+	private void initialiseFile(String filePath) {
+		
+		file = new File(filePath);
+		
+		try {
+			if(!file.exists()) {
+				file.createNewFile();			
+			}
+		} catch (IOException e) {
+			System.err.println("Cannot create file");
+		}
+		
+		try {
+			bufferedReader = new BufferedReader(new FileReader(file));
+			bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+		} catch (IOException e) {
+			System.err.println("Cannot create file writer");
+		}
+	}
+
 	private void reopenStream() {
 		
 		try {

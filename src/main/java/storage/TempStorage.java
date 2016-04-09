@@ -31,8 +31,7 @@ public class TempStorage {
 		this.permStorage = permStorage;
 		undoStack = new Stack<ArrayList<Task>>();
 		taskList = new ArrayList<Task>(retrieveListFromFile());
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);	
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		redoStack = new Stack<ArrayList<Task>>();
 		searchHistory = new Stack<ArrayList<Task>>();
 		searchHistory.push(taskList);
@@ -47,8 +46,7 @@ public class TempStorage {
 		taskCopy.setLastModified(true);
 		taskList.add(taskCopy);
 		Collections.sort(taskList, new TimeComparator());
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		permStorage.writeToFile(taskCopy);
 		isPreviousUndo = false;
 	}
@@ -67,8 +65,7 @@ public class TempStorage {
 		editedTaskCopy.setLastModified(true);
 		taskList.set(indexOfTaskToEdit, editedTaskCopy);
 		Collections.sort(taskList, new TimeComparator());
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		permStorage.editToFile(indexOfTaskToEdit, editedTaskCopy);
 		isPreviousUndo = false;
 	}
@@ -77,8 +74,7 @@ public class TempStorage {
 
 		int indexOfTaskToDelete = searchTemp(task);
 		taskList.remove(taskList.get(indexOfTaskToDelete));
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		permStorage.deleteFromFile(indexOfTaskToDelete);
 		isPreviousUndo = false;
 	}
@@ -86,8 +82,7 @@ public class TempStorage {
 	public void clearTemp() {
 
 		taskList.clear();
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		permStorage.clearFile();
 		isPreviousUndo = false;
 	}
@@ -100,8 +95,7 @@ public class TempStorage {
 				permStorage.deleteFromFile(i);
 			}
 		}
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		isPreviousUndo = false;
 	}
 	
@@ -113,8 +107,7 @@ public class TempStorage {
 				permStorage.deleteFromFile(i);
 			}
 		}
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		isPreviousUndo = false;
 	}
 	
@@ -126,8 +119,7 @@ public class TempStorage {
 				permStorage.deleteFromFile(i);
 			}
 		}
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		isPreviousUndo = false;
 	}
 
@@ -145,6 +137,7 @@ public class TempStorage {
 		if(isPreviousUndo == false) {
 			redoStack.clear();
 		}
+		
 		if(redoStack.size() != 0) {
 			ArrayList<Task> currentState = new ArrayList<Task>(redoStack.pop());
 			undoStack.push(currentState);
@@ -156,8 +149,7 @@ public class TempStorage {
 	public void sortByTaskName() {
 
 		Collections.sort(taskList, new TaskNameComparator());
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		permStorage.copyAllToFile((taskList));
 		isPreviousUndo = false;
 	}
@@ -165,8 +157,7 @@ public class TempStorage {
 	public void sortByTime() {
 
 		Collections.sort(taskList, new TimeComparator());
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		permStorage.copyAllToFile((taskList));
 		isPreviousUndo = false;
 	}
@@ -174,8 +165,7 @@ public class TempStorage {
 	public void sortByPriority() {
 
 		Collections.sort(taskList, new PriorityComparator());
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 		permStorage.copyAllToFile((taskList));
 		isPreviousUndo = false;
 	}
@@ -190,8 +180,7 @@ public class TempStorage {
 		taskList.clear();
 		taskList = new ArrayList<Task>(retrieveListFromFile());
 		undoStack.clear();
-		ArrayList<Task> tempList = new ArrayList<Task>(taskList);
-		undoStack.push(tempList);
+		undoStack.push(new ArrayList<Task>(taskList));
 	}
 
 	public void saveToLocation(String path) throws Exception {
@@ -228,8 +217,7 @@ public class TempStorage {
 				if(task.getTime().get(0).toString().substring(0, 9).equals(dateString)) {
 					searchResults.add(task);
 				}
-			}
-			else if(task.getTime().size() == 2) {
+			} else if(task.getTime().size() == 2) {
 				if(date.after(task.getTime().get(0)) && date.before(task.getTime().get(1))) {
 					searchResults.add(task);
 				}
@@ -286,29 +274,27 @@ public class TempStorage {
 			prevSearch = "";
 
 			return taskList;
-		}
-		else {
+		} else {
 			newValue = newValue.substring(newValue.indexOf(" ") + 1);
 		}
 
 		ArrayList<Task> currList;
+		
 		if (newValue.length() < prevSearch.length()) {
 			searchHistory.pop();
 			prevSearch = newValue;
+			
 			return searchHistory.peek();
 		}
 		else {
 			currList = searchHistory.peek();
-
 			ArrayList<Task> searchResult = new ArrayList<Task>();	
 			String[] parts = newValue.toLowerCase().split(SPACE);
-			//int taskNumber = 1;
 			searchResult.clear();
 
 			for (Task task : currList) {
 				boolean match = true;
 				String taskMatch = task.getTask();
-						//taskNumber++;
 						for (String part : parts) {
 							if (!taskMatch.toLowerCase().contains(part)) {
 								match = false;

@@ -23,10 +23,27 @@ public class DirectoryController {
 	}
 	
 	public DirectoryController(String taskFileName, String dirFileName) {
-
 		initialiseFileDir(taskFileName, dirFileName);
 	}
 
+	/*
+	 * Returns the path of the file of tasks
+	 */
+	public String getTaskFilePath() {
+		return taskFilePath;
+	}
+
+	/*
+	 * Writes the new path of where the file of tasks is stored
+	 */
+	public void updateDirectory(String path) {	
+		clearDirFile();
+		writeDirectory(path);
+	}
+	
+	/*
+	 * Creates a file to store the path of the save file
+	 */
 	private void initialiseFileDir(String taskFileName, String dirFileName) {
 
 		dirFile = new File(dirFileName);
@@ -51,8 +68,7 @@ public class DirectoryController {
 		try {
 			if((lineRead = bufferedReader.readLine()) != null) {
 				taskFilePath = lineRead;
-			}
-			else {
+			} else {
 				taskFilePath = new File("").getAbsolutePath() + "\\" + taskFileName;
 			}
 		} catch (IOException e) {
@@ -60,12 +76,10 @@ public class DirectoryController {
 		}
 	}
 	
-	public String getTaskFilePath() {
-
-		return taskFilePath;
-	}
-
-	public void writeDirectory(String dir) {
+	/*
+	 * Writes the path of the file to tasks to the directory file
+	 */
+	private void writeDirectory(String dir) {
 		
 		try {
 			bufferedWriter.write(dir);
@@ -74,30 +88,11 @@ public class DirectoryController {
 			System.err.println("Error writing directory");
 		}
 	}
-	
-	public void moveToLocation(String path) {
-		updateDirectory(path);
-	}
-	
-	public void loadFromFile(String path) {
-		updateDirectory(path);
-	}
-	
-	private void updateDirectory(String path) {
-		
-		clearDirFile();
-		writeDirectory(path);
-	}
 
-	public Boolean renameTaskFile(File file, String name) {
-
-		File newFile = new File(name);
-		Boolean isSuccess = file.renameTo(newFile);
-
-		return isSuccess;
-	}
-	
-	protected void clearDirFile() {
+	/*
+	 * Clears the directory file
+	 */
+	private void clearDirFile() {
 		
 		try {
 			fileWriter = new FileWriter(dirFile);

@@ -15,9 +15,9 @@ import main.java.data.Task;
 
 public class StorageController {
 
-	private static final int PENDING_TASK = 0;
-	private static final int COMPLETED_TASK = 1;
-	private static final int BOTH_TYPE = 2;
+	private static final int TASK_PENDING = 0;
+	private static final int TASK_COMPLETED = 1;
+	private static final int TASK_BOTH = 2;
 	
 	private PendingTaskTempStorage pendingTemp;
 	private CompletedTaskTempStorage completedTemp;
@@ -33,7 +33,7 @@ public class StorageController {
 		
 		task.setLastModified(true);
 		pendingTemp.writeToTemp(task);
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public ArrayList<Task> displayPendingTasks() {
@@ -50,7 +50,7 @@ public class StorageController {
 		
 		editedTask.setLastModified(true);
 		pendingTemp.editToTemp(taskToEdit, editedTask);
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void editCompletedTask(Task taskToEdit, Task editedTask) {
@@ -59,76 +59,76 @@ public class StorageController {
 		
 		editedTask.setLastModified(true);
 		completedTemp.editToTemp(taskToEdit, editedTask);
-		lastAction = COMPLETED_TASK;
+		lastAction = TASK_COMPLETED;
 	}
 	
 	public void deletePendingTask(Task task) {
 		assert task != null;
 		
 		pendingTemp.deleteFromTemp(task);
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void deleteCompletedTask(Task task) {
 		assert task != null;
 		
 		completedTemp.deleteFromTemp(task);
-		lastAction = COMPLETED_TASK;
+		lastAction = TASK_COMPLETED;
 	}
 	
 	public void clearPendingTasks() {	
 		pendingTemp.clearTemp();
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void clearUpcomingTasks() {
 		pendingTemp.clearUpcoming();
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void clearFloatingTasks() {
 		pendingTemp.clearFloating();
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void clearOverdueTasks() {
 		pendingTemp.clearOverdue();
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void clearCompletedTasks() {		
 		completedTemp.clearTemp();
-		lastAction = COMPLETED_TASK;
+		lastAction = TASK_COMPLETED;
 	}
 	
 	public void sortPendingByTaskName() {
 		pendingTemp.sortByTaskName();
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void sortPendingByTime() {
 		pendingTemp.sortByTime();
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void sortPendingByPriority() {
 		pendingTemp.sortByPriority();
-		lastAction = PENDING_TASK;
+		lastAction = TASK_PENDING;
 	}
 	
 	public void sortCompletedByTaskName() {
 		completedTemp.sortByTaskName();
-		lastAction = COMPLETED_TASK;
+		lastAction = TASK_COMPLETED;
 	}
 	
 	public void sortCompletedByTime() {
 		completedTemp.sortByTime();
-		lastAction = COMPLETED_TASK;
+		lastAction = TASK_COMPLETED;
 	}
 	
 	public void sortCompletedByPriority() {
 		completedTemp.sortByPriority();
-		lastAction = COMPLETED_TASK;
+		lastAction = TASK_COMPLETED;
 	}
 	
 	public void moveTaskToComplete(Task task) {
@@ -141,7 +141,7 @@ public class StorageController {
 		
 		taskCopy.setLastModified(true);	
 		completedTemp.writeToTemp(taskCopy);	
-		lastAction = BOTH_TYPE;
+		lastAction = TASK_BOTH;
 	}
 	
 	public void moveTaskToPending(Task task) {
@@ -154,30 +154,30 @@ public class StorageController {
 		
 		taskCopy.setLastModified(true);
 		pendingTemp.writeToTemp(taskCopy);		
-		lastAction = BOTH_TYPE;
+		lastAction = TASK_BOTH;
 	}
 	
 	public void undo() {
-		if(lastAction == PENDING_TASK) {
+		if(lastAction == TASK_PENDING) {
 			pendingTemp.undoPrevious();
 		}
-		else if(lastAction == COMPLETED_TASK) {
+		else if(lastAction == TASK_COMPLETED) {
 			completedTemp.undoPrevious();
 		}
-		else if(lastAction == BOTH_TYPE) {
+		else if(lastAction == TASK_BOTH) {
 			pendingTemp.undoPrevious();
 			completedTemp.undoPrevious();
 		}
 	}
 	
 	public void redo() {
-		if(lastAction == PENDING_TASK) {
+		if(lastAction == TASK_PENDING) {
 			pendingTemp.redoPrevious();
 		}
-		else if(lastAction == COMPLETED_TASK) {
+		else if(lastAction == TASK_COMPLETED) {
 			completedTemp.redoPrevious();
 		}
-		else if(lastAction == BOTH_TYPE) {
+		else if(lastAction == TASK_BOTH) {
 			pendingTemp.redoPrevious();
 			completedTemp.redoPrevious();
 		}
