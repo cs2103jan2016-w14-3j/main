@@ -160,11 +160,7 @@ public class PermStorage {
 			System.err.println("Cannot clear file");
 		}
 	}
-	
-	public void sortFile() {
-		
-	}
-	
+
 	public void copyAllToFile(ArrayList<Task> list) {
 		
 		clearFile();

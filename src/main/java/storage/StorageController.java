@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import Log.EventLog;
 import main.java.data.PRIORITY_LEVEL;
 import main.java.data.TASK_NATURE;
 import main.java.data.TASK_STATUS;
@@ -62,12 +63,14 @@ public class StorageController {
 	
 	public void deletePendingTask(Task task) {
 		assert task != null;
+		
 		pendingTemp.deleteFromTemp(task);
 		lastAction = PENDING_TASK;
 	}
 	
 	public void deleteCompletedTask(Task task) {
 		assert task != null;
+		
 		completedTemp.deleteFromTemp(task);
 		lastAction = COMPLETED_TASK;
 	}
@@ -127,7 +130,6 @@ public class StorageController {
 		lastAction = COMPLETED_TASK;
 	}
 	
-
 	public void moveTaskToComplete(Task task) {
 		assert task != null;
 		
@@ -208,7 +210,6 @@ public class StorageController {
 		assert path != null;
 		
 		pendingTemp.moveToLocation(path);
-		//completedTemp.saveToFile(path.substring(0, path.lastIndexOf("\\")+1) + "Completed tasks.txt");
 	}
 
 	public void loadFromFile(String path) {
@@ -224,7 +225,6 @@ public class StorageController {
 	}
 	
 	public ArrayList<Task> checkOverdue(Date date) {
-		
 		return pendingTemp.checkOverdue(date);
 	}
 	

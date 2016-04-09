@@ -21,7 +21,6 @@ public class TempStorage {
 	private Stack<ArrayList<Task>> searchHistory;
 	private String prevSearch;
 	private boolean isPreviousUndo;
-
 	private static final String SPACE = " ";
 
 	public TempStorage () {
@@ -182,7 +181,6 @@ public class TempStorage {
 	}
 
 	public void moveToLocation(String path) throws IOException {
-
 		permStorage.moveToLocation(path);
 	}
 
@@ -197,11 +195,11 @@ public class TempStorage {
 	}
 
 	public void saveToLocation(String path) throws Exception {
-
 		permStorage.saveToLocation(path);
 	}
 	
 	public ArrayList<Task> checkOverdue(Date date) {
+		
 		ArrayList<Task> overdueList = new ArrayList<Task>();
 		
 		for(int i=taskList.size()-1; i>=0; i--) {
@@ -219,6 +217,7 @@ public class TempStorage {
 	}
 	
 	public ArrayList<Task> showAllByDate(Date date) {
+		
 		ArrayList<Task> searchResults = new ArrayList<Task>();
 		String dateString = date.toString().substring(0, 9);
 		
@@ -240,6 +239,7 @@ public class TempStorage {
 	}
 	
 	public ArrayList<Task> showAllByPriority(PRIORITY_LEVEL priority) {
+		
 		ArrayList<Task> searchResults = new ArrayList<Task>();
 		
 		for(int i=0; i<taskList.size(); i++) {
@@ -273,12 +273,11 @@ public class TempStorage {
 	}
 	
 	public ArrayList<Task> searchMatch(String newValue) {
-		//handle edit
+
 		if (newValue.contains(",")) {
 			newValue = newValue.substring(0, newValue.indexOf(","));
 		}
-		//newValue = newValue.trim();
-		//System.out.println(newValue);
+
 		if (!newValue.trim().contains(" ")) {
 			newValue = "";
 			
@@ -294,7 +293,6 @@ public class TempStorage {
 
 		ArrayList<Task> currList;
 		if (newValue.length() < prevSearch.length()) {
-			//System.out.print("true");
 			searchHistory.pop();
 			prevSearch = newValue;
 			return searchHistory.peek();
@@ -304,37 +302,26 @@ public class TempStorage {
 
 			ArrayList<Task> searchResult = new ArrayList<Task>();	
 			String[] parts = newValue.toLowerCase().split(SPACE);
-			int taskNumber = 1;
+			//int taskNumber = 1;
 			searchResult.clear();
 
 			for (Task task : currList) {
 				boolean match = true;
-//				String taskMatch = taskNumber + " " + task.getTask() + task.getPriority().getType() + 
-//						task.getTime().toString().replaceAll("SGT", "");;
 				String taskMatch = task.getTask();
-						taskNumber++;
-
+						//taskNumber++;
 						for (String part : parts) {
-							//String withoutComma = part.substring(0,part.length()-1);
-//							if(taskMatch.toLowerCase().contains(part.replaceAll(",", ""))&& part.contains(",")){
-//								System.out.println("here");
-//								match = true;
-//								break;
-//							}
 							if (!taskMatch.toLowerCase().contains(part)) {
 								match = false;
 								break;
 							}
-						}
-						
+						}			
 						if (match) {
 							searchResult.add(task);
 						}
 			}
 			prevSearch = newValue;
 			searchHistory.push(searchResult);
-			//System.out.println("list size: " + searchResult.size());
-			//System.out.println("stack size: " + searchHistory.size());
+
 			return searchResult;
 		}
 	}
