@@ -1,25 +1,28 @@
 /* @@author A0127481E */
 package main.java.parser;
 
-import main.java.data.COMMAND_TYPE;
+public class DeleteCommandParser {
+	
+	private static final int TASK = 0;
+	
 
-public class DeleteCommandParser extends Parser {
-
-	public DeleteCommandParser() {
-		super();
-	}
+	public DeleteCommandParser() {}
 
 	public String[] determineParameters(String commandContent) throws InvalidInputFormatException {
-		//assert commandType != null;
-		//assert 1==2;
+		assert commandContent != null;
+		
+		
 		String[] parameters = new String[5];
+		
 		if (commandContent.isEmpty()) {
 			throw new InvalidInputFormatException("Cannot delete nothing!");
 		}
+		
 		else {
 			parameters[TASK] = commandContent;
 
 		}
+		
 		return parameters;
 	}
 

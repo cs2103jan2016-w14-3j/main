@@ -8,15 +8,17 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import main.java.data.PRIORITY_LEVEL;
 
-public class ShowCommandParser extends Parser {
+public class ShowCommandParser {
+	
+	private static final int TIME = 1;
+	private static final int PRIORITY = 2;
 
-	public ShowCommandParser() {
-		super();
-	}
+
+	public ShowCommandParser() {}
 
 	public String[] determineParameters(String commandContent) throws InvalidInputFormatException {
-		//assert commandType != null;
-		//assert 1==2;
+		assert commandContent != null;
+		
 		String[] parameters = new String[5];
 		if (commandContent.isEmpty()) {
 			throw new InvalidInputFormatException("Cannot show nothing!");
@@ -30,7 +32,7 @@ public class ShowCommandParser extends Parser {
 	}
 
 	private void setShowFiterIfApplicable(String[] parameters, String commandContent) throws InvalidInputFormatException {
-		//System.out.println("haha");
+		
 		commandContent = commandContent.toLowerCase();
 		commandContent = commandContent.replaceAll("tmr", "tomorrow");
 		PrettyTimeParser timeParser = new PrettyTimeParser();
@@ -47,9 +49,11 @@ public class ShowCommandParser extends Parser {
 				|| commandContent.equals("medium")) {
 			parameters[PRIORITY] = PRIORITY_LEVEL.MEDIUM.getType();
 		}
+		
 		else if (commandContent.equals("low") || commandContent.equals("l")) {
 			parameters[PRIORITY] = PRIORITY_LEVEL.LOW.getType();
 		}
+		
 		else {
 			throw new InvalidInputFormatException("Please choose a valid filter!");
 		}
