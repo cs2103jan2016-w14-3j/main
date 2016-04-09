@@ -7,13 +7,13 @@ public class Task {
 	
 	private String task;
 	private List<Date> time;
-	private TASK_NATURE type;
-	private PRIORITY_LEVEL priority;
-	private TASK_STATUS status;
+	private TaskType type;
+	private PriorityLevel priority;
+	private TaskStatus status;
 	private transient boolean isLastModified;
 	
-	public Task(String task, List<Date> time, PRIORITY_LEVEL priority, 
-			TASK_NATURE type, TASK_STATUS status) {
+	public Task(String task, List<Date> time, PriorityLevel priority, 
+			TaskType type, TaskStatus status) {
 		this.task = task;
 		this.time = time;
 		this.priority = priority;
@@ -23,11 +23,11 @@ public class Task {
 		
 	}
 	
-	public TASK_NATURE getType() {
+	public TaskType getType() {
 		return type;
 	}
 	
-	public void setType(TASK_NATURE type) {
+	public void setType(TaskType type) {
 		this.type = type;
 	}
 
@@ -47,18 +47,18 @@ public class Task {
 		this.time = time;
 	}
 
-	public PRIORITY_LEVEL getPriority() {
+	public PriorityLevel getPriority() {
 		return priority;
 	}
 
-	public void setPriority(PRIORITY_LEVEL priority) {
+	public void setPriority(PriorityLevel priority) {
 		this.priority = priority;
 	}
 	
-	public void setStatus(TASK_STATUS status) {
+	public void setStatus(TaskStatus status) {
 		this.status = status;
 	}
-	public TASK_STATUS getStatus() {
+	public TaskStatus getStatus() {
 		return status;
 	}
 	
