@@ -101,6 +101,7 @@ public class SideBarController extends VBox {
 			}
 		});
 	}
+	
 	/* @@author A0124078H */
 	/** @return a control button to hide and show the sidebar */
 	public HBox getControlButton() {

@@ -15,8 +15,7 @@ import main.java.data.Task;
 
 public class TasksTableController extends BorderPane {
 
-	@FXML
-	private ListView<TasksItemController> tasksDisplay;
+	@FXML private ListView<TasksItemController> tasksDisplay;
 
 	private static final String FILE_STATS_FXML = "/main/resources/layouts/TasksTable.fxml";
 	private static final String RED_THEME = "red";
