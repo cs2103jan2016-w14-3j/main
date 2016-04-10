@@ -12,6 +12,12 @@ import main.java.data.PriorityLevel;
 import main.java.data.TaskStatus;
 import main.java.data.Task;
 
+/**
+ * Contains methods that read and write tasks to a list before
+ * passing the tasks to the permanent storage.
+ * @author Bowen
+ *
+ */
 public class TempStorage {
 
 	private ArrayList<Task> taskList;
@@ -21,13 +27,20 @@ public class TempStorage {
 	private Stack<ArrayList<Task>> searchHistory;
 	private String prevSearch;
 	private boolean isPreviousUndo;
-	private static final String SPACE = " ";
 
+	/**
+	 * 
+	 */
 	public TempStorage () {
 
 	}
 
-	public TempStorage(PermStorage permStorage) {
+	/**
+	 * 
+	 * @param permStorage
+	 * @throws IOException
+	 */
+	public TempStorage(PermStorage permStorage) throws IOException {
 		this.permStorage = permStorage;
 		undoStack = new Stack<ArrayList<Task>>();
 		taskList = new ArrayList<Task>(retrieveListFromFile());
@@ -38,10 +51,12 @@ public class TempStorage {
 		prevSearch = "";
 	}
 
-	/*
+	/**
 	 * 
+	 * @param task
+	 * @throws IOException
 	 */
-	public void writeToTemp(Task task) {
+	public void writeToTemp(Task task) throws IOException {
 
 		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
 				task.getType(), task.getStatus());
@@ -54,11 +69,21 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Task> displayTemp() {
 		return taskList;
 	}
 
-	public void editToTemp(Task taskToEdit, Task editedTask) {
+	/**
+	 * 
+	 * @param taskToEdit
+	 * @param editedTask
+	 * @throws IOException
+	 */
+	public void editToTemp(Task taskToEdit, Task editedTask) throws IOException {
 
 		int indexOfTaskToEdit = searchTemp(taskToEdit);
 		
@@ -73,7 +98,12 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
-	public void deleteFromTemp(Task task) {
+	/**
+	 * 
+	 * @param task
+	 * @throws IOException
+	 */
+	public void deleteFromTemp(Task task) throws IOException {
 
 		int indexOfTaskToDelete = searchTemp(task);
 		taskList.remove(taskList.get(indexOfTaskToDelete));
@@ -82,7 +112,11 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
-	public void clearTemp() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearTemp() throws IOException {
 
 		taskList.clear();
 		undoStack.push(new ArrayList<Task>(taskList));
@@ -90,7 +124,11 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 	
-	public void clearUpcoming() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearUpcoming() throws IOException {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TaskStatus.UPCOMING)) {
@@ -102,7 +140,11 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 	
-	public void clearFloating() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearFloating() throws IOException {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TaskStatus.FLOATING)) {
@@ -114,7 +156,11 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 	
-	public void clearOverdue() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearOverdue() throws IOException {
 		for(int i=taskList.size()-1; i>=0; i--) {
 			Task task = taskList.get(i);
 			if(task.getStatus().equals(TaskStatus.OVERDUE)) {
@@ -126,7 +172,11 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
-	public void undoPrevious() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void undoPrevious() throws IOException {
 		if(undoStack.size() >= 2) {
 			ArrayList<Task> currentState = new ArrayList<Task>(undoStack.pop());
 			redoStack.push(currentState);
@@ -135,8 +185,12 @@ public class TempStorage {
 			isPreviousUndo = true;
 		}
 	}
-
-	public void redoPrevious() {
+	
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void redoPrevious() throws IOException {
 		if(isPreviousUndo == false) {
 			redoStack.clear();
 		}
@@ -149,7 +203,11 @@ public class TempStorage {
 		}
 	}
 
-	public void sortByTaskName() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortByTaskName() throws IOException {
 
 		Collections.sort(taskList, new TaskNameComparator());
 		undoStack.push(new ArrayList<Task>(taskList));
@@ -157,7 +215,11 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
-	public void sortByTime() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortByTime() throws IOException {
 
 		Collections.sort(taskList, new TimeComparator());
 		undoStack.push(new ArrayList<Task>(taskList));
@@ -165,7 +227,11 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
-	public void sortByPriority() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortByPriority() throws IOException {
 
 		Collections.sort(taskList, new PriorityComparator());
 		undoStack.push(new ArrayList<Task>(taskList));
@@ -173,11 +239,21 @@ public class TempStorage {
 		isPreviousUndo = false;
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @throws IOException
+	 */
 	public void moveToLocation(String path) throws IOException {
 		permStorage.moveToLocation(path);
 	}
 
-	public void loadFromFile(String path) {
+	/**
+	 * 
+	 * @param path
+	 * @throws IOException
+	 */
+	public void loadFromFile(String path) throws IOException {
 
 		permStorage.loadFromFile(path);
 		taskList.clear();
@@ -186,11 +262,22 @@ public class TempStorage {
 		undoStack.push(new ArrayList<Task>(taskList));
 	}
 
+	/**
+	 * 
+	 * @param path
+	 * @throws Exception
+	 */
 	public void saveToLocation(String path) throws Exception {
 		permStorage.saveToLocation(path);
 	}
 	
-	public ArrayList<Task> checkOverdue(Date date) {
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 * @throws IOException
+	 */
+	public ArrayList<Task> checkOverdue(Date date) throws IOException {
 		
 		ArrayList<Task> overdueList = new ArrayList<Task>();
 		
@@ -208,6 +295,11 @@ public class TempStorage {
 		return overdueList;
 	}
 	
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public ArrayList<Task> showAllByDate(Date date) {
 		
 		ArrayList<Task> searchResults = new ArrayList<Task>();
@@ -229,6 +321,11 @@ public class TempStorage {
 		return searchResults;
 	}
 	
+	/**
+	 * 
+	 * @param priority
+	 * @return
+	 */
 	public ArrayList<Task> showAllByPriority(PriorityLevel priority) {
 		
 		ArrayList<Task> searchResults = new ArrayList<Task>();
@@ -243,6 +340,9 @@ public class TempStorage {
 		return searchResults;
 	}
 
+	/*
+	 * 
+	 */
 	private int searchTemp(Task task) {
 
 		for(int i=0; i<taskList.size(); i++) {
@@ -256,21 +356,29 @@ public class TempStorage {
 		return -1;
 	}
 	
-	private ArrayList<Task> retrieveListFromFile() {
+	/*
+	 * 
+	 */
+	private ArrayList<Task> retrieveListFromFile() throws IOException {
 
 		ArrayList<Task> list = permStorage.readFromFile();
 		Collections.sort(list, new TimeComparator());
 		return list;
 	}
 	
-	public ArrayList<Task> searchMatch(String newValue) {
+	/**
+	 * 
+	 * @param stringToSearch
+	 * @return
+	 */
+	public ArrayList<Task> searchMatch(String stringToSearch) {
 
-		if (newValue.contains(",")) {
-			newValue = newValue.substring(0, newValue.indexOf(","));
+		if (stringToSearch.contains(",")) {
+			stringToSearch = stringToSearch.substring(0, stringToSearch.indexOf(","));
 		}
 
-		if (!newValue.trim().contains(" ")) {
-			newValue = "";
+		if (!stringToSearch.trim().contains(" ")) {
+			stringToSearch = "";
 			
 			searchHistory.clear();
 		    searchHistory.push(taskList);
@@ -278,21 +386,21 @@ public class TempStorage {
 
 			return taskList;
 		} else {
-			newValue = newValue.substring(newValue.indexOf(" ") + 1);
+			stringToSearch = stringToSearch.substring(stringToSearch.indexOf(" ") + 1);
 		}
 
 		ArrayList<Task> currList;
 		
-		if (newValue.length() < prevSearch.length()) {
+		if (stringToSearch.length() < prevSearch.length()) {
 			searchHistory.pop();
-			prevSearch = newValue;
+			prevSearch = stringToSearch;
 			
 			return searchHistory.peek();
 		}
 		else {
 			currList = searchHistory.peek();
 			ArrayList<Task> searchResult = new ArrayList<Task>();	
-			String[] parts = newValue.toLowerCase().split(SPACE);
+			String[] parts = stringToSearch.toLowerCase().split(" ");
 			searchResult.clear();
 
 			for (Task task : currList) {
@@ -308,7 +416,7 @@ public class TempStorage {
 							searchResult.add(task);
 						}
 			}
-			prevSearch = newValue;
+			prevSearch = stringToSearch;
 			searchHistory.push(searchResult);
 
 			return searchResult;

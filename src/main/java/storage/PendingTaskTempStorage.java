@@ -1,9 +1,11 @@
 //@@author A0125084L
 package main.java.storage;
 
+import java.io.IOException;
+
 public class PendingTaskTempStorage extends TempStorage{
 	
-	public PendingTaskTempStorage() {
+	public PendingTaskTempStorage() throws IOException {
 		super(new PendingTaskPermStorage());
 	}
 }

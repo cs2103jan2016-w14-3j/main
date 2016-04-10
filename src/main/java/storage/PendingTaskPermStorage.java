@@ -1,10 +1,12 @@
 //@@author A0125084L
 package main.java.storage;
 
+import java.io.IOException;
+
 public class PendingTaskPermStorage extends PermStorage{
 	
-	public PendingTaskPermStorage() {
-		super(new DirectoryController("Upcoming tasks.txt", "Directory Info.txt"));
+	public PendingTaskPermStorage() throws IOException {
+		super(new DirectoryController("Upcoming Tasks.txt", "Directory Info.txt"));
 	}
 }
 //@@author A0125084L

@@ -1,6 +1,7 @@
 /* @@author A0127481E */
 package main.java.logic;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
@@ -58,7 +59,7 @@ public class Logic {
 	private ArrayList<Task> searchResultCompleted;
 	private static PrettyTimeParser timeParser = new PrettyTimeParser();
 
-	public Logic() {
+	public Logic() throws IOException {
 			storageController = new StorageController();
 	}
 
@@ -169,7 +170,7 @@ public class Logic {
 		return result;
 	}
 
-	private void handleSortCompleteCommand(Command command) {
+	private void handleSortCompleteCommand(Command command) throws IOException {
 		assert command != null;
 
 		String parameter = command.getParameters()[TASK].toLowerCase();
@@ -188,7 +189,7 @@ public class Logic {
 	}
 
 
-	private void handleSortCommand(Command command) {
+	private void handleSortCommand(Command command) throws IOException {
 		assert command != null;
 
 		String parameter = command.getParameters()[TASK].toLowerCase();
@@ -207,12 +208,12 @@ public class Logic {
 	}
 
 
-	private void handleRedoCommand() {
+	private void handleRedoCommand() throws IOException {
 		storageController.redo();
 	}
 
 
-	private void handleUndoCommand() {
+	private void handleUndoCommand() throws IOException {
 		storageController.undo();	
 	}
 
@@ -439,32 +440,32 @@ public class Logic {
 	}
 
 
-	private ArrayList<Task> handleClearCompleteTaskCommand() {
+	private ArrayList<Task> handleClearCompleteTaskCommand() throws IOException {
 		storageController.clearCompletedTasks();
 		return storageController.displayCompletedTasks();
 	}
 
 
-	private ArrayList<Task> handleClearOverdueTaskCommand() {
+	private ArrayList<Task> handleClearOverdueTaskCommand() throws IOException {
 		storageController.clearOverdueTasks();
 		return storageController.displayPendingTasks();
 	}
 
 
-	private ArrayList<Task> handleClearUpcomingTaskCommand() {
+	private ArrayList<Task> handleClearUpcomingTaskCommand() throws IOException {
 		storageController.clearUpcomingTasks();
 		return storageController.displayPendingTasks();
 	}
 
 
-	private ArrayList<Task> handleClearFloatingTaskCommand() {
+	private ArrayList<Task> handleClearFloatingTaskCommand() throws IOException {
 		storageController.clearFloatingTasks();
 		return storageController.displayPendingTasks();
 	}
 
 
-	private ArrayList<Task> handleClearAllCommand() {
-		storageController.clearPendingTasks();
+	private ArrayList<Task> handleClearAllCommand() throws IOException {
+		storageController.clearAllPendingTasks();
 		return storageController.displayPendingTasks();
 	}
 
@@ -534,7 +535,7 @@ public class Logic {
 		storageController.moveToLocation(path);
 	}
 
-	public void loadFilename(String fileName){	
+	public void loadFilename(String fileName) throws IOException{	
 		assert fileName != null;
 
 		storageController.loadFromFile(fileName);
@@ -589,7 +590,7 @@ public class Logic {
 	}
 
 
-	public ArrayList<Task> checkOverdue() {
+	public ArrayList<Task> checkOverdue() throws IOException {
 		return storageController.checkOverdue(new Date());
 	}
 

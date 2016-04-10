@@ -13,6 +13,11 @@ import main.java.data.TaskType;
 import main.java.data.TaskStatus;
 import main.java.data.Task;
 
+/**
+ * 
+ * @author Bowen
+ *
+ */
 public class StorageController {
 
 	private static final int TASK_PENDING = 0;
@@ -23,15 +28,21 @@ public class StorageController {
 	private CompletedTaskTempStorage completedTemp;
 	private int lastAction;
 
-	public StorageController() {	
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public StorageController() throws IOException {	
 		pendingTemp = new PendingTaskTempStorage();
 		completedTemp = new CompletedTaskTempStorage();
 	}
 
-	/*
+	/**
 	 * 
+	 * @param task
+	 * @throws IOException
 	 */
-	public void addTask(Task task) {
+	public void addTask(Task task) throws IOException {
 		assert task != null;
 		
 		task.setLastModified(true);
@@ -39,15 +50,29 @@ public class StorageController {
 		lastAction = TASK_PENDING;
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Task> displayPendingTasks() {
 		return pendingTemp.displayTemp();
 	}
 	
+	/**
+	 * 
+	 * @return
+	 */
 	public ArrayList<Task> displayCompletedTasks() {
 		return completedTemp.displayTemp();
 	}
 	
-	public void editPendingTask(Task taskToEdit, Task editedTask) {
+	/**
+	 * 
+	 * @param taskToEdit
+	 * @param editedTask
+	 * @throws IOException
+	 */
+	public void editPendingTask(Task taskToEdit, Task editedTask) throws IOException {
 		assert taskToEdit != null;
 		assert editedTask != null;
 		
@@ -56,7 +81,13 @@ public class StorageController {
 		lastAction = TASK_PENDING;
 	}
 	
-	public void editCompletedTask(Task taskToEdit, Task editedTask) {
+	/**
+	 * 
+	 * @param taskToEdit
+	 * @param editedTask
+	 * @throws IOException
+	 */
+	public void editCompletedTask(Task taskToEdit, Task editedTask) throws IOException {
 		assert taskToEdit != null;
 		assert editedTask != null;
 		
@@ -65,76 +96,135 @@ public class StorageController {
 		lastAction = TASK_COMPLETED;
 	}
 	
-	public void deletePendingTask(Task task) {
+	/**
+	 * 
+	 * @param task
+	 * @throws IOException
+	 */
+	public void deletePendingTask(Task task) throws IOException {
 		assert task != null;
 		
 		pendingTemp.deleteFromTemp(task);
 		lastAction = TASK_PENDING;
 	}
 	
-	public void deleteCompletedTask(Task task) {
+	/**
+	 * 
+	 * @param task
+	 * @throws IOException
+	 */
+	public void deleteCompletedTask(Task task) throws IOException {
 		assert task != null;
 		
 		completedTemp.deleteFromTemp(task);
 		lastAction = TASK_COMPLETED;
 	}
 	
-	public void clearPendingTasks() {	
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearAllPendingTasks() throws IOException {	
 		pendingTemp.clearTemp();
 		lastAction = TASK_PENDING;
 	}
 	
-	public void clearUpcomingTasks() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearUpcomingTasks() throws IOException {
 		pendingTemp.clearUpcoming();
 		lastAction = TASK_PENDING;
 	}
 	
-	public void clearFloatingTasks() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearFloatingTasks() throws IOException {
 		pendingTemp.clearFloating();
 		lastAction = TASK_PENDING;
 	}
 	
-	public void clearOverdueTasks() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearOverdueTasks() throws IOException {
 		pendingTemp.clearOverdue();
 		lastAction = TASK_PENDING;
 	}
 	
-	public void clearCompletedTasks() {		
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearCompletedTasks() throws IOException {		
 		completedTemp.clearTemp();
 		lastAction = TASK_COMPLETED;
 	}
 	
-	public void sortPendingByTaskName() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortPendingByTaskName() throws IOException {
 		pendingTemp.sortByTaskName();
 		lastAction = TASK_PENDING;
 	}
 	
-	public void sortPendingByTime() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortPendingByTime() throws IOException {
 		pendingTemp.sortByTime();
 		lastAction = TASK_PENDING;
 	}
 	
-	public void sortPendingByPriority() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortPendingByPriority() throws IOException {
 		pendingTemp.sortByPriority();
 		lastAction = TASK_PENDING;
 	}
 	
-	public void sortCompletedByTaskName() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortCompletedByTaskName() throws IOException {
 		completedTemp.sortByTaskName();
 		lastAction = TASK_COMPLETED;
 	}
 	
-	public void sortCompletedByTime() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortCompletedByTime() throws IOException {
 		completedTemp.sortByTime();
 		lastAction = TASK_COMPLETED;
 	}
 	
-	public void sortCompletedByPriority() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void sortCompletedByPriority() throws IOException {
 		completedTemp.sortByPriority();
 		lastAction = TASK_COMPLETED;
 	}
 	
-	public void moveTaskToComplete(Task task) {
+	/**
+	 * 
+	 * @param task
+	 * @throws IOException
+	 */
+	public void moveTaskToComplete(Task task) throws IOException {
 		assert task != null;
 		
 		pendingTemp.deleteFromTemp(task);
@@ -147,7 +237,12 @@ public class StorageController {
 		lastAction = TASK_BOTH;
 	}
 	
-	public void moveTaskToPending(Task task) {
+	/**
+	 * 
+	 * @param task
+	 * @throws IOException
+	 */
+	public void moveTaskToPending(Task task) throws IOException {
 		assert task != null;
 		
 		completedTemp.deleteFromTemp(task);
@@ -160,7 +255,11 @@ public class StorageController {
 		lastAction = TASK_BOTH;
 	}
 	
-	public void undo() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void undo() throws IOException {
 		if(lastAction == TASK_PENDING) {
 			pendingTemp.undoPrevious();
 		}
@@ -173,7 +272,11 @@ public class StorageController {
 		}
 	}
 	
-	public void redo() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void redo() throws IOException {
 		if(lastAction == TASK_PENDING) {
 			pendingTemp.redoPrevious();
 		}
@@ -186,52 +289,106 @@ public class StorageController {
 		}
 	}
 	
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public ArrayList<Task> showAllPendingByDate(Date date) {
 		return pendingTemp.showAllByDate(date);
 	}
 	
+	/**
+	 * 
+	 * @param priority
+	 * @return
+	 */
 	public ArrayList<Task> showAllPendingByPriority(PriorityLevel priority) {
 		return pendingTemp.showAllByPriority(priority);
 	}
 	
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 */
 	public ArrayList<Task> showAllCompletedByDate(Date date) {
 		return completedTemp.showAllByDate(date);
 	}
 	
+	/**
+	 * 
+	 * @param priority
+	 * @return
+	 */
 	public ArrayList<Task> showAllCompletedByPriority(PriorityLevel priority) {
 		return completedTemp.showAllByPriority(priority);
 	}
 	
+	/**
+	 * 
+	 * @param newValue
+	 * @return
+	 */
 	public ArrayList<Task> searchMatchPending(String newValue) {
 		return pendingTemp.searchMatch(newValue);
 	}
 	
+	/**
+	 * 
+	 * @param newValue
+	 * @return
+	 */
 	public ArrayList<Task> searchMatchCompleted(String newValue) {
 		return completedTemp.searchMatch(newValue);
 	}
 	
+	/**
+	 * 
+	 * @param path
+	 * @throws IOException
+	 */
 	public void moveToLocation(String path) throws IOException {
 		assert path != null;
 		
 		pendingTemp.moveToLocation(path);
 	}
 
-	public void loadFromFile(String path) {
+	/**
+	 * 
+	 * @param path
+	 * @throws IOException
+	 */
+	public void loadFromFile(String path) throws IOException {
 		assert path != null;
 		
 		pendingTemp.loadFromFile(path);
 	}
 	
+	/**
+	 * 
+	 * @param path
+	 * @throws Exception
+	 */
 	public void saveToLocation(String path) throws Exception {
 		assert path != null;
 		
 		pendingTemp.saveToLocation(path);
 	}
 	
-	public ArrayList<Task> checkOverdue(Date date) {
+	/**
+	 * 
+	 * @param date
+	 * @return
+	 * @throws IOException
+	 */
+	public ArrayList<Task> checkOverdue(Date date) throws IOException {
 		return pendingTemp.checkOverdue(date);
 	}
 	
+	/*
+	 * 
+	 */
 	private TaskStatus determineStatus(List<Date> dates) {
 		int size = dates.size();
 		

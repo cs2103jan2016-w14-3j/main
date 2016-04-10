@@ -10,56 +10,72 @@ import java.io.IOException;
 import java.nio.file.Files;
 import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 
+/**
+ * Contains methods to read and write to a file, which stores
+ * the path of the current working directory.
+ * @author Bowen
+ *
+ */
 public class DirectoryController {
 	
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
-	private File dirFile;
+	private File directoryFile;
 	private FileWriter fileWriter;
 	private String taskFilePath;
 
+	/**
+	 * Creates a DirectoryController instance
+	 */
 	public DirectoryController() {
 		
 	}
 	
-	public DirectoryController(String taskFileName, String dirFileName) {
-		initialiseFileDir(taskFileName, dirFileName);
+	/**
+	 * Creates a DirectoryController instance
+	 * @param taskFileName
+	 * @param dirFileName
+	 * @throws IOException 
+	 */
+	public DirectoryController(String taskFileName, String dirFileName) throws IOException {
+		initialiseFileDirectory(taskFileName, dirFileName);
 	}
 
-	/*
-	 * Returns the path of the file of tasks
+	/**
+	 * Returns the path of the task file
 	 */
 	public String getTaskFilePath() {
 		return taskFilePath;
 	}
 
-	/*
-	 * Writes the new path of where the file of tasks is stored
+	/**
+	 * Updates the new path of where the task file is stored
+	 * @throws IOException 
 	 */
-	public void updateDirectory(String path) {	
-		clearDirFile();
+	public void updateDirectory(String path) throws IOException {	
+		clearDirectoryFile();
 		writeDirectory(path);
 	}
 	
 	/*
-	 * Creates a file to store the path of the save file
+	 * Creates a file to store the path of the task file
 	 */
-	private void initialiseFileDir(String taskFileName, String dirFileName) {
-		dirFile = new File(dirFileName);
+	private void initialiseFileDirectory(String taskFileName, String dirFileName) throws IOException{
+		directoryFile = new File(dirFileName);
 
-		if(!dirFile.exists()) {
+		if(!directoryFile.exists()) {
 			try {
-				dirFile.createNewFile();
+				directoryFile.createNewFile();
 			} catch (IOException e) {
-				System.err.println("Error creating directory file");
+				throw new IOException("Cannot create directory file");
 			}
 		}
 
 		try {
-			bufferedReader = new BufferedReader(new FileReader(dirFile));
-			bufferedWriter = new BufferedWriter(new FileWriter(dirFile, true));
+			bufferedReader = new BufferedReader(new FileReader(directoryFile));
+			bufferedWriter = new BufferedWriter(new FileWriter(directoryFile, true));
 		} catch (IOException e) {
-			System.err.println("Error creating stream");
+			throw new IOException("Cannot create streams for directory file");
 		}
 
 		String lineRead;
@@ -71,33 +87,33 @@ public class DirectoryController {
 				taskFilePath = new File("").getAbsolutePath() + "\\" + taskFileName;
 			}
 		} catch (IOException e) {
-			System.err.println("Error reading from file");
+			throw new IOException("Error reading from directory file");
 		}
 	}
 	
 	/*
-	 * Writes the path of the file to tasks to the directory file
+	 * Writes the path of the task file to the directory file
 	 */
-	private void writeDirectory(String dir) {
+	private void writeDirectory(String dir) throws IOException{
 		
 		try {
 			bufferedWriter.write(dir);
 			bufferedWriter.flush();
 		} catch (IOException e) {
-			System.err.println("Error writing directory");
+			throw new IOException("Error writing to directory file");
 		}
 	}
 
 	/*
 	 * Clears the directory file
 	 */
-	private void clearDirFile() {
+	private void clearDirectoryFile() throws IOException {
 		
 		try {
-			fileWriter = new FileWriter(dirFile);
+			fileWriter = new FileWriter(directoryFile);
 			fileWriter.close();
 		} catch (IOException e) {
-			System.err.println("Cannot clear file");
+			throw new IOException("Cannot clear file");
 		}
 	}
 }

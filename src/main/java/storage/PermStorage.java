@@ -4,57 +4,83 @@ package main.java.storage;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
-import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
-import java.nio.file.LinkOption;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
 import main.java.data.Task;
 
+/**
+ * Contains methods that read and write tasks to the task file.
+ * @author Bowen
+ *
+ */
 public class PermStorage {
 	
-	private ArrayList<Task> taskList;
+	private static final String FILE_NAME = "\\Completed Tasks.txt";
+	
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
-	private File file;
-	private FileWriter fileWriter;
 	private DirectoryController dirController;
+	private File taskFile;
+	private FileWriter fileWriter;
 	private Gson gson;
+	private ArrayList<Task> taskList;
 
-	public PermStorage() {
-		initialiseFile(new File("").getAbsolutePath() + "\\Completed Tasks.txt");
+	/**
+	 * Creates a PermStorage instance 
+	 * @throws IOException 
+	 */
+	public PermStorage() throws IOException {
+		initialiseFile(new File("").getAbsolutePath() + FILE_NAME);
 		gson = new Gson();
 		taskList = new ArrayList<Task>();
 	}
 	
-	public PermStorage(DirectoryController dirController) {
+	/**
+	 * Creates a PermStorage instance
+	 * @param dirController
+	 * @throws IOException 
+	 */
+	public PermStorage(DirectoryController dirController) throws IOException {
 		this.dirController = dirController;
 		initialiseFile(dirController.getTaskFilePath());
 		gson = new Gson();
 		taskList = new ArrayList<Task>();
 	}
 	
-	/*
-	 * 
+	/**
+	 * Changes the working directory to the path specified
+	 * @param path
+	 * @throws IOException
 	 */
 	public void moveToLocation(String path) throws IOException {
 		File newFile = new File(path);
-		Files.copy(file.toPath(), newFile.toPath());
-		file = newFile;
+		Files.copy(taskFile.toPath(), newFile.toPath());
+		taskFile = newFile;
 		reopenStream();
 		dirController.updateDirectory(path);
 	}
 	
-	public void loadFromFile(String path) {
-		file = new File(path);
+	/**
+	 * 
+	 * @param path
+	 * @throws IOException
+	 */
+	public void loadFromFile(String path) throws IOException {
+		taskFile = new File(path);
 		reopenStream();
 		dirController.updateDirectory(path);
 	}
 	
+	/**
+	 * 
+	 * @param path
+	 * @throws Exception
+	 */
 	public void saveToLocation(String path) throws Exception {
 
 		if(!path.endsWith(".txt") && !path.endsWith("/")) {
@@ -63,26 +89,42 @@ public class PermStorage {
 			throw new Exception("No file name entered");
 		}
 		File newFile = new File(path);
-		Files.copy(file.toPath(), newFile.toPath());
+		Files.copy(taskFile.toPath(), newFile.toPath());
 	}
 	
-	public void writeToFile(Task task) {
+	/**
+	 * 
+	 * @param task
+	 * @throws IOException
+	 */
+	public void writeToFile(Task task) throws IOException {
 
 		try {
 			bufferedWriter.write(gson.toJson(task));
 			bufferedWriter.newLine();
 			bufferedWriter.flush();
 		} catch (IOException e){
-			System.err.println("Error writing to file.");
+			throw new IOException("Error writing to task file.");
 		}
 	}
 	
-	public void editToFile(int lineNum, Task editedTask) {
+	/**
+	 * 
+	 * @param lineNum
+	 * @param editedTask
+	 * @throws IOException
+	 */
+	public void editToFile(int lineNum, Task editedTask) throws IOException {
 		deleteFromFile(lineNum);
 		writeToFile(editedTask);
 	}
 	
-	public ArrayList<Task> readFromFile() {
+	/**
+	 * 
+	 * @return
+	 * @throws IOException
+	 */
+	public ArrayList<Task> readFromFile() throws IOException {
 		String lineRead;
 		taskList.clear();
 		
@@ -94,14 +136,19 @@ public class PermStorage {
 				}
 			}
 		} catch (IOException e) {
-			System.err.println("Error reading from file.");
+			throw new IOException("Error reading from task file.");
 		}
 		reopenStream();
 
 		return taskList;
 	}
 	
-	public void deleteFromFile(int lineNum) {
+	/**
+	 * 
+	 * @param lineNum
+	 * @throws IOException
+	 */
+	public void deleteFromFile(int lineNum) throws IOException {
 		
 		ArrayList<Task> tempTaskList = new ArrayList<Task>();
 		int currentLineNum = 0;   //first line is of index 0
@@ -116,7 +163,7 @@ public class PermStorage {
 				currentLineNum++;
 			}
 		} catch (IOException e) {
-			System.err.println("Error reading from file when deleting.");
+			throw new IOException("Error reading from task file while deleting.");
 		}
 		
 		clearFile();
@@ -128,17 +175,26 @@ public class PermStorage {
 		reopenStream();
 	}
 	
-	public void clearFile() {
+	/**
+	 * 
+	 * @throws IOException
+	 */
+	public void clearFile() throws IOException {
 		
 		try {
-			fileWriter = new FileWriter(file);
+			fileWriter = new FileWriter(taskFile);
 			fileWriter.close();
 		} catch (IOException e) {
-			System.err.println("Cannot clear file");
+			throw new IOException("Cannot clear directory file");
 		}
 	}
 
-	public void copyAllToFile(ArrayList<Task> list) {
+	/**
+	 * 
+	 * @param list
+	 * @throws IOException
+	 */
+	public void copyAllToFile(ArrayList<Task> list) throws IOException {
 		
 		clearFile();
 		for(int i=0; i<list.size(); i++) {
@@ -146,36 +202,41 @@ public class PermStorage {
 		}
 	}
 	
-	//create the file and streams
-	private void initialiseFile(String filePath) {
+	/*
+	 * Creates the task file and streams for reading and writing
+	 */
+	private void initialiseFile(String filePath) throws IOException {
 		
-		file = new File(filePath);
+		taskFile = new File(filePath);
 		
 		try {
-			if(!file.exists()) {
-				file.createNewFile();			
+			if(!taskFile.exists()) {
+				taskFile.createNewFile();			
 			}
 		} catch (IOException e) {
-			System.err.println("Cannot create file");
+			throw new IOException("Cannot create task file");
 		}
 		
 		try {
-			bufferedReader = new BufferedReader(new FileReader(file));
-			bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+			bufferedReader = new BufferedReader(new FileReader(taskFile));
+			bufferedWriter = new BufferedWriter(new FileWriter(taskFile, true));
 		} catch (IOException e) {
-			System.err.println("Cannot create file writer");
+			throw new IOException("Cannot create streams for task file");
 		}
 	}
 
-	private void reopenStream() {
+	/*
+	 * 
+	 */
+	private void reopenStream() throws IOException {
 		
 		try {
 			bufferedReader.close();
 			bufferedWriter.close();
-			bufferedReader = new BufferedReader(new FileReader(file));	
-			bufferedWriter = new BufferedWriter(new FileWriter(file, true));
+			bufferedReader = new BufferedReader(new FileReader(taskFile));	
+			bufferedWriter = new BufferedWriter(new FileWriter(taskFile, true));
 		} catch (IOException e) {
-			System.err.println("Cannot reopen stream");
+			throw new IOException("Cannot reopen streams for task file");
 		}
 	}
 }
