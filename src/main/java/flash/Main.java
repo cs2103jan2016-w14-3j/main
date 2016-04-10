@@ -1539,7 +1539,7 @@ public class Main extends Application {
 	/** Remove all the style from commandbar controller
 	 * @param n
 	 */
-	public void removeAllStyle(Node n) {
+	private void removeAllStyle(Node n) {
 		assert n != null;	
 		n.getStyleClass().removeAll("bad", "med", "good", "best");
 	}
@@ -1726,7 +1726,7 @@ public class Main extends Application {
 	/** Populate all task list in all tab
 	 * @param searchResult
 	 */
-	public void populateAllList(ArrayList<Task> searchResult) {
+	private void populateAllList(ArrayList<Task> searchResult) {
 		assert searchResult != null;
 		allTableControl.clearTask();
 		allResult.clear();
@@ -1809,7 +1809,7 @@ public class Main extends Application {
 	/** Handles save function for btnSave
 	 * @param btnSave
 	 */
-	public void saveToLocation(Button btnSave) {
+	private void saveToLocation(Button btnSave) {
 		assert btnSave != null;
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -1837,7 +1837,7 @@ public class Main extends Application {
 	/** Handles move function for btnMove
 	 * @param btnMove
 	 */
-	public void moveToLocation(Button btnMove) {
+	private void moveToLocation(Button btnMove) {
 		assert btnMove != null;
 		btnMove.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
@@ -1865,7 +1865,7 @@ public class Main extends Application {
 	/** Handles load function for btnLoad
 	 * @param btnLoad
 	 */
-	public void loadFilename(Button btnLoad) {
+	private void loadFilename(Button btnLoad) {
 		assert btnLoad != null;
 		btnLoad.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
