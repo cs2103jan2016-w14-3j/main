@@ -69,28 +69,42 @@ public class CommandBarController extends BorderPane {
 
 	@FXML
 	public void onKeyPress(KeyEvent event) throws Exception {
-
 		mainApp.handleKeyPress(this, event, commandBar.getText());
 	}
 
+	/**
+	 * Clear the command bar and reset the colour to default
+	 */
 	public void clear() {
 		commandBar.clear();
 		commandBar.getStyleClass().add("default-commandBar");
 	}
 
+	/** Get the textfield command bar
+	 * @return
+	 */
 	public TextField getCommandBar() {
 		return commandBar;
 	}
 
+	/** Get the feedback label
+	 * @return
+	 */
 	public Label getLblFeedback() {
 		return feedback;
 	}
 
+	/** Update the feedback user
+	 * @param newInput
+	 */
 	public void updateUserInput(String newInput) {
 		commandBar.setText(newInput);
 		commandBar.end();
 	}
 
+	/**
+	 * Handles live search function by listening for user input
+	 */
 	private void search() {
 
 		commandBar.textProperty().addListener(new ChangeListener<Object>() {
@@ -109,21 +123,25 @@ public class CommandBarController extends BorderPane {
 
 	}
 
+	/**
+	 * change focus back to commandbar and select all text
+	 */
 	public void getFocus() {
 		commandBar.requestFocus();
 		commandBar.positionCaret(0);
 		commandBar.selectAll();
 	}
 
-	public void setText(String taskname) {
-		commandBar.setText(taskname);
-		commandBar.requestFocus();
-	}
-
+	/** Set background colour for commandbar
+	 * @param colour
+	 */
 	public void setBgColour(String colour) {
 		commandBar.getStyleClass().add(colour);
 	}
 
+	/** Set feedback text to textfield
+	 * @param feedbackText
+	 */
 	private void setFeedbackLabel(String feedbackText) {
 		feedback.setOpacity(0);
 		feedback.setText(feedbackText);
@@ -132,6 +150,10 @@ public class CommandBarController extends BorderPane {
 
 	/* @@author A0124078H */
 
+	/** Set feedback text to texfield with animation
+	 * @param feedbackText
+	 * @param color
+	 */
 	public void setFeedback(String feedbackText, Color color) {
 		FadeTransition fadeIn = startFadeIn(feedback, FADE_IN_TIME);
 		FadeTransition fadeOut = startFadeOut(feedback, FADE_OUT_TIME);

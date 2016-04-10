@@ -59,32 +59,52 @@ public class TabsController extends BorderPane {
 
 	}
 
+	/** Set content for all tab
+	 * @param value
+	 */
 	public void setAllTab(Node value) {
 		allTab.setContent(value);
 	}
 
+	/** Set content for floating tab
+	 * @param value
+	 */
 	public void setFloatingTab(Node value) {
 		floatingTab.setContent(value);
 	}
 
+	/** Set content for pending tab
+	 * @param value
+	 */
 	public void setPendingTab(Node value) {
 		pendingTab.setContent(value);
 	}
 
+	/** Set content for overdue tab
+	 * @param value
+	 */
 	public void setOverdueTab(Node value) {
 		overdueTab.setContent(value);
 	}
 
+	/** Set content for complete tab
+	 * @param value
+	 */
 	public void setCompleteTab(Node value) {
 		completeTab.setContent(value);
 	}
 
+	/** Set Empty content for complete tab
+	 */
 	public void setEmptyCompleteTab() {
 		Image icon = new Image(COMPLETE_IMAGE);
 		ImageView iconView = new ImageView(icon);
 		completeTab.setContent(iconView);
 	}
 
+	/** Set notification for all tab
+	 * @param size
+	 */
 	public void setAllNotification(int size) {
 		if (size == 0) {
 			circleAll.managedProperty().bind(circleAll.visibleProperty());
@@ -97,6 +117,9 @@ public class TabsController extends BorderPane {
 		}
 	}
 
+	/** Set notification for pending tab
+	 * @param size
+	 */
 	public void setPendingNotification(int size) {
 		if (size == 0) {
 			circlePending.managedProperty().bind(circlePending.visibleProperty());
@@ -110,6 +133,9 @@ public class TabsController extends BorderPane {
 
 	}
 
+	/** Set notification for overdue tab
+	 * @param size
+	 */
 	public void setOverdueNotification(int size) {
 		if (size == 0) {
 			circleOverdue.managedProperty().bind(circleOverdue.visibleProperty());
@@ -123,6 +149,9 @@ public class TabsController extends BorderPane {
 
 	}
 
+	/** Set notification for floating tab
+	 * @param size
+	 */
 	public void setFloatingNotification(int size) {
 		if (size == 0) {
 			circleFloating.managedProperty().bind(circleFloating.visibleProperty());
@@ -136,6 +165,9 @@ public class TabsController extends BorderPane {
 
 	}
 
+	/** Set notification for complete tab
+	 * @param value
+	 */
 	public void setCompletedNotification(int size) {
 		if (size == 0) {
 			circleComplete.managedProperty().bind(circleComplete.visibleProperty());
@@ -148,26 +180,45 @@ public class TabsController extends BorderPane {
 		}
 	}
 
+	
+	/** Get and return all tab
+	 * @return
+	 */
 	public Tab getAllTab() {
 		return allTab;
 	}
 
+	/** Get and return floating tab
+	 * @return
+	 */
 	public Tab getFloatingTab() {
 		return floatingTab;
 	}
 
+	/** Get and return pending tab
+	 * @return
+	 */
 	public Tab getPendingTab() {
 		return pendingTab;
 	}
 
+	/** Get and return overdue tab
+	 * @return
+	 */
 	public Tab getOverdueTab() {
 		return overdueTab;
 	}
 
+	/** Get and return complete tab
+	 * @return
+	 */
 	public Tab getCompleteTab() {
 		return completeTab;
 	}
 
+	/** Get and return tab pane
+	 * @return
+	 */
 	public TabPane getTabPane() {
 		return tabPane;
 	}

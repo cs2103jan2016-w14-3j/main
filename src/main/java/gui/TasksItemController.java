@@ -76,11 +76,18 @@ public class TasksItemController extends BorderPane {
 
 	}
 	
+	/** Set up task priority colour for task
+	 * @param task
+	 * @param theme
+	 */
 	private void setUpTaskPriorityColour(Task task, String theme) {
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT, generateColour(task.getPriority().getType(), theme)));
 	}
 	
 
+	/** Set up task time for task
+	 * @param task
+	 */
 	private void setUpTaskTime(Task task) {
 		if (!task.getTime().isEmpty()) {
 			this.labelDate.setText(showTime(task.getTime()));
@@ -101,18 +108,29 @@ public class TasksItemController extends BorderPane {
 		}
 	}
 	
+	/**
+	 * Set up completed task with no time specified
+	 */
 	private void setUpCompleteTaskNoTime() {
 		labelDate.setStyle("-fx-text-fill: green;-fx-background-color: transparent; "
 				+ "-fx-padding: 5px; -fx-font-size:12px;");
 		this.labelDate.setText("[COMPLETED] ");
 	}
 	
+	/**
+	 * Set up completed task with user time specified
+	 * @param task
+	 */
 	private void setUpCompleteTaskWithTime(Task task) {
 		labelDate.setStyle("-fx-text-fill: green;-fx-background-color: transparent; "
 				+ "-fx-padding: 5px; -fx-font-size:12px;");
 		this.labelDate.setText("[COMPLETED] " + showTime(task.getTime()));
 	}
 	
+	
+	/** Set up overdue task label for task
+	 * @param task
+	 */
 	private void setUpOverdueTask(Task task) {
 		labelDate.setStyle("-fx-text-fill: #F50057;-fx-background-color: transparent; "
 				+ "-fx-padding: 5px; -fx-font-size:12px;");
@@ -122,12 +140,19 @@ public class TasksItemController extends BorderPane {
 		banner.setPreserveRatio(true);
 	}
 	
+	/**
+	 * Set up today label for task due today
+	 */
 	private void setUpTodayTask() {
 		this.imgDate.setImage(new Image("/main/resources/images/imgToday.png"));
 		imgDate.setFitWidth(60);
 		imgDate.setPreserveRatio(true);
 	}
 
+	/** Set up task name for task
+	 * @param task
+	 * @param count
+	 */
 	private void setUpTaskName(Task task, int count) {
 		if (count == 999) {
 			this.taskname.setText(" " + task.getTask());
@@ -141,6 +166,9 @@ public class TasksItemController extends BorderPane {
 		}
 	}
 
+	/**
+	 * Set up task index number for task
+	 */
 	private void setUpTaskIndex() {
 		lblIndex.setStyle("-fx-font-size: 38px; -font-text-fill:white;");
 	}
@@ -194,24 +222,28 @@ public class TasksItemController extends BorderPane {
 				}
 				return time;
 			}
-			
-			
-			
-			
-			
-			
+		
 		}
 	}
 
 	/* @@author A0124078H */
+	/** Get and return the taskname for task
+	 * @return
+	 */
 	public String getTaskName() {
 		return this.taskName;
 	}
 
+	/** Get and return the task priority for task
+	 * @return
+	 */
 	public String getTaskPriority() {
 		return this.taskPriority;
 	}
 
+	/** Get and return the task time for task
+	 * @return
+	 */
 	public String getTaskTime() {
 		return this.taskTime;
 	}
@@ -225,6 +257,12 @@ public class TasksItemController extends BorderPane {
 		this.task.setLastModified(false);
 	}
 
+	
+	/** Set up colour for task item depending on the priority
+	 * @param priority
+	 * @param theme
+	 * @return
+	 */
 	private String generateColour(String priority, String theme) {
 		if (priority.equals("low")) {
 			return BASE_COLOUR_LOW;

@@ -13,7 +13,6 @@ import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.util.Duration;
 
-/** Animates a node on and off screen to the left. */
 public class SideBarController extends VBox {
 
 	private final Button controlButton;
@@ -21,7 +20,6 @@ public class SideBarController extends VBox {
 	private Animation showSidebar;
 	private HBox header;
 
-	/** creates a sidebar containing a vertical alignment of the given nodes */
 	public SideBarController(final double expandedWidth, Node... nodes) {
 
 		getStyleClass().add("sidebar");
@@ -110,6 +108,9 @@ public class SideBarController extends VBox {
 		return header;
 	}
 
+	/**
+	 * Hide the side bar
+	 */
 	public void hideSidebar() {
 		controlButton.fire();
 	}

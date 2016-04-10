@@ -70,8 +70,12 @@ public class TasksTableController extends BorderPane {
 		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
 
-	/** Each TaskItems displayed as a row in this custom view. */
-
+	/**
+	 *Each TaskItems displayed as a row in this custom view. 
+	 * @param task
+	 * @param count
+	 * @param theme
+	 */
 	private void setTasksItem(Task task, int count, String theme) {
 		items.add(new TasksItemController(task, count, theme));
 	}
@@ -80,6 +84,9 @@ public class TasksTableController extends BorderPane {
 		tasksDisplay.setItems(subentries);
 	}
 
+	/**
+	 * Return the control back to the task display
+	 */
 	public void controlToList() {
 		int count = 0;
 		tasksDisplay.requestFocus();
