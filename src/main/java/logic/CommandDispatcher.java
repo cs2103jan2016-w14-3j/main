@@ -119,7 +119,7 @@ public class CommandDispatcher {
 
 	/**
 	 * @param originalCommand
-	 * @return
+	 * @return command type
 	 */
 	private CommandType determineCommandType(String originalCommand) {
 		assert originalCommand != null;
@@ -130,7 +130,7 @@ public class CommandDispatcher {
 
 	/**
 	 * @param command
-	 * @return
+	 * @return the command keyword
 	 */
 	private CommandType getCommandKeyword(String command) {
 		assert command != null;
@@ -228,7 +228,7 @@ public class CommandDispatcher {
 
 	/**
 	 * @param command
-	 * @return
+	 * @return the first word of each command
 	 */
 	private String getFirstKeyword(String command) {
 		assert command != null;
@@ -242,9 +242,11 @@ public class CommandDispatcher {
 	}
 
 	/**
+	 * Determine whether the command has a certain type.
+	 * Return true if it is of the type or false otherwise.
 	 * @param type
 	 * @param keyword
-	 * @return
+	 * @return true or false
 	 */
 	private boolean isCommand(CommandType type, String keyword) {
 		assert keyword != null;
@@ -254,7 +256,7 @@ public class CommandDispatcher {
 
 	/**
 	 * @param command
-	 * @return
+	 * @return the command content excluding the command keyword
 	 */
 	private String retrieveCommandContent(Command command) {
 		assert command != null;

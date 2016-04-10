@@ -128,7 +128,6 @@ public class Task {
 	 * @param isLastModified
 	 */
 	public void setLastModified(boolean isLastModified) {
-		assert isLastModified != null;
 		this.isLastModified = isLastModified;
 	}
 }
