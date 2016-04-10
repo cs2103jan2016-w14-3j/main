@@ -23,10 +23,6 @@ import main.java.storage.StorageController;
  * @author Ouyang Danwen
  *
  */
-/**
- * @author Ouyang Danwen
- *
- */
 public class Logic {
 
 	/* string constants used in this class */
