@@ -16,8 +16,8 @@ public class TimeComparator implements Comparator<Task>{
 	public int compare(Task task1, Task task2) {
 
 		//Time is specified for both tasks
-		if(!task1.getTime().isEmpty() && !task2.getTime().isEmpty()) {
-			if (task1.getStatus().compareTo(task2.getStatus())  == 0) {
+		if (!task1.getTime().isEmpty() && !task2.getTime().isEmpty()) {
+			if (task1.getStatus().compareTo(task2.getStatus()) == 0) {
 
 				if (task1.getTime().get(0).equals(task2.getTime().get(0))) {
 					return task1.getTask().compareTo(task2.getTask());
@@ -31,8 +31,8 @@ public class TimeComparator implements Comparator<Task>{
 			}
 		}
 		//Time is specified for only task1
-		else if(!task1.getTime().isEmpty()) {
-			if (task1.getStatus().compareTo(task2.getStatus())  == 0) {
+		else if (!task1.getTime().isEmpty()) {
+			if (task1.getStatus().compareTo(task2.getStatus()) == 0) {
 				return 1;
 			}
 			else {
@@ -40,8 +40,8 @@ public class TimeComparator implements Comparator<Task>{
 			}
 		}
 		//Time is specified for only task2
-		else if(!task2.getTime().isEmpty()) {
-			if (task1.getStatus().compareTo(task2.getStatus())  == 0) {
+		else if (!task2.getTime().isEmpty()) {
+			if (task1.getStatus().compareTo(task2.getStatus()) == 0) {
 				return -1;
 			}
 			else {

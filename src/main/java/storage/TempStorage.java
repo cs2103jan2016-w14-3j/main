@@ -60,7 +60,7 @@ public class TempStorage {
 	public void addToTemp(Task task) throws IOException {
 		
 		Task taskCopy = new Task(task.getTask(), task.getTime(), task.getPriority(), 
-				task.getType(), task.getStatus());
+					task.getType(), task.getStatus());
 		
 		taskCopy.setLastModified(true);
 		taskList.add(taskCopy);
@@ -128,9 +128,9 @@ public class TempStorage {
 	 */
 	public void clearUpcoming() throws IOException {
 		
-		for(int i=taskList.size()-1; i>=0; i--) {
+		for (int i = taskList.size() - 1; i >= 0; i--) {
 			Task task = taskList.get(i);
-			if(task.getStatus().equals(TaskStatus.UPCOMING)) {
+			if (task.getStatus().equals(TaskStatus.UPCOMING)) {
 				taskList.remove(i);
 				permStorage.deleteFromFile(i);
 			}
@@ -145,9 +145,9 @@ public class TempStorage {
 	 */
 	public void clearFloating() throws IOException {
 		
-		for(int i=taskList.size()-1; i>=0; i--) {
+		for (int i = taskList.size() - 1; i >= 0; i--) {
 			Task task = taskList.get(i);
-			if(task.getStatus().equals(TaskStatus.FLOATING)) {
+			if (task.getStatus().equals(TaskStatus.FLOATING)) {
 				taskList.remove(i);
 				permStorage.deleteFromFile(i);
 			}
@@ -162,9 +162,9 @@ public class TempStorage {
 	 */
 	public void clearOverdue() throws IOException {
 		
-		for(int i=taskList.size()-1; i>=0; i--) {
+		for (int i = taskList.size() - 1; i >= 0; i--) {
 			Task task = taskList.get(i);
-			if(task.getStatus().equals(TaskStatus.OVERDUE)) {
+			if (task.getStatus().equals(TaskStatus.OVERDUE)) {
 				taskList.remove(i);
 				permStorage.deleteFromFile(i);
 			}
@@ -178,7 +178,7 @@ public class TempStorage {
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void undoPrevious() throws IOException {
-		if(undoStack.size() >= 2) {
+		if (undoStack.size() >= 2) {
 			ArrayList<Task> currentState = new ArrayList<Task>(undoStack.pop());
 			redoStack.push(currentState);
 			taskList = new ArrayList<Task>(undoStack.peek());
@@ -192,11 +192,11 @@ public class TempStorage {
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void redoPrevious() throws IOException {
-		if(isPreviousUndo == false) {
+		if (isPreviousUndo == false) {
 			redoStack.clear();
 		}
 		
-		if(redoStack.size() != 0) {
+		if (redoStack.size() != 0) {
 			ArrayList<Task> currentState = new ArrayList<Task>(redoStack.pop());
 			undoStack.push(currentState);
 			taskList = new ArrayList<Task>(currentState);
@@ -277,10 +277,10 @@ public class TempStorage {
 	public ArrayList<Task> checkOverdue(Date date) throws IOException {
 		ArrayList<Task> overdueList = new ArrayList<Task>();
 		
-		for(int i=taskList.size()-1; i>=0; i--) {
+		for (int i = taskList.size() - 1; i >= 0; i--) {
 			Task task = taskList.get(i);
 			
-			if(task.getStatus().equals(TaskStatus.UPCOMING) && task.getTime().get(0).before(date)) {
+			if (task.getStatus().equals(TaskStatus.UPCOMING) && task.getTime().get(0).before(date)) {
 				task.setStatus(TaskStatus.OVERDUE);
 				permStorage.editToFile(i, task);
 				taskList.remove(i);
@@ -300,15 +300,15 @@ public class TempStorage {
 		ArrayList<Task> searchResults = new ArrayList<Task>();
 		String dateString = date.toString().substring(0, 9);
 		
-		for(int i=0; i<taskList.size(); i++) {
+		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
 			
-			if(task.getTime().size() == 1) {
-				if(task.getTime().get(0).toString().substring(0, 9).equals(dateString)) {
+			if (task.getTime().size() == 1) {
+				if (task.getTime().get(0).toString().substring(0, 9).equals(dateString)) {
 					searchResults.add(task);
 				}
-			} else if(task.getTime().size() == 2) {
-				if(date.after(task.getTime().get(0)) && date.before(task.getTime().get(1))) {
+			} else if (task.getTime().size() == 2) {
+				if (date.after(task.getTime().get(0)) && date.before(task.getTime().get(1))) {
 					searchResults.add(task);
 				}
 			}
@@ -324,10 +324,10 @@ public class TempStorage {
 	public ArrayList<Task> showAllByPriority(PriorityLevel priority) {
 		ArrayList<Task> searchResults = new ArrayList<Task>();
 		
-		for(int i=0; i<taskList.size(); i++) {
+		for (int i = 0; i < taskList.size(); i++) {
 			Task task = taskList.get(i);
 			
-			if(task.getPriority().equals(priority)) {
+			if (task.getPriority().equals(priority)) {
 				searchResults.add(task);
 			}
 		}
@@ -394,9 +394,9 @@ public class TempStorage {
 	 */
 	private int searchTemp(Task task) {
 
-		for(int i=0; i<taskList.size(); i++) {
+		for (int i = 0; i < taskList.size(); i++) {
 			Task thisTask = taskList.get(i);
-			if(thisTask.getTask().equals(task.getTask()) && 
+			if (thisTask.getTask().equals(task.getTask()) && 
 					thisTask.getTime().equals(task.getTime()) &&
 					thisTask.getPriority().equals(task.getPriority())) {
 				return i;

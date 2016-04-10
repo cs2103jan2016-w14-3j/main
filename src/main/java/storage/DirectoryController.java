@@ -70,7 +70,7 @@ public class DirectoryController {
 	private void initialiseFileDirectory(String taskFileName, String dirFileName) throws IOException{
 		directoryFile = new File(dirFileName);
 
-		if(!directoryFile.exists()) {
+		if (!directoryFile.exists()) {
 			try {
 				directoryFile.createNewFile();
 			} catch (IOException e) {
@@ -88,7 +88,7 @@ public class DirectoryController {
 		String lineRead;
 		
 		try {
-			if((lineRead = bufferedReader.readLine()) != null) {
+			if ((lineRead = bufferedReader.readLine()) != null) {
 				taskFilePath = lineRead;
 			} else {
 				taskFilePath = new File("").getAbsolutePath() + "\\" + taskFileName;

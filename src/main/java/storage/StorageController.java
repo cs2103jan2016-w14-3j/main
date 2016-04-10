@@ -260,13 +260,13 @@ public class StorageController {
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void undo() throws IOException {
-		if(lastAction == TASK_PENDING) {
+		if (lastAction == TASK_PENDING) {
 			pendingTemp.undoPrevious();
 		}
-		else if(lastAction == TASK_COMPLETED) {
+		else if (lastAction == TASK_COMPLETED) {
 			completedTemp.undoPrevious();
 		}
-		else if(lastAction == TASK_BOTH) {
+		else if (lastAction == TASK_BOTH) {
 			pendingTemp.undoPrevious();
 			completedTemp.undoPrevious();
 		}
@@ -277,13 +277,13 @@ public class StorageController {
 	 * @throws IOException If an I/O error occurs
 	 */
 	public void redo() throws IOException {
-		if(lastAction == TASK_PENDING) {
+		if (lastAction == TASK_PENDING) {
 			pendingTemp.redoPrevious();
 		}
-		else if(lastAction == TASK_COMPLETED) {
+		else if (lastAction == TASK_COMPLETED) {
 			completedTemp.redoPrevious();
 		}
-		else if(lastAction == TASK_BOTH) {
+		else if (lastAction == TASK_BOTH) {
 			pendingTemp.redoPrevious();
 			completedTemp.redoPrevious();
 		}

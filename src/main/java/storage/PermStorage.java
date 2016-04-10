@@ -91,9 +91,9 @@ public class PermStorage {
 	 */
 	public void saveToLocation(String path) throws Exception {
 
-		if(!path.endsWith(".txt") && !path.endsWith("/")) {
+		if (!path.endsWith(".txt") && !path.endsWith("/")) {
 			path = path.concat(".txt");
-		} else if(path.endsWith("/")) {
+		} else if (path.endsWith("/")) {
 			throw new Exception(ERROR_NO_FILE_NAME);
 		}
 		File newFile = new File(path);
@@ -137,9 +137,9 @@ public class PermStorage {
 		taskList.clear();
 		
 		try {
-			while((lineRead = bufferedReader.readLine()) != null) {
+			while ((lineRead = bufferedReader.readLine()) != null) {
 				Task taskRead = gson.fromJson(lineRead, Task.class);
-				if(taskRead != null) {
+				if (taskRead != null) {
 					taskList.add(taskRead);
 				}
 			}
@@ -163,8 +163,8 @@ public class PermStorage {
 		String lineRead;
 		
 		try {
-			while((lineRead = bufferedReader.readLine()) != null) {
-				if(currentLineNum != lineNum) {
+			while ((lineRead = bufferedReader.readLine()) != null) {
+				if (currentLineNum != lineNum) {
 					Task taskRead = gson.fromJson(lineRead, Task.class);
 					tempTaskList.add(taskRead);
 				}
@@ -176,7 +176,7 @@ public class PermStorage {
 		
 		clearFile();
 
-		for(int i=0; i<tempTaskList.size(); i++) {
+		for(int i = 0; i < tempTaskList.size(); i++) {
 			writeToFile(tempTaskList.get(i));
 		}	
 		
@@ -205,7 +205,7 @@ public class PermStorage {
 	public void copyAllToFile(ArrayList<Task> list) throws IOException {
 		
 		clearFile();
-		for(int i=0; i<list.size(); i++) {
+		for(int i = 0; i < list.size(); i++) {
 			writeToFile(list.get(i));
 		}
 	}
@@ -218,7 +218,7 @@ public class PermStorage {
 		taskFile = new File(filePath);
 		
 		try {
-			if(!taskFile.exists()) {
+			if (!taskFile.exists()) {
 				taskFile.createNewFile();			
 			}
 		} catch (IOException e) {
