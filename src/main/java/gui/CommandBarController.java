@@ -98,6 +98,7 @@ public class CommandBarController extends BorderPane {
 	 * @param newInput
 	 */
 	public void updateUserInput(String newInput) {
+		assert newInput != null;
 		commandBar.setText(newInput);
 		commandBar.end();
 	}
@@ -112,8 +113,8 @@ public class CommandBarController extends BorderPane {
 			public void changed(ObservableValue<?> observable, Object oldValue, Object newValue) {
 				Platform.runLater(() -> {
 					try {
-						mainApp.liveSearch((String) oldValue, (String) newValue);
-						mainApp.showColourCommand((String) oldValue, (String) newValue);
+						mainApp.liveSearch((String) newValue);
+						mainApp.showColourCommand((String) newValue);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -136,6 +137,7 @@ public class CommandBarController extends BorderPane {
 	 * @param colour
 	 */
 	public void setBgColour(String colour) {
+		assert colour != null;
 		commandBar.getStyleClass().add(colour);
 	}
 
@@ -143,6 +145,7 @@ public class CommandBarController extends BorderPane {
 	 * @param feedbackText
 	 */
 	private void setFeedbackLabel(String feedbackText) {
+		assert feedbackText != null;
 		feedback.setOpacity(0);
 		feedback.setText(feedbackText);
 		feedback.setStyle("-fx-font-weight: bold;");

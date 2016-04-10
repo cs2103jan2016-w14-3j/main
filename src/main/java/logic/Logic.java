@@ -759,9 +759,8 @@ public class Logic {
 	 * @return the search result from all upcoming tasks as a task list
 	 * @throws Exception
 	 */
-	public ArrayList<Task> handleSearchPending(String oldValue, String newValue) 
+	public ArrayList<Task> handleSearchPending(String newValue) 
 			throws Exception {
-		assert oldValue != null;
 		assert newValue != null;
 		searchResult = storageController.searchMatchPending(newValue);	
 		return searchResult;
@@ -775,9 +774,8 @@ public class Logic {
 	 * @return the search result from all completed tasks as a task list
 	 * @throws Exception
 	 */
-	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) 
+	public ArrayList<Task> handleSearchCompleted(String newValue) 
 			throws Exception {
-		assert oldValue != null;
 		assert newValue != null;
 		searchResultCompleted = storageController.searchMatchCompleted(newValue);	
 		return searchResultCompleted;

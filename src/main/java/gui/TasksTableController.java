@@ -66,6 +66,8 @@ public class TasksTableController extends BorderPane {
 	}
 
 	public void addTask(Task task, int count, String theme) {
+		assert task != null;
+		assert theme!= null;
 		setTasksItem(task, count, theme);
 		tasksDisplay.setItems(FXCollections.observableList(items));
 	}
@@ -77,10 +79,13 @@ public class TasksTableController extends BorderPane {
 	 * @param theme
 	 */
 	private void setTasksItem(Task task, int count, String theme) {
+		assert task != null;
+		assert theme!= null;
 		items.add(new TasksItemController(task, count, theme));
 	}
 
 	public void setItems(ObservableList<TasksItemController> subentries) {
+		assert subentries != null;
 		tasksDisplay.setItems(subentries);
 	}
 
@@ -105,10 +110,12 @@ public class TasksTableController extends BorderPane {
 	}
 
 	public void setTheme(String colour) {
+		assert colour != null;
 		theme = colour;
 	}
 
 	public void setColour(String colour) {
+		assert colour != null;
 		tasksDisplay.getStylesheets().add("/main/resources/styles/stylesheet.css");
 	}
 

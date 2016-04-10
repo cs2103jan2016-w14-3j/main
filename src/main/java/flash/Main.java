@@ -187,6 +187,7 @@ public class Main extends Application {
 	 * @param main 
 	 */
 	private void initControllers(Main main) {
+		assert main != null;
 		allTableControl = new TasksTableController();
 		floatingTableControl = new TasksTableController();
 		overdueTableControl = new TasksTableController();
@@ -375,6 +376,7 @@ public class Main extends Application {
 	 * @throws Exception
 	 */
 	private String locateOverdueTask(ArrayList<Task> overdueList) throws Exception {
+		assert overdueList != null;
 		String taskName = "";
 		taskName += overdueList.size();
 		return taskName;
@@ -582,6 +584,7 @@ public class Main extends Application {
 	 * @throws Exception
 	 */
 	private void createTopBar(SideBarController sidebar) {
+		assert sidebar != null;
 		HBox toolBar = new HBox();
 		HBox titleBar = new HBox();
 		hBar = new HBox();
@@ -710,6 +713,8 @@ public class Main extends Application {
 	 */
 	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text)
 			throws Exception {
+		assert event != null;
+		assert text != null;
 		assert commandBarController != null;
 		if (event.getCode() == KeyCode.ENTER) {
 			handleEnterPress(commandBarController, text);
@@ -743,6 +748,7 @@ public class Main extends Application {
 	 * @param display
 	 */
 	private void handleEnterKey(ListView<TasksItemController> display) {
+		assert display != null;
 		TasksItemController chosen = display.getSelectionModel().getSelectedItem();
 		barControl.updateUserInput("edit " + chosen.getTaskName() + ", ");
 		barControl.getFocus();
@@ -752,6 +758,7 @@ public class Main extends Application {
 	 * @param display
 	 */
 	private void handleDeleteKey(ListView<TasksItemController> display) {
+		assert display != null;
 		TasksItemController chosen = display.getSelectionModel().getSelectedItem();
 		barControl.updateUserInput("delete " + chosen.getTaskName());
 		barControl.getFocus();
@@ -812,6 +819,8 @@ public class Main extends Application {
 	 */
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
 		assert commandBarController != null;
+		assert userInput != null;
+		
 		commandByNumber = false;
 		boolean editByNumber = false;
 		pointer = historyLog.size();
@@ -913,6 +922,9 @@ public class Main extends Application {
 	 * @return
 	 */
 	private String handleCommandByTab(String userInput, boolean editByNumber, String[] fragments) {
+		assert userInput != null;
+		assert fragments != null;
+		
 		// delete from complete tab
 		if (userInput.equalsIgnoreCase(CLEAR_COMMAND)) {
 			userInput = handleClearByTab(userInput);
@@ -946,6 +958,9 @@ public class Main extends Application {
 	private String handleCommandByNumber(String userInput, String[] fragments,
 			CommandBarController commandBarController, int numberToChange) {
 		assert commandBarController != null;
+		assert fragments != null;
+		assert userInput != null;
+		
 		if (tabControl.getAllTab().isSelected()) {
 			if (numberToChange >= allResult.size()) {
 				invalidHandleCommandByNumber(commandBarController);
@@ -1018,6 +1033,9 @@ public class Main extends Application {
 	private String validHandleCommandByNumberCompleteTab(String userInput, String[] fragments,
 			CommandBarController commandBarController, int numberToChange) throws Exception {
 		assert commandBarController != null;
+		assert userInput != null;
+		assert fragments != null;
+		
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(completeResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1042,6 +1060,9 @@ public class Main extends Application {
 	private String validHandleCommandByNumberOverdueTab(String userInput, String[] fragments,
 			CommandBarController commandBarController, int numberToChange) throws Exception {
 		assert commandBarController != null;
+		assert userInput != null;
+		assert fragments != null;
+		
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(overdueResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1066,6 +1087,9 @@ public class Main extends Application {
 	private String validHandleCommandByNumberFloatingTab(String userInput, String[] fragments,
 			CommandBarController commandBarController, int numberToChange) throws Exception {
 		assert commandBarController != null;
+		assert userInput != null;
+		assert fragments != null;
+		
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(floatingResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1090,6 +1114,9 @@ public class Main extends Application {
 	private String validHandleCommandByNumberPendingTab(String userInput, String[] fragments,
 			CommandBarController commandBarController, int numberToChange) throws Exception {
 		assert commandBarController != null;
+		assert userInput != null;
+		assert fragments != null;
+		
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(pendingResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1114,6 +1141,9 @@ public class Main extends Application {
 	private String validHandleCommandByNumberAllTab(String userInput, String[] fragments,
 			CommandBarController commandBarController, int numberToChange) throws Exception {
 		assert commandBarController != null;
+		assert userInput != null;
+		assert fragments != null;
+		
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(allResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1150,6 +1180,8 @@ public class Main extends Application {
 	 * @return
 	 */
 	private String handleEditByPartialMatching(String userInput) {
+		assert userInput != null;
+
 		String update = userInput.substring(userInput.indexOf(',') + 1).trim();
 		if (tabControl.getAllTab().isSelected()) {
 			userInput = "edit " + allResult.get(0).getTask() + ", " + update;
@@ -1168,6 +1200,8 @@ public class Main extends Application {
 	 * @return
 	 */
 	private String appendSortComplete(String[] fragments) {
+		assert fragments != null;
+		
 		String userInput;
 		fragments[COMMAND_INDEX] = "sortComplete";
 		String sortComplete = "sortComplete ";
@@ -1183,6 +1217,8 @@ public class Main extends Application {
 	 * @return
 	 */
 	private String appendShowComplete(String[] fragments) {
+		assert fragments != null;
+		
 		String userInput;
 		fragments[COMMAND_INDEX] = "showComplete";
 		String showComplete = "showComplete ";
@@ -1198,6 +1234,8 @@ public class Main extends Application {
 	 * @return
 	 */
 	private String appendDeleteComplete(String[] fragments) {
+		assert fragments != null;
+		
 		String userInput;
 		fragments[COMMAND_INDEX] = "deleteComplete";
 		String deleteComplete = "deleteComplete ";
@@ -1213,6 +1251,8 @@ public class Main extends Application {
 	 * @return
 	 */
 	private String handleClearByTab(String userInput) {
+		assert userInput != null;
+		
 		if (tabControl.getPendingTab().isSelected()) {
 			userInput = userInput + "Upcoming";
 		} else if (tabControl.getCompleteTab().isSelected()) {
@@ -1233,6 +1273,8 @@ public class Main extends Application {
 	 */
 	private void handleSwitchCommand(CommandBarController commandBarController, String userInput) {
 		assert commandBarController != null;
+		assert userInput != null;
+		
 		if (tabControl.getPendingTab().isSelected()) {
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
 			lblTitle.setText("Overdue Tasks");
@@ -1262,6 +1304,8 @@ public class Main extends Application {
 	 */
 	private void popOverForShow(CommandBarController commandBarController, String title) {
 		assert commandBarController != null;
+		assert title != null;
+		
 		PopOver bgPopOver = new PopOver();
 		bgPopOver.setDetachable(true);
 		bgPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
@@ -1359,6 +1403,9 @@ public class Main extends Application {
 	 */
 	private void setFeedback(CommandBarController commandBarController, String type, String userInput) {
 		assert commandBarController != null;
+		assert type != null;
+		assert userInput != null;
+		
 		isFeedback = true;
 		// if the userInput is not a one word command
 		if (userInput.indexOf(' ') != -1) {
@@ -1375,6 +1422,9 @@ public class Main extends Application {
 	 */
 	private void setFeedbackOneWordCommand(CommandBarController commandBarController, String type, String userInput) {
 		assert commandBarController != null;
+		assert type != null;
+		assert userInput != null;
+		
 		if (type.equals(ERROR)) {
 			commandBarController.setFeedback("Invalid Command" + ": ", Color.RED);
 		} else if (type.equals(VALID)) {
@@ -1414,6 +1464,9 @@ public class Main extends Application {
 	private void setFeedbackNonOneWordCommand(CommandBarController commandBarController, String type,
 			String userInput) {
 		assert commandBarController != null;
+		assert type != null;
+		assert userInput != null;
+		
 		int i = 1;
 		i = userInput.indexOf(' ');
 		String firstWord = userInput.substring(0, i);
@@ -1452,6 +1505,8 @@ public class Main extends Application {
 	 * @return
 	 */
 	private boolean isTasksCommand(String firstWord) {
+		assert firstWord != null;
+
 		if (firstWord.equalsIgnoreCase(MARK_COMMAND) || firstWord.equalsIgnoreCase(UNMARK_COMMAND)
 				|| firstWord.equalsIgnoreCase(ADD_COMMAND) || firstWord.equalsIgnoreCase(DELETE_COMMAND)
 				|| firstWord.equalsIgnoreCase(DELETECOMPLETE_COMMAND) || firstWord.equalsIgnoreCase(EDIT_COMMAND)
@@ -1468,6 +1523,8 @@ public class Main extends Application {
 	 * @return
 	 */
 	public static String firstWord(String input) {
+		assert input != null;
+
 		String result = input; // if no space found later, input is the first
 								// word
 		for (int i = 0; i < input.length(); i++) {
@@ -1483,6 +1540,7 @@ public class Main extends Application {
 	 * @param n
 	 */
 	public void removeAllStyle(Node n) {
+		assert n != null;	
 		n.getStyleClass().removeAll("bad", "med", "good", "best");
 	}
 
@@ -1491,11 +1549,10 @@ public class Main extends Application {
 	
 	/***
 	 * Listen for the user Input character by character *******
-	 * 
-	 * @param oldValue
 	 * @param newValue
 	 */
-	public void liveSearch(String oldValue, String newValue) {
+	public void liveSearch(String newValue) {
+		assert newValue != null;
 		// if user enter space, return and start again
 		if (StringUtils.isBlank(newValue)) {
 			return;
@@ -1525,18 +1582,18 @@ public class Main extends Application {
 		if (!commandByNumbers) {
 			try {
 				if ((tabControl.getAllTab().isSelected()) && (isEdit || isDelete || isSearch || isMark || isUnmark)) {
-					liveSearchAllTab(oldValue, newValue, isEdit, isDelete, isSearch, isMark);
+					liveSearchAllTab(newValue, isEdit, isDelete, isSearch, isMark);
 				} else if ((tabControl.getPendingTab().isSelected())
 						&& (isEdit || isDelete || isSearch || isMark || isUnmark)) {
-					liveSearchPendingTab(oldValue, newValue, isEdit, isDelete, isSearch, isMark);
+					liveSearchPendingTab(newValue, isEdit, isDelete, isSearch, isMark);
 				} else if ((tabControl.getFloatingTab().isSelected())
 						&& (isEdit || isDelete || isSearch || isMark || isUnmark)) {
-					liveSearchFloatingTab(oldValue, newValue, isEdit, isDelete, isSearch, isMark);
+					liveSearchFloatingTab(newValue, isEdit, isDelete, isSearch, isMark);
 				} else if ((tabControl.getOverdueTab().isSelected())
 						&& (isEdit || isDelete || isSearch || isMark || isUnmark)) {
-					liveSearchOverdueTab(oldValue, newValue, isEdit, isDelete, isSearch, isMark);
+					liveSearchOverdueTab(newValue, isEdit, isDelete, isSearch, isMark);
 				} else if ((tabControl.getCompleteTab().isSelected()) && isDelete || isSearch || isUnmark) {
-					liveSearchCompleteTab(oldValue, newValue, isDelete, isSearch, isUnmark);
+					liveSearchCompleteTab(newValue, isDelete, isSearch, isUnmark);
 				}
 			} catch (Exception e) {
 				appLog.getLogger().warning("" + e);
@@ -1547,14 +1604,10 @@ public class Main extends Application {
 
 	/***
 	 * Handles command keyword validity, valid keyword will be shown in green,invalid in red *******
-	 * @param oldValue
 	 * @param newValue
 	 */
-	public void showColourCommand(String oldValue, String newValue) {
-		// TODO Auto-generated method stub
-		if (StringUtils.isBlank(oldValue)) {
-			return;
-		}
+	public void showColourCommand(String newValue) {
+		assert newValue != null;
 		String[] fragments = null;
 		fragments = newValue.split(SPLIT);
 
@@ -1574,16 +1627,15 @@ public class Main extends Application {
 	/************************** Live search sub method *********************************/
 	
 	/** Handles live search in complete tab
-	 * @param oldValue
 	 * @param newValue
 	 * @param isDelete
 	 * @param isSearch
 	 * @param isUnmark
 	 * @throws Exception
 	 */
-	private void liveSearchCompleteTab(String oldValue, String newValue, boolean isDelete, boolean isSearch,
+	private void liveSearchCompleteTab(String newValue, boolean isDelete, boolean isSearch,
 			boolean isUnmark) throws Exception {
-		searchResult = logic.handleSearchCompleted(oldValue, newValue);
+		searchResult = logic.handleSearchCompleted(newValue);
 		if (isDelete || isSearch) {
 			populateCompleteList(searchResult);
 		} else if (isUnmark) {
@@ -1596,7 +1648,6 @@ public class Main extends Application {
 	}
 
 	/** Handles live search in overdue tab
-	 * @param oldValue
 	 * @param newValue
 	 * @param isEdit
 	 * @param isDelete
@@ -1604,9 +1655,9 @@ public class Main extends Application {
 	 * @param isMark
 	 * @throws Exception
 	 */
-	private void liveSearchOverdueTab(String oldValue, String newValue, boolean isEdit, boolean isDelete,
+	private void liveSearchOverdueTab(String newValue, boolean isEdit, boolean isDelete,
 			boolean isSearch, boolean isMark) throws Exception {
-		searchResult = logic.handleSearchPending(oldValue, newValue);
+		searchResult = logic.handleSearchPending(newValue);
 		if (isEdit || isDelete || isSearch) {
 			populateOverdueList(searchResult);
 		} else if (isMark) {
@@ -1616,7 +1667,6 @@ public class Main extends Application {
 	}
 
 	/** Handles live search in floating tab
-	 * @param oldValue
 	 * @param newValue
 	 * @param isEdit
 	 * @param isDelete
@@ -1624,9 +1674,9 @@ public class Main extends Application {
 	 * @param isMark
 	 * @throws Exception
 	 */
-	private void liveSearchFloatingTab(String oldValue, String newValue, boolean isEdit, boolean isDelete,
+	private void liveSearchFloatingTab(String newValue, boolean isEdit, boolean isDelete,
 			boolean isSearch, boolean isMark) throws Exception {
-		searchResult = logic.handleSearchPending(oldValue, newValue);
+		searchResult = logic.handleSearchPending(newValue);
 		if (isEdit || isDelete || isSearch) {
 			populateFloatingList(searchResult);
 		} else if (isMark) {
@@ -1636,7 +1686,6 @@ public class Main extends Application {
 	}
 
 	/** Handles live search in pending tab
-	 * @param oldValue
 	 * @param newValue
 	 * @param isEdit
 	 * @param isDelete
@@ -1644,9 +1693,9 @@ public class Main extends Application {
 	 * @param isMark
 	 * @throws Exception
 	 */
-	private void liveSearchPendingTab(String oldValue, String newValue, boolean isEdit, boolean isDelete,
+	private void liveSearchPendingTab(String newValue, boolean isEdit, boolean isDelete,
 			boolean isSearch, boolean isMark) throws Exception {
-		searchResult = logic.handleSearchPending(oldValue, newValue);
+		searchResult = logic.handleSearchPending(newValue);
 		if (isEdit || isDelete || isSearch) {
 			populatePendingList(searchResult);
 		} else if (isMark) {
@@ -1656,7 +1705,6 @@ public class Main extends Application {
 	}
 
 	/** handles live search in all tab
-	 * @param oldValue
 	 * @param newValue
 	 * @param isEdit
 	 * @param isDelete
@@ -1664,9 +1712,9 @@ public class Main extends Application {
 	 * @param isMark
 	 * @throws Exception
 	 */
-	private void liveSearchAllTab(String oldValue, String newValue, boolean isEdit, boolean isDelete, boolean isSearch,
+	private void liveSearchAllTab(String newValue, boolean isEdit, boolean isDelete, boolean isSearch,
 			boolean isMark) throws Exception {
-		searchResult = logic.handleSearchPending(oldValue, newValue);
+		searchResult = logic.handleSearchPending(newValue);
 		if (isEdit || isDelete || isSearch) {
 			populateAllList(searchResult);
 		} else if (isMark) {
@@ -1679,6 +1727,7 @@ public class Main extends Application {
 	 * @param searchResult
 	 */
 	public void populateAllList(ArrayList<Task> searchResult) {
+		assert searchResult != null;
 		allTableControl.clearTask();
 		allResult.clear();
 		int count = 0;
@@ -1693,6 +1742,7 @@ public class Main extends Application {
 	 * @param searchResult
 	 */
 	private void populateOverdueList(ArrayList<Task> searchResult) {
+		assert searchResult != null;
 		overdueTableControl.clearTask();
 		overdueResult.clear();
 		int count = 0;
@@ -1708,6 +1758,7 @@ public class Main extends Application {
 	 * @param searchResult
 	 */
 	private void populateFloatingList(ArrayList<Task> searchResult) {
+		assert searchResult != null;
 		floatingTableControl.clearTask();
 		floatingResult.clear();
 		int count = 0;
@@ -1723,6 +1774,7 @@ public class Main extends Application {
 	 * @param searchResult
 	 */
 	private void populateCompleteList(ArrayList<Task> searchResult) {
+		assert searchResult != null;
 		completeTableControl.clearTask();
 		completeResult.clear();
 		int count = 0;
@@ -1738,6 +1790,7 @@ public class Main extends Application {
 	 * @param searchResult
 	 */
 	private void populatePendingList(ArrayList<Task> searchResult) {
+		assert searchResult != null;
 		pendingTableControl.clearTask();
 		pendingResult.clear();
 		int count = 0;
@@ -1757,6 +1810,7 @@ public class Main extends Application {
 	 * @param btnSave
 	 */
 	public void saveToLocation(Button btnSave) {
+		assert btnSave != null;
 		btnSave.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -1784,6 +1838,7 @@ public class Main extends Application {
 	 * @param btnMove
 	 */
 	public void moveToLocation(Button btnMove) {
+		assert btnMove != null;
 		btnMove.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -1811,6 +1866,7 @@ public class Main extends Application {
 	 * @param btnLoad
 	 */
 	public void loadFilename(Button btnLoad) {
+		assert btnLoad != null;
 		btnLoad.setOnAction(new EventHandler<ActionEvent>() {
 			@Override
 			public void handle(ActionEvent arg0) {
@@ -2227,6 +2283,7 @@ public class Main extends Application {
 	 * @return
 	 */
 	private Point2D getPopupPosition(Button node) {
+		assert node != null;
 		Window window = node.getScene().getWindow();
 		Point2D point = node.localToScene(0, 0);
 		double x = point.getX() + window.getX() + node.getWidth() + 2;
@@ -2238,6 +2295,7 @@ public class Main extends Application {
 	 * @param userInput
 	 */
 	private void notification(String userInput) {
+		assert userInput != null;
 		String title = "You have " + userInput + " new task(s) overdue.";
 		NotificationType notification = NotificationType.CUSTOM;
 		TrayNotification tray = new TrayNotification();
@@ -2255,6 +2313,7 @@ public class Main extends Application {
 	 * @param minimiseApp
 	 */
 	private void minimise(Button minimiseApp) {
+		assert minimiseApp != null;
 		minimiseApp.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {
 				Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
@@ -2267,6 +2326,7 @@ public class Main extends Application {
 	 * @param btnExit
 	 */
 	private void exit(Button btnExit) {
+		assert btnExit != null;
 		btnExit.setMnemonicParsing(true);
 		btnExit.setOnAction(new EventHandler<ActionEvent>() {
 			public void handle(ActionEvent event) {

@@ -63,6 +63,7 @@ public class TabsController extends BorderPane {
 	 * @param value
 	 */
 	public void setAllTab(Node value) {
+		assert value != null;
 		allTab.setContent(value);
 	}
 
@@ -70,6 +71,7 @@ public class TabsController extends BorderPane {
 	 * @param value
 	 */
 	public void setFloatingTab(Node value) {
+		assert value != null;
 		floatingTab.setContent(value);
 	}
 
@@ -77,6 +79,7 @@ public class TabsController extends BorderPane {
 	 * @param value
 	 */
 	public void setPendingTab(Node value) {
+		assert value != null;
 		pendingTab.setContent(value);
 	}
 
@@ -84,6 +87,7 @@ public class TabsController extends BorderPane {
 	 * @param value
 	 */
 	public void setOverdueTab(Node value) {
+		assert value != null;
 		overdueTab.setContent(value);
 	}
 
@@ -91,6 +95,7 @@ public class TabsController extends BorderPane {
 	 * @param value
 	 */
 	public void setCompleteTab(Node value) {
+		assert value != null;
 		completeTab.setContent(value);
 	}
 

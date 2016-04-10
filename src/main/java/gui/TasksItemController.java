@@ -81,6 +81,8 @@ public class TasksItemController extends BorderPane {
 	 * @param theme
 	 */
 	private void setUpTaskPriorityColour(Task task, String theme) {
+		assert task != null;
+		assert theme != null;
 		this.priorityColor.setStyle(String.format(STRING_FILL_STYLE_FORMAT, generateColour(task.getPriority().getType(), theme)));
 	}
 	
@@ -89,6 +91,7 @@ public class TasksItemController extends BorderPane {
 	 * @param task
 	 */
 	private void setUpTaskTime(Task task) {
+		assert task != null;
 		if (!task.getTime().isEmpty()) {
 			this.labelDate.setText(showTime(task.getTime()));
 			labelDate.setStyle("-fx-background-color: transparent; -fx-padding: 5px; -fx-font-size:12px;");
@@ -122,6 +125,7 @@ public class TasksItemController extends BorderPane {
 	 * @param task
 	 */
 	private void setUpCompleteTaskWithTime(Task task) {
+		assert task != null;
 		labelDate.setStyle("-fx-text-fill: green;-fx-background-color: transparent; "
 				+ "-fx-padding: 5px; -fx-font-size:12px;");
 		this.labelDate.setText("[COMPLETED] " + showTime(task.getTime()));
@@ -132,6 +136,7 @@ public class TasksItemController extends BorderPane {
 	 * @param task
 	 */
 	private void setUpOverdueTask(Task task) {
+		assert task != null;
 		labelDate.setStyle("-fx-text-fill: #F50057;-fx-background-color: transparent; "
 				+ "-fx-padding: 5px; -fx-font-size:12px;");
 		this.labelDate.setText("[OVERDUE] " + showTime(task.getTime()));
@@ -154,6 +159,8 @@ public class TasksItemController extends BorderPane {
 	 * @param count
 	 */
 	private void setUpTaskName(Task task, int count) {
+		assert task != null;
+
 		if (count == 999) {
 			this.taskname.setText(" " + task.getTask());
 			lblIndex.setText("1");
@@ -264,6 +271,8 @@ public class TasksItemController extends BorderPane {
 	 * @return
 	 */
 	private String generateColour(String priority, String theme) {
+		assert theme != null;
+		assert priority != null;
 		if (priority.equals("low")) {
 			return BASE_COLOUR_LOW;
 		} else if (priority.equals("medium")) {
