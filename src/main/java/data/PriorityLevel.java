@@ -9,6 +9,7 @@ package main.java.data;
 public enum PriorityLevel {
 	HIGH("high"), MEDIUM("medium"), LOW("low"), NOT_SPECIFIED("not specified");
 	
+	/* attributes of the class */
 	private final String type;
 	
 	/**

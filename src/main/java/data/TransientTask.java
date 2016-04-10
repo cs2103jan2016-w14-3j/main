@@ -6,6 +6,8 @@ package main.java.data;
  *
  */
 public class TransientTask {
+	
+	/* attributes of the class */
 	private String task;
 	private String time;
 	private String type;

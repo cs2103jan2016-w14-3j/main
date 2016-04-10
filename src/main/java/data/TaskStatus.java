@@ -8,6 +8,7 @@ package main.java.data;
 public enum TaskStatus {
 	OVERDUE("overdue"), UPCOMING("upcoming"), FLOATING("floating"), COMPLETED("completed");
 
+	/* attributes of the class */
 	private final String type;
 
 	/**

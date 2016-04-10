@@ -1,5 +1,6 @@
 package main.java.data;
 
+/* import statements */
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import java.util.ArrayList;
 import java.util.Date;
@@ -12,6 +13,7 @@ import java.util.List;
  */
 public class Command {
 
+	/* attributes of the class */
 	private String original;
 	private CommandType commandType;
 	private String commandContent;

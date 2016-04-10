@@ -1,5 +1,6 @@
 package main.java.data;
 
+/* import statements */
 import java.util.Date;
 import java.util.List;
 
@@ -10,6 +11,7 @@ import java.util.List;
  */
 public class Task {
 	
+	/* attributes of the class */
 	private String task;
 	private List<Date> time;
 	private TaskType type;

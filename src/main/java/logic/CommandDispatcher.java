@@ -1,7 +1,7 @@
 /* @@author A0127481E */
 package main.java.logic;
 
-
+/* import statements */
 import main.java.data.CommandType;
 import main.java.data.Command;
 import main.java.parser.AddCommandParser;

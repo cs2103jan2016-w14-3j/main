@@ -1,6 +1,7 @@
 /* @@author A0127481E */
 package main.java.logic;
 
+/* import statements */
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -15,8 +16,20 @@ import main.java.parser.InvalidInputFormatException;
 import main.java.storage.StorageController;
 
 
+/**
+ * This class models the core component, Logic, of the application.
+ * It handles the high level logic flow: receive user command -> parse user command
+ * -> create user task -> save task to storage.
+ * @author Ouyang Danwen
+ *
+ */
+/**
+ * @author Ouyang Danwen
+ *
+ */
 public class Logic {
 
+	/* string constants used in this class */
 	private static final String COMMAND_ADD = "add";
 	private static final String COMMAND_DELETE = "delete";
 	private static final String COMMAND_SEARCH = "search";
@@ -32,10 +45,8 @@ public class Logic {
 	private static final String COMMAND_REDO = "redo";
 	private static final String COMMAND_THEME = "theme";
 	private static final String COMMAND_SHOW = "show";
-	
 	private static final String EDIT_COMMAND_SEPARATOR = ",";
 	private static final String TIME_EMPTY = "[]";
-	
 	private static final String STRING_TIME = "time";
 	private static final String STRING_PRIORITY = "priority";
 	private static final String STRING_NAME = "name";
@@ -44,14 +55,12 @@ public class Logic {
 	private static final String KEYWORD_DELETE = "delete ";
 	private static final String KEYWORD_COMPLETE_DELETE = "deleteComplete ";
 	
-	
-
-
+	/* numeric indices to access the parameters array */
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 
-
+	/* attributes of the class */
 	private static Task task;
 	private static TransientTask transientTask;
 	private static StorageController storageController;
@@ -59,10 +68,19 @@ public class Logic {
 	private ArrayList<Task> searchResultCompleted;
 	private static PrettyTimeParser timeParser = new PrettyTimeParser();
 
+	/**
+	 * @throws IOException
+	 */
 	public Logic() throws IOException {
 			storageController = new StorageController();
 	}
 
+	/**
+	 * @param userInput
+	 * @param taskOptions
+	 * @return the resultant list after executing the command
+	 * @throws Exception
+	 */
 	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskOptions) 
 			throws Exception {
 		assert userInput != null;
@@ -71,22 +89,36 @@ public class Logic {
 		Command command = new Command(userInput);
 		command = parseCommand(dispatcher, command);
 
-		ArrayList<Task> result = executeTask(command, taskOptions, userInput);
+		ArrayList<Task> result = executeCommand(command, taskOptions, userInput);
 
 		return result;
 
 	}
 
+	/**
+	 * @param dispatcher
+	 * @param command
+	 * @return the parsed command 
+	 * @throws InvalidInputFormatException
+	 */
 	private Command parseCommand(CommandDispatcher dispatcher, Command command)
 			throws InvalidInputFormatException {
 		assert command != null;
-		
 		return dispatcher.parseCommand(command);
 	}
 
-	private ArrayList<Task> executeTask(Command command, ArrayList<Task> taskOptions,
+	/**
+	 * @param command
+	 * @param taskOptions
+	 * @param userInput
+	 * @return resultant task list after execution of the command
+	 * @throws NumberFormatException
+	 * @throws Exception
+	 */
+	private ArrayList<Task> executeCommand(Command command, ArrayList<Task> taskOptions,
 			String userInput) throws NumberFormatException, Exception {
 		assert command != null;
+		assert userInput != null;
 
 		ArrayList<Task> result = new ArrayList<Task>();
 
@@ -170,6 +202,10 @@ public class Logic {
 		return result;
 	}
 
+	/**
+	 * @param command
+	 * @throws IOException
+	 */
 	private void handleSortCompleteCommand(Command command) throws IOException {
 		assert command != null;
 
@@ -189,6 +225,10 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param command
+	 * @throws IOException
+	 */
 	private void handleSortCommand(Command command) throws IOException {
 		assert command != null;
 
@@ -208,19 +248,30 @@ public class Logic {
 	}
 
 
+	/**
+	 * @throws IOException
+	 */
 	private void handleRedoCommand() throws IOException {
 		storageController.redo();
 	}
 
 
+	/**
+	 * @throws IOException
+	 */
 	private void handleUndoCommand() throws IOException {
 		storageController.undo();	
 	}
 
 
+	/**
+	 * @param command
+	 * @return the resultant task list to show
+	 */
 	private ArrayList<Task> handleShowCompleteCommand(Command command) {
+		assert command != null;
+		
 		boolean isTime = false;
-
 		ArrayList<Task> result;
 		Date timeFilter = null;
 		PriorityLevel priorityFilter = null;
@@ -249,10 +300,13 @@ public class Logic {
 		}	
 
 		return result;
-
 	}
 
 
+	/**
+	 * @param command
+	 * @return the resultant task list to show
+	 */
 	private ArrayList<Task> handleShowCommand(Command command) {
 		assert command != null;
 
@@ -288,6 +342,10 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param command
+	 * @return the priority filter for the sort command
+	 */
 	private PriorityLevel determinePriorityFilter(Command command) {
 		assert command != null;
 
@@ -310,6 +368,10 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param userInput
+	 * @throws Exception
+	 */
 	private void handleUnmarkCommand(String userInput) throws Exception {
 		assert userInput != null;
 
@@ -325,6 +387,10 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param userInput
+	 * @throws Exception
+	 */
 	private void handleMarkCommand(String userInput) throws Exception {
 		assert userInput != null;
 
@@ -340,22 +406,35 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param command
+	 * @throws Exception
+	 */
 	private void handleSaveCommand(Command command) throws Exception {
 		assert command != null;
-
 		saveToLocation(command.getParameters()[TASK]);
 	}
 
 
+	/**
+	 * @param command
+	 * @throws Exception
+	 */
 	private void handleMoveCommand(Command command) throws Exception {
 		assert command != null;
-
 		moveToLocation(command.getParameters()[TASK]);	
 	}
 
 
+	/**
+	 * @param result
+	 * @param userInput
+	 * @param command
+	 * @throws Exception
+	 */
 	private void handleEditCommand(ArrayList<Task> result, String userInput, 
 			Command command) throws Exception {
+		assert result != null;
 		assert userInput != null;
 		assert command != null;
 
@@ -375,9 +454,20 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param userInput
+	 * @param finalResult
+	 * @param result
+	 * @param originalTask
+	 * @throws Exception
+	 */
 	private void executeEditCommand(String userInput, ArrayList<Task> finalResult, 
 			ArrayList<Task> result, String originalTask) throws Exception {
-
+		assert userInput != null;
+		assert finalResult != null;
+		assert result != null;
+		assert originalTask != null;
+		
 		for (Task temp : searchResult) {
 
 			//check if it is the right task to edit
@@ -402,7 +492,6 @@ public class Logic {
 				}
 
 				edit(finalResult);
-
 				break;
 			}
 		}
@@ -410,6 +499,10 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param userInput
+	 * @throws Exception
+	 */
 	private void handleDeleteTaskCommand(String userInput) throws Exception {
 		assert userInput != null;
 
@@ -425,6 +518,10 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param userInput
+	 * @throws Exception
+	 */
 	private void handleDeleteCompleteTaskCommand(String userInput) throws Exception {
 		assert userInput != null;
 
@@ -439,37 +536,61 @@ public class Logic {
 		}
 	}
 
-
+	/**
+	 * @return the resultant task list for display under "completed tasks" tab
+	 * @throws IOException
+	 */
 	private ArrayList<Task> handleClearCompleteTaskCommand() throws IOException {
 		storageController.clearCompletedTasks();
 		return storageController.displayCompletedTasks();
 	}
 
 
+	/**
+	 * @return the resultant task list for display under "overdue tasks" tab
+	 * @throws IOException
+	 */
 	private ArrayList<Task> handleClearOverdueTaskCommand() throws IOException {
 		storageController.clearOverdueTasks();
 		return storageController.displayPendingTasks();
 	}
 
 
+	/**
+	 * @return the resultant task list for display under "pending tasks" tab
+	 * @throws IOException
+	 */
 	private ArrayList<Task> handleClearUpcomingTaskCommand() throws IOException {
 		storageController.clearUpcomingTasks();
 		return storageController.displayPendingTasks();
 	}
 
 
+	/**
+	 * @return the resultant task list for display under "floating tasks" tab
+	 * @throws IOException
+	 */
 	private ArrayList<Task> handleClearFloatingTaskCommand() throws IOException {
 		storageController.clearFloatingTasks();
 		return storageController.displayPendingTasks();
 	}
 
 
+	/**
+	 * @return the resultant task list for display under "all tasks" tab
+	 * @throws IOException
+	 */
 	private ArrayList<Task> handleClearAllCommand() throws IOException {
 		storageController.clearAllPendingTasks();
 		return storageController.displayPendingTasks();
 	}
 
 
+	/**
+	 * @param command
+	 * @return the resultant task list after adding the task
+	 * @throws Exception
+	 */
 	private ArrayList<Task> handleAddCommand(Command command) throws Exception {
 		assert task != null;
 
@@ -480,73 +601,140 @@ public class Logic {
 	}
 
 
+	/**
+	 * @param task
+	 * @return the parsed edit command to  return two tasks
+	 * @throws Exception
+	 */
 	private ArrayList<Task> parseEditCommand(TransientTask task) throws Exception {
 		assert task != null;
-
 		return EditCommandParser.parseEditTask(task);
 	}
 
+	/**
+	 * @param command
+	 * @return the task object created from the parsed command
+	 */
 	private Task createTask(Command command) {
 		assert command != null;
-
 		return command.createTask();
 	}
 
+	/**
+	 * @param command
+	 * @return the transient task object from the parsed edit command
+	 */
 	private TransientTask createTransientTask(Command command) {
 		assert command != null;
-
 		return command.createTransientTask();
 	}
 
+	/**
+	 * Delete a completed task.
+	 * @param task
+	 * @throws Exception
+	 */
 	public void deleteComplete(Task task) throws Exception {
+		assert task != null;
 		storageController.deleteCompletedTask(task);
 	}
 
+	/**
+	 * Delete a task.
+	 * @param task
+	 * @throws Exception
+	 */
 	public void delete(Task task) throws Exception {
+		assert task != null;
 		storageController.deletePendingTask(task);
 	}
 
+	/**
+	 * Mark a task as completed.
+	 * @param task
+	 * @throws Exception
+	 */
 	public void mark(Task task) throws Exception {
+		assert task != null;
 		storageController.moveTaskToComplete(task);	
 	}
 
+	/**
+	 * Unmark a completed task as uncompleted.
+	 * @param task
+	 * @throws Exception
+	 */
 	public void unmark(Task task) throws Exception {
+		assert task != null;
 		storageController.moveTaskToPending(task);
 	}
 
+	/**
+	 *Display all upcoming tasks under the "pending tasks" tab.
+	 * @return
+	 * @throws Exception
+	 */
 	public ArrayList<Task> displayPending()throws Exception{
 		ArrayList<Task> result = storageController.displayPendingTasks();
 		return result;
 	}
 
+	/**
+	 * Display the list of completed task under the "completed tasks" tab.
+	 * @return the list of the completed task.
+	 * @throws Exception
+	 */
 	public ArrayList<Task> displayComplete()throws Exception{
 		ArrayList<Task> result = storageController.displayCompletedTasks();
 		return result;
 	}
 
+	/**
+	 * Edit a task after locating the original task.
+	 * @param result
+	 * @throws Exception
+	 */
 	public void edit(ArrayList<Task> result)throws Exception{
-
+		assert result != null;
 		storageController.editPendingTask(result.get(0), result.get(1));
 	}
 
+	/**
+	 * Move the saved file to a new location on PC.
+	 * @param path
+	 * @throws Exception
+	 */
 	public void moveToLocation(String path) throws Exception{	
 		assert path != null;
-
 		storageController.moveToLocation(path);
 	}
 
+	/**
+	 * Load a file from PC based on the given file name.
+	 * @param fileName
+	 * @throws IOException
+	 */
 	public void loadFilename(String fileName) throws IOException{	
 		assert fileName != null;
-
 		storageController.loadFromFile(fileName);
 	}
 
+	/**
+	 * Save the file to a particular location.
+	 * @param path
+	 * @throws Exception
+	 */
 	public void saveToLocation(String path) throws Exception {
 		assert path != null;
-
 		storageController.saveToLocation(path);
 	}
 
+	/**
+	 * Determine whether the command is a valid command based on the command keyword.
+	 * Return true if it is a valid command or false otherwise.
+	 * @param commandWord
+	 * @return true or false.
+	 */
 	public boolean isCommand(String commandWord) {
 		assert commandWord != null;
 
@@ -568,32 +756,53 @@ public class Logic {
 	}
 
 
+	/**
+	 * Search the upcoming task list for matched based on the specified value.
+	 * @param oldValue
+	 * @param newValue
+	 * @return the search result from all upcoming tasks as a task list
+	 * @throws Exception
+	 */
 	public ArrayList<Task> handleSearchPending(String oldValue, String newValue) 
 			throws Exception {
 		assert oldValue != null;
 		assert newValue != null;
-
 		searchResult = storageController.searchMatchPending(newValue);	
-
 		return searchResult;
 	}
 
 
+	/**
+	 * Search the completed task list for matched based on the specified value.
+	 * @param oldValue
+	 * @param newValue
+	 * @return the search result from all completed tasks as a task list
+	 * @throws Exception
+	 */
 	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) 
 			throws Exception {
 		assert oldValue != null;
 		assert newValue != null;
-
 		searchResultCompleted = storageController.searchMatchCompleted(newValue);	
-
 		return searchResultCompleted;
 	}
 
 
+	/**
+	 * Check through the whole upcoming task list
+	 * to mark all overdue task as overdue.
+	 * @return the new task list after checking
+	 * @throws IOException
+	 */
 	public ArrayList<Task> checkOverdue() throws IOException {
 		return storageController.checkOverdue(new Date());
 	}
 
+	/**
+	 * Determine the starting index of a command to facilitate command handling.
+	 * @param command
+	 * @return the starting task index of a command
+	 */
 	public int retrieveTaskIndex(Command command) {
 		assert command != null;
 

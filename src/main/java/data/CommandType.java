@@ -15,6 +15,7 @@ public enum CommandType {
 	SHOW_COMPLETE("showComplete"), SWITCH("switch"), SAVE("save"), 
 	INVALID("invalid");
 	
+	/* attributes of the class */
 	private final String type; 
 	
 	/**
