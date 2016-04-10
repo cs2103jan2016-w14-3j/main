@@ -5,12 +5,17 @@ import java.util.Comparator;
 
 import main.java.data.Task;
 
+/**
+ * A Comparator for Task objects that can sort tasks based on their time
+ * @author Hou Bo Wen
+ *
+ */
 public class TimeComparator implements Comparator<Task>{
 
 	@Override
 	public int compare(Task task1, Task task2) {
 
-		//both have time
+		//Time is specified for both tasks
 		if(!task1.getTime().isEmpty() && !task2.getTime().isEmpty()) {
 			if (task1.getStatus().compareTo(task2.getStatus())  == 0) {
 
@@ -25,7 +30,7 @@ public class TimeComparator implements Comparator<Task>{
 				return task1.getStatus().compareTo(task2.getStatus());
 			}
 		}
-		//only task1 has time
+		//Time is specified for only task1
 		else if(!task1.getTime().isEmpty()) {
 			if (task1.getStatus().compareTo(task2.getStatus())  == 0) {
 				return 1;
@@ -34,7 +39,7 @@ public class TimeComparator implements Comparator<Task>{
 				return task1.getStatus().compareTo(task2.getStatus());
 			}
 		}
-		//only task2 has time
+		//Time is specified for only task2
 		else if(!task2.getTime().isEmpty()) {
 			if (task1.getStatus().compareTo(task2.getStatus())  == 0) {
 				return -1;
@@ -43,7 +48,7 @@ public class TimeComparator implements Comparator<Task>{
 				return task1.getStatus().compareTo(task2.getStatus());
 			}
 		}
-		//neither has time
+		//Time is not specified for both tasks
 		else {
 			return task1.getTask().compareTo(task2.getTask());
 

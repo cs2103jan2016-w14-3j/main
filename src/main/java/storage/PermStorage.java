@@ -15,7 +15,7 @@ import main.java.data.Task;
 
 /**
  * Contains methods that read and write tasks to the task file.
- * @author Bowen
+ * @author Hou Bo Wen
  *
  */
 public class PermStorage {
@@ -32,7 +32,7 @@ public class PermStorage {
 
 	/**
 	 * Creates a PermStorage instance 
-	 * @throws IOException 
+	 * @throws IOException If an I/O error occurs
 	 */
 	public PermStorage() throws IOException {
 		initialiseFile(new File("").getAbsolutePath() + FILE_NAME);
@@ -42,8 +42,8 @@ public class PermStorage {
 	
 	/**
 	 * Creates a PermStorage instance
-	 * @param dirController
-	 * @throws IOException 
+	 * @param dirController The directoryController to be linked to
+	 * @throws IOException If an I/O error occurs
 	 */
 	public PermStorage(DirectoryController dirController) throws IOException {
 		this.dirController = dirController;
@@ -53,9 +53,9 @@ public class PermStorage {
 	}
 	
 	/**
-	 * Changes the working directory to the path specified
-	 * @param path
-	 * @throws IOException
+	 * Changes the working directory to the given path
+	 * @param path The path of the file in the new working directory
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void moveToLocation(String path) throws IOException {
 		File newFile = new File(path);
@@ -66,10 +66,10 @@ public class PermStorage {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @throws IOException
-	 */
+	 * Loads the file based on the given path 
+	 * @param path The path of the file to be loaded
+	 * @throws IOException If an I/O error occurs
+	 */ 
 	public void loadFromFile(String path) throws IOException {
 		taskFile = new File(path);
 		reopenStream();
@@ -77,9 +77,9 @@ public class PermStorage {
 	}
 	
 	/**
-	 * 
-	 * @param path
-	 * @throws Exception
+	 * Makes a copy of the task file in the given path
+	 * @param path The path of the file to be saved in
+	 * @throws Exception If no file name is specified in the path
 	 */
 	public void saveToLocation(String path) throws Exception {
 
@@ -93,9 +93,9 @@ public class PermStorage {
 	}
 	
 	/**
-	 * 
-	 * @param task
-	 * @throws IOException
+	 * Writes the given task to the task file
+	 * @param task The task to be written
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void writeToFile(Task task) throws IOException {
 
@@ -109,10 +109,10 @@ public class PermStorage {
 	}
 	
 	/**
-	 * 
-	 * @param lineNum
-	 * @param editedTask
-	 * @throws IOException
+	 * Replaces the task at the given line number with the editedTask task
+	 * @param lineNum The line number of the task to be edited
+	 * @param editedTask The task that has been edited
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void editToFile(int lineNum, Task editedTask) throws IOException {
 		deleteFromFile(lineNum);
@@ -120,9 +120,9 @@ public class PermStorage {
 	}
 	
 	/**
-	 * 
-	 * @return
-	 * @throws IOException
+	 * Returns the list of tasks from the task file
+	 * @return The list of tasks from the task file
+	 * @throws IOException If an I/O error occurs
 	 */
 	public ArrayList<Task> readFromFile() throws IOException {
 		String lineRead;
@@ -144,9 +144,9 @@ public class PermStorage {
 	}
 	
 	/**
-	 * 
-	 * @param lineNum
-	 * @throws IOException
+	 * Removes the task at the give line number in the task file
+	 * @param lineNum The line number of the task to be deleted
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void deleteFromFile(int lineNum) throws IOException {
 		
@@ -176,8 +176,8 @@ public class PermStorage {
 	}
 	
 	/**
-	 * 
-	 * @throws IOException
+	 * Clears the file of all tasks
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void clearFile() throws IOException {
 		
@@ -190,9 +190,9 @@ public class PermStorage {
 	}
 
 	/**
-	 * 
-	 * @param list
-	 * @throws IOException
+	 * Copies the given list of tasks to the file, overwriting any content in the file 
+	 * @param list The list of tasks to be copied to the file
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void copyAllToFile(ArrayList<Task> list) throws IOException {
 		
@@ -226,7 +226,7 @@ public class PermStorage {
 	}
 
 	/*
-	 * 
+	 * Creates new streams to allow reading and writing from the top of the file
 	 */
 	private void reopenStream() throws IOException {
 		

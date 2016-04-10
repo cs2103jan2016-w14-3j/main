@@ -4,9 +4,16 @@ package main.java.storage;
 import java.util.Comparator;
 
 import main.java.data.Task;
-
+ /**
+  * A Comparator for Task objects that can sort tasks based on their priority
+  * @author Hou Bo Wen
+  *
+  */
 public class PriorityComparator implements Comparator<Task>{
 
+	/**
+	 * 
+	 */
 	@Override
 	public int compare(Task task1, Task task2) {
 

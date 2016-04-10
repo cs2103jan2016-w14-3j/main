@@ -5,6 +5,11 @@ import java.util.Comparator;
 
 import main.java.data.Task;
 
+/**
+ * A Comparator for Task objects that can sort tasks based on their name
+ * @author Hou Bo Wen
+ *
+ */
 public class TaskNameComparator implements Comparator<Task>{
 
 	@Override

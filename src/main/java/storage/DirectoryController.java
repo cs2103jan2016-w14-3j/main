@@ -13,7 +13,7 @@ import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
 /**
  * Contains methods to read and write to a file, which stores
  * the path of the current working directory.
- * @author Bowen
+ * @author Hou Bo Wen
  *
  */
 public class DirectoryController {
@@ -33,16 +33,17 @@ public class DirectoryController {
 	
 	/**
 	 * Creates a DirectoryController instance
-	 * @param taskFileName
-	 * @param dirFileName
-	 * @throws IOException 
+	 * @param taskFileName The name of the task file 
+	 * @param dirFileName The name of the directory file
+	 * @throws IOException If an I/O error occurs
 	 */
 	public DirectoryController(String taskFileName, String dirFileName) throws IOException {
 		initialiseFileDirectory(taskFileName, dirFileName);
 	}
 
 	/**
-	 * Returns the path of the task file
+	 * Returns the path of the task file in the current working directory
+	 * @return The path of the task file in the current working directory
 	 */
 	public String getTaskFilePath() {
 		return taskFilePath;
@@ -50,7 +51,7 @@ public class DirectoryController {
 
 	/**
 	 * Updates the new path of where the task file is stored
-	 * @throws IOException 
+	 * @throws IOException If an I/O error occurs
 	 */
 	public void updateDirectory(String path) throws IOException {	
 		clearDirectoryFile();
