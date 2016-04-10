@@ -1,7 +1,7 @@
 /* @@author A0127481E */
 package main.java.parser;
 
-
+/* import statements */
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -11,8 +11,14 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 import main.java.data.PriorityLevel;
 import main.java.data.TaskType;
 
+/**
+ * This class formats and parses the add command.
+ * @author Ouyang Danwen
+ *
+ */
 public class AddCommandParser {
-	
+
+	/* error messages used in this class */
 	private static final String ERROR_MESSAGE_EMPTY_TASK = "Cannot add an empty task!";
 	private static final String ERROR_MESSAGE_MISSING_TASK_NAME = "Task name is missing!";
 	private static final String ERROR_MESSAGE_AMBIGUOUS_TIME = "Ambiguous time entered!";
@@ -21,6 +27,7 @@ public class AddCommandParser {
 	private static final String ERROR_MESSAGE_INVALID_PRIORITY = ""
 			+ "Please enter a valid priority level";
 
+	/* string constants used in this class */
 	private static final String DEADLINE_FLAG_BY = "by";
 	private static final String DEADLINE_FLAG_BEFORE = "before";
 	private static final String EVENT_FLAG_ON = "on";
@@ -28,7 +35,6 @@ public class AddCommandParser {
 	private static final String DURATION_FLAG_FROM = "from";
 	private static final String DURATION_FLAG_TO = "to";
 	private static final String PRIORITY_FLAG = "#";	
-	
 	private static final String TIME_EMPTY = "[]";
 	private static final String TIME_SEPARATOR = ":";
 	private static final String EXTRA_WHITE_SPACES = "\\s+";
@@ -40,31 +46,34 @@ public class AddCommandParser {
 	private static final String STRING_NOW = "now";
 	private static final String STRING_TODAY = "today";
 	private static final String DEFAULT_TIME = "8am";
-	
-	
 	private static final String TASK_OVERDUE = "overdue";
 	private static final String TASK_UPCOMING = "upcoming";
 	private static final String TASK_FLOATING = "floating";
-	
-	
 	private static final String ALIAS_PRIORITY_HIGH = "h";
 	private static final String ALIAS_1_PRIORITY_MEDIUM = "med";
 	private static final String ALIAS_2_PRIORITY_MEDIUM = "m";
 	private static final String ALIAS_PRIORITY_LOW = "l";
-	
+
+	/* numeric constants used in this class */
 	private static final int FIELD_NOT_EXIST = -1;
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
 	private static final int STATUS = 4;
-	
+
+	/* attributes of the class */
 	protected PrettyTimeParser timeParser;
 
 	public AddCommandParser() {
 		timeParser = new PrettyTimeParser();
 	}
 
+	/**
+	 * @param commandContent
+	 * @return parameters of the command as a string array
+	 * @throws InvalidInputFormatException
+	 */
 	public String[] determineParameters(String commandContent) 
 			throws InvalidInputFormatException {
 		assert commandContent != null;
@@ -83,8 +92,17 @@ public class AddCommandParser {
 		return commandParameters;
 	}
 
+	/**
+	 * @param formattedCommandContent
+	 * @param timeSegment
+	 * @return the command parameters after setting them
+	 * @throws InvalidInputFormatException
+	 */
 	private String[] setParameters(String formattedCommandContent, String timeSegment) 
 			throws InvalidInputFormatException {
+		assert formattedCommandContent != null;
+		assert timeSegment != null;
+
 		String[] commandParameters = new String[5];
 
 		//determine all the parameters
@@ -101,8 +119,16 @@ public class AddCommandParser {
 		return commandParameters;
 	}
 
+	/**
+	 * Determine the name of the task.
+	 * @param formattedCommandContent
+	 * @return task name
+	 * @throws InvalidInputFormatException
+	 */
 	protected String determineTask(String formattedCommandContent) 
 			throws InvalidInputFormatException {
+		assert formattedCommandContent != null;
+
 		int timeIndex = getStartingIndexOfIdentifier(formattedCommandContent);
 
 		//no time specified
@@ -116,8 +142,15 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param formattedCommandContent
+	 * @param timeIndex
+	 * @return task name
+	 */
 	private String determineTaskWithTimeSpecified(String formattedCommandContent, 
 			int timeIndex) {
+		assert formattedCommandContent != null;
+
 		//time is the first segment -> task is missing
 		if (timeIndex == 0) {
 			return STRING_EMPTY;
@@ -129,7 +162,12 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param formattedCommandContent
+	 * @return task name
+	 */
 	private String determineTaskWithNoTimeSpecified(String formattedCommandContent) {
+		assert formattedCommandContent != null;
 
 		int priorityIndex = getStartingIndexOfPriority(formattedCommandContent);
 
@@ -153,8 +191,14 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param formattedCommandContent
+	 * @return time of the task
+	 * @throws InvalidInputFormatException
+	 */
 	protected String determineTime(String formattedCommandContent) 
 			throws InvalidInputFormatException {
+		assert formattedCommandContent != null;
 
 		String timeSegment = determineTimeSegment(formattedCommandContent);
 		List<Date> dates = timeParser.parse(timeSegment);
@@ -171,8 +215,16 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * Format the time segment for esay manipulation.
+	 * @param dates
+	 * @param timeSegment
+	 * @return the formatted time segment
+	 * @throws InvalidInputFormatException
+	 */
 	private String formatTimeSegment(List<Date> dates, String timeSegment) 
 			throws InvalidInputFormatException {
+		assert timeSegment != null;
 
 		//check the validity of input time
 		isTimeAmbiguous(dates, timeSegment);
@@ -187,8 +239,16 @@ public class AddCommandParser {
 		return time;
 	}
 
+	/**
+	 * @param dates
+	 * @param timeSegment
+	 * @throws InvalidInputFormatException
+	 */
 	private void isTimeAmbiguous(List<Date> dates, String timeSegment) 
 			throws InvalidInputFormatException {
+		assert dates != null;
+		assert timeSegment != null;
+
 		int size = dates.size();
 
 		//not handling input with more than two different time
@@ -204,7 +264,15 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * Set the default time to 8am to avoid using system time for the task.
+	 * @param timeSegment
+	 * @param dates
+	 * @return the modified time if applicable
+	 */
 	private String setDefaultTimeIfNotSpecified(String timeSegment, List<Date> dates) {
+		assert timeSegment != null;
+		assert dates != null;
 
 		String parsedTime = getRoughTime(dates.toString());
 		String currentSystemTime = getRoughTime(new Date().toString());
@@ -222,14 +290,25 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * Determine the approximate time for comparsion.
+	 * @param fullDate
+	 * @return the approximate time
+	 */
 	private String getRoughTime(String fullDate) {
-
+		assert fullDate != null;
 		return fullDate.substring(fullDate.indexOf(TIME_SEPARATOR) - 2, 
 				fullDate.indexOf(TIME_SEPARATOR, fullDate.indexOf(TIME_SEPARATOR) + 1) + 2);
 	}
 
 
+	/**
+	 * @param formattedCommandContent
+	 * @return the time segment from the formatted command content
+	 */
 	private String determineTimeSegment(String formattedCommandContent) {
+		assert formattedCommandContent != null;
+
 		int timeIndex = getStartingIndexOfIdentifier(formattedCommandContent);
 		int priorityIndex = getStartingIndexOfPriority(formattedCommandContent);
 		String timeSegment;
@@ -252,8 +331,14 @@ public class AddCommandParser {
 		return timeSegment;
 	}
 
-	//fix the case where "on" is followed "from ... to ..."
+	/**
+	 * Fix the case where "on" is followed by "from ... to ..."
+	 * which is not handled properly by the PrettyTimeParser library.
+	 * @param timeSegment
+	 * @return
+	 */
 	private String formatTimeSegment(String timeSegment) {
+		assert timeSegment != null;
 
 		if (containsWholeWord(timeSegment, EVENT_FLAG_ON) 
 				&& containsWholeWord(timeSegment, DURATION_FLAG_FROM )){
@@ -266,8 +351,14 @@ public class AddCommandParser {
 		return timeSegment;
 	}
 
+	/**
+	 * @param formattedCommandContent
+	 * @return priority of the task
+	 * @throws InvalidInputFormatException
+	 */
 	protected String determinePriority(String formattedCommandContent) 
 			throws InvalidInputFormatException {
+		assert formattedCommandContent != null;
 
 		//priority is specified
 		if (formattedCommandContent.contains(PRIORITY_FLAG)) {
@@ -291,7 +382,14 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * Check whether the specified priority is valid.
+	 * Return true for valid priority or false otherwise.
+	 * @param priority
+	 * @return true or false
+	 */
 	private boolean isValidPriority(String priority) {
+		assert priority != null;
 
 		if (priority.equals(PriorityLevel.HIGH.getType()) 
 				|| priority.equals(PriorityLevel.MEDIUM.getType()) 
@@ -308,7 +406,13 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * Convert the aliases for valid priority level to the standard forms.
+	 * @param priority
+	 * @return the priority in full
+	 */
 	private String getPriorityInFull(String priority) {
+		assert priority != null;
 
 		if (priority.equals(PriorityLevel.HIGH.getType()) 
 				|| priority.equals(ALIAS_PRIORITY_HIGH)) {
@@ -329,9 +433,15 @@ public class AddCommandParser {
 		return priority;
 	}
 
-	protected String determineTaskType(String formattdCommandContent) {
-		int timeIndex = getStartingIndexOfIdentifier(formattdCommandContent);
-		String timeSegment = determineTimeSegment(formattdCommandContent).toLowerCase();
+	/**
+	 * @param formattdCommandContent
+	 * @return type of the task
+	 */
+	protected String determineTaskType(String formattedCommandContent) {
+		assert formattedCommandContent != null;
+
+		int timeIndex = getStartingIndexOfIdentifier(formattedCommandContent);
+		String timeSegment = determineTimeSegment(formattedCommandContent).toLowerCase();
 
 		//time is not specified
 		if (timeIndex == FIELD_NOT_EXIST) {
@@ -346,8 +456,8 @@ public class AddCommandParser {
 		//time is specified by a single date with no duration
 		else {
 			//time is specified by "by" and "before"
-			if (formattdCommandContent.substring(timeIndex, timeIndex + 2)
-					.equalsIgnoreCase(DEADLINE_FLAG_BY)|| formattdCommandContent.substring(
+			if (formattedCommandContent.substring(timeIndex, timeIndex + 2)
+					.equalsIgnoreCase(DEADLINE_FLAG_BY)|| formattedCommandContent.substring(
 							timeIndex, timeIndex + 6).equalsIgnoreCase(DEADLINE_FLAG_BEFORE)) {
 				return TaskType.DEADLINE.getType();
 			}
@@ -359,9 +469,18 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * Check whether the whole keyword is contained in content.
+	 * Return true if it is contained or false otherwise.
+	 * @param content
+	 * @param keyword
+	 * @return true or false
+	 */
 	private boolean containsWholeWord(String content, String keyword) {
-		String[] segments = content.split(STRING_WHITE_SPACE);  
+		assert content != null;
+		assert keyword != null;
 
+		String[] segments = content.split(STRING_WHITE_SPACE);  
 		for (int i = 0; i < segments.length; i++) {
 			if (segments[i].equalsIgnoreCase(keyword)) {
 				return true;
@@ -370,7 +489,15 @@ public class AddCommandParser {
 
 		return false;
 	}
+
+	/**
+	 * Check whether the task is a task which spans over a period of time.
+	 * Return true if it is or false otherwise.
+	 * @param timeSegment
+	 * @return true or false
+	 */
 	private boolean isDurationTask(String timeSegment) {
+		assert timeSegment != null;
 
 		if (timeParser.parse(timeSegment).size() == 2 
 				&& (containsWholeWord(timeSegment, DURATION_FLAG_FROM)
@@ -383,7 +510,12 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param timeSegment
+	 * @return status of the task
+	 */
 	protected String determineStatus(String timeSegment) {
+		assert timeSegment != null;
 
 		//parse the time
 		List<Date> dates = timeParser.parse(timeSegment);
@@ -406,13 +538,27 @@ public class AddCommandParser {
 	}
 
 
+	/**
+	 * Check whether the time is today.
+	 * Return true if it is or false otherwise.
+	 * @param dates
+	 * @return true or false
+	 */
 	private boolean isToday(List<Date> dates) {
-
+		assert dates != null;
 		return dates.toString().substring(1,11).equals
 				(new Date().toString().substring(0, 10));
 	}
 
+	/**
+	 * Determine the starting index of a whole word appeared in the content.
+	 * @param content
+	 * @param expression
+	 * @return the starting index of the word
+	 */
 	private int getIndexOfWholeWord(String content, String expression) {
+		assert content != null;
+		assert expression != null;
 
 		content = content.toLowerCase();
 		String[] segments = content.split(STRING_WHITE_SPACE);
@@ -437,6 +583,12 @@ public class AddCommandParser {
 		return finalIndex;
 	}
 
+	/**
+	 * Add a preposition to the time segment for easy parsing if needed.
+	 * @param commandContent
+	 * @param timePhrase
+	 * @return the modified command content
+	 */
 	private String addPrepositionIfApplicable(String commandContent, String timePhrase) {
 		assert commandContent != null;
 		assert timePhrase != null;
@@ -460,7 +612,15 @@ public class AddCommandParser {
 		return commandContent;
 	}
 
-	private String formatWithTimePhraseNotAsFirstWord(String commandContent, String timePhrase) {
+	/**
+	 * @param commandContent
+	 * @param timePhrase
+	 * @return the formatted command content
+	 */
+	private String formatWithTimePhraseNotAsFirstWord(String commandContent, 
+			String timePhrase) {
+		assert commandContent != null;
+		assert timePhrase != null;
 
 		//determine the position of timePhrase
 		String[] segments = commandContent.split(STRING_WHITE_SPACE);
@@ -493,8 +653,14 @@ public class AddCommandParser {
 		return commandContent;
 	}
 
+	/**
+	 * @param segments
+	 * @param index
+	 * @return formatted command content
+	 */
 	private String formatWithTimePhraseNotAsLastWordWithValidFollowingPreposition(
 			String[] segments, int index) {
+		assert segments != null;
 
 		//retrieve the content before the time phrase
 		String newContent = STRING_EMPTY;
@@ -522,8 +688,14 @@ public class AddCommandParser {
 		return newContent + rest;
 	}
 
+	/**
+	 * @param segments
+	 * @param index
+	 * @return formatted command content
+	 */
 	private String formatWithTimePhraseNotAsLastWordWithNoValidFollowingPrepositon(
 			String[] segments, int index) {
+		assert segments != null;
 
 		//retrieve the content before the time phrase
 		String newContent = STRING_EMPTY;
@@ -541,7 +713,14 @@ public class AddCommandParser {
 		return newContent;
 	}
 
+	/**
+	 * @param segments
+	 * @param index
+	 * @return formatted command content
+	 */
 	private String formatWithTimePhraseAsLastWord(String[] segments, int index) {
+		assert segments != null;
+
 		String newContent = STRING_EMPTY;
 		for (int i = 0; i < index; i++) {
 			newContent += segments[i] + STRING_WHITE_SPACE;
@@ -553,7 +732,15 @@ public class AddCommandParser {
 		return newContent;
 	}
 
+	/**
+	 * @param segments
+	 * @param timePhrase
+	 * @return the starting index of the time phrase
+	 */
 	private int determineIndexOfTimePhrase(String[] segments, String timePhrase) {
+		assert segments != null;
+		assert timePhrase != null;
+
 		int index = 0;
 		for (int i = 0; i < segments.length; i++) {
 			if (segments[i].equals(timePhrase)) {
@@ -564,7 +751,14 @@ public class AddCommandParser {
 		return index;
 	}
 
+	/**
+	 * @param commandContent
+	 * @param timePhrase
+	 * @return the formatted command content
+	 */
 	private String formatWithTimePhraseAsFirstWord(String commandContent, String timePhrase) {
+		assert commandContent != null;
+		assert timePhrase != null;
 
 		int startIndex = commandContent.indexOf(STRING_WHITE_SPACE) + 1;
 		String nextWord = commandContent.substring(startIndex);
@@ -590,11 +784,19 @@ public class AddCommandParser {
 
 			commandContent = EVENT_FLAG_ON + STRING_WHITE_SPACE + commandContent;
 		}
+
 		return commandContent;
 	}
 
+	/**
+	 * @param commandContent
+	 * @param timePhrase
+	 * @return the formatted command content
+	 */
 	private String formatWithValidFollowingPreposition(
 			String commandContent, String timePhrase) {
+		assert commandContent != null;
+		assert timePhrase != null;
 
 		//no time phrase in rest of the command content
 		if (timeParser.parse(commandContent).size() == 0) {
@@ -612,9 +814,16 @@ public class AddCommandParser {
 		return commandContent;
 	}
 
+	/**
+	 * Format the command content to the standardized format:
+	 * task-time-priority to facilitate parsing later.
+	 * @param content
+	 * @return the formatted command content
+	 */
 	protected String formatToStandardCommandContent(String content) {
-		String formattedContent = preFormat(content);
+		assert content != null;
 
+		String formattedContent = preFormat(content);
 		int timeIndex = getStartingIndexOfIdentifier(formattedContent);
 		int priorityIndex = getStartingIndexOfPriority(formattedContent);
 		int taskIndex = getStartingIndexOfTask(formattedContent, timeIndex, priorityIndex);
@@ -652,8 +861,15 @@ public class AddCommandParser {
 	}
 
 
+	/**
+	 * @param formattedContent
+	 * @param timeIndex
+	 * @param priorityIndex
+	 * @return the formatted content
+	 */
 	private String formatWithNoTaskPresent(String formattedContent, 
 			int timeIndex, int priorityIndex) {
+		assert formattedContent != null;
 
 		//priority followed by time
 		if (timeIndex > priorityIndex) {
@@ -667,12 +883,20 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param formattedContent
+	 * @param taskIndex
+	 * @param timeIndex
+	 * @param priorityIndex
+	 * @return the formatted content
+	 */
 	private String formatWithTaskPresent(String formattedContent, int taskIndex, 
 			int timeIndex, int priorityIndex) {
+		assert formattedContent != null;
 
 		//task is the first segment
 		if (taskIndex < timeIndex && taskIndex < priorityIndex) {
-			return formatTaskAsFirstSegment(formattedContent, taskIndex, 
+			return formatWithTaskAsFirstSegment(formattedContent, taskIndex, 
 					timeIndex, priorityIndex);
 		}
 
@@ -692,13 +916,21 @@ public class AddCommandParser {
 
 		//task is the last segment
 		else {
-			return formatTaskAsLastSegment(formattedContent, taskIndex, 
+			return formatWithTaskAsLastSegment(formattedContent, taskIndex, 
 					timeIndex, priorityIndex);
 		}
 	}
 
-	private String formatTaskAsLastSegment(String formattedContent, 
+	/**
+	 * @param formattedContent
+	 * @param taskIndex
+	 * @param timeIndex
+	 * @param priorityIndex
+	 * @return the formatted content
+	 */
+	private String formatWithTaskAsLastSegment(String formattedContent, 
 			int taskIndex, int timeIndex, int priorityIndex) {
+		assert formattedContent != null;
 
 		//time-priority-task
 		if (timeIndex < priorityIndex) {
@@ -717,8 +949,16 @@ public class AddCommandParser {
 		}
 	}
 
-	private String formatTaskAsFirstSegment(String formattedContent, 
+	/**
+	 * @param formattedContent
+	 * @param taskIndex
+	 * @param timeIndex
+	 * @param priorityIndex
+	 * @return the formatted content
+	 */
+	private String formatWithTaskAsFirstSegment(String formattedContent, 
 			int taskIndex, int timeIndex, int priorityIndex) {
+		assert formattedContent != null;
 
 		//task-time-priority
 		if (timeIndex < priorityIndex) {
@@ -733,8 +973,15 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param formattedContent
+	 * @param taskIndex
+	 * @param timeIndex
+	 * @return formatted content
+	 */
 	private String formatWithNoPrioritySegment(String formattedContent, 
 			int taskIndex, int timeIndex) {
+		assert formattedContent != null;
 
 		//only time
 		if (taskIndex == FIELD_NOT_EXIST) {
@@ -757,9 +1004,16 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param formattedContent
+	 * @param taskIndex
+	 * @param priorityIndex
+	 * @return formatted content
+	 */
 	private String formatWithNoTimeSegment(String formattedContent, int taskIndex, 
 			int priorityIndex) {
-		
+		assert formattedContent != null;
+
 		//only priority
 		if (taskIndex == FIELD_NOT_EXIST) {
 			return formattedContent;
@@ -781,15 +1035,25 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * Format the content for easy parsing.
+	 * @param content
+	 * @return formatted content
+	 */
 	private String preFormat(String content) {
+		assert content != null;
+
 		content = removeTrailingSpaces(content);
 		content = handleTimeWithoutPreposition(content);
 		return content;
 	}
 
-
-
+	/**
+	 * @param commandContent
+	 * @return formatted command content
+	 */
 	private String handleTimeWithoutPreposition(String commandContent) {
+		assert commandContent != null;
 
 		//format "tmr" to "tomorrow"
 		commandContent = commandContent.replaceAll(TOMORROW_IN_SHORT, TOMORROW_IN_FULL);
@@ -808,16 +1072,31 @@ public class AddCommandParser {
 		else if (isNecessaryToAddPrepostion(commandContent, TOMORROW_IN_FULL)) {
 			commandContent = addPrepositionIfApplicable(commandContent, TOMORROW_IN_FULL);
 		}
-		
+
 		return commandContent;
 	}
 
+	/**
+	 * @param content
+	 * @return trimmed content
+	 */
 	private String removeTrailingSpaces(String content) {
+		assert content != null;
 		content = content.replaceAll(EXTRA_WHITE_SPACES, STRING_WHITE_SPACE).trim();
 		return content;
 	}
 
+	/**
+	 * Check whether it is needed to add a preposition the command content.
+	 * Return true if it is needed or false otherwise.
+	 * @param content
+	 * @param timePhrase
+	 * @return true or false
+	 */
 	private boolean isNecessaryToAddPrepostion(String content, String timePhrase) {
+		assert content != null;
+		assert timePhrase != null;
+
 		int index = content.indexOf(timePhrase);
 
 		//the time phrase is in quotes
@@ -848,12 +1127,23 @@ public class AddCommandParser {
 	}
 
 
+	/**
+	 * @param content
+	 * @return the starting index of the priority segment
+	 */
 	private int getStartingIndexOfPriority(String content) {
 		return content.indexOf(PRIORITY_FLAG);
 	}
 
 
+	/**
+	 * @param content
+	 * @param timeIndex
+	 * @param priorityIndex
+	 * @return the starting index of the task segment
+	 */
 	private int getStartingIndexOfTask(String content, int timeIndex, int priorityIndex) {
+		assert content != null;
 
 		//no time or priority -> only task
 		if (timeIndex == FIELD_NOT_EXIST && priorityIndex == FIELD_NOT_EXIST) {
@@ -877,8 +1167,15 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param content
+	 * @param timeIndex
+	 * @param priorityIndex
+	 * @return the starting index of the task segment
+	 */
 	private int getStartingIndexOfTaskWithBothTimeAndPriorityPresent(
 			String content, int timeIndex, int priorityIndex) {
+		assert content != null;
 
 		//time is the first segment
 		if (timeIndex == 0) {
@@ -898,8 +1195,14 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param content
+	 * @param timeIndex
+	 * @return the starting index of the task segment
+	 */
 	private int getStartingIndexOfTaskWithPriorityAsFirstSegment(
 			String content, int timeIndex) {
+		assert content != null;
 
 		//priority-time or priority-time-task
 		if (timeIndex == content.indexOf(STRING_WHITE_SPACE) + 1) {
@@ -924,8 +1227,14 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param content
+	 * @param priorityIndex
+	 * @return the starting index of task segment
+	 */
 	private int getStartingIndexOfTaskWithTimeAsFirstSegment(
 			String content, int priorityIndex) {
+		assert content != null;
 
 		//time-priority-task
 		if (priorityIndex < content.lastIndexOf(STRING_WHITE_SPACE)) {
@@ -941,8 +1250,14 @@ public class AddCommandParser {
 		}	
 	}
 
+	/**
+	 * @param content
+	 * @param timeIndex
+	 * @return the starting index of the task segment
+	 */
 	private int getStartingIndexOfTaskWithNoPrioirtySegment(
 			String content, int timeIndex) {
+		assert content != null;
 
 		//<time>/<time-task>
 		if (timeIndex == 0) {
@@ -955,7 +1270,12 @@ public class AddCommandParser {
 		}	
 	}
 
+	/**
+	 * @param content
+	 * @return the starting index of the task segment
+	 */
 	private int getStartingIndexOfTaskWithNoTimeSegment(String content) {
+		assert content != null;
 
 		//priority
 		if (!content.contains(STRING_WHITE_SPACE)) {
@@ -976,7 +1296,12 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param content
+	 * @return the starting index of task segment in the found segment
+	 */
 	private int locateTaskIndexInSegment(String content) {
+		assert content != null;
 
 		//input: time/time-task
 		int count = StringUtils.countMatches(content, STRING_WHITE_SPACE);
@@ -991,11 +1316,16 @@ public class AddCommandParser {
 			int taskIndex = getTaskIndex(content, count);
 			return taskIndex;
 		}
-
 	}
 
 
+	/**
+	 * @param content
+	 * @param count
+	 * @return the index of the task based on the count of appearances
+	 */
 	private int getTaskIndex(String content, int count) {
+		assert content != null;
 
 		//initialize to not-exist at first
 		int taskIndex = FIELD_NOT_EXIST;
@@ -1025,7 +1355,13 @@ public class AddCommandParser {
 
 	}
 
+	/**
+	 * Determine the starting index of time identifer to locate the time phrase.
+	 * @param content
+	 * @return the starting index of the time identifier
+	 */
 	private int getStartingIndexOfIdentifier(String content) {
+		assert content != null;
 
 		//a queue to store starting indices of the possible identifiers
 		PriorityQueue<Integer> indexQueue;
@@ -1057,8 +1393,15 @@ public class AddCommandParser {
 
 	}
 
+	/**
+	 * @param content
+	 * @param list
+	 * @return the starting index of the time identifier
+	 */
 	private int getStartingIndexOfIdentifierWithMoreThanTwoMatches(String content, 
 			ArrayList<Integer> list) {
+		assert content != null;
+		assert list != null;
 
 		for (int i = 0; i < list.size(); i++) {
 
@@ -1087,8 +1430,15 @@ public class AddCommandParser {
 		return FIELD_NOT_EXIST;
 	}
 
+	/**
+	 * @param content
+	 * @param list
+	 * @return starting index of the time identifier
+	 */
 	private int getStartingIndexOfIdentiferWithTwoMatches(String content, 
 			ArrayList<Integer> list) {
+		assert content != null;
+		assert list != null;
 
 		//first one is valid
 		if (!timeParser.parse(content.substring(list.get(0), list.get(1)))
@@ -1108,8 +1458,15 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param content
+	 * @param list
+	 * @return starting index of the time identifier
+	 */
 	private int getStartingIndexOfIdentifierWithOneMatch(String content, 
 			ArrayList<Integer> list) {
+		assert content != null;
+		assert list != null;
 
 		//it is valid
 		if (!timeParser.parse(content).toString().equals(TIME_EMPTY)) {
@@ -1122,8 +1479,13 @@ public class AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param indexQueue
+	 * @return the indices of time identifiers in the list in reversed order
+	 */
 	private ArrayList<Integer> buildIndexListInReversedOrder(
 			PriorityQueue<Integer> indexQueue) {
+		assert indexQueue != null;
 
 		ArrayList<Integer> list = new ArrayList<Integer>();
 		int size = indexQueue.size();
@@ -1134,7 +1496,12 @@ public class AddCommandParser {
 		return list;
 	}
 
+	/**
+	 * @param content
+	 * @return the indices of time identifiers in the list
+	 */
 	private PriorityQueue<Integer> buildIndexQueue(String content) {
+		assert content != null;
 
 		//get the number of words in content
 		String[] segments = content.split(STRING_WHITE_SPACE);
@@ -1159,7 +1526,14 @@ public class AddCommandParser {
 		return indexQueue;
 	}
 
+	/**
+	 * Check whether the time identifier is valid.
+	 * Return true if it is valid or false otherwise.
+	 * @param content
+	 * @return true or false
+	 */
 	private boolean isValidTimeIdentifier(String content) {
+		assert content != null;
 		String word = content.toLowerCase();
 
 		if (word.equals(DEADLINE_FLAG_BY)) {
@@ -1186,11 +1560,22 @@ public class AddCommandParser {
 		}
 	}
 
-	private boolean isOverdue(Date time) {
-		return time.before(new Date());
+	/**
+	 * @param time
+	 * @return true or false
+	 */
+	private boolean isOverdue(Date date) {
+		assert date != null;
+		return date.before(new Date());
 	}
 
+	/**
+	 * @param time
+	 * @return the approximate date
+	 */
 	private String getRoughDate(String time) {
+		assert time != null;
+
 		String[] segments = time.split(TIME_SEPARATOR);
 		time = segments[0] + segments[1] + segments[2].substring(2);
 		return time;

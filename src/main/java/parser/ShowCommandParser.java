@@ -8,12 +8,19 @@ import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
 import main.java.data.PriorityLevel;
 
+/**
+ * This class parses the show command.
+ * @author Ouyang Danwen
+ *
+ */
 public class ShowCommandParser {
 	
+	/* error messages used in this class */
 	private static final String ERORR_MESSAGE_SHOW_NOTHING = ""
 			+ "Please specify a filter for show command!";
 	private static final String ERROR_MESSAGE_INVALID_FILTER = "Please choose a valid filter!";
 	
+	/* string constants used in this class */
 	private static final String PRIORITY_HIGH_ALIAS = "h";
 	private static final String PRIORITY_MEDIUM_ALIAS_1 = "med";
 	private static final String PRIORITY_MEDIUM_ALIAS_2 = "m";
@@ -21,11 +28,20 @@ public class ShowCommandParser {
 	private static final String TOMORROW_IN_FULL = "tomorrow";
 	private static final String TOMORROW_IN_SHORT = "tmr";
 	
+	/* numeric indices to access the parameters array */
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	
+	/**
+	 * Empty constructor.
+	 */
 	public ShowCommandParser() {}
 
+	/**
+	 * @param commandContent
+	 * @return the command parameters as a string array
+	 * @throws InvalidInputFormatException
+	 */
 	public String[] determineParameters(String commandContent) throws InvalidInputFormatException {
 		assert commandContent != null;
 		
@@ -41,8 +57,17 @@ public class ShowCommandParser {
 		return parameters;
 	}
 
+	/**
+	 * Determine and set the filter for show command.
+	 * Only valid filters will be allowed.
+	 * @param parameters
+	 * @param commandContent
+	 * @throws InvalidInputFormatException
+	 */
 	private void setShowFiterIfApplicable(String[] parameters, String commandContent) 
 			throws InvalidInputFormatException {
+		assert parameters != null;
+		assert commandContent != null;
 		
 		commandContent = commandContent.toLowerCase();
 		commandContent = commandContent.replaceAll(TOMORROW_IN_SHORT, TOMORROW_IN_FULL);

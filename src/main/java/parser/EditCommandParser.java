@@ -1,32 +1,49 @@
 /* @@author A0127481E */
 package main.java.parser;
 
+/* import statements */
 import java.util.ArrayList;
-
-
 import main.java.data.Task;
 import main.java.data.TransientTask;
 import main.java.data.Command;
 
+/**
+ * This class parses the edit command.
+ * @author Ouyang Danwen
+ *
+ */
 public class EditCommandParser extends AddCommandParser {
 	
+	/* error messages */
 	private static final String ERROR_MESSAGE_EDIT_NOTHING = "Please specify a task to be edited!";
 	private static final String ERROR_MESSAGE_INVALID_EDIT_COMMAND = "Invalid format for edit command!";
 	private static final String ERROR_MESSAGE_UPDATE_NOTHING = "Please specifiy update information!";
 	
+	/* string constants used in this class */
 	private static final String EMPTY_STRING = "";
 	private static final String EDIT_COMMAND_SEPARATOR = ",";
 	private static final String EDIT_TASK_SEPARATOR = " , ";
 	private static final String ALTERNATIVE_EDIT_TASK_SEPARATOR = "%";
 	
+	/* numeric indices to access the parameters array */
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
 	private static final int STATUS = 4;
 	
+	/**
+	 * Empty constructor.
+	 */
 	public EditCommandParser() {}
 
+	/**
+	 * This override method determines the parameters for the edit command.
+	 * @param commandContent
+	 * @throws InvalidInputFormatException
+	 * @return the determined parameters as a string array
+	 */
+	@Override
 	public String[] determineParameters(String commandContent) 
 			throws InvalidInputFormatException {
 		assert commandContent != null;
@@ -48,6 +65,11 @@ public class EditCommandParser extends AddCommandParser {
 		return parameters;
 	}
 
+	/**
+	 * Handle all the invalid commands by throwing exceptions.
+	 * @param commandContent
+	 * @throws InvalidInputFormatException
+	 */
 	private void checkAndHandleInvalidCommand(String commandContent) 
 			throws InvalidInputFormatException {
 		assert commandContent != null;
@@ -75,6 +97,11 @@ public class EditCommandParser extends AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param segments
+	 * @return the task of the edit command
+	 * @throws InvalidInputFormatException
+	 */
 	private String determineTaskForEditCommand(String[] segments) 
 			throws InvalidInputFormatException {
 		assert segments != null;
@@ -93,6 +120,11 @@ public class EditCommandParser extends AddCommandParser {
 		}
 	}
 
+	/**
+	 * @param segments
+	 * @return the time of the edit command
+	 * @throws InvalidInputFormatException
+	 */
 	private String determineTimeForEditCommand(String[] segments) 
 			throws InvalidInputFormatException {
 		assert segments != null;
@@ -104,6 +136,11 @@ public class EditCommandParser extends AddCommandParser {
 
 	}
 
+	/**
+	 * @param segments
+	 * @return the priority of the edit command
+	 * @throws InvalidInputFormatException
+	 */
 	private String determinePriorityForEditCommand(String[] segments) 
 			throws InvalidInputFormatException {
 		assert segments != null;
@@ -117,6 +154,10 @@ public class EditCommandParser extends AddCommandParser {
 	}
 
 
+	/**
+	 * @param segments
+	 * @return the task type of the edit command
+	 */
 	private String determineTaskTypeForEditCommand(String[] segments) {
 		assert segments != null;
 		
@@ -129,6 +170,10 @@ public class EditCommandParser extends AddCommandParser {
 		return taskType;
 	}
 
+	/**
+	 * @param segments
+	 * @return the task status of the edit command
+	 */
 	private String determineStatusForEditCommand(String[] segments) {
 		assert segments != null;
 		
@@ -142,6 +187,11 @@ public class EditCommandParser extends AddCommandParser {
 
 
 
+	/**
+	 * Parse the transient task to create a two task objects for editing
+	 * @param transientTask
+	 * @return the two parsed tasks in a task list
+	 */
 	public static ArrayList<Task> parseEditTask(TransientTask transientTask) {
 		assert transientTask != null;
 		
