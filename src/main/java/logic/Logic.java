@@ -710,9 +710,9 @@ public class Logic {
 	 * @param fileName
 	 * @throws IOException
 	 */
-	public void loadFilename(String fileName) throws IOException{	
-		assert fileName != null;
-		storageController.loadFromFile(fileName);
+	public void loadFilename(String filename) throws IOException{	
+		assert filename != null;
+		storageController.loadFromFile(filename);
 	}
 
 	/**

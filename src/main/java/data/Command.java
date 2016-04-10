@@ -144,7 +144,7 @@ public class Command {
 	 * @param priority
 	 * @return priority level
 	 */
-	public  static PriorityLevel getPriority(String priority) {
+	public static PriorityLevel getPriority(String priority) {
 		assert priority != null;
 		
 		if (priority.equals(PriorityLevel.HIGH.getType())) {
