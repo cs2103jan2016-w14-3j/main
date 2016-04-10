@@ -11,10 +11,10 @@ import java.util.List;
 import org.junit.Test;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
-import main.java.data.PriorityLevel;
+import Enumeration.PriorityLevel;
+import Enumeration.TaskStatus;
+import Enumeration.TaskType;
 import main.java.data.Task;
-import main.java.data.TaskStatus;
-import main.java.data.TaskType;
 import main.java.logic.Logic;
 
 /**

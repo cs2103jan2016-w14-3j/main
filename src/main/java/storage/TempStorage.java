@@ -8,8 +8,8 @@ import java.util.Stack;
 
 import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collections;
 
-import main.java.data.PriorityLevel;
-import main.java.data.TaskStatus;
+import Enumeration.PriorityLevel;
+import Enumeration.TaskStatus;
 import main.java.data.Task;
 
 /**

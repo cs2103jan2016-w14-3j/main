@@ -1,6 +1,8 @@
 /* @@author A0127481E */
 package main.java.parser;
 
+import Exception.InvalidInputFormatException;
+
 /**
  * This class parses the delete command.
  * @author Ouyang Danwen

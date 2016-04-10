@@ -2,6 +2,12 @@ package main.java.data;
 
 /* import statements */
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
+
+import Enumeration.CommandType;
+import Enumeration.PriorityLevel;
+import Enumeration.TaskStatus;
+import Enumeration.TaskType;
+
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;

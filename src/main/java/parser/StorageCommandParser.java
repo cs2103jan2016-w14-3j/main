@@ -1,7 +1,8 @@
 /* @@author A0127481E */
 package main.java.parser;
 
-import main.java.data.CommandType;
+import Enumeration.CommandType;
+import Exception.InvalidInputFormatException;
 
 /**
  * This parser parses storage related commands including "move" and "save".

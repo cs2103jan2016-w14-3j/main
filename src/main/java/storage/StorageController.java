@@ -7,10 +7,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import Enumeration.PriorityLevel;
+import Enumeration.TaskStatus;
+import Enumeration.TaskType;
 import main.java.Log.EventLog;
-import main.java.data.PriorityLevel;
-import main.java.data.TaskType;
-import main.java.data.TaskStatus;
 import main.java.data.Task;
 
 /**

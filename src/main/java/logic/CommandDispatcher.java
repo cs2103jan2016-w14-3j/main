@@ -1,13 +1,12 @@
 /* @@author A0127481E */
 package main.java.logic;
 
-/* import statements */
-import main.java.data.CommandType;
+import Enumeration.CommandType;
+import Exception.InvalidInputFormatException;
 import main.java.data.Command;
 import main.java.parser.AddCommandParser;
 import main.java.parser.DeleteCommandParser;
 import main.java.parser.EditCommandParser;
-import main.java.parser.InvalidInputFormatException;
 import main.java.parser.ShowCommandParser;
 import main.java.parser.SortCommandParser;
 import main.java.parser.StorageCommandParser;

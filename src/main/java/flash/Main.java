@@ -28,7 +28,6 @@ import main.java.logic.Logic;
 import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
-import main.java.data.TaskStatus;
 import main.java.data.Task;
 import main.java.gui.CommandBarController;
 import main.java.gui.SideBarController;
@@ -61,6 +60,7 @@ import javafx.scene.control.ListView;
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.*;
 
+import Enumeration.TaskStatus;
 import main.java.Log.EventLog;
 
 /**

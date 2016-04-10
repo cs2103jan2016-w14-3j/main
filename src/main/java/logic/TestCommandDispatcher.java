@@ -6,10 +6,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import main.java.data.CommandType;
+import Enumeration.CommandType;
+import Exception.InvalidInputFormatException;
 import main.java.data.Command;
 import main.java.parser.AddCommandParser;
-import main.java.parser.InvalidInputFormatException;
 
 public class TestCommandDispatcher {
 	private static CommandDispatcher dispatcher;

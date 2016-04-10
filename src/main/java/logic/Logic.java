@@ -6,13 +6,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
-import main.java.data.CommandType;
+
+import Enumeration.CommandType;
+import Enumeration.PriorityLevel;
+import Exception.InvalidInputFormatException;
 import main.java.data.Command;
-import main.java.data.PriorityLevel;
 import main.java.data.Task;
 import main.java.data.TransientTask;
 import main.java.parser.EditCommandParser;
-import main.java.parser.InvalidInputFormatException;
 import main.java.storage.StorageController;
 
 
