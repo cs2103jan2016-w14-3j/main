@@ -252,26 +252,34 @@ public class Main extends Application {
 	}
 	
 	/**
-	 * check for overdue task, refresh the list and prompt with notification if necessary *******
+	 * check for overdue task, refresh the list and prompt with notification if necessary 
+	 * @throws IOException *******
 	 */
 	private void checkOverdue() {
-		ArrayList<Task> overdueList = logic.checkOverdue();
+		ArrayList<Task> overdueList;
 		String taskName = null;
-		if (!overdueList.isEmpty()) {
-			try {
-				checkIsTasksEmpty();
-			} catch (Exception e) {
-				appLog.getLogger().warning("Unable to refresh list: " + e);
+		try {
+			overdueList = logic.checkOverdue();
+			if (!overdueList.isEmpty()) {
+				try {
+					checkIsTasksEmpty();
+				} catch (Exception e) {
+					appLog.getLogger().warning("Unable to refresh list: " + e);
+				}
+				try {
+					taskName = locateOverdueTask(overdueList);
+				} catch (Exception e) {
+					appLog.getLogger().warning("Unable to locate overdue task: " + e);
+				}
+				if (taskName != null) {
+					notification(taskName);
+				}
 			}
-			try {
-				taskName = locateOverdueTask(overdueList);
-			} catch (Exception e) {
-				appLog.getLogger().warning("Unable to loacte overdue task: " + e);
-			}
-			if (taskName != null) {
-				notification(taskName);
-			}
+		} catch (IOException e1) {
+			appLog.getLogger().warning("Unable to check overdue tasks: "+e1);
 		}
+		
+		
 	}
 
 	/**
@@ -363,7 +371,8 @@ public class Main extends Application {
 	 * check for overdue task every 30 seconds *******
 	 */
 	private void overdueTimer() {
-		Timeline timeline = new Timeline(new KeyFrame(Duration.millis(30000), ae -> checkOverdue()));
+		Timeline timeline;
+		timeline = new Timeline(new KeyFrame(Duration.millis(30000), ae -> checkOverdue()));
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 	}
@@ -1602,12 +1611,16 @@ public class Main extends Application {
 				fileChooser.getExtensionFilters().add(extFilter);
 				File loadFile = fileChooser.showOpenDialog(null);
 				if (loadFile != null) {
-					logic.loadFilename(loadFile.getAbsolutePath());
+					try {
+						logic.loadFilename(loadFile.getAbsolutePath());
+					} catch (IOException e1) {
+						appLog.getLogger().warning("File path not recognised: " + e1);
+					}
 					try {
 						checkIsTasksEmpty();
 					} catch (Exception e) {
-						setFeedback(barControl, ERROR, "file path not recognised");
-						appLog.getLogger().warning("File path not recognised: " + e);
+						setFeedback(barControl, ERROR, "Unable to refresh task list");
+						appLog.getLogger().warning("Unable to refresh task list: " + e);
 					}
 				}
 				sidebar.hideSidebar();
