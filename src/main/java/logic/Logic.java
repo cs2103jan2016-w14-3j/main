@@ -755,7 +755,6 @@ public class Logic {
 	/**
 	 * Search the upcoming task list for matched based on the specified value.
 	 * @param oldValue
-	 * @param newValue
 	 * @return the search result from all upcoming tasks as a task list
 	 * @throws Exception
 	 */
@@ -770,7 +769,6 @@ public class Logic {
 	/**
 	 * Search the completed task list for matched based on the specified value.
 	 * @param oldValue
-	 * @param newValue
 	 * @return the search result from all completed tasks as a task list
 	 * @throws Exception
 	 */
