@@ -1865,6 +1865,7 @@ public class Main extends Application {
 	/** Handles load function for btnLoad
 	 * @param btnLoad
 	 */
+
 	private void loadFilename(Button btnLoad) {
 		assert btnLoad != null;
 		btnLoad.setOnAction(new EventHandler<ActionEvent>() {
