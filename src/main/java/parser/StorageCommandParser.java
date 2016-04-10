@@ -5,6 +5,8 @@ import main.java.data.CommandType;
 
 public class StorageCommandParser {
 	
+	private static final String ERROR_MESSAGE_INVALID_PATH = "Please specify a valid file path!";
+	
 	private static final int TASK = 0;
 	
 	public StorageCommandParser() {}
@@ -17,7 +19,7 @@ public class StorageCommandParser {
 		String[] parameters = new String[5];
 		
 		if (commandContent.isEmpty()) {
-			throw new InvalidInputFormatException("Please specify a valid file path!");
+			throw new InvalidInputFormatException(ERROR_MESSAGE_INVALID_PATH);
 		}
 
 		else {

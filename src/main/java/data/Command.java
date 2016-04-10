@@ -12,12 +12,16 @@ public class Command {
 	private String commandContent;
 	private String[] commandParameters;
 	private static PrettyTimeParser parser = new PrettyTimeParser();
+	
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
 	private static final int STATUS = 4;
+	
 	private static final String WHITE_SPACE = " ";
+	private static final String TIME_EMPTY = "[]";
+	private static final String EDIT_COMMAND_FULL_SEPARATOR = ", ";
 
 
 	public Command(String command) {
@@ -133,13 +137,13 @@ public class Command {
 	
 	public static List<Date> getTime(String time) {
 		//time is not specified
-		if (time.equals("[]")) {
+		if (time.equals(TIME_EMPTY)) {
 			return parser.parse(time);
 		}
 		
 		//format time to facilitate manipulation
 		time = time.substring(1, time.length() - 1);
-		String[] segments = time.split(", ");
+		String[] segments = time.split(EDIT_COMMAND_FULL_SEPARATOR);
 		
 		//add formatted time into the result list
 		List<Date> result = new ArrayList<Date>();

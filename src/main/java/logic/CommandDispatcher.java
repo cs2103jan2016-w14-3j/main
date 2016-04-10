@@ -14,6 +14,9 @@ import main.java.parser.StorageCommandParser;
 
 
 public class CommandDispatcher {
+	
+	private static final String ERROR_MESSAGE_EMPTY_COMMAND = "Please enter a non-empty command!";
+	private static final String ERROR_MESSAGE_INVALID_COMMAND = "Please enter a valid command!";
 
 	private static final String EMPTY_STRING = "";
 	private static final String WHITE_SPACE = " ";
@@ -26,7 +29,7 @@ public class CommandDispatcher {
 		String originalCommand = command.getOriginal();
 
 		if (originalCommand.isEmpty()) {
-			throw new InvalidInputFormatException("Empty command is not allowed!");
+			throw new InvalidInputFormatException(ERROR_MESSAGE_EMPTY_COMMAND);
 		}
 
 		command.setType(determineCommandType(originalCommand));
@@ -38,7 +41,7 @@ public class CommandDispatcher {
 
 	private void setParameters(Command command)throws InvalidInputFormatException {
 		assert command != null;
-		
+
 		if (command.isCommand(CommandType.ADD)) {
 			AddCommandParser parser = new AddCommandParser();
 			command.setParameters(parser.determineParameters
@@ -81,11 +84,11 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
-	
+
 		else if (command.isCommand(CommandType.INVALID)){
-			throw new InvalidInputFormatException("Please enter a valid command!");
+			throw new InvalidInputFormatException(ERROR_MESSAGE_INVALID_COMMAND);
 		}
-		
+
 		//other commands which need not to be parsed
 		else {
 			return;
@@ -95,14 +98,14 @@ public class CommandDispatcher {
 
 	private CommandType determineCommandType(String originalCommand) {
 		assert originalCommand != null;
-		
+
 		CommandType type = getCommandKeyword(originalCommand);
 		return type;
 	}
 
 	private CommandType getCommandKeyword(String command) {
 		assert command != null;
-		
+
 		String firstWord = getFirstKeyword(command);
 
 		if (isCommand(CommandType.ADD, firstWord)) {
@@ -112,7 +115,7 @@ public class CommandDispatcher {
 		else if (isCommand(CommandType.DELETE, firstWord)) {
 			return CommandType.DELETE;
 		}
-		
+
 		else if (isCommand(CommandType.DELETE_COMPLETE, firstWord)) {
 			return CommandType.DELETE_COMPLETE;
 		}
@@ -131,7 +134,7 @@ public class CommandDispatcher {
 		else if (isCommand(CommandType.SORT, firstWord)) {
 			return CommandType.SORT;
 		}
-		
+
 		else if (isCommand(CommandType.SORT_COMPLETE, firstWord)) {
 			return CommandType.SORT_COMPLETE;
 		}
@@ -139,19 +142,19 @@ public class CommandDispatcher {
 		else if (isCommand(CommandType.CLEAR_UPCOMING, firstWord)) {
 			return CommandType.CLEAR_UPCOMING;
 		}
-		
+
 		else if (isCommand(CommandType.CLEAR_ALL, firstWord)) {
 			return CommandType.CLEAR_ALL;
 		}
-		
+
 		else if (isCommand(CommandType.CLEAR_FLOATING, firstWord)) {
 			return CommandType.CLEAR_FLOATING;
 		}
-		
+
 		else if (isCommand(CommandType.CLEAR_OVERDUE, firstWord)) {
 			return CommandType.CLEAR_OVERDUE;
 		}
-		
+
 		else if (isCommand(CommandType.CLEAR_COMPLETE, firstWord)) {
 			return CommandType.CLEAR_COMPLETE;
 		}
@@ -163,64 +166,64 @@ public class CommandDispatcher {
 		else if (isCommand(CommandType.UNDO, firstWord)) {
 			return CommandType.UNDO;
 		}
-		
+
 		else if (isCommand(CommandType.REDO, firstWord)) {
 			return CommandType.REDO;
 		}
-		
+
 		else if (isCommand(CommandType.MARK, firstWord)) {
 			return CommandType.MARK;
 		}
-		
+
 		else if (isCommand(CommandType.UNMARK, firstWord)) {
 			return CommandType.UNMARK;
 		}
-		
+
 		else if (isCommand(CommandType.SWITCH, firstWord)) {
 			return CommandType.SWITCH;
 		}
-		
+
 		else if (isCommand(CommandType.SHOW, firstWord)) {
 			return CommandType.SHOW;
 		}
-		
+
 		else if (isCommand(CommandType.SHOW_COMPLETE, firstWord)) {
 			return CommandType.SHOW_COMPLETE;
 		}
-		
+
 		else {
 			return CommandType.INVALID;
 		}
-		
+
 	}
 
 	private String getFirstKeyword(String command) {
 		assert command != null;
-		
+
 		//only one word in command -> it is the keyword required
 		if (!command.contains(WHITE_SPACE)) {
 			return command;
 		}
-		
+
 		return command.substring(0,command.indexOf(WHITE_SPACE)).trim();
 	}
 
 	private boolean isCommand(CommandType type, String keyword) {
 		assert keyword != null;
-		
+
 		return type.getType().equalsIgnoreCase(keyword);
 	}
 
 	private String retrieveCommandContent(Command command) {
 		assert command != null;
-		
+
 		String original = command.getOriginal();
 
 		//command content is empty
 		if (!original.contains(WHITE_SPACE)) {
 			return EMPTY_STRING;
 		}
-		
+
 		//command content is not empty
 		else {
 			String content = original.substring(original.indexOf(WHITE_SPACE) + 1);

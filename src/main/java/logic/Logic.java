@@ -31,7 +31,19 @@ public class Logic {
 	private static final String COMMAND_REDO = "redo";
 	private static final String COMMAND_THEME = "theme";
 	private static final String COMMAND_SHOW = "show";
-	private static final String EMPTY_TIME = "[]";
+	
+	private static final String EDIT_COMMAND_SEPARATOR = ",";
+	private static final String TIME_EMPTY = "[]";
+	
+	private static final String STRING_TIME = "time";
+	private static final String STRING_PRIORITY = "priority";
+	private static final String STRING_NAME = "name";
+	private static final String KEYWORD_UNMARK = "unmark ";
+	private static final String KEYWORD_MARK = "mark ";
+	private static final String KEYWORD_DELETE = "delete ";
+	private static final String KEYWORD_COMPLETE_DELETE = "deleteComplete ";
+	
+	
 
 
 	private static final int TASK = 0;
@@ -47,15 +59,11 @@ public class Logic {
 	private static PrettyTimeParser timeParser = new PrettyTimeParser();
 
 	public Logic() {
-		try {
 			storageController = new StorageController();
-		} catch (Exception e) {
-			//e.printStackTrace();
-		}
-
 	}
 
-	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskOptions) throws Exception {
+	public ArrayList<Task> handleUserCommand(String userInput,ArrayList<Task> taskOptions) 
+			throws Exception {
 		assert userInput != null;
 
 		CommandDispatcher dispatcher = new CommandDispatcher();
@@ -68,8 +76,10 @@ public class Logic {
 
 	}
 
-	private Command parseCommand(CommandDispatcher dispatcher, Command command)throws InvalidInputFormatException {
+	private Command parseCommand(CommandDispatcher dispatcher, Command command)
+			throws InvalidInputFormatException {
 		assert command != null;
+		
 		return dispatcher.parseCommand(command);
 	}
 
@@ -164,15 +174,15 @@ public class Logic {
 
 		String parameter = command.getParameters()[TASK].toLowerCase();
 
-		if (parameter.equals("time")) {
+		if (parameter.equals(STRING_TIME)) {
 			storageController.sortCompletedByTime();
 		}
 
-		else if (parameter.equals("name")) {
+		else if (parameter.equals(STRING_NAME)) {
 			storageController.sortCompletedByTaskName();
 		}
 
-		else if (parameter.equals("priority")) {
+		else if (parameter.equals(STRING_PRIORITY)) {
 			storageController.sortCompletedByPriority();
 		} 	
 	}
@@ -183,15 +193,15 @@ public class Logic {
 
 		String parameter = command.getParameters()[TASK].toLowerCase();
 
-		if (parameter.equals("time")) {
+		if (parameter.equals(STRING_TIME)) {
 			storageController.sortPendingByTime();
 		}
 
-		else if (parameter.equals("name")) {
+		else if (parameter.equals(STRING_NAME)) {
 			storageController.sortPendingByTaskName();
 		}
 
-		else if (parameter.equals("priority")) {
+		else if (parameter.equals(STRING_PRIORITY)) {
 			storageController.sortPendingByPriority();
 		}	
 	}
@@ -305,7 +315,7 @@ public class Logic {
 		for (Task temp : searchResultCompleted) {
 
 			//only unmark when the command is valid and there is only one match
-			if (userInput.equalsIgnoreCase("unmark " + temp.getTask()) 
+			if (userInput.equalsIgnoreCase(KEYWORD_UNMARK + temp.getTask()) 
 					|| searchResultCompleted.size()==1) {
 				unmark(temp);			
 				break;
@@ -320,7 +330,7 @@ public class Logic {
 		for (Task temp : searchResult) {
 
 			//only mark when the command is valid and there is only one match
-			if (userInput.equalsIgnoreCase("mark " + temp.getTask()) 
+			if (userInput.equalsIgnoreCase(KEYWORD_MARK + temp.getTask()) 
 					|| searchResult.size()==1) {
 				mark(temp);			
 				break;
@@ -357,7 +367,7 @@ public class Logic {
 		result = parseEditCommand(transientTask);
 
 		//get the original task information
-		String originalTask = userInput.substring(5, userInput.indexOf(","));
+		String originalTask = userInput.substring(5, userInput.indexOf(EDIT_COMMAND_SEPARATOR));
 
 		executeEditCommand(userInput, finalResult, result, originalTask);
 
@@ -379,7 +389,7 @@ public class Logic {
 				Task updated = finalResult.get(1);
 
 				//not update time -> retain the original time, type and status
-				if(updated.getTime().toString().equals(EMPTY_TIME)){
+				if(updated.getTime().toString().equals(TIME_EMPTY)){
 					updated.setTime(original.getTime());
 					updated.setType(original.getType());
 					updated.setStatus(original.getStatus());
@@ -405,7 +415,7 @@ public class Logic {
 		for (Task temp : searchResult) {
 
 			//delete the task only if there is one match and the command is valid
-			if (userInput.equalsIgnoreCase("delete " + temp.getTask()) 
+			if (userInput.equalsIgnoreCase(KEYWORD_DELETE + temp.getTask()) 
 					|| searchResult.size()==1) {
 				delete(temp);			
 				break;
@@ -420,7 +430,7 @@ public class Logic {
 		for (Task temp : searchResultCompleted) {
 
 			//delete the task only if there is one match and the command is valid
-			if (userInput.equalsIgnoreCase("deleteComplete " + temp.getTask())
+			if (userInput.equalsIgnoreCase(KEYWORD_COMPLETE_DELETE + temp.getTask())
 					|| searchResultCompleted.size()==1) {
 				deleteComplete(temp);			
 				break;
@@ -568,7 +578,8 @@ public class Logic {
 	}
 
 
-	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) throws Exception {
+	public ArrayList<Task> handleSearchCompleted(String oldValue, String newValue) 
+			throws Exception {
 		assert oldValue != null;
 		assert newValue != null;
 
@@ -599,7 +610,7 @@ public class Logic {
 
 		//edit by index
 		else if (type == CommandType.EDIT) {
-			content = content.substring(0, content.indexOf(","));
+			content = content.substring(0, content.indexOf(EDIT_COMMAND_SEPARATOR));
 			try {
 				return Integer.parseInt(content);
 			} catch (NumberFormatException e) {

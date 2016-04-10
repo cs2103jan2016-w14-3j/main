@@ -10,19 +10,21 @@ import main.java.data.Command;
 
 public class EditCommandParser extends AddCommandParser {
 	
-	private static final String TIME_SEPARATOR = ":";
+	private static final String ERROR_MESSAGE_EDIT_NOTHING = "Please specify a task to be edited!";
+	private static final String ERROR_MESSAGE_INVALID_EDIT_COMMAND = "Invalid format for edit command!";
+	private static final String ERROR_MESSAGE_UPDATE_NOTHING = "Please specifiy update information!";
+	
 	private static final String EMPTY_STRING = "";
+	private static final String EDIT_COMMAND_SEPARATOR = ",";
+	private static final String EDIT_TASK_SEPARATOR = " , ";
+	private static final String ALTERNATIVE_EDIT_TASK_SEPARATOR = "%";
 	
 	private static final int TASK = 0;
 	private static final int TIME = 1;
 	private static final int PRIORITY = 2;
 	private static final int TASK_TYPE = 3;
 	private static final int STATUS = 4;
-
-	private static final String EDIT_COMMAND_SEPARATOR = ",";
-	private static final String EDIT_TASK_SEPARATOR = " , ";
-	private static final String ALTERNATIVE_EDIT_TASK_SEPARATOR = "%";
-
+	
 	public EditCommandParser() {}
 
 	public String[] determineParameters(String commandContent) 
@@ -52,24 +54,24 @@ public class EditCommandParser extends AddCommandParser {
 		
 		//empty command is not allowed
 		if (commandContent.isEmpty()) {
-			throw new InvalidInputFormatException("Cannot edit nothing!");
+			throw new InvalidInputFormatException(ERROR_MESSAGE_INVALID_EDIT_COMMAND);
 		}
 		
 		//invalid command if the separator comma is not present
 		else if (commandContent.indexOf(EDIT_COMMAND_SEPARATOR) == -1) {
-			throw new InvalidInputFormatException("Invalid format for edit command!");
+			throw new InvalidInputFormatException(ERROR_MESSAGE_INVALID_EDIT_COMMAND);
 		}
 		
 		//invalid command if no task is specified to edit
 		else if (commandContent.indexOf(EDIT_COMMAND_SEPARATOR) == 0) {
-			throw new InvalidInputFormatException("Please specify the task to edit!");
+			throw new InvalidInputFormatException(ERROR_MESSAGE_EDIT_NOTHING);
 		}
 		
 		//invalid command if no update information is provided
 		else if (commandContent.indexOf(EDIT_COMMAND_SEPARATOR) 
 				== commandContent.length() - 1) {
 			throw new InvalidInputFormatException(
-					"Please specify the information to be updated!");
+					ERROR_MESSAGE_UPDATE_NOTHING);
 		}
 	}
 
