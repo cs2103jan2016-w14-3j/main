@@ -13,17 +13,33 @@ import main.java.parser.SortCommandParser;
 import main.java.parser.StorageCommandParser;
 
 
+/**
+ * This class dispatches all commands to be parsed accordingly before execution.
+ * @author Ouyang Danwen
+ *
+ */
 public class CommandDispatcher {
 	
-	private static final String ERROR_MESSAGE_EMPTY_COMMAND = "Please enter a non-empty command!";
-	private static final String ERROR_MESSAGE_INVALID_COMMAND = "Please enter a valid command!";
+	/* error messages used in this class */
+	private static final String ERROR_MESSAGE_EMPTY_COMMAND = ""
+			+ "Please enter a non-empty command!";
+	private static final String ERROR_MESSAGE_INVALID_COMMAND = ""
+			+ "Please enter a valid command!";
 
+	/* expression used for string manipulation */
 	private static final String EMPTY_STRING = "";
 	private static final String WHITE_SPACE = " ";
 
-	public CommandDispatcher() {
-
-	}
+	/**
+	 * Empty constructor for the class.
+	 */
+	public CommandDispatcher() {}
+	
+	/**
+	 * @param command
+	 * @return the parsed command
+	 * @throws InvalidInputFormatException
+	 */
 	public Command parseCommand(Command command)throws InvalidInputFormatException {
 		assert command != null;
 		String originalCommand = command.getOriginal();
@@ -39,6 +55,11 @@ public class CommandDispatcher {
 		return command;
 	}
 
+	/**
+	 * Dispatch the commands for parsing and set their parameters respectively.
+	 * @param command
+	 * @throws InvalidInputFormatException
+	 */
 	private void setParameters(Command command)throws InvalidInputFormatException {
 		assert command != null;
 
@@ -96,6 +117,10 @@ public class CommandDispatcher {
 
 	}
 
+	/**
+	 * @param originalCommand
+	 * @return
+	 */
 	private CommandType determineCommandType(String originalCommand) {
 		assert originalCommand != null;
 
@@ -103,6 +128,10 @@ public class CommandDispatcher {
 		return type;
 	}
 
+	/**
+	 * @param command
+	 * @return
+	 */
 	private CommandType getCommandKeyword(String command) {
 		assert command != null;
 
@@ -197,6 +226,10 @@ public class CommandDispatcher {
 
 	}
 
+	/**
+	 * @param command
+	 * @return
+	 */
 	private String getFirstKeyword(String command) {
 		assert command != null;
 
@@ -208,12 +241,21 @@ public class CommandDispatcher {
 		return command.substring(0,command.indexOf(WHITE_SPACE)).trim();
 	}
 
+	/**
+	 * @param type
+	 * @param keyword
+	 * @return
+	 */
 	private boolean isCommand(CommandType type, String keyword) {
 		assert keyword != null;
 
 		return type.getType().equalsIgnoreCase(keyword);
 	}
 
+	/**
+	 * @param command
+	 * @return
+	 */
 	private String retrieveCommandContent(Command command) {
 		assert command != null;
 

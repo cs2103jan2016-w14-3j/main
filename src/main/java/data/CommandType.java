@@ -1,5 +1,10 @@
 package main.java.data;
 
+/**
+ * This enum categorizes the different command types.
+ * @author Ouyang Danwen
+ *
+ */
 public enum CommandType {
 	
 	ADD("add"), EDIT("edit"), DELETE("delete"), DELETE_COMPLETE("deleteComplete"), UNDO("undo"), 
@@ -12,10 +17,17 @@ public enum CommandType {
 	
 	private final String type; 
 	
+	/**
+	 * @param type
+	 */
 	CommandType(String type) { 
+		assert type != null;
 		this.type = type; 
 	}  
 
+	/**
+	 * @return the type of the command in string
+	 */
 	public String getType() { 
 		return this.type; 
 	} 
