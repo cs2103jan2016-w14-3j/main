@@ -18,6 +18,12 @@ import static java.nio.file.LinkOption.NOFOLLOW_LINKS;
  */
 public class DirectoryController {
 	
+	private static final String ERROR_CREATE_FILE = "Cannot create directory file";
+	private static final String ERROR_CREATE_STREAM = "Cannot create streams for directory file";
+	private static final String ERROR_READ_FROM_FILE = "Error reading from directory file";
+	private static final String ERROR_WRITE_TO_FILE = "Error writing to directory file";
+	private static final String ERROR_CLEAR_FILE = "Cannot clear file";
+	
 	private BufferedReader bufferedReader;
 	private BufferedWriter bufferedWriter;
 	private File directoryFile;
@@ -68,7 +74,7 @@ public class DirectoryController {
 			try {
 				directoryFile.createNewFile();
 			} catch (IOException e) {
-				throw new IOException("Cannot create directory file");
+				throw new IOException(ERROR_CREATE_FILE);
 			}
 		}
 
@@ -76,7 +82,7 @@ public class DirectoryController {
 			bufferedReader = new BufferedReader(new FileReader(directoryFile));
 			bufferedWriter = new BufferedWriter(new FileWriter(directoryFile, true));
 		} catch (IOException e) {
-			throw new IOException("Cannot create streams for directory file");
+			throw new IOException(ERROR_CREATE_STREAM);
 		}
 
 		String lineRead;
@@ -88,7 +94,7 @@ public class DirectoryController {
 				taskFilePath = new File("").getAbsolutePath() + "\\" + taskFileName;
 			}
 		} catch (IOException e) {
-			throw new IOException("Error reading from directory file");
+			throw new IOException(ERROR_READ_FROM_FILE);
 		}
 	}
 	
@@ -101,7 +107,7 @@ public class DirectoryController {
 			bufferedWriter.write(dir);
 			bufferedWriter.flush();
 		} catch (IOException e) {
-			throw new IOException("Error writing to directory file");
+			throw new IOException(ERROR_WRITE_TO_FILE);
 		}
 	}
 
@@ -114,7 +120,7 @@ public class DirectoryController {
 			fileWriter = new FileWriter(directoryFile);
 			fileWriter.close();
 		} catch (IOException e) {
-			throw new IOException("Cannot clear file");
+			throw new IOException(ERROR_CLEAR_FILE);
 		}
 	}
 }

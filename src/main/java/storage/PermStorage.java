@@ -20,6 +20,14 @@ import main.java.data.Task;
  */
 public class PermStorage {
 	
+	private static final String ERROR_NO_FILE_NAME = "No file name entered";
+	private static final String ERROR_WRITE_TO_FILE = "Error writing to task file.";
+	private static final String ERROR_READ_FROM_FILE = "Error reading from task file.";
+	private static final String ERROR_READ_WHILE_DELETE = "Error reading from task file while deleting.";
+	private static final String ERROR_CLEAR_FILE = "Cannot clear task file";
+	private static final String ERROR_CREATE_FILE = "Cannot create task file";
+	private static final String ERROR_CREATE_STREAM = "Cannot create streams for task file";
+	private static final String ERROR_REOPEN_STREAM = "Cannot reopen streams for task file";	
 	private static final String FILE_NAME = "\\Completed Tasks.txt";
 	
 	private BufferedReader bufferedReader;
@@ -86,7 +94,7 @@ public class PermStorage {
 		if(!path.endsWith(".txt") && !path.endsWith("/")) {
 			path = path.concat(".txt");
 		} else if(path.endsWith("/")) {
-			throw new Exception("No file name entered");
+			throw new Exception(ERROR_NO_FILE_NAME);
 		}
 		File newFile = new File(path);
 		Files.copy(taskFile.toPath(), newFile.toPath());
@@ -104,7 +112,7 @@ public class PermStorage {
 			bufferedWriter.newLine();
 			bufferedWriter.flush();
 		} catch (IOException e){
-			throw new IOException("Error writing to task file.");
+			throw new IOException(ERROR_WRITE_TO_FILE);
 		}
 	}
 	
@@ -136,7 +144,7 @@ public class PermStorage {
 				}
 			}
 		} catch (IOException e) {
-			throw new IOException("Error reading from task file.");
+			throw new IOException(ERROR_READ_FROM_FILE);
 		}
 		reopenStream();
 
@@ -163,7 +171,7 @@ public class PermStorage {
 				currentLineNum++;
 			}
 		} catch (IOException e) {
-			throw new IOException("Error reading from task file while deleting.");
+			throw new IOException(ERROR_READ_WHILE_DELETE);
 		}
 		
 		clearFile();
@@ -185,7 +193,7 @@ public class PermStorage {
 			fileWriter = new FileWriter(taskFile);
 			fileWriter.close();
 		} catch (IOException e) {
-			throw new IOException("Cannot clear directory file");
+			throw new IOException(ERROR_CLEAR_FILE);
 		}
 	}
 
@@ -214,14 +222,14 @@ public class PermStorage {
 				taskFile.createNewFile();			
 			}
 		} catch (IOException e) {
-			throw new IOException("Cannot create task file");
+			throw new IOException(ERROR_CREATE_FILE);
 		}
 		
 		try {
 			bufferedReader = new BufferedReader(new FileReader(taskFile));
 			bufferedWriter = new BufferedWriter(new FileWriter(taskFile, true));
 		} catch (IOException e) {
-			throw new IOException("Cannot create streams for task file");
+			throw new IOException(ERROR_CREATE_STREAM);
 		}
 	}
 
@@ -236,7 +244,7 @@ public class PermStorage {
 			bufferedReader = new BufferedReader(new FileReader(taskFile));	
 			bufferedWriter = new BufferedWriter(new FileWriter(taskFile, true));
 		} catch (IOException e) {
-			throw new IOException("Cannot reopen streams for task file");
+			throw new IOException(ERROR_REOPEN_STREAM);
 		}
 	}
 }
