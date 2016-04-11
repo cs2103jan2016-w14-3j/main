@@ -19,7 +19,8 @@ public class ShowCommandParser {
 	/* error messages used in this class */
 	private static final String ERORR_MESSAGE_SHOW_NOTHING = ""
 			+ "Please specify a filter for show command!";
-	private static final String ERROR_MESSAGE_INVALID_FILTER = "Please choose a valid filter!";
+	private static final String ERROR_MESSAGE_INVALID_FILTER = ""
+			+ "Please choose a valid filter!";
 	
 	/* string constants used in this class */
 	private static final String PRIORITY_HIGH_ALIAS = "h";

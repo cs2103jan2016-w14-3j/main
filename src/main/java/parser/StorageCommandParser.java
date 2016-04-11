@@ -15,9 +15,9 @@ import main.java.exception.NoFileNameException;
 public class StorageCommandParser {
 	
 	/* error messages used in this class */
-	private static final String ERROR_MESSAGE_EMPTY_PATH = "Please enter non-empty file path!";
-	private static final String ERROR_NO_FILE_NAME = "No file name entered!";
-	private static final String ERROR_INVALID_PATH = "Invalid path entered!";
+	private static final String ERROR_MESSAGE_EMPTY_PATH = "Please enter a non-empty path!";
+	private static final String ERROR_NO_FILE_NAME = "No file name is entered!";
+	private static final String ERROR_INVALID_PATH = "Invalid path is entered!";
 	
 	/* numeric indices to access parameters array */
 	private static final int TASK = 0;
@@ -35,7 +35,7 @@ public class StorageCommandParser {
 	 * @throws NoFileNameException 
 	 */
 	public String[] determineParameters(CommandType commandType, String commandContent) 
-			throws InvalidInputFormatException, NoFileNameException {
+			throws InvalidInputFormatException, NoFileNameException, InvalidPathException {
 		assert commandType != null;
 		assert commandContent != null;
 
@@ -61,7 +61,8 @@ public class StorageCommandParser {
 	 * @throws NoFileNameException
 	 * @throws InvalidPathException
 	 */
-	private String validifyPath(String path) throws NoFileNameException, InvalidPathException {
+	private String validifyPath(String path) throws NoFileNameException, 
+	InvalidPathException {
 		assert path != null;
 		
 		//append the file type for user
