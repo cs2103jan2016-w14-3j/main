@@ -919,8 +919,12 @@ public class Main extends Application {
 		}
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(SHOW_COMMAND)
 				|| fragments[COMMAND_INDEX].equalsIgnoreCase(SHOWCOMPLETE_COMMAND)) {
+			try{
 			if (result.size() != 0) {
 				popOverForShow(commandBarController, fragments[1]);
+			}
+			}catch(NullPointerException e){
+				appLog.getLogger().warning("" + e);
 			}
 		}
 	}
@@ -1405,6 +1409,7 @@ public class Main extends Application {
 		assert title != null;
 
 		PopOver bgPopOver = new PopOver();
+		bgPopOver.detach();
 		bgPopOver.setDetachable(true);
 		bgPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
 		bgPopOver.setArrowIndent(5);
@@ -1420,7 +1425,8 @@ public class Main extends Application {
 		vbox.getChildren().addAll(lblTitle, popOverTableControl);
 		vbox.setAlignment(Pos.CENTER);
 		bgPopOver.setContentNode(vbox);
-		bgPopOver.show(tabControl.getScene().getWindow());
+		bgPopOver.show(tabControl.getScene().getWindow(),getPopupPosition(tabControl).getX(),
+				getPopupPosition(tabControl).getY());
 	}
 
 	/**
@@ -1429,10 +1435,12 @@ public class Main extends Application {
 	private void popOverForHelp() {
 		PopOver helpPopOver = new PopOver();
 		helpPopOver.setDetachable(true);
+		helpPopOver.detach();
 		helpPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
 		helpPopOver.setArrowIndent(5);
 		helpPopOver.setContentNode(new ImageView(new Image("/main/resources/images/help.png")));
-		helpPopOver.show(tabControl.getScene().getWindow());
+		helpPopOver.show(tabControl.getScene().getWindow(),getPopupPosition(tabControl).getX(),
+				getPopupPosition(tabControl).getY());
 	}
 
 	/**
@@ -2436,6 +2444,21 @@ public class Main extends Application {
 		Window window = node.getScene().getWindow();
 		Point2D point = node.localToScene(0, 0);
 		double x = point.getX() + window.getX() + node.getWidth() + 2;
+		double y = point.getY() + window.getY();
+		return new Point2D(x, y);
+	}
+	
+	/**
+	 * Handles popover display positions
+	 * 
+	 * @param node
+	 * @return
+	 */
+	private Point2D getPopupPosition(Node node) {
+		assert node != null;
+		Window window = node.getScene().getWindow();
+		Point2D point = node.localToScene(0, 0);
+		double x = point.getX() + window.getX();
 		double y = point.getY() + window.getY();
 		return new Point2D(x, y);
 	}
