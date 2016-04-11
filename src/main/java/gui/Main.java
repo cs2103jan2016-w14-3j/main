@@ -1,5 +1,5 @@
 /* @@author A0124078H */
-package main.java.flash;
+package main.java.gui;
 
 import java.io.File;
 
@@ -32,12 +32,6 @@ import main.java.data.Task;
 import main.java.enumeration.TaskStatus;
 import main.java.exception.InvalidInputFormatException;
 import main.java.exception.NoFileNameException;
-import main.java.gui.CommandBarController;
-import main.java.gui.SideBarController;
-import main.java.gui.TabsController;
-import main.java.gui.TasksItemController;
-import main.java.gui.TasksTableController;
-
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
@@ -183,10 +177,12 @@ public class Main extends Application {
 	}
 
 	/********************************** Initialisation ***********************************************/
+
 	/***********************************************************************************************/
 	/**
 	 * Initialising the controllers needed *******
-	 * @param main 
+	 * 
+	 * @param main
 	 */
 	private void initControllers(Main main) {
 		assert main != null;
@@ -245,20 +241,21 @@ public class Main extends Application {
 			appLog.getLogger().warning("Unable to initialise rootLayout: " + e);
 		}
 	}
-	
+
 	/**
 	 * Check to see if there are tasks to be displayed, refresh the list *******
 	 */
-	private void checkIsTasksEmpty(){
+	private void checkIsTasksEmpty() {
 		populateAllPendingTasks();
 		populateAllCompleteTasks();
 		switchToModifiedTab();
 		reinitialiseModifiedBoolean();
 
 	}
-	
+
 	/**
-	 * check for overdue task, refresh the list and prompt with notification if necessary 
+	 * check for overdue task, refresh the list and prompt with notification if
+	 * necessary
 	 */
 	private void checkOverdue() {
 		ArrayList<Task> overdueList;
@@ -266,18 +263,19 @@ public class Main extends Application {
 		try {
 			overdueList = logic.checkOverdue();
 			if (!overdueList.isEmpty()) {
-					checkIsTasksEmpty();
-					taskName = locateOverdueTask(overdueList);
+				checkIsTasksEmpty();
+				taskName = locateOverdueTask(overdueList);
 				if (taskName != null) {
 					notification(taskName);
 				}
 			}
 		} catch (IOException e1) {
-			appLog.getLogger().warning("Unable to check overdue tasks: "+e1);
-		}	
+			appLog.getLogger().warning("Unable to check overdue tasks: " + e1);
+		}
 	}
 
-	/** Allows the application window be be dragged 
+	/**
+	 * Allows the application window be be dragged
 	 */
 	private void listenForStageInput() {
 		rootLayout.setOnMousePressed(new EventHandler<MouseEvent>() {
@@ -295,8 +293,9 @@ public class Main extends Application {
 			}
 		});
 	}
-	
-	/** Display side bar and attach it to borderpane rootlayout 
+
+	/**
+	 * Display side bar and attach it to borderpane rootlayout
 	 */
 	private void showSidebar() {
 		// create a sidebar with some content in it.
@@ -307,14 +306,16 @@ public class Main extends Application {
 		sidebar.hideSidebar();
 		createTopBar(sidebar);
 	}
-	
-	/** Display tabs and attach it to borderpane rootlayout 
+
+	/**
+	 * Display tabs and attach it to borderpane rootlayout
 	 */
 	private void showTabs() {
 		rootLayout.setCenter(tabControl);
 	}
-	
-	/** Add TasksTableControl to specific tab 
+
+	/**
+	 * Add TasksTableControl to specific tab
 	 */
 	private void showTasks() {
 		tabControl.setAllTab(allTableControl);
@@ -323,8 +324,9 @@ public class Main extends Application {
 		tabControl.setOverdueTab(overdueTableControl);
 		tabControl.setFloatingTab(floatingTableControl);
 	}
-	
-	/** Display command bar and attach it to borderpane rootlayout 
+
+	/**
+	 * Display command bar and attach it to borderpane rootlayout
 	 */
 	private void showCommandBar() {
 		rootLayout.setBottom(barControl);
@@ -332,13 +334,15 @@ public class Main extends Application {
 		barControl.setBgColour("med");
 	}
 
-	/** Initialises history log for user input 
+	/**
+	 * Initialises history log for user input
 	 */
 	private void initLog() {
 		historyLog = new ArrayList<String>();
 	}
-	
-	/** Listener for various hotkey pressed 
+
+	/**
+	 * Listener for various hotkey pressed
 	 */
 	private void listenerForTaskList() {
 		listenerForThemeChange();
@@ -351,10 +355,13 @@ public class Main extends Application {
 		listenerForTabControl();
 	}
 
-	/*********************** sub-functions of Initialisation ******************************************/
+	/***********************
+	 * sub-functions of Initialisation
+	 ******************************************/
 	/***********************************************************************************************/
-    
-	/** Check for overdue task every 30 seconds 
+
+	/**
+	 * Check for overdue task every 30 seconds
 	 */
 	private void overdueTimer() {
 		Timeline timeline;
@@ -362,9 +369,12 @@ public class Main extends Application {
 		timeline.setCycleCount(Animation.INDEFINITE);
 		timeline.play();
 	}
-	
-	/** Locate the overdue tasks and return the number of tasks that are overdue 
-	 * @param overdueList  arraylist of tasks which are overdued
+
+	/**
+	 * Locate the overdue tasks and return the number of tasks that are overdue
+	 * 
+	 * @param overdueList
+	 *            arraylist of tasks which are overdued
 	 * @return number of tasks as String
 	 */
 	private String locateOverdueTask(ArrayList<Task> overdueList) {
@@ -373,7 +383,7 @@ public class Main extends Application {
 		taskName += overdueList.size();
 		return taskName;
 	}
-	
+
 	/**
 	 * reinitialises the boolean value for the next usage *******
 	 */
@@ -383,11 +393,11 @@ public class Main extends Application {
 		isModifiedFloating = false;
 		isModifiedComplete = false;
 	}
-	
+
 	/**
 	 * Populates completed tasks under completed tabs *******
 	 */
-	private void populateAllCompleteTasks(){
+	private void populateAllCompleteTasks() {
 		if (logic.displayComplete().isEmpty()) {
 			// if complete is empty
 			tabControl.setEmptyCompleteTab();
@@ -400,7 +410,7 @@ public class Main extends Application {
 	/**
 	 * Populates all pending tasks under all non-complete tabs *******
 	 */
-	private void populateAllPendingTasks(){
+	private void populateAllPendingTasks() {
 		if (logic.displayPending().isEmpty()) {
 			// if all pending is empty
 			setupNoTasksTabs();
@@ -412,7 +422,8 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Change the focus to the particular tab that the latest task changed is belonged to*******
+	 * Change the focus to the particular tab that the latest task changed is
+	 * belonged to*******
 	 */
 	private void switchToModifiedTab() {
 		if (isModifiedFloating) {
@@ -434,9 +445,9 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Setup the complete table with complete task controller  *******
+	 * Setup the complete table with complete task controller *******
 	 */
-	private void setupCompleteTable(){
+	private void setupCompleteTable() {
 		int completeCount = 0;
 		completeTableControl.clearTask();
 		completeResult.clear();
@@ -454,7 +465,7 @@ public class Main extends Application {
 	/**
 	 * Populates all tasks under all tab *******
 	 */
-	private void populateAllTable(){
+	private void populateAllTable() {
 		int allCount = 0;
 		int overdueCount = 0;
 		int pendingCount = 0;
@@ -491,7 +502,8 @@ public class Main extends Application {
 	}
 
 	/**
-	 * Setup notification badge for individual tab, set to invisible if there is no task under tab *******
+	 * Setup notification badge for individual tab, set to invisible if there is
+	 * no task under tab *******
 	 */
 	private void setupIndividualTabNotification() {
 		int overdueCount = 0;
@@ -522,6 +534,7 @@ public class Main extends Application {
 
 	/**
 	 * setup all uncompleted tabs *******
+	 * 
 	 * @param overdueCount
 	 * @param pendingCount
 	 * @param floatingCount
@@ -564,7 +577,9 @@ public class Main extends Application {
 
 	/**
 	 * create top bar and attach it to rootlayout *******
-	 * @param sidebar sidebarController
+	 * 
+	 * @param sidebar
+	 *            sidebarController
 	 */
 	private void createTopBar(SideBarController sidebar) {
 		assert sidebar != null;
@@ -622,6 +637,7 @@ public class Main extends Application {
 
 	/**
 	 * create side bar, set up content within side bar *******
+	 * 
 	 * @returns pane Vbox
 	 */
 	private VBox createSidebarContent() {
@@ -689,6 +705,7 @@ public class Main extends Application {
 
 	/**
 	 * Handles the hotkey control *******
+	 * 
 	 * @param commandBarController
 	 * @param event
 	 * @param text
@@ -726,7 +743,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Handle enter key for auto complete edit function
+	/**
+	 * Handle enter key for auto complete edit function
+	 * 
 	 * @param display
 	 */
 	private void handleEnterKey(ListView<TasksItemController> display) {
@@ -736,7 +755,9 @@ public class Main extends Application {
 		barControl.getFocus();
 	}
 
-	/**Handle enter key for auto complete delete function
+	/**
+	 * Handle enter key for auto complete delete function
+	 * 
 	 * @param display
 	 */
 	private void handleDeleteKey(ListView<TasksItemController> display) {
@@ -747,7 +768,8 @@ public class Main extends Application {
 	}
 
 	/**
-	 * retrieve past user input history 
+	 * retrieve past user input history
+	 * 
 	 * @param event
 	 */
 	private void handleGetPastCommands(KeyEvent event) {
@@ -756,7 +778,9 @@ public class Main extends Application {
 		barControl.updateUserInput(pastCommand);
 	}
 
-	/** Handles history of user input by pressing up and down key
+	/**
+	 * Handles history of user input by pressing up and down key
+	 * 
 	 * @param code
 	 * @return
 	 */
@@ -771,7 +795,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Get the previous user input
+	/**
+	 * Get the previous user input
+	 * 
 	 * @return
 	 */
 	private String getPreviousCommand() {
@@ -782,8 +808,9 @@ public class Main extends Application {
 		return historyLog.get(pointer);
 	}
 
-	
-	/** Get the next user input
+	/**
+	 * Get the next user input
+	 * 
 	 * @return
 	 */
 	private String getNextCommand() {
@@ -795,6 +822,7 @@ public class Main extends Application {
 
 	/**
 	 * Handles the user input each time user press enter *******
+	 * 
 	 * @param commandBarController
 	 * @param event
 	 * @param text
@@ -802,7 +830,7 @@ public class Main extends Application {
 	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
-		
+
 		commandByNumber = false;
 		boolean editByNumber = false;
 		pointer = historyLog.size();
@@ -811,41 +839,22 @@ public class Main extends Application {
 			setFeedback(commandBarController, ERROR, userInput);
 			return;
 		}
+		String[] fragments = userInput.split(" ");
 		// UI related command
-		else if (userInput.equalsIgnoreCase(HELP_COMMAND)) {
-			popOverForHelp();
-			setFeedback(commandBarController, VALID, userInput);
-		} else if (userInput.equalsIgnoreCase("theme blue")) {
-			changeBlueTheme();
-			setFeedback(commandBarController, VALID, userInput);
-		} else if (userInput.equalsIgnoreCase("theme red")) {
-			changeRedTheme();
-			setFeedback(commandBarController, VALID, userInput);
-		} else if (userInput.equalsIgnoreCase("theme transparent")) {
-			changeTransparentTheme();
-			setFeedback(commandBarController, VALID, userInput);
-		} else if (userInput.equalsIgnoreCase("theme green")) {
-			changeGreenTheme();
-			setFeedback(commandBarController, VALID, userInput);
-		} else if (userInput.equalsIgnoreCase(SWITCH_COMMAND)) {
-			handleSwitchCommand(commandBarController, userInput);
+		if (userInput.equalsIgnoreCase(HELP_COMMAND) || fragments[COMMAND_INDEX].equalsIgnoreCase(THEME_COMMAND)) {
+			handleGuiCommand(commandBarController, userInput);
 		} else {
 			// Non- UI related command
-			String[] fragments = userInput.split(" ");
 			int numberToChange = -1;
-
 			// check if the user enter a number after command key word
 			// handles command by number
 			if (fragments.length > 1) {
-				if (fragments[COMMAND_INDEX].equalsIgnoreCase(EDIT_COMMAND) && fragments[1].contains(",")) {
-					fragments[1] = fragments[1].substring(0, fragments[1].indexOf(','));
+				if (fragments[COMMAND_INDEX].equalsIgnoreCase(EDIT_COMMAND) && !fragments[1].contains(",")) {
+					setFeedback(commandBarController, ERROR, "Invalid Usage of edit");
+					resetCommandBar(commandBarController, userInput);
+					return;
 				}
-				try {
-					numberToChange = Integer.parseInt(fragments[1]);
-					commandByNumber = true;
-				} catch (NumberFormatException e) {
-					commandByNumber = false;
-				}
+				numberToChange = checkIfNumberIsValid(fragments, numberToChange);
 				// if the user delete/edit/mark/unmark by number
 				if (commandByNumber) {
 					numberToChange -= 1;
@@ -862,11 +871,11 @@ public class Main extends Application {
 					}
 				}
 			}
-			try{
-			   userInput = handleCommandByTab(userInput, editByNumber, fragments);
-			}catch(IndexOutOfBoundsException e){
+			try {
+				userInput = handleCommandByTab(userInput, editByNumber, fragments);
+			} catch (IndexOutOfBoundsException e) {
 				isError = true;
-				setFeedback(commandBarController, ERROR,"There are no available Tasks");
+				setFeedback(commandBarController, ERROR, "There are no available Tasks");
 				appLog.getLogger().warning("" + e);
 			}
 
@@ -875,48 +884,110 @@ public class Main extends Application {
 				commandByNumber = false;
 			}
 			if (!commandByNumber) {
-					try {
-						result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-					} catch (InvalidInputFormatException e) {
-						isError = true;
-						setFeedback(commandBarController, ERROR, e.toString());
-						appLog.getLogger().warning("" + e);
-					} catch (NoFileNameException e) {
-						isError = true;
-						setFeedback(commandBarController, ERROR, e.toString());
-						appLog.getLogger().warning("" + e);
-					}
-				if (fragments[COMMAND_INDEX].equalsIgnoreCase(SHOW_COMMAND)
-						|| fragments[COMMAND_INDEX].equalsIgnoreCase(SHOWCOMPLETE_COMMAND)) {
-					if (result.size() != 0) {
-						popOverForShow(commandBarController, fragments[1]);
-					}
-				}
+				handleCommandWithoutNumber(commandBarController, userInput, fragments);
 			}
 		}
-
 		if (isError == false) {
 			setFeedback(commandBarController, VALID, userInput);
 		}
+		resetCommandBar(commandBarController, userInput);
+	}
 
+	/** Handle non numbering command
+	 * @param commandBarController
+	 * @param userInput
+	 * @param fragments
+	 * @throws IOException
+	 */
+	private void handleCommandWithoutNumber(CommandBarController commandBarController, String userInput,
+			String[] fragments) throws IOException {
+		try {
+			result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+		} catch (InvalidInputFormatException e) {
+			isError = true;
+			setFeedback(commandBarController, ERROR, e.toString());
+			appLog.getLogger().warning("" + e);
+		} catch (NoFileNameException e) {
+			isError = true;
+			setFeedback(commandBarController, ERROR, e.toString());
+			appLog.getLogger().warning("" + e);
+		}
+		if (fragments[COMMAND_INDEX].equalsIgnoreCase(SHOW_COMMAND)
+				|| fragments[COMMAND_INDEX].equalsIgnoreCase(SHOWCOMPLETE_COMMAND)) {
+			if (result.size() != 0) {
+				popOverForShow(commandBarController, fragments[1]);
+			}
+		}
+	}
+
+	/** Check if the number for command is valid
+	 * @param fragments
+	 * @param numberToChange
+	 * @return
+	 */
+	private int checkIfNumberIsValid(String[] fragments, int numberToChange) {
+		if (fragments[COMMAND_INDEX].equalsIgnoreCase(EDIT_COMMAND) && fragments[1].contains(",")) {
+			fragments[1] = fragments[1].substring(0, fragments[1].indexOf(','));
+		}
+		try {
+			numberToChange = Integer.parseInt(fragments[1]);
+			commandByNumber = true;
+		} catch (NumberFormatException e) {
+			commandByNumber = false;
+		}
+		return numberToChange;
+	}
+
+	/** Reset the command bar after user press enter
+	 * @param commandBarController
+	 * @param userInput
+	 */
+	private void resetCommandBar(CommandBarController commandBarController, String userInput) {
 		historyLog.add(userInput);
 		pointer++;
 		isError = false;
 		new CommandBarController();
 		commandBarController.clear();
-
 	}
 
-	/** Handles command by the tab user is in, segregate content
+	/** Only handles GUI related command such as help and theme
+	 * @param commandBarController
+	 * @param userInput
+	 */
+	private void handleGuiCommand(CommandBarController commandBarController, String userInput) {
+		if (userInput.equalsIgnoreCase(HELP_COMMAND)) {
+			popOverForHelp();
+			setFeedback(commandBarController, VALID, userInput);
+		} else if (userInput.equalsIgnoreCase("theme blue")) {
+			changeBlueTheme();
+			setFeedback(commandBarController, VALID, userInput);
+		} else if (userInput.equalsIgnoreCase("theme red")) {
+			changeRedTheme();
+			setFeedback(commandBarController, VALID, userInput);
+		} else if (userInput.equalsIgnoreCase("theme transparent")) {
+			changeTransparentTheme();
+			setFeedback(commandBarController, VALID, userInput);
+		} else if (userInput.equalsIgnoreCase("theme green")) {
+			changeGreenTheme();
+			setFeedback(commandBarController, VALID, userInput);
+		} else if (userInput.equalsIgnoreCase(SWITCH_COMMAND)) {
+			handleSwitchCommand(commandBarController, userInput);
+		}
+	}
+
+	/**
+	 * Handles command by the tab user is in, segregate content
+	 * 
 	 * @param userInput
 	 * @param editByNumber
 	 * @param fragments
 	 * @return
 	 */
-	private String handleCommandByTab(String userInput, boolean editByNumber, String[] fragments) throws IndexOutOfBoundsException {
+	private String handleCommandByTab(String userInput, boolean editByNumber, String[] fragments)
+			throws IndexOutOfBoundsException {
 		assert userInput != null;
 		assert fragments != null;
-		
+
 		// delete from complete tab
 		if (userInput.equalsIgnoreCase(CLEAR_COMMAND)) {
 			userInput = handleClearByTab(userInput);
@@ -940,7 +1011,9 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handle user command by number instead of task name
+	/**
+	 * Handle user command by number instead of task name
+	 * 
 	 * @param userInput
 	 * @param fragments
 	 * @param commandBarController
@@ -952,9 +1025,9 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert fragments != null;
 		assert userInput != null;
-		
+
 		if (tabControl.getAllTab().isSelected()) {
-			if (numberToChange >= allResult.size() || numberToChange <0) {
+			if (numberToChange >= allResult.size() || numberToChange < 0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			} else {
@@ -966,7 +1039,7 @@ public class Main extends Application {
 				}
 			}
 		} else if (tabControl.getPendingTab().isSelected()) {
-			if (numberToChange >= pendingResult.size()|| numberToChange <0) {
+			if (numberToChange >= pendingResult.size() || numberToChange < 0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -977,7 +1050,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in pending tab: " + e);
 			}
 		} else if (tabControl.getFloatingTab().isSelected()) {
-			if (numberToChange >= floatingResult.size()|| numberToChange <0) {
+			if (numberToChange >= floatingResult.size() || numberToChange < 0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -988,7 +1061,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in floating tab: " + e);
 			}
 		} else if (tabControl.getOverdueTab().isSelected()) {
-			if (numberToChange >= overdueResult.size()|| numberToChange <=0) {
+			if (numberToChange >= overdueResult.size() || numberToChange <= 0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -999,7 +1072,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in overdue tab: " + e);
 			}
 		} else if (tabControl.getCompleteTab().isSelected()) {
-			if (numberToChange >= completeResult.size()|| numberToChange <0) {
+			if (numberToChange >= completeResult.size() || numberToChange < 0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -1014,7 +1087,9 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles valid user command by number in the complete tab
+	/**
+	 * Handles valid user command by number in the complete tab
+	 * 
 	 * @param userInput
 	 * @param fragments
 	 * @param commandBarController
@@ -1027,7 +1102,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
-		
+
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(completeResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1041,7 +1116,9 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles valid user command by number in overdue tab
+	/**
+	 * Handles valid user command by number in overdue tab
+	 * 
 	 * @param userInput
 	 * @param fragments
 	 * @param commandBarController
@@ -1054,7 +1131,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
-		
+
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(overdueResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1068,7 +1145,9 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles the valid user command by number in floating tab
+	/**
+	 * Handles the valid user command by number in floating tab
+	 * 
 	 * @param userInput
 	 * @param fragments
 	 * @param commandBarController
@@ -1081,7 +1160,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
-		
+
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(floatingResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1095,7 +1174,9 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles the valid user command by number in pending tab
+	/**
+	 * Handles the valid user command by number in pending tab
+	 * 
 	 * @param userInput
 	 * @param fragments
 	 * @param commandBarController
@@ -1108,7 +1189,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
-		
+
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(pendingResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1122,7 +1203,9 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles valid user command by number in all tab
+	/**
+	 * Handles valid user command by number in all tab
+	 * 
 	 * @param userInput
 	 * @param fragments
 	 * @param commandBarController
@@ -1131,11 +1214,11 @@ public class Main extends Application {
 	 * @throws IOException
 	 */
 	private String validHandleCommandByNumberAllTab(String userInput, String[] fragments,
-			CommandBarController commandBarController, int numberToChange) throws IOException{
+			CommandBarController commandBarController, int numberToChange) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
-		
+
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(DELETE_COMMAND)) {
 			logic.delete(allResult.get(numberToChange));
 		} else if (fragments[COMMAND_INDEX].equalsIgnoreCase(MARK_COMMAND)) {
@@ -1149,7 +1232,9 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles invalid command under tab
+	/**
+	 * Handles invalid command under tab
+	 * 
 	 * @param commandBarController
 	 */
 	private void invalidCommandUnderTab(CommandBarController commandBarController) {
@@ -1158,7 +1243,9 @@ public class Main extends Application {
 		isError = true;
 	}
 
-	/** Handles invalid command by numbers
+	/**
+	 * Handles invalid command by numbers
+	 * 
 	 * @param commandBarController
 	 */
 	private void invalidHandleCommandByNumber(CommandBarController commandBarController) {
@@ -1167,7 +1254,9 @@ public class Main extends Application {
 		isError = true;
 	}
 
-	/** Handles edit by partial matching
+	/**
+	 * Handles edit by partial matching
+	 * 
 	 * @param userInput
 	 * @return
 	 */
@@ -1187,13 +1276,15 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Append complete keyword to sort when under complete tab
+	/**
+	 * Append complete keyword to sort when under complete tab
+	 * 
 	 * @param fragments
 	 * @return
 	 */
 	private String appendSortComplete(String[] fragments) {
 		assert fragments != null;
-		
+
 		String userInput;
 		fragments[COMMAND_INDEX] = "sortComplete";
 		String sortComplete = "sortComplete ";
@@ -1204,13 +1295,15 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Append complete keyword to show in complete tab
+	/**
+	 * Append complete keyword to show in complete tab
+	 * 
 	 * @param fragments
 	 * @return
 	 */
 	private String appendShowComplete(String[] fragments) {
 		assert fragments != null;
-		
+
 		String userInput;
 		fragments[COMMAND_INDEX] = "showComplete";
 		String showComplete = "showComplete ";
@@ -1221,13 +1314,15 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Append complete keyword to delete in complete tab
+	/**
+	 * Append complete keyword to delete in complete tab
+	 * 
 	 * @param fragments
 	 * @return
 	 */
 	private String appendDeleteComplete(String[] fragments) {
 		assert fragments != null;
-		
+
 		String userInput;
 		fragments[COMMAND_INDEX] = "deleteComplete";
 		String deleteComplete = "deleteComplete ";
@@ -1238,13 +1333,15 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles clear command by tab
+	/**
+	 * Handles clear command by tab
+	 * 
 	 * @param userInput
 	 * @return
 	 */
 	private String handleClearByTab(String userInput) {
 		assert userInput != null;
-		
+
 		if (tabControl.getPendingTab().isSelected()) {
 			userInput = userInput + "Upcoming";
 		} else if (tabControl.getCompleteTab().isSelected()) {
@@ -1259,14 +1356,16 @@ public class Main extends Application {
 		return userInput;
 	}
 
-	/** Handles switch command
+	/**
+	 * Handles switch command
+	 * 
 	 * @param commandBarController
 	 * @param userInput
 	 */
 	private void handleSwitchCommand(CommandBarController commandBarController, String userInput) {
 		assert commandBarController != null;
 		assert userInput != null;
-		
+
 		if (tabControl.getPendingTab().isSelected()) {
 			tabControl.getTabPane().getSelectionModel().select(tabControl.getOverdueTab());
 			lblTitle.setText("Overdue Tasks");
@@ -1290,14 +1389,16 @@ public class Main extends Application {
 		}
 	}
 
-	/** Display popOver for show command
+	/**
+	 * Display popOver for show command
+	 * 
 	 * @param commandBarController
 	 * @param title
 	 */
 	private void popOverForShow(CommandBarController commandBarController, String title) {
 		assert commandBarController != null;
 		assert title != null;
-		
+
 		PopOver bgPopOver = new PopOver();
 		bgPopOver.setDetachable(true);
 		bgPopOver.setArrowLocation(PopOver.ArrowLocation.TOP_CENTER);
@@ -1317,7 +1418,8 @@ public class Main extends Application {
 		bgPopOver.show(tabControl.getScene().getWindow());
 	}
 
-	/** Display popOver for help command
+	/**
+	 * Display popOver for help command
 	 */
 	private void popOverForHelp() {
 		PopOver helpPopOver = new PopOver();
@@ -1341,7 +1443,7 @@ public class Main extends Application {
 		theme = "red";
 		pendingTableControl.setTheme("red");
 	}
-	
+
 	/**
 	 * Change theme to green colour
 	 */
@@ -1384,11 +1486,14 @@ public class Main extends Application {
 		pendingTableControl.setTheme("blue");
 	}
 
-	/****************************** set user feedback  *****************************/
+	/******************************
+	 * set user feedback
+	 *****************************/
 	/*******************************************************************************/
-	
+
 	/***
 	 * set user feedback to display to user *******
+	 * 
 	 * @param commandBarController
 	 * @param type
 	 * @param userInput
@@ -1397,7 +1502,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert type != null;
 		assert userInput != null;
-		
+
 		isFeedback = true;
 		// if the userInput is not a one word command
 		if (userInput.indexOf(' ') != -1) {
@@ -1407,7 +1512,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Set feedback for one word command such as "clear"
+	/**
+	 * Set feedback for one word command such as "clear"
+	 * 
 	 * @param commandBarController
 	 * @param type
 	 * @param userInput
@@ -1416,7 +1523,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert type != null;
 		assert userInput != null;
-		
+
 		if (type.equals(ERROR)) {
 			commandBarController.setFeedback("Invalid Command" + ": ", Color.RED);
 		} else if (type.equals(VALID)) {
@@ -1448,7 +1555,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Set feedback for non-one word command such as "delete sth"
+	/**
+	 * Set feedback for non-one word command such as "delete sth"
+	 * 
 	 * @param commandBarController
 	 * @param type
 	 * @param userInput
@@ -1458,7 +1567,7 @@ public class Main extends Application {
 		assert commandBarController != null;
 		assert type != null;
 		assert userInput != null;
-		
+
 		int i = 1;
 		i = userInput.indexOf(' ');
 		String firstWord = userInput.substring(0, i);
@@ -1492,7 +1601,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** check if it is a valid task command
+	/**
+	 * check if it is a valid task command
+	 * 
 	 * @param firstWord
 	 * @return
 	 */
@@ -1509,8 +1620,9 @@ public class Main extends Application {
 
 	}
 
-	
-	/** Check and return the first keyword of user input
+	/**
+	 * Check and return the first keyword of user input
+	 * 
 	 * @param input
 	 * @return
 	 */
@@ -1528,19 +1640,24 @@ public class Main extends Application {
 		return result;
 	}
 
-	/** Remove all the style from commandbar controller
+	/**
+	 * Remove all the style from commandbar controller
+	 * 
 	 * @param n
 	 */
 	private void removeAllStyle(Node n) {
-		assert n != null;	
+		assert n != null;
 		n.getStyleClass().removeAll("bad", "med", "good", "best");
 	}
 
-	/****************************** Start of live search *************************/
+	/******************************
+	 * Start of live search
+	 *************************/
 	/*****************************************************************************/
-	
+
 	/***
 	 * Listen for the user Input character by character *******
+	 * 
 	 * @param newValue
 	 */
 	public void liveSearch(String newValue) {
@@ -1595,7 +1712,9 @@ public class Main extends Application {
 	}
 
 	/***
-	 * Handles command keyword validity, valid keyword will be shown in green,invalid in red *******
+	 * Handles command keyword validity, valid keyword will be shown in
+	 * green,invalid in red *******
+	 * 
 	 * @param newValue
 	 */
 	public void showColourCommand(String newValue) {
@@ -1616,17 +1735,21 @@ public class Main extends Application {
 		}
 	}
 
-	/************************** Live search sub method *********************************/
-	
-	/** Handles live search in complete tab
+	/**************************
+	 * Live search sub method
+	 *********************************/
+
+	/**
+	 * Handles live search in complete tab
+	 * 
 	 * @param newValue
 	 * @param isDelete
 	 * @param isSearch
 	 * @param isUnmark
 	 * @throws Exception
 	 */
-	private void liveSearchCompleteTab(String newValue, boolean isDelete, boolean isSearch,
-			boolean isUnmark) throws Exception {
+	private void liveSearchCompleteTab(String newValue, boolean isDelete, boolean isSearch, boolean isUnmark)
+			throws Exception {
 		searchResult = logic.handleSearchCompleted(newValue);
 		if (isDelete || isSearch) {
 			populateCompleteList(searchResult);
@@ -1639,7 +1762,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Handles live search in overdue tab
+	/**
+	 * Handles live search in overdue tab
+	 * 
 	 * @param newValue
 	 * @param isEdit
 	 * @param isDelete
@@ -1647,67 +1772,73 @@ public class Main extends Application {
 	 * @param isMark
 	 * @throws Exception
 	 */
-	private void liveSearchOverdueTab(String newValue, boolean isEdit, boolean isDelete,
-			boolean isSearch, boolean isMark) throws Exception {
-		searchResult = logic.handleSearchPending(newValue);
-		if (isEdit || isDelete || isSearch) {
-			populateOverdueList(searchResult);
-		} else if (isMark) {
-			populateOverdueList(searchResult);
-			populateCompleteList(logic.displayComplete());
-		}
-	}
-
-	/** Handles live search in floating tab
-	 * @param newValue
-	 * @param isEdit
-	 * @param isDelete
-	 * @param isSearch
-	 * @param isMark
-	 * @throws Exception
-	 */
-	private void liveSearchFloatingTab(String newValue, boolean isEdit, boolean isDelete,
-			boolean isSearch, boolean isMark) throws Exception {
-		searchResult = logic.handleSearchPending(newValue);
-		if (isEdit || isDelete || isSearch) {
-			populateFloatingList(searchResult);
-		} else if (isMark) {
-			populateFloatingList(searchResult);
-			populateCompleteList(logic.displayComplete());
-		}
-	}
-
-	/** Handles live search in pending tab
-	 * @param newValue
-	 * @param isEdit
-	 * @param isDelete
-	 * @param isSearch
-	 * @param isMark
-	 * @throws Exception
-	 */
-	private void liveSearchPendingTab(String newValue, boolean isEdit, boolean isDelete,
-			boolean isSearch, boolean isMark) throws Exception {
-		searchResult = logic.handleSearchPending(newValue);
-		if (isEdit || isDelete || isSearch) {
-			populatePendingList(searchResult);
-		} else if (isMark) {
-			populatePendingList(searchResult);
-			populateCompleteList(logic.displayComplete());
-		}
-	}
-
-	/** handles live search in all tab
-	 * @param newValue
-	 * @param isEdit
-	 * @param isDelete
-	 * @param isSearch
-	 * @param isMark
-	 * @throws Exception
-	 */
-	private void liveSearchAllTab(String newValue, boolean isEdit, boolean isDelete, boolean isSearch,
+	private void liveSearchOverdueTab(String newValue, boolean isEdit, boolean isDelete, boolean isSearch,
 			boolean isMark) throws Exception {
 		searchResult = logic.handleSearchPending(newValue);
 		if (isEdit || isDelete || isSearch) {
+			populateOverdueList(searchResult);
+		} else if (isMark) {
+			populateOverdueList(searchResult);
+			populateCompleteList(logic.displayComplete());
+		}
+	}
+
+	/**
+	 * Handles live search in floating tab
+	 * 
+	 * @param newValue
+	 * @param isEdit
+	 * @param isDelete
+	 * @param isSearch
+	 * @param isMark
+	 * @throws Exception
+	 */
+	private void liveSearchFloatingTab(String newValue, boolean isEdit, boolean isDelete, boolean isSearch,
+			boolean isMark) throws Exception {
+		searchResult = logic.handleSearchPending(newValue);
+		if (isEdit || isDelete || isSearch) {
+			populateFloatingList(searchResult);
+		} else if (isMark) {
+			populateFloatingList(searchResult);
+			populateCompleteList(logic.displayComplete());
+		}
+	}
+
+	/**
+	 * Handles live search in pending tab
+	 * 
+	 * @param newValue
+	 * @param isEdit
+	 * @param isDelete
+	 * @param isSearch
+	 * @param isMark
+	 * @throws Exception
+	 */
+	private void liveSearchPendingTab(String newValue, boolean isEdit, boolean isDelete, boolean isSearch,
+			boolean isMark) throws Exception {
+		searchResult = logic.handleSearchPending(newValue);
+		if (isEdit || isDelete || isSearch) {
+			populatePendingList(searchResult);
+		} else if (isMark) {
+			populatePendingList(searchResult);
+			populateCompleteList(logic.displayComplete());
+		}
+	}
+
+	/**
+	 * handles live search in all tab
+	 * 
+	 * @param newValue
+	 * @param isEdit
+	 * @param isDelete
+	 * @param isSearch
+	 * @param isMark
+	 * @throws Exception
+	 */
+	private void liveSearchAllTab(String newValue, boolean isEdit, boolean isDelete, boolean isSearch, boolean isMark)
+			throws Exception {
+		searchResult = logic.handleSearchPending(newValue);
+		if (isEdit || isDelete || isSearch) {
 			populateAllList(searchResult);
 		} else if (isMark) {
 			populateAllList(searchResult);
@@ -1715,7 +1846,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Populate all task list in all tab
+	/**
+	 * Populate all task list in all tab
+	 * 
 	 * @param searchResult
 	 */
 	private void populateAllList(ArrayList<Task> searchResult) {
@@ -1730,7 +1863,9 @@ public class Main extends Application {
 
 	}
 
-	/** Populates overdue task list in overdue tab
+	/**
+	 * Populates overdue task list in overdue tab
+	 * 
 	 * @param searchResult
 	 */
 	private void populateOverdueList(ArrayList<Task> searchResult) {
@@ -1746,7 +1881,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Populates floating task list in floating tab
+	/**
+	 * Populates floating task list in floating tab
+	 * 
 	 * @param searchResult
 	 */
 	private void populateFloatingList(ArrayList<Task> searchResult) {
@@ -1762,7 +1899,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Populates complete task list in complete tab
+	/**
+	 * Populates complete task list in complete tab
+	 * 
 	 * @param searchResult
 	 */
 	private void populateCompleteList(ArrayList<Task> searchResult) {
@@ -1778,7 +1917,9 @@ public class Main extends Application {
 		}
 	}
 
-	/** Populates pending task list in pending tab
+	/**
+	 * Populates pending task list in pending tab
+	 * 
 	 * @param searchResult
 	 */
 	private void populatePendingList(ArrayList<Task> searchResult) {
@@ -1798,7 +1939,9 @@ public class Main extends Application {
 	 * End of Live Search
 	 ***************************************/
 
-	/** Handles save function for btnSave
+	/**
+	 * Handles save function for btnSave
+	 * 
 	 * @param btnSave
 	 */
 	private void saveToLocation(Button btnSave) {
@@ -1826,7 +1969,9 @@ public class Main extends Application {
 
 	}
 
-	/** Handles move function for btnMove
+	/**
+	 * Handles move function for btnMove
+	 * 
 	 * @param btnMove
 	 */
 	private void moveToLocation(Button btnMove) {
@@ -1854,7 +1999,9 @@ public class Main extends Application {
 
 	}
 
-	/** Handles load function for btnLoad
+	/**
+	 * Handles load function for btnLoad
+	 * 
 	 * @param btnLoad
 	 */
 
@@ -2097,9 +2244,13 @@ public class Main extends Application {
 		});
 	}
 
-	/************************************* END OF LISTENER ****************************************/
+	/*************************************
+	 * END OF LISTENER
+	 ****************************************/
 
-	/** creating popover and gridpane for btnBackground
+	/**
+	 * creating popover and gridpane for btnBackground
+	 * 
 	 * @param btnBackground
 	 */
 	private void backgroundChooser(Button btnBackground) {
@@ -2157,7 +2308,9 @@ public class Main extends Application {
 		setImageProperties(blackBg);
 	}
 
-	/** set up image properties for background image
+	/**
+	 * set up image properties for background image
+	 * 
 	 * @param image
 	 */
 	private void setImageProperties(ImageView image) {
@@ -2267,7 +2420,9 @@ public class Main extends Application {
 		});
 	}
 
-	/** Handles popover display positions
+	/**
+	 * Handles popover display positions
+	 * 
 	 * @param node
 	 * @return
 	 */
@@ -2280,7 +2435,9 @@ public class Main extends Application {
 		return new Point2D(x, y);
 	}
 
-	/** Handles notification setup for user overdue task
+	/**
+	 * Handles notification setup for user overdue task
+	 * 
 	 * @param userInput
 	 */
 	private void notification(String userInput) {
@@ -2298,7 +2455,9 @@ public class Main extends Application {
 
 	}
 
-	/** Minimises the application 
+	/**
+	 * Minimises the application
+	 * 
 	 * @param minimiseApp
 	 */
 	private void minimise(Button minimiseApp) {
@@ -2311,7 +2470,9 @@ public class Main extends Application {
 		});
 	}
 
-	/** Exit the application
+	/**
+	 * Exit the application
+	 * 
 	 * @param btnExit
 	 */
 	private void exit(Button btnExit) {

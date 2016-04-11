@@ -2,7 +2,6 @@
 package main.java.gui;
 
 import javafx.animation.Animation;
-
 import javafx.animation.Transition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
