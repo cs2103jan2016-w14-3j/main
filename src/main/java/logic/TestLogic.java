@@ -10,6 +10,8 @@ import main.java.data.Task;
 import main.java.enumeration.PriorityLevel;
 import main.java.enumeration.TaskStatus;
 import main.java.enumeration.TaskType;
+import main.java.exception.InvalidInputFormatException;
+import main.java.exception.NoFileNameException;
 import main.java.logic.Logic;
 
 
@@ -23,8 +25,13 @@ public class TestLogic {
 		parser = new PrettyTimeParser();
 	}
 
+	/**
+	 * @throws NoFileNameException 
+	 * @throws IOException 
+	 * @throws Exception
+	 */
 	@Test
-	public void testAddFloating() throws Exception {
+	public void testAddFloating() throws InvalidInputFormatException, IOException, NoFileNameException {
 		initialise();
 		logic.handleUserCommand("add floating task", null);
 		
@@ -37,7 +44,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testAddFloatingWithPriority() throws Exception {
+	public void testAddFloatingWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException  {
 		initialise();
 		logic.handleUserCommand("add floating task with high priority #high", null);
 		
@@ -50,7 +57,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testAddPendingDeadline() throws Exception {
+	public void testAddPendingDeadline() throws InvalidInputFormatException, IOException, NoFileNameException{
 		initialise();
 		logic.handleUserCommand("add pending task by monday 8pm", null);
 		
@@ -64,7 +71,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testAddPendingDeadlineWithPriority() throws Exception {
+	public void testAddPendingDeadlineWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException{
 		initialise();
 		logic.handleUserCommand("add pending task by monday 8pm #medium", null);
 		
@@ -78,7 +85,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testAddPendingDuration() throws Exception {
+	public void testAddPendingDuration() throws InvalidInputFormatException, IOException, NoFileNameException  {
 		initialise();
 		logic.handleUserCommand("add pending duration task from monday 8pm to friday 9pm", null);
 		
@@ -92,7 +99,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testAddPendingDurationWithPriority() throws Exception {
+	public void testAddPendingDurationWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException {
 		initialise();
 		logic.handleUserCommand("add pending duration task from monday 8pm to friday 9pm #low", null);
 		
@@ -106,7 +113,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testAddOverdue() throws Exception {
+	public void testAddOverdue() throws InvalidInputFormatException, IOException, NoFileNameException {
 		initialise();
 		logic.handleUserCommand("add pending duration task on last monday 5am", null);
 		
@@ -120,7 +127,7 @@ public class TestLogic {
 	}
 	
 	@Test
-	public void testAddOverdueWithPriority() throws Exception {
+	public void testAddOverdueWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException {
 		initialise();
 		logic.handleUserCommand("add pending duration task on last monday 5am #medium", null);
 		

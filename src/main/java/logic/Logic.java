@@ -17,7 +17,6 @@ import main.java.exception.NoFileNameException;
 import main.java.parser.EditCommandParser;
 import main.java.storage.StorageController;
 
-
 /**
  * This class models the core component, Logic, of the application.
  * It handles the high level logic flow: receive user command -> parse user command
