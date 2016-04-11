@@ -1,4 +1,4 @@
-package Enumeration;
+package main.java.enumeration;
 
 /**
  * This enum categorizes task type into 4 categories as below.

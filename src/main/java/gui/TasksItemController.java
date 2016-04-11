@@ -15,11 +15,11 @@ import javafx.scene.layout.VBox;
 import javafx.scene.shape.Shape;
 import javafx.scene.text.Text;
 import main.java.data.Task;
+import main.java.enumeration.TaskStatus;
+import main.java.enumeration.TaskType;
+
 import java.util.Date;
 import java.util.List;
-
-import Enumeration.TaskStatus;
-import Enumeration.TaskType;
 
 public class TasksItemController extends BorderPane {
 

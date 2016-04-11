@@ -4,9 +4,9 @@ package main.java.parser;
 /* import statements */
 import java.util.ArrayList;
 
-import Exception.InvalidInputFormatException;
 import main.java.data.Task;
 import main.java.data.TransientTask;
+import main.java.exception.InvalidInputFormatException;
 import main.java.data.Command;
 
 /**

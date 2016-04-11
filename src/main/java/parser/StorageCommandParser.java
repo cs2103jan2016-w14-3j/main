@@ -3,9 +3,9 @@ package main.java.parser;
 
 import java.nio.file.InvalidPathException;
 
-import Enumeration.CommandType;
-import Exception.InvalidInputFormatException;
-import Exception.NoFileNameException;
+import main.java.enumeration.CommandType;
+import main.java.exception.InvalidInputFormatException;
+import main.java.exception.NoFileNameException;
 
 /**
  * This parser parses storage related commands including "move" and "save".

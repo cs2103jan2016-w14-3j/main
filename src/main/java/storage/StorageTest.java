@@ -9,10 +9,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import Enumeration.PriorityLevel;
-import Enumeration.TaskStatus;
-import Enumeration.TaskType;
+
 import main.java.data.Task;
+import main.java.enumeration.PriorityLevel;
+import main.java.enumeration.TaskStatus;
+import main.java.enumeration.TaskType;
 
 /**
  * This class contains of unit tests for the storage component

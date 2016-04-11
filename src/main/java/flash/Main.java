@@ -29,6 +29,9 @@ import tray.animations.AnimationType;
 import tray.notification.NotificationType;
 import tray.notification.TrayNotification;
 import main.java.data.Task;
+import main.java.enumeration.TaskStatus;
+import main.java.exception.InvalidInputFormatException;
+import main.java.exception.NoFileNameException;
 import main.java.gui.CommandBarController;
 import main.java.gui.SideBarController;
 import main.java.gui.TabsController;
@@ -60,9 +63,6 @@ import javafx.scene.control.ListView;
 import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.*;
 
-import Enumeration.TaskStatus;
-import Exception.InvalidInputFormatException;
-import Exception.NoFileNameException;
 import main.java.Log.EventLog;
 
 /**

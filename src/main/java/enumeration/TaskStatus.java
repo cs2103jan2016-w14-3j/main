@@ -1,4 +1,4 @@
-package Enumeration;
+package main.java.enumeration;
 
 /**
  * This enum categorizes the status of task into 4 types below.

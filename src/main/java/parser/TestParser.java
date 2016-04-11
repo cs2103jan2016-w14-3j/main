@@ -7,7 +7,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
-import Exception.InvalidInputFormatException;
+import main.java.exception.InvalidInputFormatException;
 
 public class TestParser {
 	private static AddCommandParser addParser;

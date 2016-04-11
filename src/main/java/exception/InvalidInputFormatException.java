@@ -1,5 +1,5 @@
 /* @@author A0127481E */
-package Exception;
+package main.java.exception;
 
 /**
  * This class models an customized exception object to handle exception

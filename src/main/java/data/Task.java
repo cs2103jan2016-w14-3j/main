@@ -4,9 +4,9 @@ package main.java.data;
 import java.util.Date;
 import java.util.List;
 
-import Enumeration.PriorityLevel;
-import Enumeration.TaskStatus;
-import Enumeration.TaskType;
+import main.java.enumeration.PriorityLevel;
+import main.java.enumeration.TaskStatus;
+import main.java.enumeration.TaskType;
 
 /**
  * This class models the task object and handles all related operations.

@@ -9,9 +9,9 @@ import java.util.PriorityQueue;
 import org.apache.commons.lang3.StringUtils;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
-import Enumeration.PriorityLevel;
-import Enumeration.TaskType;
-import Exception.InvalidInputFormatException;
+import main.java.enumeration.PriorityLevel;
+import main.java.enumeration.TaskType;
+import main.java.exception.InvalidInputFormatException;
 
 /**
  * This class formats and parses the add command.

@@ -1,4 +1,4 @@
-package Enumeration;
+package main.java.enumeration;
 
 /**
  * This enum categorizes the different command types.

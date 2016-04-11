@@ -1,7 +1,7 @@
 /* @@author A0127481E */
 package main.java.parser;
 
-import Exception.InvalidInputFormatException;
+import main.java.exception.InvalidInputFormatException;
 
 /**
  * This class parses the sort command.

@@ -3,10 +3,10 @@ package main.java.data;
 /* import statements */
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
 
-import Enumeration.CommandType;
-import Enumeration.PriorityLevel;
-import Enumeration.TaskStatus;
-import Enumeration.TaskType;
+import main.java.enumeration.CommandType;
+import main.java.enumeration.PriorityLevel;
+import main.java.enumeration.TaskStatus;
+import main.java.enumeration.TaskType;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -128,8 +128,8 @@ public class Command {
 	public Task createTask() {
 
 		Task task = new Task(commandParameters[TASK], 
-				getTime(commandParameters[TIME]), getPriority(commandParameters[PRIORITY]), 
-				getType(commandParameters[TASK_TYPE]), getStatus(commandParameters[STATUS]));
+				castTime(commandParameters[TIME]), castPriority(commandParameters[PRIORITY]), 
+				castType(commandParameters[TASK_TYPE]), castStatus(commandParameters[STATUS]));
 
 		return task;
 
@@ -150,7 +150,7 @@ public class Command {
 	 * @param priority
 	 * @return priority level
 	 */
-	public static PriorityLevel getPriority(String priority) {
+	public static PriorityLevel castPriority(String priority) {
 		assert priority != null;
 		
 		if (priority.equals(PriorityLevel.HIGH.getType())) {
@@ -174,7 +174,7 @@ public class Command {
 	 * @param status
 	 * @return status in the type TaskStatus
 	 */
-	public static TaskStatus getStatus(String status) {
+	public static TaskStatus castStatus(String status) {
 		assert status != null;
 		
 		if (status.equals(TaskStatus.OVERDUE.getType())) {
@@ -198,7 +198,7 @@ public class Command {
 	 * @param type
 	 * @return task type in the type of TaskType
 	 */
-	public static TaskType getType(String type) {
+	public static TaskType castType(String type) {
 		assert type != null;
 		
 		if (type.equals(TaskType.DEADLINE.getType())) {
@@ -217,9 +217,9 @@ public class Command {
 	
 	/**
 	 * @param time
-	 * @return parsed time
+	 * @return parsed time in the type of List<Date>
 	 */
-	public static List<Date> getTime(String time) {
+	public static List<Date> castTime(String time) {
 		assert time != null;
 		
 		//time is not specified

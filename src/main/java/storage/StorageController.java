@@ -6,9 +6,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import Enumeration.PriorityLevel;
-import Enumeration.TaskStatus;
 import main.java.data.Task;
+import main.java.enumeration.PriorityLevel;
+import main.java.enumeration.TaskStatus;
  
 /**
  * Contains methods that modifies the tasks contents in the Pending and Completed tasks storages

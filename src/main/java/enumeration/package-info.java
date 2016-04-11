@@ -5,4 +5,4 @@
  * @author Ouyang Danwen
  *
  */
-package Enumeration;
+package main.java.enumeration;

@@ -1,10 +1,10 @@
 /* @@author A0127481E */
 package main.java.logic;
 
-import Enumeration.CommandType;
-import Exception.InvalidInputFormatException;
-import Exception.NoFileNameException;
 import main.java.data.Command;
+import main.java.enumeration.CommandType;
+import main.java.exception.InvalidInputFormatException;
+import main.java.exception.NoFileNameException;
 import main.java.parser.AddCommandParser;
 import main.java.parser.DeleteCommandParser;
 import main.java.parser.EditCommandParser;

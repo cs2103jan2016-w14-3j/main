@@ -6,10 +6,10 @@ import static org.junit.Assert.*;
 import org.junit.Before;
 import org.junit.Test;
 
-import Enumeration.CommandType;
-import Exception.InvalidInputFormatException;
-import Exception.NoFileNameException;
 import main.java.data.Command;
+import main.java.enumeration.CommandType;
+import main.java.exception.InvalidInputFormatException;
+import main.java.exception.NoFileNameException;
 import main.java.parser.AddCommandParser;
 
 public class TestCommandDispatcher {
