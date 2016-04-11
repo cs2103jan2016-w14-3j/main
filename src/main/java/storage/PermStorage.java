@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
  
 import com.google.gson.Gson;
@@ -69,7 +70,7 @@ public class PermStorage {
 	 */
 	public void moveToLocation(String path) throws IOException {
 		File newFile = new File(path);
-		Files.copy(taskFile.toPath(), newFile.toPath());
+		Files.copy(taskFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		taskFile = newFile;
 		reopenStream();
 		dirController.updateDirectory(path);
@@ -84,6 +85,7 @@ public class PermStorage {
 		taskFile = new File(path);
 		reopenStream();
 		dirController.updateDirectory(path);
+		System.out.println(path);
 	}
 	
 	/**
@@ -97,7 +99,7 @@ public class PermStorage {
 		File newFile = new File(path);
 		
 		try {
-			Files.copy(taskFile.toPath(), newFile.toPath());
+			Files.copy(taskFile.toPath(), newFile.toPath(), StandardCopyOption.REPLACE_EXISTING);
 		} catch (IOException e) {
 			throw new IOException(ERROR_COPY);
 		}

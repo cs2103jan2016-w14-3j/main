@@ -3,6 +3,7 @@ package main.java.storage;
 
 import static org.junit.Assert.*;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
@@ -17,6 +18,7 @@ import main.java.enumeration.TaskType;
 
 /**
  * This class contains of unit tests for the storage component
+ * Tasks passed by the Logic component is ensured not to be null
  * @author Hou Bo Wen
  *
  */
@@ -26,8 +28,11 @@ public class StorageTest {
 	private static final String ERROR_DELETE_TASK = "Error deleting task";
 	private static final String ERROR_SORT = "Error while sorting";
 	private static final String ERROR_UNDO = "Error while undoing";
+	private static final String ERROR_REDO = "Error while redoing";
 	private static final String ERROR_MARK_TASK = "Error while marking task";
-	
+	private static final String ERROR_UNMARK_TASK = "Error while unmarking task";
+	private static final String ERROR_SAVE = "Error saving to location";
+
 	private StorageController storageController;
 	private Task pendingTask0, pendingTask1, pendingTask2, completedTask0, completedTask1, completedTask2;
 	private List<Date> dateList;
@@ -45,6 +50,10 @@ public class StorageTest {
 		completedTask2 = new Task("watch movie", dateList,  PriorityLevel.LOW, TaskType.EVENT, TaskStatus.COMPLETED);
 	}
 	 
+	/*
+	 * Checks if two tasks are the same
+	 * Returns true if all fields are the same, else return false
+	 */
 	private boolean isTaskEqual(Task task1, Task task2) {
 		boolean isSameName = task1.getTask().equals(task2.getTask());
 		boolean isSameTime = task1.getTime().equals(task2.getTime());
@@ -222,16 +231,48 @@ public class StorageTest {
 
 			//Tests undo with more than 1 previous command
 			storageController.undo();
-			assertTrue(storageController.displayPendingTasks().size() == 0);
+			assertTrue(storageController.displayPendingTasks().size() == 0);		
 			
 			storageController.clearAllPendingTasks();
 			storageController.clearCompletedTasks();
-		
+			
 		} catch (IOException e) {
 			System.err.println(ERROR_UNDO);
 		}
 	}
 
+	/*
+	 * Tests the redo function
+	 */
+	@Test
+	public void testRedo() {
+	
+		try {
+			initialise();
+			
+			//Tests redo with only 1 previous undo command
+			storageController.addTask(pendingTask0);
+			storageController.editPendingTask(pendingTask0, pendingTask1);
+			storageController.undo();
+			assertTrue(isTaskEqual(pendingTask0, storageController.displayPendingTasks().get(0)));
+			storageController.redo();
+			assertTrue(isTaskEqual(pendingTask1, storageController.displayPendingTasks().get(0)));
+		
+			//Tests redo with more than 1 previous undo command
+			storageController.undo();
+			assertTrue(isTaskEqual(pendingTask0, storageController.displayPendingTasks().get(0)));
+			storageController.redo();
+			assertTrue(isTaskEqual(pendingTask1, storageController.displayPendingTasks().get(0)));
+			
+			storageController.clearAllPendingTasks();
+			storageController.clearCompletedTasks();
+			
+		} catch (IOException e) {
+			System.err.println(ERROR_REDO);
+		}
+		
+	}
+	
 	/*
 	 * Tests the mark function
 	 */
@@ -243,6 +284,9 @@ public class StorageTest {
 			storageController.addTask(pendingTask0);
 			storageController.moveTaskToComplete(pendingTask0);
 
+			//Asserts that task has been marked as completed
+			assertTrue(storageController.displayPendingTasks().size() == 0);
+			assertTrue(storageController.displayCompletedTasks().size() == 1);
 			assertEquals(pendingTask0.getTask(), storageController.displayCompletedTasks().get(0).getTask());
 			assertEquals(pendingTask0.getTime(), storageController.displayCompletedTasks().get(0).getTime());
 			assertEquals(pendingTask0.getPriority(), storageController.displayCompletedTasks().get(0).getPriority());
@@ -256,5 +300,80 @@ public class StorageTest {
 			System.err.println(ERROR_MARK_TASK);
 		}
 	}
+	
+	/*
+	 * Tests the unmark function
+	 */
+	@Test
+	public void testMoveTaskToPending() {
+	
+		try {
+			initialise();
+			storageController.addTask(pendingTask0);
+			storageController.moveTaskToComplete(pendingTask0);
+			
+			//Asserts that task has been marked as completed
+			assertTrue(storageController.displayPendingTasks().size() == 0);
+			assertTrue(storageController.displayCompletedTasks().size() == 1);
+			assertEquals(pendingTask0.getTask(), storageController.displayCompletedTasks().get(0).getTask());
+			assertEquals(pendingTask0.getTime(), storageController.displayCompletedTasks().get(0).getTime());
+			assertEquals(pendingTask0.getPriority(), storageController.displayCompletedTasks().get(0).getPriority());
+			assertEquals(pendingTask0.getType(), storageController.displayCompletedTasks().get(0).getType());
+			assertEquals(TaskStatus.COMPLETED, storageController.displayCompletedTasks().get(0).getStatus());
+			
+			storageController.moveTaskToPending(pendingTask0);
+			
+			//Asserts that task has been unmarked
+			assertTrue(storageController.displayPendingTasks().size() == 1);
+			assertTrue(storageController.displayCompletedTasks().size() == 0);
+			assertEquals(pendingTask0.getTask(), storageController.displayPendingTasks().get(0).getTask());
+			assertEquals(pendingTask0.getTime(), storageController.displayPendingTasks().get(0).getTime());
+			assertEquals(pendingTask0.getPriority(), storageController.displayPendingTasks().get(0).getPriority());
+			assertEquals(pendingTask0.getType(), storageController.displayPendingTasks().get(0).getType());
+			assertEquals(TaskStatus.FLOATING, storageController.displayPendingTasks().get(0).getStatus());
+		
+			storageController.clearAllPendingTasks();
+			storageController.clearCompletedTasks();
+			
+		} catch (IOException e) {
+			System.err.println(ERROR_UNMARK_TASK);
+		}	
+	}
+	
+	/*
+	 * Tests the save function
+	 */
+	@Test
+	public void testSaveToLocation() {
+		
+		String pathCurrentDir = "test save file.txt";
+		
+		//Sections commented off as directories vary on different computers
+//		String pathOtherDir = "C:\\Users\\Bowen\\Desktop\\test save.txt";
+		
+		try {
+			initialise();
+			
+			//Tests saving file to the current directory
+			File file = new File(pathCurrentDir);
+			assertFalse(file.exists());
+			storageController.saveToLocation(pathCurrentDir);
+			assertTrue(file.exists());
+	
+			file.delete();
+			
+//			//Tests saving file to other directory
+//			file = new File(pathOtherDir);
+//			assertFalse(file.exists());
+//			storageController.saveToLocation(pathOtherDir);
+//			assertTrue(file.exists());
+//			
+//			file.delete();
+			
+		} catch (IOException e) {
+			System.err.println(ERROR_SAVE);
+		}
+	}
+
 }
 //@@author A0125084L
