@@ -67,37 +67,50 @@ public class CommandDispatcher {
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		
 		else if (command.isCommand(CommandType.EDIT)) {
 			EditCommandParser parser = new EditCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		
 		else if (command.isCommand(CommandType.DELETE)) {
 			DeleteCommandParser parser = new DeleteCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		
 		else if (command.isCommand(CommandType.DELETE_COMPLETE)) {
 			DeleteCommandParser parser = new DeleteCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		
 		else if (command.isCommand(CommandType.MOVE)) {
 			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
+		
 		else if (command.isCommand(CommandType.SAVE)) {
 			StorageCommandParser parser = new StorageCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getType(),command.getContent()));
 		}
+		
+		else if (command.isCommand(CommandType.OPEN)) {
+			StorageCommandParser parser = new StorageCommandParser();
+			command.setParameters(parser.determineParameters
+					(command.getType(),command.getContent()));
+		}
+		
 		else if (command.isCommand(CommandType.SORT)
 				|| command.isCommand(CommandType.SORT_COMPLETE)) {
 			SortCommandParser parser = new SortCommandParser();
 			command.setParameters(parser.determineParameters
 					(command.getContent()));
 		}
+		
 		else if (command.isCommand(CommandType.SHOW) 
 				|| command.isCommand(CommandType.SHOW_COMPLETE)) {
 			ShowCommandParser parser = new ShowCommandParser();
