@@ -43,7 +43,7 @@ public class StorageTest {
 		completedTask1 = new Task("submit homework", dateList,  PriorityLevel.MEDIUM, TaskType.EVENT, TaskStatus.COMPLETED);
 		completedTask2 = new Task("watch movie", dateList,  PriorityLevel.LOW, TaskType.EVENT, TaskStatus.COMPLETED);
 	}
-	
+	 
 	private boolean isTaskEqual(Task task1, Task task2) {
 		boolean isSameName = task1.getTask().equals(task2.getTask());
 		boolean isSameTime = task1.getTime().equals(task2.getTime());
