@@ -8,7 +8,7 @@ import main.java.exception.InvalidInputFormatException;
 import main.java.exception.NoFileNameException;
 
 /**
- * This parser parses storage related commands including "move" and "save".
+ * This parser parses storage related commands including "move", "save" and "open".
  * @author Ouyang Danwen
  *
  */
