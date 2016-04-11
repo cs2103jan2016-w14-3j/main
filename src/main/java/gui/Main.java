@@ -928,7 +928,7 @@ public class Main extends Application {
 	/** Check if the number for command is valid
 	 * @param fragments
 	 * @param numberToChange
-	 * @return
+	 * @return int
 	 */
 	private int checkIfNumberIsValid(String[] fragments, int numberToChange) {
 		if (fragments[COMMAND_INDEX].equalsIgnoreCase(EDIT_COMMAND) && fragments[1].contains(",")) {
