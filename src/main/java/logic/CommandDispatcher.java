@@ -1,6 +1,8 @@
 /* @@author A0127481E */
 package main.java.logic;
 
+import java.nio.file.InvalidPathException;
+
 import main.java.data.Command;
 import main.java.enumeration.CommandType;
 import main.java.exception.InvalidInputFormatException;
@@ -42,7 +44,7 @@ public class CommandDispatcher {
 	 * @throws NoFileNameException 
 	 */
 	public Command parseCommand(Command command)throws InvalidInputFormatException, 
-	NoFileNameException {
+	NoFileNameException, InvalidPathException {
 		assert command != null;
 		String originalCommand = command.getOriginal();
 
@@ -64,7 +66,7 @@ public class CommandDispatcher {
 	 * @throws NoFileNameException 
 	 */
 	private void setParameters(Command command)throws InvalidInputFormatException, 
-	NoFileNameException {
+	NoFileNameException, InvalidPathException {
 		assert command != null;
 
 		if (command.isCommand(CommandType.ADD)) {
