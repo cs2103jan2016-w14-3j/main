@@ -4,6 +4,8 @@ package main.java.parser;
 import static org.junit.Assert.*;
 
 import java.nio.file.InvalidPathException;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -546,13 +548,13 @@ public class ParserTest {
 	@Test
 	public void testStorageCommand1() throws InvalidInputFormatException, 
 	InvalidPathException, NoFileNameException {
-		String testInput = "myfile.txt";
+		String testInput = "C:/mytext";
 
 		String[] parametersActual = storageParser.determineParameters(
-				CommandType.MOVE,testInput);
+				CommandType.SAVE, testInput);
 
 		String[] parametersExpected = new String[5];
-		parametersExpected[TASK] = testInput;
+		parametersExpected[TASK] = testInput + ".txt";
 
 		assertArrayEquals(parametersActual, parametersExpected);	
 	}
@@ -562,8 +564,7 @@ public class ParserTest {
 	 */
 	@Test
 	public void testStorageCommand2() {
-		String testInput = "C:\\Documents and Settings\\";
-		testInput = testInput.replaceAll("\\", "/");
+		String testInput = "C:/Documents and Settings/";
 		String expectedErrorMsg = "No file name is entered!";
 
 		try {

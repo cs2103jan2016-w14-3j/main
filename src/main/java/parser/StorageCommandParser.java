@@ -69,11 +69,13 @@ public class StorageCommandParser {
 		if (!path.endsWith(".txt") && !path.endsWith("/") 
 				&& Character.isLetter(path.charAt(path.length()-1))) {
 			path = path.concat(".txt");
+			return path;
 		} 
 		
 		//append the file type for user
 		else if (path.endsWith(".")) {
 			path = path.concat("txt");
+			return path;
 		} 
 		
 		//invalid file ending
@@ -81,12 +83,14 @@ public class StorageCommandParser {
 			throw new NoFileNameException(ERROR_NO_FILE_NAME);
 		} 
 		
+		else if (path.endsWith("txt")) {
+			return path;
+		}
+		
 		//invalid path in general
 		else {
 			throw new InvalidPathException(path, ERROR_INVALID_PATH);
 		}
-		
-		return path;
 	}
 
 }
