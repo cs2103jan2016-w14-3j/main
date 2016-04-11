@@ -20,6 +20,8 @@ import main.java.data.Task;
  */
 public class TempStorage {
 
+	private static final int TASK_NOT_FOUND = -1;
+	
 	private boolean isPreviousUndo;
 	private PermStorage permStorage;
 	private String prevSearch;
@@ -402,7 +404,7 @@ public class TempStorage {
 				return i;
 			}
 		}
-		return -1;
+		return TASK_NOT_FOUND;
 	}
 	
 	/*

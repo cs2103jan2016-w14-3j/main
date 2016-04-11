@@ -179,7 +179,7 @@ public class PermStorage {
 		
 		clearFile();
 
-		for(int i = 0; i < tempTaskList.size(); i++) {
+		for (int i = 0; i < tempTaskList.size(); i++) {
 			writeToFile(tempTaskList.get(i));
 		}	
 		

@@ -65,7 +65,7 @@ public class DirectoryController {
 	/*
 	 * Creates a file to store the path of the task file
 	 */
-	private void initialiseFileDirectory(String taskFileName, String dirFileName) throws IOException{
+	private void initialiseFileDirectory(String taskFileName, String dirFileName) throws IOException {
 		directoryFile = new File(dirFileName);
 
 		if (!directoryFile.exists()) {
@@ -99,7 +99,7 @@ public class DirectoryController {
 	/*
 	 * Writes the path of the task file to the directory file
 	 */
-	private void writeDirectory(String dir) throws IOException{
+	private void writeDirectory(String dir) throws IOException {
 		
 		try {
 			bufferedWriter.write(dir);
