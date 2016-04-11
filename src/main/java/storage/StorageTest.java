@@ -9,13 +9,10 @@ import java.util.Date;
 import java.util.List;
 
 import org.junit.Test;
-import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
-
 import Enumeration.PriorityLevel;
 import Enumeration.TaskStatus;
 import Enumeration.TaskType;
 import main.java.data.Task;
-import main.java.logic.Logic;
 
 /**
  * This class contains of unit tests for the storage component
@@ -24,7 +21,6 @@ import main.java.logic.Logic;
  */
 public class StorageTest {
 	
-	private static final String ERROR_CONSTRUCTOR = "Cannot creating StorageController";
 	private static final String ERROR_ADD_TASK = "Error adding task";
 	private static final String ERROR_DELETE_TASK = "Error deleting task";
 	private static final String ERROR_SORT = "Error while sorting";
