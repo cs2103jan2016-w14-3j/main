@@ -10,6 +10,7 @@ import org.ocpsoft.prettytime.shade.edu.emory.mathcs.backport.java.util.Collecti
 
 import Enumeration.PriorityLevel;
 import Enumeration.TaskStatus;
+import Exception.NoFileNameException;
 import main.java.data.Task;
 
 /**
@@ -264,7 +265,7 @@ public class TempStorage {
 	 * @param path The path of the file to be saved in
 	 * @throws Exception If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws Exception {
+	public void saveToLocation(String path) throws NoFileNameException, IOException {
 		permStorage.saveToLocation(path);
 	}
 	

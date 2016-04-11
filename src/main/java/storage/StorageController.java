@@ -10,6 +10,7 @@ import java.util.List;
 import Enumeration.PriorityLevel;
 import Enumeration.TaskStatus;
 import Enumeration.TaskType;
+import Exception.NoFileNameException;
 import main.java.Log.EventLog;
 import main.java.data.Task;
 
@@ -370,7 +371,7 @@ public class StorageController {
 	 * @param path The path of the file to be saved in
 	 * @throws Exception If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws Exception {
+	public void saveToLocation(String path) throws NoFileNameException, IOException {
 		assert path != null;
 		
 		pendingTemp.saveToLocation(path);

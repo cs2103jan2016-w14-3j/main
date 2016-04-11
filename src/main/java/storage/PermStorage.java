@@ -11,6 +11,8 @@ import java.nio.file.Files;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
+
+import Exception.NoFileNameException;
 import main.java.data.Task;
 
 /**
@@ -87,14 +89,15 @@ public class PermStorage {
 	/**
 	 * Makes a copy of the task file in the given path
 	 * @param path The path of the file to be saved in
-	 * @throws Exception If no file name is specified in the path
+	 * @throws IOException If an I/O error occurs
+	 * @throws NoFileNameException If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws Exception {
+	public void saveToLocation(String path) throws NoFileNameException, IOException {
 
 		if (!path.endsWith(".txt") && !path.endsWith("/")) {
 			path = path.concat(".txt");
 		} else if (path.endsWith("/")) {
-			throw new Exception(ERROR_NO_FILE_NAME);
+			throw new NoFileNameException(ERROR_NO_FILE_NAME);
 		}
 		File newFile = new File(path);
 		Files.copy(taskFile.toPath(), newFile.toPath());
