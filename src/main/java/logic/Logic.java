@@ -53,7 +53,7 @@ public class Logic {
 	private static final String KEYWORD_MARK = "mark ";
 	private static final String KEYWORD_DELETE = "delete ";
 	private static final String KEYWORD_COMPLETE_DELETE = "deleteComplete ";
-
+	private static final String COMMAND_MOVE = "move";
 	/* numeric indices to access the parameters array */
 	private static final int TASK = 0;
 	private static final int TIME = 1;
@@ -65,6 +65,7 @@ public class Logic {
 	private static StorageController storageController;
 	private ArrayList<Task> searchResult;
 	private ArrayList<Task> searchResultCompleted;
+	
 	private static PrettyTimeParser timeParser = new PrettyTimeParser();
 
 	/**
@@ -763,7 +764,8 @@ public class Logic {
 				|| commandWord.equals(COMMAND_MARK) || commandWord.equals(COMMAND_REDO) 
 				|| commandWord.equals(COMMAND_SWITCH) || commandWord.equals(COMMAND_UNMARK)
 				|| commandWord.equals(COMMAND_THEME) || commandWord.equals(COMMAND_SHOW)
-				|| commandWord.equals(COMMAND_SAVE) || commandWord.equals(COMMAND_OPEN)) {
+				|| commandWord.equals(COMMAND_SAVE) || commandWord.equals(COMMAND_OPEN)
+				|| commandWord.equals(COMMAND_MOVE)) {
 			return true;
 		}
 
@@ -834,5 +836,13 @@ public class Logic {
 			return -1;
 		}
 	}
+	
+	/**
+	 * @return Task
+	 */
+	public Task getTask(){
+		return task;
+	}
+	
 }
 /* @@author A0127481E */
