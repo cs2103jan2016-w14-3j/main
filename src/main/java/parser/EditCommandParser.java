@@ -222,13 +222,13 @@ public class EditCommandParser extends AddCommandParser {
 		String status_B = transientTask.getStatus().split(EDIT_COMMAND_SEPARATOR)[1].trim();
 
 		//instantiate the two tasks with the parsed parameters
-		Task task_A = new Task(taskName_A, Command.getTime(time_A), 
-				Command.getPriority(priority_A), Command.getType(type_A), Command
-				.getStatus(status_A));
+		Task task_A = new Task(taskName_A, Command.castTime(time_A), 
+				Command.castPriority(priority_A), Command.castType(type_A), Command
+				.castStatus(status_A));
 	
-		Task task_B = new Task(taskName_B, Command.getTime(time_B), 
-				Command.getPriority(priority_B), Command.getType(type_B), Command
-				.getStatus(status_B));
+		Task task_B = new Task(taskName_B, Command.castTime(time_B), 
+				Command.castPriority(priority_B), Command.castType(type_B), Command
+				.castStatus(status_B));
 
 		//store the two parsed tasks in the resultant list to be returned
 		ArrayList<Task> result = new ArrayList<Task>();
