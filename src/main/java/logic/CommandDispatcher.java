@@ -41,7 +41,8 @@ public class CommandDispatcher {
 	 * @throws InvalidInputFormatException
 	 * @throws NoFileNameException 
 	 */
-	public Command parseCommand(Command command)throws InvalidInputFormatException, NoFileNameException {
+	public Command parseCommand(Command command)throws InvalidInputFormatException, 
+	NoFileNameException {
 		assert command != null;
 		String originalCommand = command.getOriginal();
 
@@ -62,7 +63,8 @@ public class CommandDispatcher {
 	 * @throws InvalidInputFormatException
 	 * @throws NoFileNameException 
 	 */
-	private void setParameters(Command command)throws InvalidInputFormatException, NoFileNameException {
+	private void setParameters(Command command)throws InvalidInputFormatException, 
+	NoFileNameException {
 		assert command != null;
 
 		if (command.isCommand(CommandType.ADD)) {

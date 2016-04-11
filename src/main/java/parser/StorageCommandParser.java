@@ -16,8 +16,8 @@ public class StorageCommandParser {
 	
 	/* error messages used in this class */
 	private static final String ERROR_MESSAGE_EMPTY_PATH = "Please enter non-empty file path!";
-	private static final String ERROR_NO_FILE_NAME = "No file name entered";
-	private static final String ERROR_INVALID_PATH = "Invalid path entered";
+	private static final String ERROR_NO_FILE_NAME = "No file name entered!";
+	private static final String ERROR_INVALID_PATH = "Invalid path entered!";
 	
 	/* numeric indices to access parameters array */
 	private static final int TASK = 0;
@@ -47,20 +47,45 @@ public class StorageCommandParser {
 
 		else {
 			String path = commandContent;
-			
-			if (!path.endsWith(".txt") && !path.endsWith("/") && Character.isLetter(path.charAt(path.length()-1))) {
-				path = path.concat(".txt");
-			} else if (path.endsWith(".")) {
-				path = path.concat("txt");
-			} else if (path.endsWith("/")) {
-				throw new NoFileNameException(ERROR_NO_FILE_NAME);
-			} else {
-				throw new InvalidPathException(path, ERROR_INVALID_PATH);
-			}
-			parameters[TASK] = path;
+			parameters[TASK] = validifyPath(path);
 		}
 
 		return parameters;
+	}
+
+	/**
+	 * Check the validity of the path.
+	 * Return the validified path or throw exceptions otherwise.
+	 * @param path
+	 * @return the validified path
+	 * @throws NoFileNameException
+	 * @throws InvalidPathException
+	 */
+	private String validifyPath(String path) throws NoFileNameException, InvalidPathException {
+		assert path != null;
+		
+		//append the file type for user
+		if (!path.endsWith(".txt") && !path.endsWith("/") 
+				&& Character.isLetter(path.charAt(path.length()-1))) {
+			path = path.concat(".txt");
+		} 
+		
+		//append the file type for user
+		else if (path.endsWith(".")) {
+			path = path.concat("txt");
+		} 
+		
+		//invalid file ending
+		else if (path.endsWith("/")) {
+			throw new NoFileNameException(ERROR_NO_FILE_NAME);
+		} 
+		
+		//invalid path in general
+		else {
+			throw new InvalidPathException(path, ERROR_INVALID_PATH);
+		}
+		
+		return path;
 	}
 
 }
