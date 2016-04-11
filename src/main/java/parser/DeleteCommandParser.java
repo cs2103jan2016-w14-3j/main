@@ -11,7 +11,8 @@ import main.java.exception.InvalidInputFormatException;
 public class DeleteCommandParser {
 	
 	/* error messages used in this class */
-	private static final String ERROR_MESSAGE_DELETE_NOTHING = "Please specify a task to delete!";
+	private static final String ERROR_MESSAGE_DELETE_NOTHING = ""
+			+ "Please specify a task to delete!";
 	
 	/* numeric constans to access the parameters array*/
 	private static final int TASK = 0;
