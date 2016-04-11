@@ -954,7 +954,7 @@ public class Main extends Application {
 		assert userInput != null;
 		
 		if (tabControl.getAllTab().isSelected()) {
-			if (numberToChange >= allResult.size()) {
+			if (numberToChange >= allResult.size() || numberToChange <=0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			} else {
@@ -966,7 +966,7 @@ public class Main extends Application {
 				}
 			}
 		} else if (tabControl.getPendingTab().isSelected()) {
-			if (numberToChange >= pendingResult.size()) {
+			if (numberToChange >= pendingResult.size()|| numberToChange <=0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -977,7 +977,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in pending tab: " + e);
 			}
 		} else if (tabControl.getFloatingTab().isSelected()) {
-			if (numberToChange >= floatingResult.size()) {
+			if (numberToChange >= floatingResult.size()|| numberToChange <=0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -988,7 +988,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in floating tab: " + e);
 			}
 		} else if (tabControl.getOverdueTab().isSelected()) {
-			if (numberToChange >= overdueResult.size()) {
+			if (numberToChange >= overdueResult.size()|| numberToChange <=0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -999,7 +999,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in overdue tab: " + e);
 			}
 		} else if (tabControl.getCompleteTab().isSelected()) {
-			if (numberToChange >= completeResult.size()) {
+			if (numberToChange >= completeResult.size()|| numberToChange <=0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -1131,7 +1131,7 @@ public class Main extends Application {
 	 * @throws IOException
 	 */
 	private String validHandleCommandByNumberAllTab(String userInput, String[] fragments,
-			CommandBarController commandBarController, int numberToChange) throws IOException {
+			CommandBarController commandBarController, int numberToChange) throws IOException{
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
@@ -1163,7 +1163,7 @@ public class Main extends Application {
 	 */
 	private void invalidHandleCommandByNumber(CommandBarController commandBarController) {
 		assert commandBarController != null;
-		setFeedback(commandBarController, ERROR, "Number has exceeded tasks limit.");
+		setFeedback(commandBarController, ERROR, "a Invalid Index entered.");
 		isError = true;
 	}
 
