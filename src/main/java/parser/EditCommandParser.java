@@ -17,9 +17,12 @@ import main.java.data.Command;
 public class EditCommandParser extends AddCommandParser {
 	
 	/* error messages */
-	private static final String ERROR_MESSAGE_EDIT_NOTHING = "Please specify a task to be edited!";
-	private static final String ERROR_MESSAGE_INVALID_EDIT_COMMAND = "Invalid format for edit command!";
-	private static final String ERROR_MESSAGE_UPDATE_NOTHING = "Please specifiy update information!";
+	private static final String ERROR_MESSAGE_EDIT_NOTHING = ""
+			+ "Please specify a task to be edited!";
+	private static final String ERROR_MESSAGE_INVALID_EDIT_COMMAND = ""
+			+ "Please use \",\" to separate!";
+	private static final String ERROR_MESSAGE_UPDATE_NOTHING = ""
+			+ "Please specifiy update information!";
 	
 	/* string constants used in this class */
 	private static final String EMPTY_STRING = "";
