@@ -954,7 +954,7 @@ public class Main extends Application {
 		assert userInput != null;
 		
 		if (tabControl.getAllTab().isSelected()) {
-			if (numberToChange >= allResult.size() || numberToChange <=0) {
+			if (numberToChange >= allResult.size() || numberToChange <0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			} else {
@@ -966,7 +966,7 @@ public class Main extends Application {
 				}
 			}
 		} else if (tabControl.getPendingTab().isSelected()) {
-			if (numberToChange >= pendingResult.size()|| numberToChange <=0) {
+			if (numberToChange >= pendingResult.size()|| numberToChange <0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -977,7 +977,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in pending tab: " + e);
 			}
 		} else if (tabControl.getFloatingTab().isSelected()) {
-			if (numberToChange >= floatingResult.size()|| numberToChange <=0) {
+			if (numberToChange >= floatingResult.size()|| numberToChange <0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
@@ -999,7 +999,7 @@ public class Main extends Application {
 				appLog.getLogger().warning("Unable to handle Command by number in overdue tab: " + e);
 			}
 		} else if (tabControl.getCompleteTab().isSelected()) {
-			if (numberToChange >= completeResult.size()|| numberToChange <=0) {
+			if (numberToChange >= completeResult.size()|| numberToChange <0) {
 				invalidHandleCommandByNumber(commandBarController);
 				return userInput;
 			}
