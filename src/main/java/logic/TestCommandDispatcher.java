@@ -8,6 +8,7 @@ import org.junit.Test;
 
 import Enumeration.CommandType;
 import Exception.InvalidInputFormatException;
+import Exception.NoFileNameException;
 import main.java.data.Command;
 import main.java.parser.AddCommandParser;
 
@@ -23,7 +24,7 @@ public class TestCommandDispatcher {
 
 	@Test
 	//cover a case without the command keyword
-	public void test() throws InvalidInputFormatException {
+	public void test() throws InvalidInputFormatException, NoFileNameException {
 		
 		String userInput = "on mon 5pm to 8pm go shopping #low";
 		Command command = new Command(userInput);
@@ -44,7 +45,7 @@ public class TestCommandDispatcher {
 	
 	@Test
 	//cover a case with the command keyword
-	public void test1() throws InvalidInputFormatException {
+	public void test1() throws InvalidInputFormatException, NoFileNameException {
 		String userInput = "add on mon 5pm to 8pm go shopping #low";
 		Command command = new Command(userInput);
 		Command actualCommand = dispatcher.parseCommand(command);

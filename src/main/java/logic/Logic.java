@@ -101,9 +101,10 @@ public class Logic {
 	 * @param command
 	 * @return the parsed command 
 	 * @throws InvalidInputFormatException
+	 * @throws NoFileNameException 
 	 */
 	private Command parseCommand(CommandDispatcher dispatcher, Command command)
-			throws InvalidInputFormatException {
+			throws InvalidInputFormatException, NoFileNameException {
 		assert command != null;
 		return dispatcher.parseCommand(command);
 	}

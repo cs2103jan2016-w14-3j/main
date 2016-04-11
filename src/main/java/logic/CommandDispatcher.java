@@ -3,6 +3,7 @@ package main.java.logic;
 
 import Enumeration.CommandType;
 import Exception.InvalidInputFormatException;
+import Exception.NoFileNameException;
 import main.java.data.Command;
 import main.java.parser.AddCommandParser;
 import main.java.parser.DeleteCommandParser;
@@ -38,8 +39,9 @@ public class CommandDispatcher {
 	 * @param command
 	 * @return the parsed command
 	 * @throws InvalidInputFormatException
+	 * @throws NoFileNameException 
 	 */
-	public Command parseCommand(Command command)throws InvalidInputFormatException {
+	public Command parseCommand(Command command)throws InvalidInputFormatException, NoFileNameException {
 		assert command != null;
 		String originalCommand = command.getOriginal();
 
@@ -58,8 +60,9 @@ public class CommandDispatcher {
 	 * Dispatch the commands for parsing and set their parameters respectively.
 	 * @param command
 	 * @throws InvalidInputFormatException
+	 * @throws NoFileNameException 
 	 */
-	private void setParameters(Command command)throws InvalidInputFormatException {
+	private void setParameters(Command command)throws InvalidInputFormatException, NoFileNameException {
 		assert command != null;
 
 		if (command.isCommand(CommandType.ADD)) {

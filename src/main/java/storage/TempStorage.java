@@ -266,7 +266,7 @@ public class TempStorage {
 	 * @param path The path of the file to be saved in
 	 * @throws Exception If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws NoFileNameException, InvalidPathException, IOException {
+	public void saveToLocation(String path) throws IOException {
 		permStorage.saveToLocation(path);
 	}
 	

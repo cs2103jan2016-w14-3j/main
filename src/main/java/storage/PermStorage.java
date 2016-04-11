@@ -22,9 +22,7 @@ import main.java.data.Task;
  *
  */
 public class PermStorage {
-	
-	private static final String ERROR_NO_FILE_NAME = "No file name entered";
-	private static final String ERROR_INVALID_PATH = "Invalid path entered";
+
 	private static final String ERROR_COPY = "Error copying file";
 	private static final String ERROR_WRITE_TO_FILE = "Error writing to task file.";
 	private static final String ERROR_READ_FROM_FILE = "Error reading from task file.";
@@ -95,18 +93,8 @@ public class PermStorage {
 	 * @throws IOException If an I/O error occurs
 	 * @throws NoFileNameException If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws NoFileNameException, InvalidPathException, IOException {
-
-		if (!path.endsWith(".txt") && !path.endsWith("/") && Character.isLetter(path.charAt(path.length()-1))) {
-			path = path.concat(".txt");
-		} else if (path.endsWith(".")) {
-			path = path.concat("txt");
-		} else if (path.endsWith("/")) {
-			throw new NoFileNameException(ERROR_NO_FILE_NAME);
-		} else {
-			throw new InvalidPathException(path, ERROR_INVALID_PATH);
-		}
-		
+	public void saveToLocation(String path) throws IOException {
+	
 		File newFile = new File(path);
 		
 		try {

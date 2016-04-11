@@ -371,7 +371,7 @@ public class StorageController {
 	 * @param path The path of the file to be saved in
 	 * @throws Exception If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws NoFileNameException, InvalidPathException, IOException {
+	public void saveToLocation(String path) throws IOException {
 		assert path != null;
 		
 		pendingTemp.saveToLocation(path);
