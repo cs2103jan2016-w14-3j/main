@@ -4,6 +4,7 @@ package main.java.gui;
 import java.io.File;
 
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
 import javafx.animation.Animation;
 import javafx.animation.KeyFrame;
@@ -908,6 +909,10 @@ public class Main extends Application {
 			setFeedback(commandBarController, ERROR, e.toString());
 			appLog.getLogger().warning("" + e);
 		} catch (NoFileNameException e) {
+			isError = true;
+			setFeedback(commandBarController, ERROR, e.toString());
+			appLog.getLogger().warning("" + e);
+		}catch (InvalidPathException e) {
 			isError = true;
 			setFeedback(commandBarController, ERROR, e.toString());
 			appLog.getLogger().warning("" + e);
