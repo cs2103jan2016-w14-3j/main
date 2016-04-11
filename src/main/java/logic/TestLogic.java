@@ -25,7 +25,7 @@ public class TestLogic {
 		parser = new PrettyTimeParser();
 	}
 
-	/**
+	/** Cover a case with floating task
 	 * @throws NoFileNameException 
 	 * @throws IOException 
 	 * @throws Exception
@@ -43,6 +43,11 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
+	/** Covers a case of floating task with priority
+	 * @throws InvalidInputFormatException
+	 * @throws IOException
+	 * @throws NoFileNameException
+	 */
 	@Test
 	public void testAddFloatingWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException  {
 		initialise();
@@ -56,6 +61,11 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
+	/** Covers a case of pending task with deadline
+	 * @throws InvalidInputFormatException
+	 * @throws IOException
+	 * @throws NoFileNameException
+	 */
 	@Test
 	public void testAddPendingDeadline() throws InvalidInputFormatException, IOException, NoFileNameException{
 		initialise();
@@ -70,6 +80,11 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
+	/** Covers the pending task deadline with priority
+	 * @throws InvalidInputFormatException
+	 * @throws IOException
+	 * @throws NoFileNameException
+	 */
 	@Test
 	public void testAddPendingDeadlineWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException{
 		initialise();
@@ -84,6 +99,11 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
+	/**Covers the pending duration task
+	 * @throws InvalidInputFormatException
+	 * @throws IOException
+	 * @throws NoFileNameException
+	 */
 	@Test
 	public void testAddPendingDuration() throws InvalidInputFormatException, IOException, NoFileNameException  {
 		initialise();
@@ -98,6 +118,11 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
+	/**Covers the pending duration task with priority
+	 * @throws InvalidInputFormatException
+	 * @throws IOException
+	 * @throws NoFileNameException
+	 */
 	@Test
 	public void testAddPendingDurationWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException {
 		initialise();
@@ -112,6 +137,11 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
+	/**Covers overdue task
+	 * @throws InvalidInputFormatException
+	 * @throws IOException
+	 * @throws NoFileNameException
+	 */
 	@Test
 	public void testAddOverdue() throws InvalidInputFormatException, IOException, NoFileNameException {
 		initialise();
@@ -126,6 +156,11 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
+	/** Covers overdue task with priority
+	 * @throws InvalidInputFormatException
+	 * @throws IOException
+	 * @throws NoFileNameException
+	 */
 	@Test
 	public void testAddOverdueWithPriority() throws InvalidInputFormatException, IOException, NoFileNameException {
 		initialise();
@@ -140,35 +175,5 @@ public class TestLogic {
 		assertEquals(task.getStatus(), logic.getTask().getStatus());
 	}
 	
-//	@Test
-//	public void testDelete() throws Exception {
-//		initialise();
-//		logic.handleUserCommand("add pending duration task on last monday 5am #medium", null);
-//		
-//		Task task = new Task("pending duration task",parser.parse("last monday 5am"), PriorityLevel.MEDIUM,TaskType.EVENT,TaskStatus.OVERDUE);
-//			
-//		logic.handleUserCommand("delete pending duration task on last monday 5am #medium", null);
-//		
-//		assertEquals(task.getTask(), logic.getTask().getTask());
-//
-//	}
-	
-//	@Test
-//	public void testEdit() throws Exception {
-//		initialise();
-//		logic.handleUserCommand("add old task on monday 5am #medium", null);
-//		ArrayList<Task> expectedList = new ArrayList<Task>();
-//		expectedList.add(new Task("old task",parser.parse("monday 5am"), PriorityLevel.MEDIUM,TaskType.EVENT,TaskStatus.UPCOMING));
-//		expectedList.add(new Task("new task",parser.parse("monday 11pm"), PriorityLevel.MEDIUM,TaskType.EVENT,TaskStatus.UPCOMING));
-//		logic.handleUserCommand("edit old, new task on 11pm", expectedList);
-//		
-//		assertEquals(expectedList.get(1).getTask(), logic.getUpdatedTask().getTask());
-//		assertEquals(expectedList.get(1).getTime(), logic.getUpdatedTask().getTime());
-//		assertEquals(expectedList.get(1).getPriority(), logic.getUpdatedTask().getPriority());
-//		assertEquals(expectedList.get(1).getType(), logic.getUpdatedTask().getType());
-//		assertEquals(expectedList.get(1).getStatus(), logic.getUpdatedTask().getStatus());
-//	}
-
-
 }
 /* @@author A0124078H */
