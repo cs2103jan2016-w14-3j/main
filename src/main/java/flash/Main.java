@@ -61,6 +61,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.*;
 
 import Enumeration.TaskStatus;
+import Exception.InvalidInputFormatException;
+import Exception.NoFileNameException;
 import main.java.Log.EventLog;
 
 /**
@@ -165,7 +167,7 @@ public class Main extends Application {
 	}
 
 	@Override
-	public void start(Stage primaryStage) throws Exception {
+	public void start(Stage primaryStage) throws IOException {
 		this.primaryStage = primaryStage;
 		this.primaryStage.initStyle(StageStyle.TRANSPARENT);
 		this.primaryStage.getIcons().add(new Image(FLASH_ICON));
@@ -212,7 +214,7 @@ public class Main extends Application {
 		completeResult = new ArrayList<Task>();
 	}
 
-	private void initLogic() throws Exception {
+	private void initLogic() throws IOException {
 		logic = new Logic();
 	}
 
@@ -247,7 +249,7 @@ public class Main extends Application {
 	/**
 	 * Check to see if there are tasks to be displayed, refresh the list *******
 	 */
-	private void checkIsTasksEmpty() throws Exception {
+	private void checkIsTasksEmpty(){
 		populateAllPendingTasks();
 		populateAllCompleteTasks();
 		switchToModifiedTab();
@@ -257,7 +259,6 @@ public class Main extends Application {
 	
 	/**
 	 * check for overdue task, refresh the list and prompt with notification if necessary 
-	 * @throws IOException *******
 	 */
 	private void checkOverdue() {
 		ArrayList<Task> overdueList;
@@ -265,16 +266,8 @@ public class Main extends Application {
 		try {
 			overdueList = logic.checkOverdue();
 			if (!overdueList.isEmpty()) {
-				try {
 					checkIsTasksEmpty();
-				} catch (Exception e) {
-					appLog.getLogger().warning("Unable to refresh list: " + e);
-				}
-				try {
 					taskName = locateOverdueTask(overdueList);
-				} catch (Exception e) {
-					appLog.getLogger().warning("Unable to locate overdue task: " + e);
-				}
 				if (taskName != null) {
 					notification(taskName);
 				}
@@ -373,9 +366,8 @@ public class Main extends Application {
 	/** Locate the overdue tasks and return the number of tasks that are overdue 
 	 * @param overdueList  arraylist of tasks which are overdued
 	 * @return number of tasks as String
-	 * @throws Exception
 	 */
-	private String locateOverdueTask(ArrayList<Task> overdueList) throws Exception {
+	private String locateOverdueTask(ArrayList<Task> overdueList) {
 		assert overdueList != null;
 		String taskName = "";
 		taskName += overdueList.size();
@@ -394,9 +386,8 @@ public class Main extends Application {
 	
 	/**
 	 * Populates completed tasks under completed tabs *******
-	 * @throws Exception
 	 */
-	private void populateAllCompleteTasks() throws Exception {
+	private void populateAllCompleteTasks(){
 		if (logic.displayComplete().isEmpty()) {
 			// if complete is empty
 			tabControl.setEmptyCompleteTab();
@@ -408,9 +399,8 @@ public class Main extends Application {
 
 	/**
 	 * Populates all pending tasks under all non-complete tabs *******
-	 * @throws Exception
 	 */
-	private void populateAllPendingTasks() throws Exception {
+	private void populateAllPendingTasks(){
 		if (logic.displayPending().isEmpty()) {
 			// if all pending is empty
 			setupNoTasksTabs();
@@ -423,7 +413,6 @@ public class Main extends Application {
 
 	/**
 	 * Change the focus to the particular tab that the latest task changed is belonged to*******
-	 * @throws Exception
 	 */
 	private void switchToModifiedTab() {
 		if (isModifiedFloating) {
@@ -446,9 +435,8 @@ public class Main extends Application {
 
 	/**
 	 * Setup the complete table with complete task controller  *******
-	 * @throws Exception
 	 */
-	private void setupCompleteTable() throws Exception {
+	private void setupCompleteTable(){
 		int completeCount = 0;
 		completeTableControl.clearTask();
 		completeResult.clear();
@@ -465,9 +453,8 @@ public class Main extends Application {
 
 	/**
 	 * Populates all tasks under all tab *******
-	 * @throws Exception
 	 */
-	private void populateAllTable() throws Exception {
+	private void populateAllTable(){
 		int allCount = 0;
 		int overdueCount = 0;
 		int pendingCount = 0;
@@ -505,9 +492,8 @@ public class Main extends Application {
 
 	/**
 	 * Setup notification badge for individual tab, set to invisible if there is no task under tab *******
-	 * @throws Exception
 	 */
-	private void setupIndividualTabNotification() throws Exception {
+	private void setupIndividualTabNotification() {
 		int overdueCount = 0;
 		int pendingCount = 0;
 		int floatingCount = 0;
@@ -539,7 +525,6 @@ public class Main extends Application {
 	 * @param overdueCount
 	 * @param pendingCount
 	 * @param floatingCount
-	 * @throws Exception
 	 */
 
 	private void setupUncompletedTabs(int overdueCount, int pendingCount, int floatingCount) {
@@ -564,9 +549,8 @@ public class Main extends Application {
 
 	/**
 	 * Setup no task image if there are not tasks available *******
-	 * @throws Exception
 	 */
-	private void setupNoTasksTabs() throws Exception {
+	private void setupNoTasksTabs() {
 		tabControl.setPendingTab(new ImageView(new Image(INTRO_IMAGE)));
 		tabControl.setAllTab(new ImageView(new Image(INTRO_IMAGE)));
 		tabControl.setOverdueTab(new ImageView(new Image(INTRO_IMAGE)));
@@ -581,7 +565,6 @@ public class Main extends Application {
 	/**
 	 * create top bar and attach it to rootlayout *******
 	 * @param sidebar sidebarController
-	 * @throws Exception
 	 */
 	private void createTopBar(SideBarController sidebar) {
 		assert sidebar != null;
@@ -692,7 +675,6 @@ public class Main extends Application {
 
 	/**
 	 * show help page upon help button pressed *******
-	 * @throws Exception
 	 */
 	private void showHelpPage(Button btnHelp) {
 		btnHelp.setOnAction(new EventHandler<ActionEvent>() {
@@ -712,7 +694,7 @@ public class Main extends Application {
 	 * @param text
 	 */
 	public void handleKeyPress(CommandBarController commandBarController, KeyEvent event, String text)
-			throws Exception {
+			throws IOException {
 		assert event != null;
 		assert text != null;
 		assert commandBarController != null;
@@ -817,7 +799,7 @@ public class Main extends Application {
 	 * @param event
 	 * @param text
 	 */
-	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws Exception {
+	private void handleEnterPress(CommandBarController commandBarController, String userInput) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
 		
@@ -880,20 +862,30 @@ public class Main extends Application {
 					}
 				}
 			}
-			userInput = handleCommandByTab(userInput, editByNumber, fragments);
+			try{
+			   userInput = handleCommandByTab(userInput, editByNumber, fragments);
+			}catch(IndexOutOfBoundsException e){
+				isError = true;
+				setFeedback(commandBarController, ERROR,"There are no available Tasks");
+				appLog.getLogger().warning("" + e);
+			}
 
 			// if the user delete/edit/mark/unmark by task matching
 			if (fragments[COMMAND_INDEX].equalsIgnoreCase(ADD_COMMAND)) {
 				commandByNumber = false;
 			}
 			if (!commandByNumber) {
-				try {
-					result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
-				} catch (Exception e) {
-					isError = true;
-					setFeedback(commandBarController, ERROR, e.toString());
-					appLog.getLogger().warning("" + e);
-				}
+					try {
+						result = new ArrayList<Task>(logic.handleUserCommand(userInput, result));
+					} catch (InvalidInputFormatException e) {
+						isError = true;
+						setFeedback(commandBarController, ERROR, e.toString());
+						appLog.getLogger().warning("" + e);
+					} catch (NoFileNameException e) {
+						isError = true;
+						setFeedback(commandBarController, ERROR, e.toString());
+						appLog.getLogger().warning("" + e);
+					}
 				if (fragments[COMMAND_INDEX].equalsIgnoreCase(SHOW_COMMAND)
 						|| fragments[COMMAND_INDEX].equalsIgnoreCase(SHOWCOMPLETE_COMMAND)) {
 					if (result.size() != 0) {
@@ -921,7 +913,7 @@ public class Main extends Application {
 	 * @param fragments
 	 * @return
 	 */
-	private String handleCommandByTab(String userInput, boolean editByNumber, String[] fragments) {
+	private String handleCommandByTab(String userInput, boolean editByNumber, String[] fragments) throws IndexOutOfBoundsException {
 		assert userInput != null;
 		assert fragments != null;
 		
@@ -969,7 +961,7 @@ public class Main extends Application {
 				try {
 					userInput = validHandleCommandByNumberAllTab(userInput, fragments, commandBarController,
 							numberToChange);
-				} catch (Exception e) {
+				} catch (IOException e) {
 					appLog.getLogger().warning("Unable to handle command by number: " + e);
 				}
 			}
@@ -981,7 +973,7 @@ public class Main extends Application {
 			try {
 				userInput = validHandleCommandByNumberPendingTab(userInput, fragments, commandBarController,
 						numberToChange);
-			} catch (Exception e) {
+			} catch (IOException e) {
 				appLog.getLogger().warning("Unable to handle Command by number in pending tab: " + e);
 			}
 		} else if (tabControl.getFloatingTab().isSelected()) {
@@ -992,7 +984,7 @@ public class Main extends Application {
 			try {
 				userInput = validHandleCommandByNumberFloatingTab(userInput, fragments, commandBarController,
 						numberToChange);
-			} catch (Exception e) {
+			} catch (IOException e) {
 				appLog.getLogger().warning("Unable to handle Command by number in floating tab: " + e);
 			}
 		} else if (tabControl.getOverdueTab().isSelected()) {
@@ -1003,7 +995,7 @@ public class Main extends Application {
 			try {
 				userInput = validHandleCommandByNumberOverdueTab(userInput, fragments, commandBarController,
 						numberToChange);
-			} catch (Exception e) {
+			} catch (IOException e) {
 				appLog.getLogger().warning("Unable to handle Command by number in overdue tab: " + e);
 			}
 		} else if (tabControl.getCompleteTab().isSelected()) {
@@ -1014,7 +1006,7 @@ public class Main extends Application {
 			try {
 				userInput = validHandleCommandByNumberCompleteTab(userInput, fragments, commandBarController,
 						numberToChange);
-			} catch (Exception e) {
+			} catch (IOException e) {
 				appLog.getLogger().warning("Unable to handle Command by number in complete tab: " + e);
 			}
 		}
@@ -1028,10 +1020,10 @@ public class Main extends Application {
 	 * @param commandBarController
 	 * @param numberToChange
 	 * @return
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	private String validHandleCommandByNumberCompleteTab(String userInput, String[] fragments,
-			CommandBarController commandBarController, int numberToChange) throws Exception {
+			CommandBarController commandBarController, int numberToChange) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
@@ -1055,10 +1047,10 @@ public class Main extends Application {
 	 * @param commandBarController
 	 * @param numberToChange
 	 * @return
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	private String validHandleCommandByNumberOverdueTab(String userInput, String[] fragments,
-			CommandBarController commandBarController, int numberToChange) throws Exception {
+			CommandBarController commandBarController, int numberToChange) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
@@ -1082,10 +1074,10 @@ public class Main extends Application {
 	 * @param commandBarController
 	 * @param numberToChange
 	 * @return
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	private String validHandleCommandByNumberFloatingTab(String userInput, String[] fragments,
-			CommandBarController commandBarController, int numberToChange) throws Exception {
+			CommandBarController commandBarController, int numberToChange) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
@@ -1109,10 +1101,10 @@ public class Main extends Application {
 	 * @param commandBarController
 	 * @param numberToChange
 	 * @return
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	private String validHandleCommandByNumberPendingTab(String userInput, String[] fragments,
-			CommandBarController commandBarController, int numberToChange) throws Exception {
+			CommandBarController commandBarController, int numberToChange) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
@@ -1136,10 +1128,10 @@ public class Main extends Application {
 	 * @param commandBarController
 	 * @param numberToChange
 	 * @return
-	 * @throws Exception
+	 * @throws IOException
 	 */
 	private String validHandleCommandByNumberAllTab(String userInput, String[] fragments,
-			CommandBarController commandBarController, int numberToChange) throws Exception {
+			CommandBarController commandBarController, int numberToChange) throws IOException {
 		assert commandBarController != null;
 		assert userInput != null;
 		assert fragments != null;
@@ -1179,7 +1171,7 @@ public class Main extends Application {
 	 * @param userInput
 	 * @return
 	 */
-	private String handleEditByPartialMatching(String userInput) {
+	private String handleEditByPartialMatching(String userInput) throws IndexOutOfBoundsException {
 		assert userInput != null;
 
 		String update = userInput.substring(userInput.indexOf(',') + 1).trim();
@@ -2099,11 +2091,7 @@ public class Main extends Application {
 					} else if (theme.equals("red")) {
 						changeGreenTheme();
 					}
-					try {
-						checkIsTasksEmpty();
-					} catch (Exception e) {
-						appLog.getLogger().warning("Unable to refresh list: " + e);
-					}
+					checkIsTasksEmpty();
 				}
 			}
 		});
