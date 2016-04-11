@@ -42,6 +42,7 @@ public class Logic {
 	private static final String COMMAND_REDO = "redo";
 	private static final String COMMAND_THEME = "theme";
 	private static final String COMMAND_SHOW = "show";
+	private static final String COMMAND_OPEN = "open";
 	private static final String EDIT_COMMAND_SEPARATOR = ",";
 	private static final String TIME_EMPTY = "[]";
 	private static final String STRING_TIME = "time";
@@ -51,7 +52,7 @@ public class Logic {
 	private static final String KEYWORD_MARK = "mark ";
 	private static final String KEYWORD_DELETE = "delete ";
 	private static final String KEYWORD_COMPLETE_DELETE = "deleteComplete ";
-	
+
 	/* numeric indices to access the parameters array */
 	private static final int TASK = 0;
 	private static final int TIME = 1;
@@ -69,7 +70,7 @@ public class Logic {
 	 * @throws IOException
 	 */
 	public Logic() throws IOException {
-			storageController = new StorageController();
+		storageController = new StorageController();
 	}
 
 	/**
@@ -267,7 +268,7 @@ public class Logic {
 	 */
 	private ArrayList<Task> handleShowCompleteCommand(Command command) {
 		assert command != null;
-		
+
 		boolean isTime = false;
 		ArrayList<Task> result;
 		Date timeFilter = null;
@@ -464,7 +465,7 @@ public class Logic {
 		assert finalResult != null;
 		assert result != null;
 		assert originalTask != null;
-		
+
 		for (Task temp : searchResult) {
 
 			//check if it is the right task to edit
@@ -743,7 +744,7 @@ public class Logic {
 				|| commandWord.equals(COMMAND_MARK) || commandWord.equals(COMMAND_REDO) 
 				|| commandWord.equals(COMMAND_SWITCH) || commandWord.equals(COMMAND_UNMARK)
 				|| commandWord.equals(COMMAND_THEME) || commandWord.equals(COMMAND_SHOW)
-				|| commandWord.equals(COMMAND_SAVE)) {
+				|| commandWord.equals(COMMAND_SAVE) || commandWord.equals(COMMAND_OPEN)) {
 			return true;
 		}
 

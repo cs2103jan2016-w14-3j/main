@@ -12,7 +12,7 @@ public enum CommandType {
 	MARK("mark"), UNMARK("unmark"), CLEAR_UPCOMING("clearUpcoming"), 
 	CLEAR_COMPLETE("clearComplete"), CLEAR_OVERDUE("clearOverdue"), 
 	CLEAR_FLOATING("clearFloating"), CLEAR_ALL("clearAll"), SHOW("show"),
-	SHOW_COMPLETE("showComplete"), SWITCH("switch"), SAVE("save"), 
+	SHOW_COMPLETE("showComplete"), SWITCH("switch"), SAVE("save"), OPEN("open"),
 	INVALID("invalid");
 	
 	/* attributes of the class */

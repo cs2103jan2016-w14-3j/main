@@ -12,7 +12,7 @@ import Exception.InvalidInputFormatException;
 public class StorageCommandParser {
 	
 	/* error messages used in this class */
-	private static final String ERROR_MESSAGE_INVALID_PATH = "Please specify a valid file path!";
+	private static final String ERROR_MESSAGE_EMPTY_PATH = "Please enter non-empty file path!";
 	
 	/* numeric indices to access parameters array */
 	private static final int TASK = 0;
@@ -36,7 +36,7 @@ public class StorageCommandParser {
 		String[] parameters = new String[5];
 		
 		if (commandContent.isEmpty()) {
-			throw new InvalidInputFormatException(ERROR_MESSAGE_INVALID_PATH);
+			throw new InvalidInputFormatException(ERROR_MESSAGE_EMPTY_PATH);
 		}
 
 		else {
