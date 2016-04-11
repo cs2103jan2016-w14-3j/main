@@ -2,7 +2,7 @@
 package main.java.storage;
 
 import java.io.IOException;
-
+import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -371,7 +371,7 @@ public class StorageController {
 	 * @param path The path of the file to be saved in
 	 * @throws Exception If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws NoFileNameException, IOException {
+	public void saveToLocation(String path) throws NoFileNameException, InvalidPathException, IOException {
 		assert path != null;
 		
 		pendingTemp.saveToLocation(path);

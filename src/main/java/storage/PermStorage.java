@@ -8,6 +8,7 @@ import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.nio.file.Files;
+import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
 
 import com.google.gson.Gson;
@@ -23,6 +24,8 @@ import main.java.data.Task;
 public class PermStorage {
 	
 	private static final String ERROR_NO_FILE_NAME = "No file name entered";
+	private static final String ERROR_INVALID_PATH = "Invalid path entered";
+	private static final String ERROR_COPY = "Error copying file";
 	private static final String ERROR_WRITE_TO_FILE = "Error writing to task file.";
 	private static final String ERROR_READ_FROM_FILE = "Error reading from task file.";
 	private static final String ERROR_READ_WHILE_DELETE = "Error reading from task file while deleting.";
@@ -92,15 +95,25 @@ public class PermStorage {
 	 * @throws IOException If an I/O error occurs
 	 * @throws NoFileNameException If no file name is specified in the path
 	 */
-	public void saveToLocation(String path) throws NoFileNameException, IOException {
+	public void saveToLocation(String path) throws NoFileNameException, InvalidPathException, IOException {
 
-		if (!path.endsWith(".txt") && !path.endsWith("/")) {
+		if (!path.endsWith(".txt") && !path.endsWith("/") && Character.isLetter(path.charAt(path.length()-1))) {
 			path = path.concat(".txt");
+		} else if (path.endsWith(".")) {
+			path = path.concat("txt");
 		} else if (path.endsWith("/")) {
 			throw new NoFileNameException(ERROR_NO_FILE_NAME);
+		} else {
+			throw new InvalidPathException(path, ERROR_INVALID_PATH);
 		}
+		
 		File newFile = new File(path);
-		Files.copy(taskFile.toPath(), newFile.toPath());
+		
+		try {
+			Files.copy(taskFile.toPath(), newFile.toPath());
+		} catch (IOException e) {
+			throw new IOException(ERROR_COPY);
+		}
 	}
 	
 	/**
@@ -114,7 +127,7 @@ public class PermStorage {
 			bufferedWriter.write(gson.toJson(task));
 			bufferedWriter.newLine();
 			bufferedWriter.flush();
-		} catch (IOException e){
+		} catch (IOException e) {
 			throw new IOException(ERROR_WRITE_TO_FILE);
 		}
 	}
