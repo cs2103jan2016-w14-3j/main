@@ -238,6 +238,10 @@ public class CommandDispatcher {
 		else if (isCommand(CommandType.SHOW_COMPLETE, firstWord)) {
 			return CommandType.SHOW_COMPLETE;
 		}
+		
+		else if (isCommand(CommandType.OPEN, firstWord)) {
+			return CommandType.OPEN;
+		}
 
 		else {
 			return CommandType.INVALID;

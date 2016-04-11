@@ -562,8 +562,9 @@ public class ParserTest {
 	 */
 	@Test
 	public void testStorageCommand2() {
-		String testInput = "C:\\";
-		String expectedErrorMsg = "Invalid path is entered!";
+		String testInput = "C:\\Documents and Settings\\";
+		testInput = testInput.replaceAll("\\", "/");
+		String expectedErrorMsg = "No file name is entered!";
 
 		try {
 			storageParser.determineParameters(CommandType.MOVE, testInput);
@@ -607,7 +608,7 @@ public class ParserTest {
 	@Test
 	public void testStorageCommand4() {
 		String testInput = "test??test!!test##";
-		String expectedErrorMsg = "Invalid path is entered!";
+		String expectedErrorMsg = "Invalid path is entered!: test??test!!test##";
 
 		try {
 			storageParser.determineParameters(CommandType.MOVE, testInput);
