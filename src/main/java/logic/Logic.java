@@ -3,6 +3,7 @@ package main.java.logic;
 
 /* import statements */
 import java.io.IOException;
+import java.nio.file.InvalidPathException;
 import java.util.ArrayList;
 import java.util.Date;
 import org.ocpsoft.prettytime.nlp.PrettyTimeParser;
@@ -104,7 +105,8 @@ public class Logic {
 	 * @throws NoFileNameException 
 	 */
 	private Command parseCommand(CommandDispatcher dispatcher, Command command)
-			throws InvalidInputFormatException, NoFileNameException {
+			throws InvalidInputFormatException, NoFileNameException, 
+			InvalidPathException {
 		assert command != null;
 		return dispatcher.parseCommand(command);
 	}
