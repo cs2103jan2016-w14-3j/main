@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--@@author A0124078H  --> 
+<?import javafx.scene.shape.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.control.TextField?>
+
+
+<fx:root type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <VBox fx:id="commandVbox" prefHeight="9.0" prefWidth="570.0" BorderPane.alignment="CENTER">
+         <children>
+            <StackPane prefHeight="29.0" prefWidth="500.0">
+               <children>
+                  <Rectangle fx:id="feedbackBg" arcHeight="5.0" arcWidth="5.0" fill="#ffffff00" height="29.0" stroke="#ffffff00" strokeType="INSIDE" width="570.0" />
+                  <Label fx:id="feedback" alignment="CENTER" contentDisplay="CENTER" focusTraversable="false" minWidth="570.0">
+                     <padding>
+                        <Insets bottom="5.0" />
+                     </padding>
+                     <font>
+                        <Font name="Calibri" size="14.0" />
+                     </font>
+                     <effect>
+                        <DropShadow color="WHITE" />
+                     </effect>
+                  </Label>
+               </children>
+            </StackPane>
+            <TextField fx:id="commandBar" onKeyPressed="#onKeyPress" prefHeight="17.0" prefWidth="224.0" promptText="Enter Command">
+               <font>
+                  <Font name="Century Gothic" size="18.0" />
+               </font>
+            </TextField>
+         </children>
+      </VBox>
+   </center>
+</fx:root>
+<!--@@author A0124078H  --> 

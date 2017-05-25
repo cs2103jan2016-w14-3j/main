@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<jnlp spec="1.0" xmlns:jfx="http://javafx.com" href="flashpoint.jnlp">
+  <information>
+    <title>flashpoint</title>
+    <vendor>mike</vendor>
+    <description>Flashpoint</description>
+    <offline-allowed/>
+  </information>
+  <resources>
+    <j2se version="1.6+" href="http://java.sun.com/products/autodl/j2se"/>
+    <jar href="flashpoint.jar" size="11113094" download="eager" />
+    <jar href="libs/Collate-GUI.jar" size="351671" download="eager" />
+    <jar href="libs/TrayTester.jar" size="52070" download="eager" />
+    <jar href="libs/commons-lang3-3.4.jar" size="434678" download="eager" />
+    <jar href="libs/controlsfx-8.40.10.jar" size="954085" download="eager" />
+    <jar href="libs/gson-2.6.1.jar" size="230882" download="eager" />
+    <jar href="libs/junit.jar" size="314932" download="eager" />
+    <jar href="libs/org.hamcrest.core_1.3.0.v201303031735.jar" size="55198" download="eager" />
+    <jar href="libs/prettytime-4.0.1.Final.jar" size="118147" download="eager" />
+    <jar href="libs/prettytime-nlp-4.0.1.Final.jar" size="2643501" download="eager" />
+  </resources>
+  <jfx:javafx-desc  width="0" height="0" main-class="main.java.gui.Main"  name="Flashpoint" />
+  <update check="background"/>
+</jnlp>

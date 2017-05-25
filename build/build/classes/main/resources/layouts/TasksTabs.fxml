@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--@@author A0124078H  --> 
+<?import javafx.scene.shape.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import java.lang.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<fx:root prefHeight="558.0" prefWidth="600.0" type="BorderPane" xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1">
+   <center>
+      <StackPane prefHeight="495.0" prefWidth="601.0" BorderPane.alignment="CENTER">
+         <children>
+            <AnchorPane prefHeight="415.0" prefWidth="601.0">
+               <children>
+                  <TabPane fx:id="tabPane" prefHeight="531.0" prefWidth="568.0" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                        <Tab id="allTab" fx:id="allTab" text="All Tasks" />
+                        <Tab fx:id="floatingTab" text="Floating Tasks" />
+                      <Tab id="upcomingTab" fx:id="pendingTab" text="Pending Tasks" />
+                        <Tab fx:id="overdueTab" text="Overdue Tasks" />
+                      <Tab id="completeTab" fx:id="completeTab" text="Completed Tasks" />
+                    </tabs>
+                  </TabPane>
+                  <Circle fx:id="circleAll" fill="#ff1f1f" layoutX="103.0" layoutY="9.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="allNotify" alignment="CENTER" layoutX="88.0" layoutY="-1.0" prefHeight="16.0" prefWidth="30.0" text="11" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fx:id="circleFloating" fill="#ff1f1f" layoutX="213.0" layoutY="9.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="floatingNotify" alignment="CENTER" layoutX="197.0" layoutY="-1.0" prefHeight="10.0" prefWidth="32.0" text="11" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                     
+                  </Label>
+                  <Circle fx:id="circlePending" fill="#ff1f1f" layoutX="323.0" layoutY="9.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="pendingNotify" alignment="CENTER" layoutX="309.0" layoutY="-2.0" prefHeight="20.0" prefWidth="28.0" text="11" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fx:id="circleOverdue" fill="#ff1f1f" layoutX="432.0" layoutY="9.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="overdueNotify" alignment="CENTER" layoutX="416.0" layoutY="-1.0" prefHeight="17.0" prefWidth="32.0" text="11" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+                  <Circle fx:id="circleComplete" fill="#ff1f1f" layoutX="542.0" layoutY="9.0" radius="11.0" stroke="TRANSPARENT" strokeType="INSIDE">
+                     <effect>
+                        <InnerShadow color="WHITE" />
+                     </effect>
+                  </Circle>
+                  <Label fx:id="completeNotify" alignment="CENTER" layoutX="530.0" layoutY="-1.0" prefHeight="20.0" prefWidth="24.0" text="11" textFill="WHITE">
+                     <font>
+                        <Font size="14.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </children>
+      </StackPane>
+   </center>
+  
+   
+</fx:root>
+<!--@@author A0124078H  --> 
